@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": ["es2021", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "@micra-pro/scale-management/data-access": [
+        "libs/scale-management/data-access/src/index.ts"
+      ],
+      "@micra-pro/scale-management/feature": [
+        "libs/scale-management/feature/src/index.ts"
+      ],
+      "@micra-pro/shared/ui": ["libs/shared/ui/src/index.ts"],
+      "@micra-pro/shared/utils-ts": ["libs/shared/utils-ts/src/index.ts"],
+      "@micra-pro/workspace-extensions": [
+        "tools/workspace-extensions/src/index.ts"
+      ]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

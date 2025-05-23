@@ -1,0 +1,19 @@
+{
+  "executors": {
+    "csharpier": {
+      "implementation": "./src/executors/csharpier/executor",
+      "schema": "./src/executors/csharpier/schema.json",
+      "description": "csharpier executor"
+    },
+    "recursive-import": {
+      "implementation": "./src/executors/recursive-import/executor",
+      "schema": "./src/executors/recursive-import/schema.json",
+      "description": "recursive import executor"
+    },
+    "icu-to-typescript": {
+      "implementation": "./src/executors/icu-to-typescript/executor",
+      "schema": "./src/executors/icu-to-typescript/schema.json",
+      "description": "icu-to-typescript executor"
+    }
+  }
+}

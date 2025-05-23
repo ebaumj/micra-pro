@@ -1,0 +1,21 @@
+{
+  "name": "backend-test",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/backend-test",
+  "targets": {
+    "build": {
+      "executor": "@nx-dotnet/core:build",
+      "options": {
+        "noDependencies": null
+      }
+    },
+    "test": {
+      "executor": "@nx-dotnet/core:test"
+    },
+    "format": {
+      "executor": "@micra-pro/workspace-extensions:csharpier"
+    }
+  },
+  "tags": ["scope:backend"]
+}

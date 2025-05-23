@@ -1,0 +1,24 @@
+{
+  "name": "frontend",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/frontend/src",
+  "projectType": "application",
+  "tags": ["type:app"],
+  "targets": {
+    "build": {},
+    "serve": {},
+    "codegen": {
+      "executor": "@micra-pro/workspace-extensions:icu-to-typescript",
+      "options": {
+        "inputFile": "apps/frontend/src/locales/en.json",
+        "outputFile": "apps/frontend/src/generated/language-types.tsx",
+        "namespace": "root",
+        "localesFolderRelativeToOutputFile": "../locales/"
+      },
+      "outputs": ["{projectRoot}/src/generated/language-types.tsx"]
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

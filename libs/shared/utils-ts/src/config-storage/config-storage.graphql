@@ -1,0 +1,15 @@
+query ReadConfiguration($key: String!) {
+  readConfiguration(key: $key)
+}
+
+mutation WriteConfiguration($key: String!, $value: String!) {
+  writeConfiguration(input: { key: $key, jsonValue: $value }) {
+    string
+  }
+}
+
+mutation DeleteConfiguration($key: String!) {
+  deleteConfiguration(input: { key: $key }) {
+    string
+  }
+}

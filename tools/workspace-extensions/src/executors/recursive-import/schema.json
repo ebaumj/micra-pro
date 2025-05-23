@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "version": 2,
+  "title": "Recursive-Import",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "importDir": {
+      "type": "string"
+    },
+    "outputFile": {
+      "type": "string"
+    }
+  },
+  "required": ["importDir", "outputFile"]
+}
