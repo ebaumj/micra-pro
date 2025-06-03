@@ -39,7 +39,7 @@ export default {
           foreground: 'hsl(0 0% 9%)',
         },
         destructive: {
-          DEFAULT: 'hsl(0 84.2% 60.2%)',
+          DEFAULT: 'hsl(0 61% 45%)',
           foreground: 'hsl(0 0% 98%)',
         },
         muted: {

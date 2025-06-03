@@ -53,6 +53,22 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.ScaleManagement.In
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.ScaleManagement.Infrastructure.Test", "libs\scale-management\infrastructure-test\MicraPro.ScaleManagement.Infrastructure.Test.csproj", "{DFD30E8D-EED1-4195-B040-B945924BDA5E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bean-management", "bean-management", "{75BA6934-4091-42F0-A4F0-3DA0121C9B34}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.BeanManagement.DataDefinition", "libs\bean-management\data-definition\MicraPro.BeanManagement.DataDefinition.csproj", "{C325E532-6E56-48EF-900A-A3E3CD8FC240}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.BeanManagement.DataDefinitionGraphQl", "libs\bean-management\data-definition-graphql\MicraPro.BeanManagement.DataDefinitionGraphQl.csproj", "{A073B5BC-60C9-4BA1-8AF2-5898A793CA73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.BeanManagement.DataProviderGraphQl", "libs\bean-management\data-provider-graphql\MicraPro.BeanManagement.DataProviderGraphQl.csproj", "{90DEA2E8-6E87-4CCC-9D92-A15E42326981}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.BeanManagement.Domain", "libs\bean-management\domain\MicraPro.BeanManagement.Domain.csproj", "{F6871925-FFF5-492C-93D3-702E0C3B1070}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.BeanManagement.Domain.Test", "libs\bean-management\domain-test\MicraPro.BeanManagement.Domain.Test.csproj", "{9F7770D4-8F40-46D9-A134-9EFB262C31C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.BeanManagement.Infrastructure", "libs\bean-management\infrastructure\MicraPro.BeanManagement.Infrastructure.csproj", "{CA77C244-22E3-4229-8C52-0F06C8288FDF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.BeanManagement.Infrastructure.Test", "libs\bean-management\infrastructure-test\MicraPro.BeanManagement.Infrastructure.Test.csproj", "{1519ECC7-D4A4-4516-847A-FBF4A5E195F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -140,6 +156,34 @@ Global
 		{DFD30E8D-EED1-4195-B040-B945924BDA5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFD30E8D-EED1-4195-B040-B945924BDA5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFD30E8D-EED1-4195-B040-B945924BDA5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C325E532-6E56-48EF-900A-A3E3CD8FC240}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C325E532-6E56-48EF-900A-A3E3CD8FC240}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C325E532-6E56-48EF-900A-A3E3CD8FC240}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C325E532-6E56-48EF-900A-A3E3CD8FC240}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A073B5BC-60C9-4BA1-8AF2-5898A793CA73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A073B5BC-60C9-4BA1-8AF2-5898A793CA73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A073B5BC-60C9-4BA1-8AF2-5898A793CA73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A073B5BC-60C9-4BA1-8AF2-5898A793CA73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90DEA2E8-6E87-4CCC-9D92-A15E42326981}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90DEA2E8-6E87-4CCC-9D92-A15E42326981}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90DEA2E8-6E87-4CCC-9D92-A15E42326981}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90DEA2E8-6E87-4CCC-9D92-A15E42326981}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6871925-FFF5-492C-93D3-702E0C3B1070}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6871925-FFF5-492C-93D3-702E0C3B1070}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6871925-FFF5-492C-93D3-702E0C3B1070}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6871925-FFF5-492C-93D3-702E0C3B1070}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F7770D4-8F40-46D9-A134-9EFB262C31C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F7770D4-8F40-46D9-A134-9EFB262C31C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F7770D4-8F40-46D9-A134-9EFB262C31C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F7770D4-8F40-46D9-A134-9EFB262C31C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA77C244-22E3-4229-8C52-0F06C8288FDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA77C244-22E3-4229-8C52-0F06C8288FDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA77C244-22E3-4229-8C52-0F06C8288FDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA77C244-22E3-4229-8C52-0F06C8288FDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1519ECC7-D4A4-4516-847A-FBF4A5E195F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1519ECC7-D4A4-4516-847A-FBF4A5E195F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1519ECC7-D4A4-4516-847A-FBF4A5E195F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1519ECC7-D4A4-4516-847A-FBF4A5E195F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{37887E29-4FD9-46AD-914E-5F38D82AEA36} = {DCF673B4-820A-481E-BB5E-3CE6B4A1B39A}
@@ -165,5 +209,13 @@ Global
 		{FC14E23D-F8DB-4950-AD20-A86E717E0C98} = {01F714AE-4F17-48B6-8458-DCCD2F75438D}
 		{D8CA9EDF-D70D-4663-B922-4EB87A2C1797} = {01F714AE-4F17-48B6-8458-DCCD2F75438D}
 		{DFD30E8D-EED1-4195-B040-B945924BDA5E} = {01F714AE-4F17-48B6-8458-DCCD2F75438D}
+		{75BA6934-4091-42F0-A4F0-3DA0121C9B34} = {DCF673B4-820A-481E-BB5E-3CE6B4A1B39A}
+		{C325E532-6E56-48EF-900A-A3E3CD8FC240} = {75BA6934-4091-42F0-A4F0-3DA0121C9B34}
+		{A073B5BC-60C9-4BA1-8AF2-5898A793CA73} = {75BA6934-4091-42F0-A4F0-3DA0121C9B34}
+		{90DEA2E8-6E87-4CCC-9D92-A15E42326981} = {75BA6934-4091-42F0-A4F0-3DA0121C9B34}
+		{F6871925-FFF5-492C-93D3-702E0C3B1070} = {75BA6934-4091-42F0-A4F0-3DA0121C9B34}
+		{9F7770D4-8F40-46D9-A134-9EFB262C31C0} = {75BA6934-4091-42F0-A4F0-3DA0121C9B34}
+		{CA77C244-22E3-4229-8C52-0F06C8288FDF} = {75BA6934-4091-42F0-A4F0-3DA0121C9B34}
+		{1519ECC7-D4A4-4516-847A-FBF4A5E195F1} = {75BA6934-4091-42F0-A4F0-3DA0121C9B34}
 	EndGlobalSection
 EndGlobal

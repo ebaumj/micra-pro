@@ -1,0 +1,13 @@
+{
+  "bean-management.name": "Name",
+  "bean-management.location": "Location",
+  "bean-management.country-code": "Country",
+  "bean-management.save": "Save",
+  "bean-management.remove": "Delete",
+  "bean-management.brew-temperature": "Brew Temperature",
+  "bean-management.coffee-quantity": "Coffee Quantity",
+  "bean-management.grind-setting": "Grind Setting",
+  "bean-management.in-cup-quantity": "In Cup Quantity",
+  "bean-management.water-quantity": "Water Quantity",
+  "bean-management.target-extraction-time": "Target Extration Time"
+}

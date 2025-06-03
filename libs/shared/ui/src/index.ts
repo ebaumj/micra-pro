@@ -19,3 +19,6 @@ export * from './Components/TextField';
 export * from './Components/Spinner';
 export * from './Components/SpinnerButton';
 export * from './Components/Select';
+export * from './Components/LongPressDiv';
+export * from './Components/Carousel';
+export * from './Components/NumberField';
