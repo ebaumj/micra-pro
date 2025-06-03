@@ -1,0 +1,34 @@
+{
+  "name": "scale-management-data-access",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/scale-management/data-access/src/",
+  "projectType": "library",
+  "implicitDependencies": ["scale-management-data-definition-graphql"],
+  "tags": ["type:data"],
+  "targets": {
+    "build": {
+      "outputs": ["{workspaceRoot}/dist/libs/scale-management/data-access"],
+      "options": {
+        "outDir": "../../../dist/libs/scale-management/data-access"
+      }
+    },
+    "codegen": {
+      "executor": "nx:run-commands",
+      "outputs": [
+        "{workspaceRoot}/libs/scale-management/data-access/src/generated"
+      ],
+      "inputs": [
+        { "dependentTasksOutputFiles": "**/*.graphqls" },
+        "{workspaceRoot}/libs/scale-management/data-access/src/**/*.graphql"
+      ],
+      "options": {
+        "command": "graphql-codegen --config codegen.ts",
+        "cwd": "{workspaceRoot}/libs/scale-management/data-access"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "dependsOn": ["codegen"]
+    }
+  }
+}

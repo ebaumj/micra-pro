@@ -1,0 +1,45 @@
+{
+  "name": "workspace-extensions",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "tools/workspace-extensions/src",
+  "projectType": "library",
+  "tags": ["type:util", "scope:shared"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/tools/workspace-extensions",
+        "main": "tools/workspace-extensions/src/index.ts",
+        "tsConfig": "tools/workspace-extensions/tsconfig.lib.json",
+        "assets": [
+          "tools/workspace-extensions/*.md",
+          {
+            "input": "./tools/workspace-extensions/src",
+            "glob": "**/!(*.ts)",
+            "output": "./src"
+          },
+          {
+            "input": "./tools/workspace-extensions/src",
+            "glob": "**/*.d.ts",
+            "output": "./src"
+          },
+          {
+            "input": "./tools/workspace-extensions",
+            "glob": "generators.json",
+            "output": "."
+          },
+          {
+            "input": "./tools/workspace-extensions",
+            "glob": "executors.json",
+            "output": "."
+          }
+        ],
+        "updateBuildableProjectDepsInPackageJson": true
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}
