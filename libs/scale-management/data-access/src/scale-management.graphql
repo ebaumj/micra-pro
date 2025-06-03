@@ -1,0 +1,38 @@
+fragment ScaleFields on Scale {
+  id
+  name
+}
+
+query Scales {
+  scales {
+    ...ScaleFields
+  }
+}
+
+mutation RenameScale($name: String!, $scaleId: UUID!) {
+  renameScale(input: { name: $name, scaleId: $scaleId }) {
+    scale {
+      ...ScaleFields
+    }
+  }
+}
+
+mutation AddScale($name: String!, $scaleIdentifier: String!) {
+  addScale(input: { name: $name, scaleIdentifier: $scaleIdentifier }) {
+    scale {
+      ...ScaleFields
+    }
+  }
+}
+
+mutation RemoveScale($scaleId: UUID!) {
+  removeScale(input: { scaleId: $scaleId }) {
+    uuid
+  }
+}
+
+mutation ScanForScales($maxScanTime: TimeSpan) {
+  scanForScales(input: { maxScanTime: $maxScanTime }) {
+    string
+  }
+}

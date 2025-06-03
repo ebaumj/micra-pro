@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "Commit",
+  "title": "",
+  "type": "object",
+  "properties": {
+    "inputFile": {
+      "type": "string"
+    },
+    "outputFile": {
+      "type": "string"
+    },
+    "namespace": {
+      "type": "string"
+    },
+    "localesFolderRelativeToOutputFile": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "inputFile",
+    "outputFile",
+    "namespace",
+    "localesFolderRelativeToOutputFile"
+  ]
+}

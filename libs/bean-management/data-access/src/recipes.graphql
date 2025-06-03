@@ -1,0 +1,82 @@
+fragment EspressoFields on Espresso {
+  grindSetting
+  coffeeQuantity
+  inCupQuantity
+  brewTemperature
+  targetExtractionTime
+}
+
+fragment V60Fields on V60 {
+  grindSetting
+  coffeeQuantity
+  inCupQuantity
+  brewTemperature
+}
+
+fragment RecipePropertiesFields on RecipeProperties {
+  __typename
+  ... on EspressoProperties {
+    properties {
+      ...EspressoFields
+    }
+  }
+  ... on V60Properties {
+    properties {
+      ...V60Fields
+    }
+  }
+}
+
+fragment RecipeFields on Recipe {
+  id
+  beanId
+  properties {
+    ...RecipePropertiesFields
+  }
+}
+
+query Recipes {
+  recipes {
+    ...RecipeFields
+  }
+}
+
+mutation UpdateEspressoRecipe($properties: EspressoInput!, $recipeId: UUID!) {
+  updateEspressoRecipe(
+    input: { properties: $properties, recipeId: $recipeId }
+  ) {
+    recipe {
+      ...RecipeFields
+    }
+  }
+}
+
+mutation UpdateV60Recipe($properties: V60Input!, $recipeId: UUID!) {
+  updateV60Recipe(input: { properties: $properties, recipeId: $recipeId }) {
+    recipe {
+      ...RecipeFields
+    }
+  }
+}
+
+mutation AddEspressoRecipe($properties: EspressoInput!, $beanId: UUID!) {
+  addEspressoRecipe(input: { properties: $properties, beanId: $beanId }) {
+    recipe {
+      ...RecipeFields
+    }
+  }
+}
+
+mutation AddV60Recipe($properties: V60Input!, $beanId: UUID!) {
+  addV60Recipe(input: { properties: $properties, beanId: $beanId }) {
+    recipe {
+      ...RecipeFields
+    }
+  }
+}
+
+mutation RemoveRecipe($recipeId: UUID!) {
+  removeRecipe(input: { recipeId: $recipeId }) {
+    uuid
+  }
+}
