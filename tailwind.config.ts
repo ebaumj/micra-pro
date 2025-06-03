@@ -59,6 +59,30 @@ export default {
           foreground: 'hsl(0 0% 3.9%)',
         },
       },
+      keyframes: {
+        'spin-loader': {
+          '0%': { 'clip-path': 'polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)' },
+          '25%': {
+            'clip-path': 'polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)',
+          },
+          '50%': {
+            'clip-path':
+              'polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)',
+          },
+          '75%': {
+            'clip-path': 'polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)',
+          },
+          '100%': {
+            'clip-path': 'polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)',
+          },
+        },
+      },
+      animation: {
+        'spin-loader-0.5s': 'spin-loader 0.5s linear infinite',
+        'spin-loader-1s': 'spin-loader 1s linear infinite',
+        'spin-loader-1.5s': 'spin-loader 1.5s linear infinite',
+        'spin-loader-2s': 'spin-loader 2s linear infinite',
+      },
     },
   },
   plugins: [require('tailwindcss-animate'), kobalte],

@@ -8,21 +8,41 @@ type LongPressDivProps = Omit<
 > & {
   onClick?: () => void;
   onLongPress?: () => void;
+  onPressStart?: () => void;
+  onPressEnd?: () => void;
+  delayTimeMs?: number;
+  maxShortPressTimeMs?: number;
 };
 
 export const LongPressDiv: ParentComponent<LongPressDivProps> = (props) => {
-  const [local, rest] = splitProps(props, ['onClick', 'onLongPress']);
+  const [local, rest] = splitProps(props, [
+    'onClick',
+    'onLongPress',
+    'onPressStart',
+    'onPressEnd',
+    'delayTimeMs',
+    'maxShortPressTimeMs',
+  ]);
   let timer: ReturnType<typeof setTimeout> | null = null;
+  let timer2: ReturnType<typeof setTimeout> | null = null;
+
+  const delayTime = () => local.delayTimeMs ?? longPressDelayTimeMs;
 
   const keyDown = () => {
+    local.onPressStart?.();
     timer = setTimeout(() => {
       timer = null;
       local.onLongPress?.();
-    }, longPressDelayTimeMs);
+    }, delayTime());
+    if (local.maxShortPressTimeMs)
+      timer2 = setTimeout(() => {
+        timer2 = null;
+      }, local.maxShortPressTimeMs);
   };
 
   const keyUp = () => {
-    if (timer) local.onClick?.();
+    local.onPressEnd?.();
+    if (timer && (timer2 || !local.maxShortPressTimeMs)) local.onClick?.();
     cleanup();
   };
 
