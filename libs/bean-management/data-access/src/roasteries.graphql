@@ -1,0 +1,42 @@
+fragment RoasteryPropertiesFields on RoasteryProperties {
+  name
+  location
+}
+
+fragment RoasteryFields on Roastery {
+  id
+  properties {
+    ...RoasteryPropertiesFields
+  }
+}
+
+query Roasteries {
+  roasteries {
+    ...RoasteryFields
+  }
+}
+
+mutation UpdateRoastery(
+  $properties: RoasteryPropertiesInput!
+  $roasteryId: UUID!
+) {
+  updateRoastery(input: { properties: $properties, roasteryId: $roasteryId }) {
+    roastery {
+      ...RoasteryFields
+    }
+  }
+}
+
+mutation AddRoastery($properties: RoasteryPropertiesInput!) {
+  addRoastery(input: { properties: $properties }) {
+    roastery {
+      ...RoasteryFields
+    }
+  }
+}
+
+mutation RemoveRoastery($roasteryId: UUID!) {
+  removeRoastery(input: { roasteryId: $roasteryId }) {
+    uuid
+  }
+}

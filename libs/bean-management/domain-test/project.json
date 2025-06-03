@@ -1,0 +1,18 @@
+{
+  "name": "bean-management-domain-test",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/bean-management/domain-test",
+  "targets": {
+    "build": {
+      "executor": "@nx-dotnet/core:build"
+    },
+    "test": {
+      "executor": "@nx-dotnet/core:test"
+    },
+    "format": {
+      "executor": "@micra-pro/workspace-extensions:csharpier"
+    }
+  },
+  "tags": ["type:domain-test"]
+}

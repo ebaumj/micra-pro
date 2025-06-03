@@ -1,0 +1,27 @@
+{
+  "name": "shared-ui",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/ui/src",
+  "projectType": "library",
+  "tags": ["type:ui"],
+  "targets": {
+    "build": {
+      "outputs": ["{workspaceRoot}/dist/libs/shared/ui"],
+      "options": {
+        "outDir": "../../../dist/libs/shared/ui"
+      }
+    },
+    "codegen": {
+      "executor": "@micra-pro/workspace-extensions:recursive-import",
+      "options": {
+        "importDir": "libs/shared/ui/src/assets/pictures",
+        "outputFile": "libs/shared/ui/src/generated/pictures-import.ts"
+      },
+      "outputs": ["{projectRoot}/src/generated/pictures-import.ts"],
+      "dependsOn": ["workspace-extensions:build"]
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

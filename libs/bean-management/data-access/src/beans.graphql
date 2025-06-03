@@ -1,0 +1,41 @@
+fragment BeanPropertiesFields on BeanProperties {
+  name
+  countryCode
+  assetId
+}
+
+fragment BeanFields on Bean {
+  id
+  roasteryId
+  properties {
+    ...BeanPropertiesFields
+  }
+}
+
+query Beans {
+  beans {
+    ...BeanFields
+  }
+}
+
+mutation UpdateBean($properties: BeanPropertiesInput!, $beanId: UUID!) {
+  updateBean(input: { properties: $properties, beanId: $beanId }) {
+    bean {
+      ...BeanFields
+    }
+  }
+}
+
+mutation AddBean($properties: BeanPropertiesInput!, $roasteryId: UUID!) {
+  addBean(input: { properties: $properties, roasteryId: $roasteryId }) {
+    bean {
+      ...BeanFields
+    }
+  }
+}
+
+mutation RemoveBean($beanId: UUID!) {
+  removeBean(input: { beanId: $beanId }) {
+    uuid
+  }
+}

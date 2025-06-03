@@ -1,0 +1,50 @@
+{
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": ["es2021", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "@micra-pro/asset-management/data-access": [
+        "libs/asset-management/data-access/src/index.ts"
+      ],
+      "@micra-pro/asset-management/feature": [
+        "libs/asset-management/feature/src/index.ts"
+      ],
+      "@micra-pro/bean-management/data-access": [
+        "libs/bean-management/data-access/src/index.ts"
+      ],
+      "@micra-pro/bean-management/feature": [
+        "libs/bean-management/feature/src/index.ts"
+      ],
+      "@micra-pro/brew-by-weight/data-access": [
+        "libs/brew-by-weight/data-access/src/index.ts"
+      ],
+      "@micra-pro/brew-by-weight/feature": [
+        "libs/brew-by-weight/feature/src/index.ts"
+      ],
+      "@micra-pro/scale-management/data-access": [
+        "libs/scale-management/data-access/src/index.ts"
+      ],
+      "@micra-pro/scale-management/feature": [
+        "libs/scale-management/feature/src/index.ts"
+      ],
+      "@micra-pro/shared/ui": ["libs/shared/ui/src/index.ts"],
+      "@micra-pro/shared/utils-ts": ["libs/shared/utils-ts/src/index.ts"],
+      "@micra-pro/workspace-extensions": [
+        "tools/workspace-extensions/src/index.ts"
+      ]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

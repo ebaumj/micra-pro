@@ -1,0 +1,23 @@
+{
+  "name": "asset-server",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/asset-server/",
+  "projectType": "application",
+  "tags": ["type:app"],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "nuxt build",
+        "cwd": "{workspaceRoot}/apps/asset-server"
+      }
+    },
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "nuxt dev --port 3001",
+        "cwd": "{workspaceRoot}/apps/asset-server"
+      }
+    }
+  }
+}

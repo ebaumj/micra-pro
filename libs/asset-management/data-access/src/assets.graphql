@@ -1,0 +1,50 @@
+query AvailableAssetsPoll {
+  availableAssets {
+    id
+    path
+  }
+}
+
+query UnfinishedAssetsPoll {
+  unfinishedAssets {
+    assetId
+    uploadPath
+  }
+}
+
+query IsAssetPollingPoll($id: UUID!) {
+  isAssetPolling(assetId: $id)
+}
+
+subscription AvailableAssets {
+  availableAssetsChanged {
+    id
+    path
+  }
+}
+
+subscription UnfinishedAssets {
+  unfinishedAssetsChanged {
+    assetId
+    uploadPath
+  }
+}
+
+subscription IsAssetPolling($id: UUID!) {
+  isAssetPolling(assetId: $id)
+}
+
+mutation PollAsset($id: UUID!, $timeout: TimeSpan!) {
+  pollAsset(input: { assetId: $id, timeout: $timeout }) {
+    boolean
+  }
+}
+
+mutation CreateAsset {
+  createAsset {
+    assetUploadQuery {
+      assetId
+      uploadPath
+    }
+  }
+}

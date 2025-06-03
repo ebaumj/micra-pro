@@ -1,0 +1,64 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "targetDefaults": {
+    "build": {
+      "dependsOn": ["^build", "codegen", "^codegen", "typecheck"],
+      "inputs": ["production", "^production"],
+      "cache": true
+    },
+    "typecheck": {
+      "dependsOn": ["^build", "codegen", "^codegen"],
+      "inputs": ["production", "^production"],
+      "cache": true
+    },
+    "test": {
+      "dependsOn": ["build", "^build"],
+      "inputs": ["default", "^production"],
+      "cache": true
+    },
+    "codegen": { "dependsOn": ["^codegen", "^build"], "cache": true },
+    "publish": { "dependsOn": ["build"], "cache": false },
+    "serve": { "dependsOn": ["^codegen"] },
+    "@nx-dotnet/core:test": {
+      "options": { "noBuild": true },
+      "dependsOn": ["build"]
+    },
+    "@nx-dotnet/core:build": {
+      "outputs": ["{projectRoot}/bin", "{projectRoot}/obj"],
+      "dependsOn": ["^build", "codegen", "^codegen"]
+    },
+    "@nx/eslint:lint": {
+      "cache": true,
+      "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
+    }
+  },
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "production": ["default"],
+    "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
+  },
+  "workspaceLayout": { "appsDir": "apps", "libsDir": "libs" },
+  "nxCloudId": "684ae7d8430f766b0daa7b3e",
+  "plugins": [
+    {
+      "plugin": "@nx-dotnet/core",
+      "options": {
+        "solutionFile": "{npmScope}.nx-dotnet.sln",
+        "inferProjects": false,
+        "nugetPackages": {},
+        "tags": ["nx-dotnet"]
+      }
+    },
+    {
+      "plugin": "@nx/vite/plugin",
+      "options": {
+        "buildTargetName": "build",
+        "serveTargetName": "serve",
+        "previewTargetName": "preview",
+        "testTargetName": "test",
+        "serveStaticTargetName": "serve-static",
+        "typecheckTargetName": "typecheck"
+      }
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "name": "shared-utils-ts",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/utils-ts/src",
+  "projectType": "library",
+  "tags": ["type:util"],
+  "implicitDependencies": ["shared-data-definition-graphql"],
+  "targets": {
+    "build": {
+      "outputs": ["{workspaceRoot}/dist/libs/shared/utils-ts"],
+      "options": {
+        "outDir": "../../../dist/libs/shared/utils-ts"
+      }
+    },
+    "codegen": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/libs/shared/utils-ts/src/generated"],
+      "inputs": [
+        { "dependentTasksOutputFiles": "**/*.graphqls" },
+        "{workspaceRoot}/libs/shared/utils-ts/src/**/*.graphql"
+      ],
+      "options": {
+        "command": "graphql-codegen --config codegen.ts",
+        "cwd": "{workspaceRoot}/libs/shared/utils-ts"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "dependsOn": ["codegen"]
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "version": 2,
+  "title": "Csharpier executor",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "write": {
+      "type": "boolean",
+      "description": "When true the files are written so that they match the formatter rules. When false the files are checked for formatting issues."
+    }
+  },
+  "required": []
+}

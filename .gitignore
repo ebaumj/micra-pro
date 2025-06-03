@@ -1,0 +1,65 @@
+# See https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# compiled output
+dist
+tmp
+out-tsc
+.output
+.data
+.nuxt
+.nitro
+.cache
+
+# dependencies
+node_modules
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+**.env
+*.sln.DotSettings.user
+.env
+.env.*
+!.env.example
+
+# System Files
+.DS_Store
+.fleet
+.idea
+Thumbs.db
+
+.nx/cache
+.nx/workspace-data
+
+# Outputs
+build
+bin
+obj
+generated
+
+# Logs
+logs
+*.log
+
+nupkg/

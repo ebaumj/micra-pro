@@ -1,0 +1,40 @@
+{
+  "name": "scale-management-feature",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/scale-management/feature/src",
+  "projectType": "library",
+  "tags": ["type:feature"],
+  "targets": {
+    "build": {
+      "outputs": ["{workspaceRoot}/dist/libs/scale-management/feature"],
+      "options": {
+        "outDir": "../../../dist/libs/scale-management/feature"
+      }
+    },
+    "codegen": {
+      "dependsOn": ["codegen-translations", "codegen-recursive-import"]
+    },
+    "codegen-recursive-import": {
+      "executor": "@micra-pro/workspace-extensions:recursive-import",
+      "options": {
+        "importDir": "libs/scale-management/feature/src/assets/pictures",
+        "outputFile": "libs/scale-management/feature/src/generated/pictures-import.ts"
+      },
+      "outputs": ["{projectRoot}/src/generated/pictures-import.ts"],
+      "dependsOn": ["workspace-extensions:build"]
+    },
+    "codegen-translations": {
+      "executor": "@micra-pro/workspace-extensions:icu-to-typescript",
+      "options": {
+        "inputFile": "libs/scale-management/feature/src/locales/en.json",
+        "outputFile": "libs/scale-management/feature/src/generated/language-types.tsx",
+        "namespace": "scale-management",
+        "localesFolderRelativeToOutputFile": "../locales/"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "dependsOn": ["codegen"]
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "name": "frontend",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/frontend/src",
+  "projectType": "application",
+  "tags": ["type:app"],
+  "targets": {
+    "build": {},
+    "serve": {},
+    "codegen": {
+      "dependsOn": ["codegen-translations", "codegen-recursive-import"]
+    },
+    "codegen-recursive-import": {
+      "executor": "@micra-pro/workspace-extensions:recursive-import",
+      "options": {
+        "importDir": "apps/frontend/src/assets/pictures",
+        "outputFile": "apps/frontend/src/generated/pictures-import.ts"
+      },
+      "outputs": ["{projectRoot}/src/generated/pictures-import.ts"],
+      "dependsOn": ["workspace-extensions:build"]
+    },
+    "codegen-translations": {
+      "executor": "@micra-pro/workspace-extensions:icu-to-typescript",
+      "options": {
+        "inputFile": "apps/frontend/src/locales/en.json",
+        "outputFile": "apps/frontend/src/generated/language-types.tsx",
+        "namespace": "root",
+        "localesFolderRelativeToOutputFile": "../locales/"
+      },
+      "outputs": ["{projectRoot}/src/generated/language-types.tsx"]
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}
