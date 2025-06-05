@@ -7,7 +7,6 @@ import { SidebarLayout } from '@micra-pro/shared/ui';
 const MenuLayout: ParentComponent = (props) => {
   return (
     <SidebarLayout
-      logoUrl={homeUrl}
       navigationElements={navigationElements}
       bottomElement={{
         icon: 'close',
