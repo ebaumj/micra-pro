@@ -4,16 +4,22 @@ import {
 } from '@micra-pro/scale-management/feature';
 import { CountryFlag, Icon } from '@micra-pro/shared/ui';
 import { A } from '@solidjs/router';
-import { Component, For, ParentComponent, Show } from 'solid-js';
+import { Component, createSignal, For, ParentComponent, Show } from 'solid-js';
 import { T } from '../generated/language-types';
 import { LanguageSelector } from '@micra-pro/shared/ui';
-import { Bean, fetchBeansLevel } from '@micra-pro/bean-management/data-access';
+import {
+  Bean,
+  EspressoProperties,
+  fetchBeansLevel,
+} from '@micra-pro/bean-management/data-access';
 import { MainScreenConfig, readMainScreenConfig } from './MainscreenConfigPage';
 import { Asset } from '@micra-pro/asset-management/feature';
+import { RecipePannel } from '@micra-pro/bean-management/feature';
 
 const BeanButtons: Component<{
   beans: Bean[];
   config: MainScreenConfig;
+  onButtonClick: (button: Bean) => void;
 }> = (props) => {
   const buttons = () =>
     props.config.buttons
@@ -39,6 +45,7 @@ const BeanButtons: Component<{
               'grid-row-start': btn.pos.y + 1,
               'grid-column-start': btn.pos.x + 1,
             }}
+            onClick={() => props.onButtonClick(btn.bean)}
           >
             <div class="col-start-1 col-end-2 row-start-1 row-end-2 h-full">
               <div class="flex h-full w-full flex-col items-center justify-center rounded-lg border text-sm shadow-md">
@@ -71,6 +78,15 @@ function MainScreen() {
 
   const isLoading = () => beans.isLoading() || !config.latest;
 
+  const [selectedBean, setSelectedBean] = createSignal<string | null>(null);
+
+  const startEspressoBrewing = (beanId: string, recipe: EspressoProperties) => {
+    console.log(
+      `brew espresso: beans: ${beanId}, quantity: ${recipe.inCupQuantity}, extractionTime: ${recipe.targetExtractionTime}`,
+    );
+    setSelectedBean(null);
+  };
+
   return (
     <Layout>
       <div class="flex h-full w-full items-center justify-center">
@@ -78,8 +94,18 @@ function MainScreen() {
           <div class="h-full w-full p-4">Main</div>
         </Show>
         <Show when={!isLoading()}>
+          <RecipePannel
+            beans={beans.beans()}
+            onClose={() => setSelectedBean(null)}
+            beanId={selectedBean()}
+            startEspressoBrewing={startEspressoBrewing}
+          />
           <div class="w-full">
-            <BeanButtons beans={beans.beans()} config={config.latest!} />
+            <BeanButtons
+              beans={beans.beans()}
+              config={config.latest!}
+              onButtonClick={(b) => setSelectedBean(b.id)}
+            />
           </div>
         </Show>
       </div>

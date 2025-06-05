@@ -9,5 +9,7 @@
   "bean-management.grind-setting": "Mahlgrad",
   "bean-management.in-cup-quantity": "Menge in Tasse",
   "bean-management.water-quantity": "Wassermenge",
-  "bean-management.target-extraction-time": "Extraktionszeit (Referenz)"
+  "bean-management.target-extraction-time": "Extraktionszeit (Referenz)",
+  "bean-management.start-espresso": "Espresso starten",
+  "bean-management.select-brew-mehtod": "Brühverfahren auswählen"
 }
