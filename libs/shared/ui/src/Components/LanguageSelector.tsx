@@ -1,6 +1,6 @@
 import { Component, Show } from 'solid-js';
-import { Select } from '@micra-pro/shared/ui';
-import { useTranslationContext } from './TranslationProvider';
+import { Select } from './Select';
+import { useTranslationContext } from '@micra-pro/shared/utils-ts';
 import * as flags from 'country-flag-icons/string/3x2';
 import { twMerge } from 'tailwind-merge';
 

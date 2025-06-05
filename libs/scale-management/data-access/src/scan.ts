@@ -1,6 +1,5 @@
-import { type Duration } from '@micra-pro/shared/ui';
 import { Accessor, createSignal } from 'solid-js';
-import { createMutation } from '@micra-pro/shared/utils-ts';
+import { createMutation, type Duration } from '@micra-pro/shared/utils-ts';
 import {
   ScanForScalesDocument,
   ScanForScalesMutation,

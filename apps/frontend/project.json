@@ -8,6 +8,18 @@
     "build": {},
     "serve": {},
     "codegen": {
+      "dependsOn": ["codegen-translations", "codegen-recursive-import"]
+    },
+    "codegen-recursive-import": {
+      "executor": "@micra-pro/workspace-extensions:recursive-import",
+      "options": {
+        "importDir": "apps/frontend/src/assets/pictures",
+        "outputFile": "apps/frontend/src/generated/pictures-import.ts"
+      },
+      "outputs": ["{projectRoot}/src/generated/pictures-import.ts"],
+      "dependsOn": ["workspace-extensions:build"]
+    },
+    "codegen-translations": {
       "executor": "@micra-pro/workspace-extensions:icu-to-typescript",
       "options": {
         "inputFile": "apps/frontend/src/locales/en.json",

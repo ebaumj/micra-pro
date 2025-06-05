@@ -1,4 +1,3 @@
-export * from './utils/timeSpan';
 import picturesImport from './generated/pictures-import';
 export { picturesImport as globalPictures };
 export { Keyboard } from './Components/Keyboard/Keyboard';
@@ -22,3 +21,5 @@ export * from './Components/Select';
 export * from './Components/LongPressDiv';
 export * from './Components/Carousel';
 export * from './Components/NumberField';
+export * from './Components/NumberField';
+export * from './Components/LanguageSelector';

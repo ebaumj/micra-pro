@@ -1,4 +1,5 @@
-import { MicraProLogo, Icon } from '@micra-pro/shared/ui';
+import { MicraProLogo } from './MicraProLogo';
+import { Icon } from './Icon';
 import { A } from '@solidjs/router';
 import { Component, For, ParentComponent } from 'solid-js';
 
@@ -31,7 +32,6 @@ export type NavigationElement = {
 };
 
 export type SidebarLayoutProps = {
-  logoUrl: string;
   navigationElements: NavigationElement[];
   bottomElement: NavigationElement;
 };
@@ -40,9 +40,9 @@ export const SidebarLayout: ParentComponent<SidebarLayoutProps> = (props) => {
   return (
     <div class="flex h-full max-h-full w-full">
       <div class="left-0 flex h-full max-h-full w-60 shrink-0 flex-col gap-2 border-r">
-        <A href={props.logoUrl} class="m-2 w-fit">
-          <MicraProLogo class="mx-2 w-14 text-lime-400" />
-        </A>
+        <div class="mx-2 mt-2 w-fit pl-2 pt-2">
+          <MicraProLogo class="h-14 w-14" />
+        </div>
         <ul class="m-4 flex grow flex-col gap-2 overflow-auto">
           <For each={props.navigationElements}>
             {(navElement) => (

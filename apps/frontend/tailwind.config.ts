@@ -1,5 +1,5 @@
 import { Config } from 'tailwindcss';
-import tailwindConfig from '../../tailwind.config'; // eslint-disable-line @nx/enforce-module-boundaries
+import tailwindConfig from '../../tailwind.config';
 import { createGlobPatternsForDependencies } from '@nx/js/src/utils/generate-globs';
 
 import { join } from 'path';

@@ -6,7 +6,7 @@ import { Icon } from '@micra-pro/shared/ui';
 import { A } from '@solidjs/router';
 import { ParentComponent } from 'solid-js';
 import { T } from '../generated/language-types';
-import { LanguageSelector } from '@micra-pro/shared/utils-ts';
+import { LanguageSelector } from '@micra-pro/shared/ui';
 
 function MainScreen() {
   return (
