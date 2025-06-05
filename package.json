@@ -53,6 +53,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "country-flag-icons": "^1.5.19",
+    "embla-carousel-solid": "^8.6.0",
     "i18next": "^25.2.0",
     "i18next-icu": "^2.3.0",
     "lodash": "^4.17.21",

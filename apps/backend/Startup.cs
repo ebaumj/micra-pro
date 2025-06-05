@@ -1,5 +1,7 @@
 using MicraPro.Auth.DataProvider;
 using MicraPro.Auth.Domain;
+using MicraPro.BeanManagement.Domain;
+using MicraPro.BeanManagement.Infrastructure;
 using MicraPro.ScaleManagement.Domain;
 using MicraPro.ScaleManagement.Infrastructure;
 using MicraPro.Shared.Domain;
@@ -18,6 +20,8 @@ public class Startup(IConfiguration configuration)
             .AddSharedInfrastructureServices()
             .AddScaleManagementDomainServices(configuration)
             .AddScaleManagementInfrastructureServices(configuration)
+            .AddBeanManagementDomainServices(configuration)
+            .AddBeanManagementInfrastructureServices(configuration)
             .AddCors(options =>
             {
                 options.AddDefaultPolicy(b =>

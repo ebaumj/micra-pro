@@ -30,14 +30,22 @@ export const DialogContent = <T extends ValidComponent = 'div'>(
     'onInteractOutside',
   ]);
 
+  const getKeyboardContext = () => {
+    try {
+      return useKeyboardInternal();
+    } catch {
+      return null;
+    }
+  };
+
   const dialogContext = useDialogContext();
-  const keyboardContext = useKeyboardInternal();
+  const keyboardContext = getKeyboardContext();
   let dialogContentRef: HTMLDivElement = null!;
   let dialogOverlayRef: HTMLDivElement = null!;
 
   const interactOutside = (e: InteractOutsideEvent) => {
     if (local.onInteractOutside) local.onInteractOutside(e);
-    if (keyboardContext.isOpen()) {
+    if (keyboardContext?.isOpen()) {
       // prevent the dialog from closing when clicking outside the dialog
       // for example when clicking the keyboard or the overlay (backdrop)
       e.preventDefault();

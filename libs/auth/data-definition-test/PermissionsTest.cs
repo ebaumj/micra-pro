@@ -12,7 +12,13 @@ public class PermissionsTest
         // Scale Management
         (1000, Permission.ReadScales),
         (1001, Permission.WriteScales),
-        //
+        // Bean Management
+        (2000, Permission.ReadRoasteries),
+        (2001, Permission.WriteRoasteries),
+        (2002, Permission.ReadBeans),
+        (2003, Permission.WriteBeans),
+        (2004, Permission.ReadRecipes),
+        (2005, Permission.WriteRecipes),
         // Configuration Strings
         (7000, Permission.ReadConfiguration),
         (7001, Permission.WriteConfiguration),

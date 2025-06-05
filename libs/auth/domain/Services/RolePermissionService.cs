@@ -14,9 +14,25 @@ public class RolePermissionService : IRolePermissionService<Permission>
     {
         {
             AccessRoles.User,
-            [Permission.ReadScales, Permission.ReadConfiguration, Permission.TestConnection]
+            [
+                Permission.TestConnection,
+                Permission.ReadConfiguration,
+                Permission.ReadScales,
+                Permission.ReadRoasteries,
+                Permission.ReadBeans,
+                Permission.ReadRecipes,
+            ]
         },
-        { AccessRoles.Admin, [Permission.WriteScales, Permission.WriteConfiguration] },
+        {
+            AccessRoles.Admin,
+            [
+                Permission.WriteConfiguration,
+                Permission.WriteScales,
+                Permission.WriteRoasteries,
+                Permission.WriteBeans,
+                Permission.WriteRecipes,
+            ]
+        },
     };
 
     public IEnumerable<Permission> GetPermissionsForRole(string role)

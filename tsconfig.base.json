@@ -15,6 +15,12 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
+      "@micra-pro/bean-management/data-access": [
+        "libs/bean-management/data-access/src/index.ts"
+      ],
+      "@micra-pro/bean-management/feature": [
+        "libs/bean-management/feature/src/index.ts"
+      ],
       "@micra-pro/scale-management/data-access": [
         "libs/scale-management/data-access/src/index.ts"
       ],
