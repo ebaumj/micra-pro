@@ -15,7 +15,7 @@ import {
 } from './generated/graphql';
 import { Accessor } from 'solid-js';
 
-type Roastery = {
+export type Roastery = {
   properties: RoasteryProperties;
   beans: {
     id: string;
@@ -24,7 +24,7 @@ type Roastery = {
   }[];
 };
 
-type Bean = {
+export type Bean = {
   id: string;
   properties: BeanProperties;
   roastery: RoasteryProperties;
