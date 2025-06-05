@@ -16,21 +16,11 @@
       "inputs": ["default", "^production"],
       "cache": true
     },
-    "codegen": {
-      "dependsOn": ["^codegen", "^build"],
-      "cache": true
-    },
-    "publish": {
-      "dependsOn": ["build"],
-      "cache": false
-    },
-    "serve": {
-      "dependsOn": ["^codegen"]
-    },
+    "codegen": { "dependsOn": ["^codegen", "^build"], "cache": true },
+    "publish": { "dependsOn": ["build"], "cache": false },
+    "serve": { "dependsOn": ["^codegen"] },
     "@nx-dotnet/core:test": {
-      "options": {
-        "noBuild": true
-      },
+      "options": { "noBuild": true },
       "dependsOn": ["build"]
     },
     "@nx-dotnet/core:build": {
@@ -47,10 +37,7 @@
     "production": ["default"],
     "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
   },
-  "workspaceLayout": {
-    "appsDir": "apps",
-    "libsDir": "libs"
-  },
+  "workspaceLayout": { "appsDir": "apps", "libsDir": "libs" },
   "plugins": [
     {
       "plugin": "@nx-dotnet/core",
@@ -72,5 +59,6 @@
         "typecheckTargetName": "typecheck"
       }
     }
-  ]
+  ],
+  "nxCloudId": "6841cdf4b552c0901bef4464"
 }
