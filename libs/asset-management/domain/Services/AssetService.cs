@@ -2,13 +2,15 @@ using MicraPro.AssetManagement.DataDefinition;
 using MicraPro.AssetManagement.Domain.AssetAccess;
 using MicraPro.AssetManagement.Domain.StorageAccess;
 using MicraPro.AssetManagement.Domain.ValueObjects;
+using Microsoft.Extensions.Logging;
 
 namespace MicraPro.AssetManagement.Domain.Services;
 
 public class AssetService(
     IAssetRepository assetRepository,
     IAssetDirectoryService assetDirectoryService,
-    IRemoteAssetService remoteAssetService
+    IRemoteAssetService remoteAssetService,
+    ILogger<AssetService> logger
 ) : IAssetService
 {
     private const string DefaultFileType = "txt";
@@ -76,7 +78,15 @@ public class AssetService(
     public async Task SyncAssets(CancellationToken ct)
     {
         var assets = await assetRepository.GetAllAsync(ct);
-        await remoteAssetService.FetchRemoteAssets(ct);
+        try
+        {
+            await remoteAssetService.FetchRemoteAssets(ct);
+        }
+        catch
+        {
+            logger.LogError("Failed to read remote assets");
+            return;
+        }
         var remoteAssets = remoteAssetService.AvailableAssets.ToArray();
         var localAssets = (await assetDirectoryService.GetFilesAsync(ct)).ToArray();
         await Task.WhenAll(
