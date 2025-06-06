@@ -33,6 +33,9 @@
     <ProjectReference Include="..\..\libs\bean-management\data-provider-graphql\MicraPro.BeanManagement.DataProviderGraphQl.csproj" />
     <ProjectReference Include="..\..\libs\bean-management\domain\MicraPro.BeanManagement.Domain.csproj" />
     <ProjectReference Include="..\..\libs\bean-management\infrastructure\MicraPro.BeanManagement.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\libs\asset-management\data-provider-graphql\MicraPro.AssetManagement.DataProviderGraphQl.csproj" />
+    <ProjectReference Include="..\..\libs\asset-management\domain\MicraPro.AssetManagement.Domain.csproj" />
+    <ProjectReference Include="..\..\libs\asset-management\infrastructure\MicraPro.AssetManagement.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\" />

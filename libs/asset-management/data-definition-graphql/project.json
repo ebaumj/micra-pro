@@ -1,0 +1,22 @@
+{
+  "name": "asset-management-data-definition-graphql",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/asset-management/data-definition-graphql",
+  "targets": {
+    "build": {
+      "executor": "@nx-dotnet/core:build",
+      "dependsOn": ["^build"]
+    },
+    "codegen": {
+      "executor": "@nx-dotnet/core:test",
+      "outputs": [
+        "{workspaceRoot}/libs/asset-management/data-definition-graphql/src/generated"
+      ]
+    },
+    "format": {
+      "executor": "@micra-pro/workspace-extensions:csharpier"
+    }
+  },
+  "tags": ["type:data-provider-test"]
+}

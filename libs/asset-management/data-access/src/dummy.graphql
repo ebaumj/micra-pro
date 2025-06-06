@@ -1,0 +1,6 @@
+query AvailableAssets {
+  availableAssets {
+    id
+    path
+  }
+}

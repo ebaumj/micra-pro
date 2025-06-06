@@ -17,6 +17,10 @@ public enum Permission
     ReadRecipes,
     WriteRecipes,
 
+    // Asset Management
+    ReadAssets = 3000,
+    WriteAssets,
+
     // Configuration Strings
     ReadConfiguration = 7000,
     WriteConfiguration,
