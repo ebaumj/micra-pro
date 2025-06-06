@@ -19,6 +19,9 @@ public class PermissionsTest
         (2003, Permission.WriteBeans),
         (2004, Permission.ReadRecipes),
         (2005, Permission.WriteRecipes),
+        // Asset Management
+        (3000, Permission.ReadAssets),
+        (3001, Permission.WriteAssets),
         // Configuration Strings
         (7000, Permission.ReadConfiguration),
         (7001, Permission.WriteConfiguration),

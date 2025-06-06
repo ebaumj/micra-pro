@@ -4,6 +4,11 @@
 dist
 tmp
 out-tsc
+.output
+.data
+.nuxt
+.nitro
+.cache
 
 # dependencies
 node_modules
@@ -34,9 +39,14 @@ testem.log
 /typings
 **.env
 *.sln.DotSettings.user
+.env
+.env.*
+!.env.example
 
 # System Files
 .DS_Store
+.fleet
+.idea
 Thumbs.db
 
 .nx/cache
@@ -47,5 +57,9 @@ build
 bin
 obj
 generated
+
+# Logs
+logs
+*.log
 
 nupkg/

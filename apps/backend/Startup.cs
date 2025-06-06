@@ -1,10 +1,11 @@
+using MicraPro.AssetManagement.Domain;
+using MicraPro.AssetManagement.Infrastructure;
 using MicraPro.Auth.DataProvider;
 using MicraPro.Auth.Domain;
 using MicraPro.BeanManagement.Domain;
 using MicraPro.BeanManagement.Infrastructure;
 using MicraPro.ScaleManagement.Domain;
 using MicraPro.ScaleManagement.Infrastructure;
-using MicraPro.Shared.Domain;
 using MicraPro.Shared.Infrastructure;
 
 namespace MicraPro.Backend;
@@ -22,6 +23,8 @@ public class Startup(IConfiguration configuration)
             .AddScaleManagementInfrastructureServices(configuration)
             .AddBeanManagementDomainServices(configuration)
             .AddBeanManagementInfrastructureServices(configuration)
+            .AddAssetManagementDomainServices(configuration)
+            .AddAssetManagementInfrastructureServices(configuration)
             .AddCors(options =>
             {
                 options.AddDefaultPolicy(b =>

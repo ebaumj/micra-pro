@@ -69,6 +69,22 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.BeanManagement.Inf
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.BeanManagement.Infrastructure.Test", "libs\bean-management\infrastructure-test\MicraPro.BeanManagement.Infrastructure.Test.csproj", "{1519ECC7-D4A4-4516-847A-FBF4A5E195F1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "asset-management", "asset-management", "{38379C4B-4E14-4AAC-BA62-AB6446DC53BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.AssetManagement.DataDefinition", "libs\asset-management\data-definition\MicraPro.AssetManagement.DataDefinition.csproj", "{185F1DDB-6C38-414B-90A0-1A560DDFDFF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.AssetManagement.DataDefinitionGraphQl", "libs\asset-management\data-definition-graphql\MicraPro.AssetManagement.DataDefinitionGraphQl.csproj", "{C59CF4D3-0397-4DC4-B270-C397DF550DA9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.AssetManagement.DataProviderGraphQl", "libs\asset-management\data-provider-graphql\MicraPro.AssetManagement.DataProviderGraphQl.csproj", "{92406CD2-9270-4397-949C-75E8568A0416}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.AssetManagement.Domain", "libs\asset-management\domain\MicraPro.AssetManagement.Domain.csproj", "{73D7AC5E-39DF-46F6-B222-6560C6498570}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.AssetManagement.Domain.Test", "libs\asset-management\domain-test\MicraPro.AssetManagement.Domain.Test.csproj", "{64BA7976-382E-482A-8D37-7DE691C5F779}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.AssetManagement.Infrastructure", "libs\asset-management\infrastructure\MicraPro.AssetManagement.Infrastructure.csproj", "{7A81D062-CE54-45BD-B829-3473862A3E6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.AssetManagement.Infrastructure.Test", "libs\asset-management\infrastructure-test\MicraPro.AssetManagement.Infrastructure.Test.csproj", "{612C7BC5-9C1F-4210-962C-FD55C93E465E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -184,6 +200,34 @@ Global
 		{1519ECC7-D4A4-4516-847A-FBF4A5E195F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1519ECC7-D4A4-4516-847A-FBF4A5E195F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1519ECC7-D4A4-4516-847A-FBF4A5E195F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{185F1DDB-6C38-414B-90A0-1A560DDFDFF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{185F1DDB-6C38-414B-90A0-1A560DDFDFF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{185F1DDB-6C38-414B-90A0-1A560DDFDFF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{185F1DDB-6C38-414B-90A0-1A560DDFDFF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C59CF4D3-0397-4DC4-B270-C397DF550DA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C59CF4D3-0397-4DC4-B270-C397DF550DA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C59CF4D3-0397-4DC4-B270-C397DF550DA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C59CF4D3-0397-4DC4-B270-C397DF550DA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92406CD2-9270-4397-949C-75E8568A0416}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92406CD2-9270-4397-949C-75E8568A0416}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92406CD2-9270-4397-949C-75E8568A0416}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92406CD2-9270-4397-949C-75E8568A0416}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73D7AC5E-39DF-46F6-B222-6560C6498570}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73D7AC5E-39DF-46F6-B222-6560C6498570}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73D7AC5E-39DF-46F6-B222-6560C6498570}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73D7AC5E-39DF-46F6-B222-6560C6498570}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64BA7976-382E-482A-8D37-7DE691C5F779}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64BA7976-382E-482A-8D37-7DE691C5F779}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64BA7976-382E-482A-8D37-7DE691C5F779}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64BA7976-382E-482A-8D37-7DE691C5F779}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A81D062-CE54-45BD-B829-3473862A3E6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A81D062-CE54-45BD-B829-3473862A3E6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A81D062-CE54-45BD-B829-3473862A3E6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A81D062-CE54-45BD-B829-3473862A3E6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{612C7BC5-9C1F-4210-962C-FD55C93E465E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{612C7BC5-9C1F-4210-962C-FD55C93E465E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{612C7BC5-9C1F-4210-962C-FD55C93E465E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{612C7BC5-9C1F-4210-962C-FD55C93E465E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{37887E29-4FD9-46AD-914E-5F38D82AEA36} = {DCF673B4-820A-481E-BB5E-3CE6B4A1B39A}
@@ -217,5 +261,13 @@ Global
 		{9F7770D4-8F40-46D9-A134-9EFB262C31C0} = {75BA6934-4091-42F0-A4F0-3DA0121C9B34}
 		{CA77C244-22E3-4229-8C52-0F06C8288FDF} = {75BA6934-4091-42F0-A4F0-3DA0121C9B34}
 		{1519ECC7-D4A4-4516-847A-FBF4A5E195F1} = {75BA6934-4091-42F0-A4F0-3DA0121C9B34}
+		{38379C4B-4E14-4AAC-BA62-AB6446DC53BC} = {DCF673B4-820A-481E-BB5E-3CE6B4A1B39A}
+		{185F1DDB-6C38-414B-90A0-1A560DDFDFF5} = {38379C4B-4E14-4AAC-BA62-AB6446DC53BC}
+		{C59CF4D3-0397-4DC4-B270-C397DF550DA9} = {38379C4B-4E14-4AAC-BA62-AB6446DC53BC}
+		{92406CD2-9270-4397-949C-75E8568A0416} = {38379C4B-4E14-4AAC-BA62-AB6446DC53BC}
+		{73D7AC5E-39DF-46F6-B222-6560C6498570} = {38379C4B-4E14-4AAC-BA62-AB6446DC53BC}
+		{64BA7976-382E-482A-8D37-7DE691C5F779} = {38379C4B-4E14-4AAC-BA62-AB6446DC53BC}
+		{7A81D062-CE54-45BD-B829-3473862A3E6F} = {38379C4B-4E14-4AAC-BA62-AB6446DC53BC}
+		{612C7BC5-9C1F-4210-962C-FD55C93E465E} = {38379C4B-4E14-4AAC-BA62-AB6446DC53BC}
 	EndGlobalSection
 EndGlobal
