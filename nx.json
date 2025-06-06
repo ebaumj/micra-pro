@@ -51,6 +51,7 @@
     "appsDir": "apps",
     "libsDir": "libs"
   },
+  "nxCloudId": "6841cdf4b552c0901bef4464",
   "plugins": [
     {
       "plugin": "@nx-dotnet/core",
