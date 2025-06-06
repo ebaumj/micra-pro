@@ -8,14 +8,16 @@ public class AssetDirectoryService(IOptions<AssetManagementInfrastructureOptions
 {
     public string CreateRandomFileNameWithoutExtension() => Path.GetRandomFileName();
 
-    public async Task<IEnumerable<string>> GetFilesAsync(CancellationToken ct)
+    public Task<IEnumerable<string>> GetFilesAsync(CancellationToken ct)
     {
         if (!Directory.Exists(options.Value.LocalFileServerFolder))
             Directory.CreateDirectory(options.Value.LocalFileServerFolder);
-        return Directory.GetFiles(
-            options.Value.LocalFileServerFolder,
-            "*.*",
-            SearchOption.AllDirectories
+        return Task.FromResult<IEnumerable<string>>(
+            Directory.GetFiles(
+                options.Value.LocalFileServerFolder,
+                "*.*",
+                SearchOption.AllDirectories
+            )
         );
     }
 
