@@ -16,10 +16,10 @@
     "baseUrl": ".",
     "paths": {
       "@micra-pro/asset-management/data-access": [
-        "libs/bean-management/data-access/src/index.ts"
+        "libs/asset-management/data-access/src/index.ts"
       ],
       "@micra-pro/asset-management/feature": [
-        "libs/bean-management/feature/src/index.ts"
+        "libs/asset-management/feature/src/index.ts"
       ],
       "@micra-pro/bean-management/data-access": [
         "libs/bean-management/data-access/src/index.ts"

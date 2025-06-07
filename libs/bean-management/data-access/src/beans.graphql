@@ -1,6 +1,7 @@
 fragment BeanPropertiesFields on BeanProperties {
   name
   countryCode
+  assetId
 }
 
 fragment BeanFields on Bean {

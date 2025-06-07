@@ -16,6 +16,6 @@ export const CountryFlag: Component<CountryFlagProps> = (props) => {
   };
   const imageUrl = (svg: string) =>
     URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' }));
-  const [local, rest] = splitProps(props, ['countryCode']);
-  return <img src={imageUrl(image(local.countryCode))} {...rest} />;
+  const rest = splitProps(props, ['countryCode'])[1];
+  return <img src={imageUrl(image(props.countryCode))} {...rest} />;
 };

@@ -1,3 +1,4 @@
+import { Asset } from '@micra-pro/asset-management/feature';
 import {
   fetchRoasteriesLevel,
   Roastery,
@@ -53,6 +54,7 @@ const BeanPreview: Component<{
           country: b.properties.countryCode,
           roastery: r.properties.name,
           id: b.id,
+          assetId: b.properties.assetId ?? undefined,
         })),
       )
       .find((b) => b.id === props.beanId);
@@ -60,7 +62,12 @@ const BeanPreview: Component<{
     <div class="h-full w-full">
       <Show when={beanInfo()}>
         <div class="flex h-full w-full flex-col items-center justify-center text-sm">
-          <CountryFlag countryCode={beanInfo()!.country} class="px-6" />
+          <Show when={beanInfo()!.assetId}>
+            <Asset class="px-6" assetId={beanInfo()!.assetId} />
+          </Show>
+          <Show when={!beanInfo()!.assetId}>
+            <CountryFlag countryCode={beanInfo()!.country} class="px-6" />
+          </Show>
           <div class="pt-2 font-bold">{beanInfo()!.name}</div>
           <div class="">{beanInfo()!.roastery}</div>
         </div>
