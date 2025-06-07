@@ -19,4 +19,10 @@ public static class AssetMutations
         Guid assetId,
         CancellationToken ct
     ) => assetService.RemoveAssetAsync(assetId, ct);
+
+    [RequiredPermissions([Permission.ReadAssets])]
+    public static Task<bool> SyncAssets(
+        [Service] IAssetService assetService,
+        CancellationToken ct
+    ) => assetService.SyncAssets(ct);
 }

@@ -15,7 +15,11 @@ public record Bean(
         : this(
             db.Id,
             db.RoasteryId,
-            new BeanProperties(db.Name, db.CountryCode),
+            new BeanProperties(
+                db.Name,
+                db.CountryCode,
+                db.AssetId == Guid.Empty ? null : db.AssetId
+            ),
             db.Recipes.Select(r => r.ToRecipe())
         ) { }
 }

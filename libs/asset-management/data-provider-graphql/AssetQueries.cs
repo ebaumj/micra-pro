@@ -11,15 +11,24 @@ public static class AssetQueries
     public static async Task<List<AssetApi>> GetAvailableAssets(
         [Service] IAssetService assetService,
         CancellationToken ct
-    ) => (await assetService.ReadAssetsAsync(ct)).Select(a => a.ToApi()).ToList();
+    ) =>
+        (await assetService.ReadAssetsAsync(ct))
+            .Where(a => a is { IsAvailableRemotely: true, IsAvailableLocally: true })
+            .Select(a => a.ToApi())
+            .ToList();
 
     [RequiredPermissions([Permission.ReadAssets])]
-    public static async Task<List<AssetApi>> SyncAssets(
+    public static async Task<List<AssetUploadQueryApi>> GetUnfinishedAssets(
         [Service] IAssetService assetService,
         CancellationToken ct
-    )
-    {
-        await assetService.SyncAssets(ct);
-        return (await assetService.ReadAssetsAsync(ct)).Select(a => a.ToApi()).ToList();
-    }
+    ) =>
+        (
+            await Task.WhenAll(
+                (await assetService.ReadAssetsAsync(ct))
+                    .Where(a => !a.IsAvailableRemotely)
+                    .Select(a => assetService.GetAssetUploadQueryAsync(a.Id, ct))
+            )
+        )
+            .Select(q => q.ToApi())
+            .ToList();
 }

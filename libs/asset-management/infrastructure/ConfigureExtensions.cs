@@ -33,9 +33,9 @@ public static class ConfigureExtensions
             {
                 options.RemoteAssetServerPrivateKey = runtimeOptions.RemoteAssetServerPrivateKey;
             })
-            .AddTransient<IAssetDirectoryService, AssetDirectoryService>()
-            .AddTransient<ITokenCreatorService, TokenCreatorService>()
+            .AddSingleton<IAssetDirectoryService, AssetDirectoryService>()
             .AddSingleton<IRemoteAssetService, RemoteAssetService>()
+            .AddTransient<ITokenCreatorService, TokenCreatorService>()
             .AddScoped<IAssetRepository, AssetRepository>()
             .AddDbContextAndMigrationService<AssetManagementDbContext>();
     }

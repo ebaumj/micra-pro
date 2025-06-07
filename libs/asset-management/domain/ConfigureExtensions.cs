@@ -1,4 +1,5 @@
 using MicraPro.AssetManagement.DataDefinition;
+using MicraPro.AssetManagement.Domain.Interfaces;
 using MicraPro.AssetManagement.Domain.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +15,7 @@ public static class ConfigureExtensions
     {
         return services
             .AddHostedService<StartupAssetFetcher>()
-            .AddScoped<IAssetService, AssetService>();
+            .AddScoped<IAssetService, AssetService>()
+            .AddScoped<IAssetCleaner, AssetCleaner>();
     }
 }

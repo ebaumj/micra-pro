@@ -1,3 +1,4 @@
+using MicraPro.AssetManagement.DataDefinition;
 using MicraPro.BeanManagement.Domain.StorageAccess;
 using MicraPro.BeanManagement.Infrastructure.StorageAccess;
 using MicraPro.Shared.UtilsDotnet;
@@ -16,7 +17,7 @@ public static class ConfigureExtensions
         return services
             .AddScoped<IRoasteryRepository, RoasteryRepository>()
             .AddScoped<IRecipeRepository, RecipeRepository>()
-            .AddScoped<IBeanRepository, BeanRepository>()
+            .AddScopedAssetConsumer<IBeanRepository, BeanRepository>()
             .AddDbContextAndMigrationService<BeanManagementDbContext>();
     }
 }

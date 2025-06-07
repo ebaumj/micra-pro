@@ -3,6 +3,7 @@ using System;
 using MicraPro.BeanManagement.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MicraPro.BeanManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(BeanManagementDbContext))]
-    partial class BeanManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250607130826_AssetId")]
+    partial class AssetId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.3");

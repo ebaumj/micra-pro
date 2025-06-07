@@ -1,0 +1,34 @@
+query AvailableAssets {
+  availableAssets {
+    id
+    path
+  }
+}
+
+query UnfinishedAssets {
+  unfinishedAssets {
+    assetId
+    uploadPath
+  }
+}
+
+mutation SyncAssets {
+  syncAssets {
+    boolean
+  }
+}
+
+mutation CreateAsset {
+  createAsset {
+    assetUploadQuery {
+      assetId
+      uploadPath
+    }
+  }
+}
+
+mutation RemoveAsset($assetId: UUID!) {
+  removeAsset(input: { assetId: $assetId }) {
+    uuid
+  }
+}
