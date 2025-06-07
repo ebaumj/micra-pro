@@ -38,6 +38,8 @@
 </template>
 
 <script setup>
+import { fromBlob } from 'image-resize-compress';
+const maxFileSizeInBytes = 100000;
 const route = useRoute();
 const { assetId } = route.params;
 const token = route.query.token;
@@ -45,10 +47,21 @@ const isLoading = ref(false);
 const handelFileUpload = async (event) => {
   const files = event.target.files;
   if (!files || files.length === 0) return;
+  isLoading.value = true;
   const file = files[0];
+  const compressedFile =
+    file.size > maxFileSizeInBytes
+      ? await fromBlob(
+          file,
+          (maxFileSizeInBytes * 100) / file.size,
+          'auto',
+          'auto',
+          'jpeg',
+        )
+      : file;
   var fd = new FormData();
-  fd.append('fname', file.name);
-  fd.append('data', file);
+  fd.append('fname', `${assetId}.jpeg`);
+  fd.append('data', compressedFile);
   try {
     isLoading.value = true;
     const { data } = await useFetch(`/api/assets/${assetId}`, {

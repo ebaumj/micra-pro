@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
   if (!id) return useInternalServerError();
   useAuthorize(event.headers.get('authorization'), id);
   const formData = await readFormData(event);
-  const fileName = `images/${id}.jpeg`;
+  const fileName = `images/${formData.get('fname')}`;
   const file = formData.get('data') as Blob;
   let compressedFile =
     file.size > maxFileSizeInBytes
@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
         )
       : file;
   try {
-    blob.put(fileName, compressedFile, {
+    blob.put(fileName, file, {
       access: 'public',
       allowOverwrite: true,
     });
