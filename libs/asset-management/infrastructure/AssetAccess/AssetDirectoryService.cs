@@ -8,40 +8,47 @@ public class AssetDirectoryService(IOptions<AssetManagementInfrastructureOptions
 {
     public string CreateRandomFileNameWithoutExtension() => Path.GetRandomFileName();
 
-    public Task<IEnumerable<string>> GetFilesAsync(CancellationToken ct)
-    {
-        if (!Directory.Exists(options.Value.LocalFileServerFolder))
-            Directory.CreateDirectory(options.Value.LocalFileServerFolder);
-        return Task.FromResult<IEnumerable<string>>(
-            Directory.GetFiles(
-                options.Value.LocalFileServerFolder,
-                "*.*",
-                SearchOption.AllDirectories
-            )
-        );
-    }
+    private List<string> _files = [];
 
-    public Task WriteFileAsync(string path, byte[] content, CancellationToken ct)
+    public IEnumerable<string> Files => _files;
+
+    public string LocalServerPath(string fileName) =>
+        $"{options.Value.LocalFileServerDomain}/{fileName}";
+
+    public async Task WriteFileAsync(string path, byte[] content, CancellationToken ct)
     {
         if (!Directory.Exists(options.Value.LocalFileServerFolder))
             Directory.CreateDirectory(options.Value.LocalFileServerFolder);
-        return File.WriteAllBytesAsync(
-            Path.Combine(options.Value.LocalFileServerFolder, path),
+        await File.WriteAllBytesAsync(
+            Path.Join(options.Value.LocalFileServerFolder, path),
             content,
             ct
         );
+        _files = _files.Concat([path]).ToList();
     }
 
     public Task RemoveFileAsync(string path, CancellationToken ct)
     {
         try
         {
-            File.Delete(Path.Combine(options.Value.LocalFileServerFolder, path));
+            File.Delete(Path.Join(options.Value.LocalFileServerFolder, path));
         }
         catch (FileNotFoundException)
         {
             // File is already removed
         }
+        _files = _files.Where(f => f != path).ToList();
+        return Task.CompletedTask;
+    }
+
+    public Task ReadFilesAsync(CancellationToken ct)
+    {
+        if (!Directory.Exists(options.Value.LocalFileServerFolder))
+            Directory.CreateDirectory(options.Value.LocalFileServerFolder);
+        _files = Directory
+            .GetFiles(options.Value.LocalFileServerFolder, "*.*", SearchOption.AllDirectories)
+            .Select(f => Path.GetRelativePath(options.Value.LocalFileServerFolder, f))
+            .ToList();
         return Task.CompletedTask;
     }
 }

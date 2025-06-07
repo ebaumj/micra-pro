@@ -6,6 +6,7 @@ import { GraphQlProvider } from '@micra-pro/shared/utils-ts';
 import App from './App';
 import { TranslationProvider } from './TranslationProvider';
 import { KeyboardProvider } from '@micra-pro/shared/ui';
+import { AssetContextProvider } from '@micra-pro/asset-management/feature';
 
 const root = document.getElementById('root');
 
@@ -22,7 +23,9 @@ render(
       >
         <TranslationProvider>
           <KeyboardProvider>
-            <App />
+            <AssetContextProvider>
+              <App />
+            </AssetContextProvider>
           </KeyboardProvider>
         </TranslationProvider>
       </GraphQlProvider>

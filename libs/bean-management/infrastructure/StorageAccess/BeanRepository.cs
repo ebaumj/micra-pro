@@ -1,3 +1,4 @@
+using MicraPro.AssetManagement.DataDefinition;
 using MicraPro.BeanManagement.Domain.StorageAccess;
 using MicraPro.Shared.UtilsDotnet;
 using Microsoft.EntityFrameworkCore;
@@ -6,7 +7,8 @@ namespace MicraPro.BeanManagement.Infrastructure.StorageAccess;
 
 public class BeanRepository(MigratedContextProvider<BeanManagementDbContext> contextProvider)
     : BaseSqliteRepository<BeanDb>,
-        IBeanRepository
+        IBeanRepository,
+        IAssetConsumer
 {
     protected override async Task<DbSet<BeanDb>> GetEntitiesAsync(CancellationToken ct) =>
         (await contextProvider.GetContextAsync(ct)).BeanEntries;
@@ -18,13 +20,18 @@ public class BeanRepository(MigratedContextProvider<BeanManagementDbContext> con
         Guid beanId,
         string name,
         string countryCode,
+        Guid assetId,
         CancellationToken ct
     )
     {
         var entity = await GetByIdAsync(beanId, ct);
         entity.Name = name;
         entity.CountryCode = countryCode;
+        entity.AssetId = assetId;
         await SaveAsync(ct);
         return entity;
     }
+
+    public async Task<IEnumerable<Guid>> GetAssetsAsync(CancellationToken ct) =>
+        (await GetEntitiesAsync(ct)).Where(e => e.AssetId != Guid.Empty).Select(e => e.AssetId);
 }
