@@ -63,7 +63,10 @@ const BeanPreview: Component<{
       <Show when={beanInfo()}>
         <div class="flex h-full w-full flex-col items-center justify-center text-sm">
           <Show when={beanInfo()!.assetId}>
-            <Asset class="px-6" assetId={beanInfo()!.assetId} />
+            <Asset
+              class="flex h-16 w-full items-center justify-center object-contain px-2 py-0"
+              assetId={beanInfo()!.assetId}
+            />
           </Show>
           <Show when={!beanInfo()!.assetId}>
             <CountryFlag countryCode={beanInfo()!.country} class="px-6" />

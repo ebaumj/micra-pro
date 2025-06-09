@@ -79,7 +79,7 @@ public class PollAssetService(
 
     public void StartPollAsset(Guid assetId, TimeSpan timeout)
     {
-        var startPoll = _assetsEndTime.Value.FirstOrDefault(v => v.AssetId == assetId) != null;
+        var startPoll = _assetsEndTime.Value.FirstOrDefault(v => v.AssetId == assetId) == null;
         SetAssetPollEndTime(assetId, DateTime.UtcNow.Add(timeout));
         if (startPoll)
             RecursiveAssetPoll(assetId, 0);
