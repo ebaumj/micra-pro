@@ -1,6 +1,5 @@
 namespace MicraPro.AssetManagement.Domain.AssetAccess;
 
-// Singleton
 public interface IRemoteAssetService
 {
     IEnumerable<Guid> AvailableAssets { get; }

@@ -29,7 +29,7 @@ namespace MicraPro.AssetManagement.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AssetEntries");
+                    b.ToTable("AssetEntries", (string)null);
                 });
 #pragma warning restore 612, 618
         }

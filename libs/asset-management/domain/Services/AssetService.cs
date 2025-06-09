@@ -1,5 +1,7 @@
+using System.Reactive.Linq;
 using MicraPro.AssetManagement.DataDefinition;
 using MicraPro.AssetManagement.Domain.AssetAccess;
+using MicraPro.AssetManagement.Domain.Interfaces;
 using MicraPro.AssetManagement.Domain.StorageAccess;
 using MicraPro.AssetManagement.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
@@ -10,35 +12,26 @@ public class AssetService(
     IAssetRepository assetRepository,
     IAssetDirectoryService assetDirectoryService,
     IRemoteAssetService remoteAssetService,
+    AssetStateService assetStateService,
+    IPollAssetService pollAssetService,
     ILogger<AssetService> logger
-) : IAssetService
+) : IAssetService, IAssetManagementService
 {
     private const string DefaultFileType = "txt";
 
-    public async Task<IEnumerable<IAsset>> ReadAssetsAsync(CancellationToken ct)
+    public IObservable<IEnumerable<IAsset>> Assets => assetStateService.Assets;
+
+    private async Task<IEnumerable<IAsset>> ReadAssetsAsync(CancellationToken ct)
     {
         var assets = await assetRepository.GetAllAsync(ct);
-        var files = await assetDirectoryService.GetFilesAsync(ct);
+        var files = assetDirectoryService.Files;
         var remoteAssets = remoteAssetService.AvailableAssets;
         return assets.Select(a => new Asset(
             a.Id,
-            a.RelativePath,
+            assetDirectoryService.LocalServerPath(a.RelativePath),
             files.Contains(a.RelativePath),
             remoteAssets.Contains(a.Id)
         ));
-    }
-
-    public async Task<IAsset> ReadAssetAsync(Guid assetId, CancellationToken ct)
-    {
-        var assets = await assetRepository.GetByIdAsync(assetId, ct);
-        var files = await assetDirectoryService.GetFilesAsync(ct);
-        var remoteAssets = remoteAssetService.AvailableAssets;
-        return new Asset(
-            assets.Id,
-            assets.RelativePath,
-            files.Contains(assets.RelativePath),
-            remoteAssets.Contains(assets.Id)
-        );
     }
 
     public async Task<IAssetUploadQuery> CreateAssetAsync(CancellationToken ct)
@@ -75,7 +68,7 @@ public class AssetService(
         return assetId;
     }
 
-    public async Task SyncAssets(CancellationToken ct)
+    public async Task<bool> SyncAssets(CancellationToken ct)
     {
         var assets = await assetRepository.GetAllAsync(ct);
         try
@@ -85,10 +78,10 @@ public class AssetService(
         catch
         {
             logger.LogError("Failed to read remote assets");
-            return;
+            return false;
         }
         var remoteAssets = remoteAssetService.AvailableAssets.ToArray();
-        var localAssets = (await assetDirectoryService.GetFilesAsync(ct)).ToArray();
+        var localAssets = assetDirectoryService.Files.ToArray();
         await Task.WhenAll(
             assets
                 .Where(a => !localAssets.Contains(a.RelativePath) && remoteAssets.Contains(a.Id))
@@ -105,13 +98,24 @@ public class AssetService(
                 .Where(a => assets.FirstOrDefault(local => local.RelativePath == a) == null)
                 .Select(a => assetDirectoryService.RemoveFileAsync(a, ct))
         );
+        assetStateService.Assets.OnNext(await ReadAssetsAsync(ct));
+        logger.LogInformation("Asset synchronization completed");
+        return true;
     }
+
+    public Task PollAssetAsync(Guid assetId, TimeSpan timeout, CancellationToken _)
+    {
+        pollAssetService.StartPollAsset(assetId, timeout);
+        return Task.CompletedTask;
+    }
+
+    public IObservable<bool> IsAssetPolling(Guid assetId) =>
+        pollAssetService.IsPollingAsset(assetId);
 
     private async Task FetchAsset(AssetDb asset, CancellationToken ct)
     {
         var remoteAsset = await remoteAssetService.ReadRemoteAssetAsync(asset.Id, ct);
-        var path =
-            $"{Path.GetFileNameWithoutExtension(asset.RelativePath)}.{remoteAsset.FileEnding}";
+        var path = Path.ChangeExtension(asset.RelativePath, remoteAsset.FileEnding);
         asset.RelativePath = path;
         await assetDirectoryService.WriteFileAsync(path, remoteAsset.Data, ct);
     }

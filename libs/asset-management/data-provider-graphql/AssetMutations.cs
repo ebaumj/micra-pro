@@ -13,10 +13,15 @@ public static class AssetMutations
         CancellationToken ct
     ) => (await assetService.CreateAssetAsync(ct)).ToApi();
 
-    [RequiredPermissions([Permission.WriteAssets])]
-    public static Task<Guid> RemoveAsset(
+    [RequiredPermissions([Permission.ReadAssets])]
+    public static async Task<bool> PollAsset(
         [Service] IAssetService assetService,
         Guid assetId,
+        TimeSpan timeout,
         CancellationToken ct
-    ) => assetService.RemoveAssetAsync(assetId, ct);
+    )
+    {
+        await assetService.PollAssetAsync(assetId, timeout, ct);
+        return true;
+    }
 }

@@ -23,5 +23,6 @@
   <ItemGroup>
     <ProjectReference Include="..\domain\MicraPro.BeanManagement.Domain.csproj" />
     <ProjectReference Include="..\..\shared\utils-dotnet\MicraPro.Shared.UtilsDotnet.csproj" />
+    <ProjectReference Include="..\..\asset-management\data-definition\MicraPro.AssetManagement.DataDefinition.csproj" />
   </ItemGroup>
 </Project>

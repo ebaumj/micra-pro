@@ -13,7 +13,6 @@ export default defineEventHandler(async (event) => {
   const blobData = await response.blob();
   if (!blobData) useInternalServerError();
   const buffer = await blobData.arrayBuffer();
-  console.log(buffer.byteLength);
   return {
     DataBase64: Buffer.from(buffer).toString('base64'),
     FileExtension: blob!.pathname.split('.')[1],

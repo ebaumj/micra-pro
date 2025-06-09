@@ -9,6 +9,7 @@ import { T } from '../generated/language-types';
 import { LanguageSelector } from '@micra-pro/shared/ui';
 import { Bean, fetchBeansLevel } from '@micra-pro/bean-management/data-access';
 import { MainScreenConfig, readMainScreenConfig } from './MainscreenConfigPage';
+import { Asset } from '@micra-pro/asset-management/feature';
 
 const BeanButtons: Component<{
   beans: Bean[];
@@ -41,10 +42,18 @@ const BeanButtons: Component<{
           >
             <div class="col-start-1 col-end-2 row-start-1 row-end-2 h-full">
               <div class="flex h-full w-full flex-col items-center justify-center rounded-lg border text-sm shadow-md">
-                <CountryFlag
-                  countryCode={btn.bean.properties.countryCode}
-                  class="px-6"
-                />
+                <Show when={btn.bean.properties.assetId}>
+                  <Asset
+                    class="h-24 w-32 object-contain"
+                    assetId={btn.bean.properties.assetId ?? undefined}
+                  />
+                </Show>
+                <Show when={!btn.bean.properties.assetId}>
+                  <CountryFlag
+                    countryCode={btn.bean.properties.countryCode}
+                    class="px-6"
+                  />
+                </Show>
                 <div class="pt-2 font-bold">{btn.bean.properties.name}</div>
                 <div class="">{btn.bean.roastery.name}</div>
               </div>

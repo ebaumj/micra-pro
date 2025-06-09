@@ -6,6 +6,7 @@ import {
   TextField,
   TextFieldRoot,
 } from '@micra-pro/shared/ui';
+import { AssetSelector } from '@micra-pro/asset-management/feature';
 import { Accessor, Component, createEffect, Show } from 'solid-js';
 import { createStore } from 'solid-js/store';
 import { T } from '../generated/language-types';
@@ -48,6 +49,13 @@ export const EditBeanDialog: Component<{
         onInteractOutside={(e) => e.preventDefault()}
       >
         <div class="flex flex-col gap-2 px-6">
+          <div class="flex w-full justify-center pb-2">
+            <AssetSelector
+              class="max-h-36 w-36 rounded-md border object-contain p-2 shadow-sm"
+              onIdChange={(id) => setStore('properties', 'assetId', id)}
+              assetId={store.properties.assetId ?? undefined}
+            />
+          </div>
           <div class="flex w-full">
             <div class="flex h-full w-1/4 items-center text-sm font-semibold">
               <T key="name" />:
