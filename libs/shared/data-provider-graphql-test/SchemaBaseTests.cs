@@ -9,7 +9,9 @@ public static class SchemaBaseTests
     public static async Task<string> GenerateSchemaTest(Action<IRequestExecutorBuilder> addTypes)
     {
         var collection = new ServiceCollection();
-        var builder = collection.AddSharedGraphQlServer(true).AddAuthorization();
+        var builder = collection
+            .AddSharedGraphQlServer(true, TimeSpan.FromSeconds(1))
+            .AddAuthorization();
         addTypes(builder);
 
         var executor = collection

@@ -19,7 +19,13 @@ internal static class ConfigureGraphQlExtensions
                 configuration
                     .GetSection(BackendOptions.SectionName)
                     .Get<BackendOptions>()
-                    ?.IncludeExceptionDetails ?? false
+                    ?.IncludeExceptionDetails ?? false,
+                TimeSpan.FromSeconds(
+                    configuration
+                        .GetSection(BackendOptions.SectionName)
+                        .Get<BackendOptions>()
+                        ?.RequestExecutionTimeoutSeconds ?? 30
+                )
             )
             .AddErrorFilter<ErrorLogger>()
             .AddAuthDataProviderServices()

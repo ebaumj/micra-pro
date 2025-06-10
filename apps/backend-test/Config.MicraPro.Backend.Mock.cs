@@ -33,7 +33,11 @@ internal static class ConfigMicraProBackendMock
         public string Path => String.Empty;
         public string? Value { get; set; }
 
-        private readonly BackendOptions _options = new() { IncludeExceptionDetails = true };
+        private readonly BackendOptions _options = new()
+        {
+            IncludeExceptionDetails = true,
+            RequestExecutionTimeoutSeconds = 30,
+        };
 
         public BackendOptions Get<T>() => _options;
     }

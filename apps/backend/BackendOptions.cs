@@ -5,4 +5,5 @@ internal class BackendOptions
     public static string SectionName { get; } = typeof(BackendOptions).Namespace!.Replace('.', ':');
 
     public bool IncludeExceptionDetails { get; set; }
+    public int RequestExecutionTimeoutSeconds { get; set; }
 }

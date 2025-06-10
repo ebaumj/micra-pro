@@ -7,11 +7,16 @@ public static class ConfigureExtensions
 {
     public static IRequestExecutorBuilder AddSharedGraphQlServer(
         this IServiceCollection services,
-        bool includeExceptionDetails
+        bool includeExceptionDetails,
+        TimeSpan executionTimeout
     ) =>
         services
             .AddGraphQLServer(disableCostAnalyzer: true)
-            .ModifyRequestOptions(o => o.IncludeExceptionDetails = includeExceptionDetails)
+            .ModifyRequestOptions(o =>
+            {
+                o.IncludeExceptionDetails = includeExceptionDetails;
+                o.ExecutionTimeout = executionTimeout;
+            })
             .AddInMemorySubscriptions()
             .AddMutationConventions()
             .AddQueryConventions()
