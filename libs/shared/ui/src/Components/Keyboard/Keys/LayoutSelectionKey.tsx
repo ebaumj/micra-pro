@@ -32,11 +32,11 @@ export const LayoutSelectionKey: ParentComponent<
       <Show when={position() !== null}>
         <Portal>
           <div
-            class="fixed left-0 top-0 z-40 h-screen w-screen"
+            class="pointer-events-auto fixed left-0 top-0 z-40 h-screen w-screen"
             onClick={() => setPosition(null)}
           />
           <div
-            class="'min-w-8rem fixed z-50 flex min-w-24 -translate-y-full flex-col gap-1 rounded-md border bg-popover p-1 text-popover-foreground"
+            class="'min-w-8rem pointer-events-auto fixed z-50 flex min-w-24 -translate-y-full flex-col gap-1 rounded-md border bg-popover p-1 text-popover-foreground"
             style={{
               top: position()?.top + 'px',
               left: position()?.left + 'px',

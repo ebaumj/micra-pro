@@ -3,31 +3,32 @@ import { Select } from './Select';
 import { useTranslationContext } from '@micra-pro/shared/utils-ts';
 import * as flags from 'country-flag-icons/string/3x2';
 import { twMerge } from 'tailwind-merge';
+import { CountryFlag } from './CountryFlag';
 
 const LanguageFlag: Component<{ language?: string; class?: string }> = (
   props,
 ) => {
-  const image = (language?: string) => {
-    var flag = Object.entries(flags).find(
-      (f) => f[0] === language?.toUpperCase(),
+  const countryCode = (language?: string) => {
+    const flageName = Object.keys(flags).find(
+      (f) => f === language?.toUpperCase(),
     );
-    if (flag) return flag[1];
+    if (flageName) return flageName;
     // Language Code is not Country code
     switch (language) {
       case 'en':
-        return flags.GB;
+        return 'GB';
     }
     return undefined;
   };
-  const svg = () => image(props.language);
-  const imageUrl = (svg: string) =>
-    URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' }));
   return (
     <>
-      <Show when={svg()}>
-        <img src={imageUrl(svg()!)} class={props.class} />
+      <Show when={countryCode(props.language)}>
+        <CountryFlag
+          countryCode={countryCode(props.language)!}
+          class={props.class}
+        />
       </Show>
-      <Show when={!svg()}>
+      <Show when={!countryCode(props.language)}>
         <span class={twMerge(props.class, 'flex items-center justify-center')}>
           {props.language?.toUpperCase()}
         </span>
