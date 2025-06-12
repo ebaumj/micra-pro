@@ -1,5 +1,6 @@
 import { BeanProperties } from '@micra-pro/bean-management/data-access';
 import {
+  CountrySelector,
   Dialog,
   DialogContent,
   SpinnerButton,
@@ -72,14 +73,13 @@ export const EditBeanDialog: Component<{
             <div class="flex h-full w-1/4 items-center text-sm font-semibold">
               <T key="country-code" />:
             </div>
-            <TextFieldRoot
-              onChange={(countryCode) =>
-                setStore('properties', 'countryCode', countryCode)
+            <CountrySelector
+              onCountryChange={(code) =>
+                setStore('properties', 'countryCode', code)
               }
-              class="w-full bg-white"
-            >
-              <TextField value={store.properties.countryCode} />
-            </TextFieldRoot>
+              country={store.properties.countryCode}
+              class="w-full"
+            />
           </div>
           <div class="flex w-full justify-end gap-2 pt-4">
             <Show when={props.content?.onRemove}>
