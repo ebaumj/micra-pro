@@ -1,7 +1,4 @@
-import {
-  ScaleSelector,
-  ScaleSelectorContextProvider,
-} from '@micra-pro/scale-management/feature';
+import { ScaleSelector } from '@micra-pro/scale-management/feature';
 import { CountryFlag, Icon } from '@micra-pro/shared/ui';
 import { A } from '@solidjs/router';
 import { Component, createSignal, For, ParentComponent, Show } from 'solid-js';
@@ -15,6 +12,8 @@ import {
 import { MainScreenConfig, readMainScreenConfig } from './MainscreenConfigPage';
 import { Asset } from '@micra-pro/asset-management/feature';
 import { RecipePannel } from '@micra-pro/bean-management/feature';
+import { BrewByWeightPannel } from '@micra-pro/brew-by-weight/feature';
+import { useSelectedScaleContext } from '@micra-pro/scale-management/feature';
 
 const BeanButtons: Component<{
   beans: Bean[];
@@ -75,17 +74,34 @@ const BeanButtons: Component<{
 function MainScreen() {
   const beans = fetchBeansLevel();
   const config = readMainScreenConfig();
+  const scales = useSelectedScaleContext();
 
   const isLoading = () => beans.isLoading() || !config.latest;
 
   const [selectedBean, setSelectedBean] = createSignal<string | null>(null);
 
   const startEspressoBrewing = (beanId: string, recipe: EspressoProperties) => {
-    console.log(
-      `brew espresso: beans: ${beanId}, quantity: ${recipe.inCupQuantity}, extractionTime: ${recipe.targetExtractionTime}`,
-    );
+    const scale = scales.selectedScale();
+    if (scale)
+      setRecipe({
+        beanId: beanId,
+        coffeeQuantity: recipe.coffeeQuantity,
+        grindSetting: recipe.grindSetting,
+        inCupQuantity: recipe.inCupQuantity,
+        scaleId: scale,
+        targetExtractionTime: recipe.targetExtractionTime,
+      });
     setSelectedBean(null);
   };
+
+  const [recipe, setRecipe] = createSignal<{
+    beanId: string;
+    coffeeQuantity: number;
+    grindSetting: number;
+    inCupQuantity: number;
+    scaleId: string;
+    targetExtractionTime: string;
+  } | null>(null);
 
   return (
     <Layout>
@@ -99,6 +115,11 @@ function MainScreen() {
             onClose={() => setSelectedBean(null)}
             beanId={selectedBean()}
             startEspressoBrewing={startEspressoBrewing}
+            scale={scales.selectedScale()}
+          />
+          <BrewByWeightPannel
+            recipe={recipe()}
+            onClose={() => setRecipe(null)}
           />
           <div class="w-full">
             <BeanButtons
@@ -115,24 +136,22 @@ function MainScreen() {
 
 const Layout: ParentComponent = (props) => {
   return (
-    <ScaleSelectorContextProvider>
-      <div class="relative h-full w-full">
-        <A href="/menu" class="absolute z-10 ml-3 mt-1 active:opacity-50">
-          <Icon iconName="menu" class="text-5xl" />
-        </A>
-        <div class="absolute flex h-full w-full flex-col">
-          <div class="flex h-16 w-full items-center gap-2 pl-20 pr-2 shadow-md">
-            <div class="w-full" />
-            <div class="text-sm">
-              <T key="scale" />:
-            </div>
-            <ScaleSelector class="w-64" />
-            <LanguageSelector class="w-40" />
+    <div class="relative h-full w-full">
+      <A href="/menu" class="absolute z-10 ml-3 mt-1 active:opacity-50">
+        <Icon iconName="menu" class="text-5xl" />
+      </A>
+      <div class="absolute flex h-full w-full flex-col">
+        <div class="flex h-16 w-full items-center gap-2 pl-20 pr-2 shadow-md">
+          <div class="w-full" />
+          <div class="text-sm">
+            <T key="scale" />:
           </div>
-          <div class="h-full w-full">{props.children}</div>
+          <ScaleSelector class="w-64" />
+          <LanguageSelector class="w-40" />
         </div>
+        <div class="h-full w-full">{props.children}</div>
       </div>
-    </ScaleSelectorContextProvider>
+    </div>
   );
 };
 

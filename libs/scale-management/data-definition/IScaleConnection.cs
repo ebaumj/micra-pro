@@ -4,7 +4,7 @@ namespace MicraPro.ScaleManagement.DataDefinition;
 
 public interface IScaleConnection
 {
-    Task Disconnect(CancellationToken ct);
-    Task Tare(CancellationToken ct);
+    Task DisconnectAsync(CancellationToken ct);
+    Task TareAsync(CancellationToken ct);
     IObservable<ScaleDataPoint> Data { get; }
 }

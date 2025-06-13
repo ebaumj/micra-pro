@@ -5,13 +5,10 @@ using MicraPro.Shared.UtilsDotnet;
 
 namespace MicraPro.ScaleManagement.Infrastructure.BluetoothAccess.LinuxBluetooth;
 
-public class BleCharacteristic(GattCharacteristic characteristic, Guid characteristicId)
-    : IBleCharacteristic
+public class BleCharacteristic(GattCharacteristic characteristic) : IBleCharacteristic
 {
-    public Guid CharacteristicId => characteristicId;
-
     public Task SendCommandAsync(byte[] data, CancellationToken ct) =>
-        characteristic.WriteValueAsync(data, new Dictionary<string, object>()).WaitAsync(ct);
+        characteristic.WriteValueAsync(data, new Dictionary<string, object>());
 
     public Task<IObservable<byte[]>> GetValueObservableAsync(CancellationToken ct) =>
         Task.FromResult<IObservable<byte[]>>(

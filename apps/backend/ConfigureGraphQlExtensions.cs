@@ -2,6 +2,7 @@ using HotChocolate.Execution.Configuration;
 using MicraPro.AssetManagement.DataProviderGraphQl;
 using MicraPro.Auth.DataProvider;
 using MicraPro.BeanManagement.DataProviderGraphQl;
+using MicraPro.BrewByWeight.DataProviderGraphQl;
 using MicraPro.ScaleManagement.DataProviderGraphQl;
 using MicraPro.Shared.DataProviderGraphQl;
 
@@ -33,7 +34,8 @@ internal static class ConfigureGraphQlExtensions
             .AddSharedDataProviderGraphQlTypes()
             .AddScaleManagementDataProviderGraphQlTypes()
             .AddBeanManagementDataProviderGraphQlTypes()
-            .AddAssetManagementDataProviderGraphQlTypes();
+            .AddAssetManagementDataProviderGraphQlTypes()
+            .AddBrewByWeightDataProviderGraphQlTypes();
     }
 
     // ReSharper disable once ClassNeverInstantiated.Global
@@ -43,9 +45,7 @@ internal static class ConfigureGraphQlExtensions
         {
             if (error.Exception is not null)
                 logger.LogError("Uncaught server exception: {exception}", error.Exception);
-            else if (error.Code == "AUTH_NOT_AUTHORIZED")
-                return error;
-            else
+            else if (error.Code != "AUTH_NOT_AUTHORIZED")
                 logger.LogError("Unknown server error: {message}", error.Message);
             return error;
         }

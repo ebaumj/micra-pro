@@ -1,6 +1,5 @@
 using System.Runtime.InteropServices;
 using MicraPro.ScaleManagement.Domain.BluetoothAccess;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MicraPro.ScaleManagement.Infrastructure.BluetoothAccess;
@@ -19,7 +18,7 @@ internal static class ConfigureExtensions
                 );
         }
         else
-            services.AddTransient<IBluetoothService, InTheHand.BluetoothService>();
+            services.AddTransient<IBluetoothService, Dummy.DummyBluetoothService>();
         return services;
     }
 }

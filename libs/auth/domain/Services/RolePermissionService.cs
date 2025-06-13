@@ -22,6 +22,8 @@ public class RolePermissionService : IRolePermissionService<Permission>
                 Permission.ReadBeans,
                 Permission.ReadRecipes,
                 Permission.ReadAssets,
+                Permission.BrewCoffee,
+                Permission.ReadStatistics,
             ]
         },
         {
@@ -33,6 +35,7 @@ public class RolePermissionService : IRolePermissionService<Permission>
                 Permission.WriteBeans,
                 Permission.WriteRecipes,
                 Permission.WriteAssets,
+                Permission.WriteStatistics,
             ]
         },
     };

@@ -1,8 +1,10 @@
+using System.Reactive.Linq;
 using MicraPro.ScaleManagement.DataDefinition;
+using MicraPro.ScaleManagement.DataDefinition.ValueObjects;
 using MicraPro.ScaleManagement.Domain.BluetoothAccess;
 using MicraPro.ScaleManagement.Domain.ScaleImplementations;
 using MicraPro.ScaleManagement.Domain.StorageAccess;
-using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MicraPro.ScaleManagement.Domain.Services;
 
@@ -10,60 +12,42 @@ public class ScaleService(
     IBluetoothService bluetoothService,
     IScaleRespository scaleRepository,
     IScaleImplementationCollectionService scaleImplementationCollectionService,
-    IMemoryCache cache
+    ScaleImplementationMemoryService scaleImplementationMemoryService
 ) : IScaleService
 {
-    private static string GetScaleImplementationCacheKey(string identifier) =>
-        $"{typeof(ScaleService).FullName}.ScaleImplementations.{identifier}";
+    public IObservable<BluetoothScale> DetectedScales =>
+        Observable
+            .FromAsync(async ct => await scaleRepository.GetAllAsync(ct))
+            .SelectMany(known =>
+                bluetoothService
+                    .DetectedDevices.Where(d =>
+                        scaleImplementationCollectionService.Implementations.Any(i =>
+                        {
+                            if (
+                                !i
+                                    .RequiredServices.Select(s => s.ToLower())
+                                    .All(s => d.ServiceIds.Select(id => id.ToLower()).Contains(s))
+                            )
+                                return false;
+                            scaleImplementationMemoryService.SetImplementation(d.Id, i.Name);
+                            return true;
+                        })
+                    )
+                    .Where(d => known.FirstOrDefault(k => k.Identifier == d.Id) == null)
+                    .Select(d => new BluetoothScale(d.Name, d.Id))
+            );
 
-    private async Task<IEnumerable<string>> Scan(
-        string implementation,
-        Guid[] requiredServices,
-        CancellationToken ct
-    )
-    {
-        var allDevices = await bluetoothService.ScanDevicesAsync(requiredServices, ct);
-        foreach (var device in allDevices)
-            cache.Set(GetScaleImplementationCacheKey(device), implementation);
-        return allDevices.Select(d => new string(d));
-    }
+    public Task ScanAsync(TimeSpan scanTime, CancellationToken ct) =>
+        bluetoothService.DiscoverAsync(scanTime, ct);
 
-    public async Task<IEnumerable<string>> Scan(CancellationToken ct)
-    {
-        var knownDevices = await scaleRepository.GetAllAsync(ct);
-        return (
-            await Task.WhenAll(
-                scaleImplementationCollectionService.Implementations.Select(i =>
-                    Scan(i.Name, i.RequiredServices, ct)
-                )
-            )
-        )
-            .SelectMany(s => s)
-            .Where(d => knownDevices.FirstOrDefault(e => e.Identifier == d) == null);
-    }
-
-    private async Task<string> FindScaleImplementation(string identifier, CancellationToken ct)
-    {
-        if (cache.TryGetValue(identifier, out string? implementation))
-            return implementation!;
-        foreach (var i in scaleImplementationCollectionService.Implementations)
-            if (
-                await bluetoothService.HasRequiredServiceIdsAsync(
-                    identifier,
-                    i.RequiredServices,
-                    ct
-                )
-            )
-                return i.Name;
-        throw new Exception("Could not find scale implementation");
-    }
+    public IObservable<bool> IsScanning => bluetoothService.IsScanning;
 
     public async Task<IScale> AddScale(string name, string identifier, CancellationToken ct)
     {
         var valueObject = new ScaleDb(
             identifier,
             name,
-            await FindScaleImplementation(identifier, ct)
+            scaleImplementationMemoryService.GetImplementation(identifier)
         );
         await scaleRepository.AddAsync(valueObject, ct);
         await scaleRepository.SaveAsync(ct);

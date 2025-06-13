@@ -13,17 +13,13 @@ public class ScaleTest
         "ScaleName",
         "ScaleImplementation"
     );
-    private static readonly Guid BookooBleServiceId = Guid.Parse(
-        "00000FFE-0000-1000-8000-00805F9B34FB"
-    );
+    private static readonly string BookooBleServiceId = "00000FFE-0000-1000-8000-00805F9B34FB";
 
-    private static readonly Guid BookooBleCommandCharacteristicId = Guid.Parse(
-        "0000FF12-0000-1000-8000-00805F9B34FB"
-    );
+    private static readonly string BookooBleCommandCharacteristicId =
+        "0000FF12-0000-1000-8000-00805F9B34FB";
 
-    private static readonly Guid BookooBleWeightDataCharacteristicId = Guid.Parse(
-        "0000FF11-0000-1000-8000-00805F9B34FB"
-    );
+    private static readonly string BookooBleWeightDataCharacteristicId =
+        "0000FF11-0000-1000-8000-00805F9B34FB";
 
     [Fact]
     public void CreateScaleTest()
@@ -72,30 +68,24 @@ public class ScaleTest
             .Setup(m => m.GetValueObservableAsync(It.IsAny<CancellationToken>()))
             .Returns(Task.FromResult(Observable.Empty<byte[]>()));
         var scale = new Scale(TestScaleDb, bluetoothServiceMock.Object);
-        await scale.Connect(CancellationToken.None);
-        bluetoothServiceMock.Verify(
-            m => m.ConnectDeviceAsync(TestScaleDb.Identifier, It.IsAny<CancellationToken>()),
-            Times.Once
+        await scale.ConnectAsync(CancellationToken.None);
+        bluetoothServiceMock.Verify(m =>
+            m.ConnectDeviceAsync(TestScaleDb.Identifier, It.IsAny<CancellationToken>())
         );
-        bleConnectionMock.Verify(
-            m => m.GetServiceAsync(BookooBleServiceId, It.IsAny<CancellationToken>()),
-            Times.Once
+        bleConnectionMock.Verify(m =>
+            m.GetServiceAsync(BookooBleServiceId, It.IsAny<CancellationToken>())
         );
-        bleServiceMock.Verify(
-            m =>
-                m.GetCharacteristicAsync(
-                    BookooBleCommandCharacteristicId,
-                    It.IsAny<CancellationToken>()
-                ),
-            Times.Once
+        bleServiceMock.Verify(m =>
+            m.GetCharacteristicAsync(
+                BookooBleCommandCharacteristicId,
+                It.IsAny<CancellationToken>()
+            )
         );
-        bleServiceMock.Verify(
-            m =>
-                m.GetCharacteristicAsync(
-                    BookooBleWeightDataCharacteristicId,
-                    It.IsAny<CancellationToken>()
-                ),
-            Times.Once
+        bleServiceMock.Verify(m =>
+            m.GetCharacteristicAsync(
+                BookooBleWeightDataCharacteristicId,
+                It.IsAny<CancellationToken>()
+            )
         );
         bleWeightDataCharacteristicMock.Verify(
             m => m.GetValueObservableAsync(It.IsAny<CancellationToken>()),

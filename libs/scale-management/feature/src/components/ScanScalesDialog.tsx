@@ -1,18 +1,8 @@
+import { Component, createSignal, For, onMount, Show } from 'solid-js';
 import {
-  Component,
-  createEffect,
-  createSignal,
-  For,
-  onMount,
-  ValidComponent,
-} from 'solid-js';
-import {
+  BluetoothScale,
   scanForScales,
-  ScanProcess,
 } from '@micra-pro/scale-management/data-access';
-import { handleError } from '../utils/handleError';
-import { useTranslationContext } from '../generated/language-types';
-import { Dynamic } from 'solid-js/web';
 import {
   Icon,
   Spinner,
@@ -20,99 +10,66 @@ import {
   TextFieldRoot,
   TextField,
 } from '@micra-pro/shared/ui';
+import moment from 'moment';
+import { createStore } from 'solid-js/store';
 
 export const ScanScalesDialog: Component<{
   isOpen: boolean;
   close: () => void;
   addDevice: (identifier: string, name: string) => void;
+  isScanning: boolean;
 }> = (props) => {
   let content!: HTMLDivElement;
-
+  const [scales, setScales] = createStore({ scales: [] as BluetoothScale[] });
   const [adding, setAdding] = createSignal('');
-
-  onMount(() => content.focus());
-
-  const { t } = useTranslationContext();
-  const [scanProcess, setScanProcess] = createSignal<ScanProcess>({
-    state: 'finished',
-    devices: [],
+  onMount(() => {
+    content.focus();
+    // eslint-disable-next-line solid/reactivity
+    scanForScales(moment.duration(10, 'seconds'), (s) =>
+      setScales('scales', scales.scales.length, s),
+    );
   });
-  const startScanning = () => {
-    const currentScanner = scanForScales();
-    createEffect(() => setScanProcess(currentScanner()));
-  };
-  createEffect(() => {
-    if (props.isOpen) startScanning();
-  });
-  createEffect(() => {
-    const process = scanProcess();
-    if (process.state === 'error') {
-      console.error(process.debugInformation);
-      handleError({ message: t('failed-to-scan') });
-      props.close();
-    }
-  });
-
-  const selectContent = (process: ScanProcess): ValidComponent => {
-    switch (process.state) {
-      case 'scanning':
-        return () => (
-          <div class="flex h-full w-full items-center justify-center">
-            <Spinner class="h-24 w-24" />
-          </div>
-        );
-      case 'finished':
-        return () => {
-          const devices = process.devices.map((d) => {
-            const [deviceName, setDeviceNameName] = createSignal(d);
-            return {
-              name: deviceName,
-              setName: setDeviceNameName,
-              loading: () => adding() === d,
-              save: () => {
-                setAdding(d);
-                props.addDevice(d, deviceName());
-              },
-            };
-          });
-          return (
-            <div class="no-scrollbar flex h-full w-full flex-col gap-2 overflow-scroll px-6">
-              <For each={devices}>
-                {(device) => (
-                  <div class="flex w-full gap-4 rounded-lg border bg-slate-50 p-2 shadow-sm">
-                    <div class="flex h-full w-full items-center">
-                      <TextFieldRoot
-                        onChange={(name) => device.setName(name)}
-                        class="w-full bg-white"
-                      >
-                        <TextField value={device.name()} />
-                      </TextFieldRoot>
-                    </div>
-                    <div class="flex h-full items-center">
-                      <SpinnerButton
-                        class="h-10 w-10 bg-white p-0"
-                        spinnerClass="p-2"
-                        variant="outline"
-                        onClick={device.save}
-                        loading={device.loading()}
-                      >
-                        <Icon iconName="add" />
-                      </SpinnerButton>
-                    </div>
-                  </div>
-                )}
-              </For>
-            </div>
-          );
-        };
-      case 'error':
-        return () => <></>;
-    }
-  };
 
   return (
-    <div class="h-64" ref={content}>
-      <Dynamic component={selectContent(scanProcess())} />
+    <div class="flex h-64 flex-col" ref={content}>
+      <div class="no-scrollbar flex h-full w-full flex-col gap-2 overflow-scroll px-6">
+        <For each={scales.scales}>
+          {(device, index) => (
+            <div class="flex w-full gap-4 rounded-lg border bg-slate-50 p-2 shadow-sm">
+              <div class="flex h-full w-full items-center">
+                <TextFieldRoot
+                  onChange={(name) =>
+                    setScales('scales', index(), 'name', name)
+                  }
+                  class="w-full bg-white"
+                >
+                  <TextField value={device.name} />
+                </TextFieldRoot>
+              </div>
+              <div class="flex h-full items-center">
+                <SpinnerButton
+                  class="h-10 w-10 bg-white p-0"
+                  spinnerClass="p-2"
+                  variant="outline"
+                  onClick={() => {
+                    setAdding(device.id);
+                    props.addDevice(device.id, device.name);
+                  }}
+                  disabled={adding() !== ''}
+                  loading={adding() === device.id}
+                >
+                  <Icon iconName="add" />
+                </SpinnerButton>
+              </div>
+            </div>
+          )}
+        </For>
+      </div>
+      <div class="flex h-10 w-full justify-end p-2">
+        <Show when={props.isScanning}>
+          <Spinner class="h-full" />
+        </Show>
+      </div>
     </div>
   );
 };

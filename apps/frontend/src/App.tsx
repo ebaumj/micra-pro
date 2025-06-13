@@ -10,6 +10,7 @@ import { MainMenu } from './pages/menu/MainMenu';
 import { Navigate, Route, Router } from '@solidjs/router';
 import MainScreen from './pages';
 import { ToastRegion, ToastList } from '@micra-pro/shared/ui';
+import { ScaleSelectorContextProvider } from '@micra-pro/scale-management/feature';
 
 const AppLayout: ParentComponent = (props) => {
   const keyboardInfo = useKeyboardInfo();
@@ -54,10 +55,12 @@ const AppLayout: ParentComponent = (props) => {
             }}
           >
             <DialogContextProvider>
-              {props.children}
-              <ToastRegion>
-                <ToastList />
-              </ToastRegion>
+              <ScaleSelectorContextProvider>
+                {props.children}
+                <ToastRegion>
+                  <ToastList />
+                </ToastRegion>
+              </ScaleSelectorContextProvider>
             </DialogContextProvider>
           </div>
           <Keyboard
