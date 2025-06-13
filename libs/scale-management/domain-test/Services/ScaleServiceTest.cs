@@ -18,7 +18,7 @@ public class ScaleServiceTest
         public string Name => Value.Name;
         public IObservable<bool> IsAvailable => throw new NotImplementedException();
 
-        public Task<IScaleConnection> Connect(CancellationToken ct) =>
+        public Task<IScaleConnection> ConnectAsync(CancellationToken ct) =>
             throw new NotImplementedException();
     }
 

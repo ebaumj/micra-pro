@@ -1,0 +1,16 @@
+{
+  "brew-by-weight.error": "Fehler",
+  "brew-by-weight.unknown-error": "Unbekannter Fehler!",
+  "brew-by-weight.scale-connection-failed": "Waage konnte nicht verbunden werden!",
+  "brew-by-weight.scale-disconnected": "Unerwarteter Verbindungunterbruch mit Waage!",
+  "brew-by-weight.select-spout": "Auslauf wählen",
+  "brew-by-weight.spout-single": "Einzel",
+  "brew-by-weight.spout-double": "Doppel",
+  "brew-by-weight.spout-naked": "Bodenlos",
+  "brew-by-weight.flow": "Fluss",
+  "brew-by-weight.liquid": "Flüssigkeit",
+  "brew-by-weight.time": "Zeit",
+  "brew-by-weight.target-time": "Sollzeit",
+  "brew-by-weight.stop": "Stop",
+  "brew-by-weight.close": "Schliessen"
+}

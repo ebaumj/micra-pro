@@ -12,13 +12,13 @@ public class ScaleConnection(
     IBleDeviceConnection connection
 ) : IScaleConnection
 {
-    public async Task Disconnect(CancellationToken ct)
+    public async Task DisconnectAsync(CancellationToken ct)
     {
         await connection.Disconnect(ct);
         connection.Dispose();
     }
 
-    public Task Tare(CancellationToken ct) =>
+    public Task TareAsync(CancellationToken ct) =>
         commandCharacteristic.SendCommandAsync(new BookooScaleCommand.Tare().Serialized, ct);
 
     private static ScaleDataPoint? FromBookooWeightData(byte[] data)

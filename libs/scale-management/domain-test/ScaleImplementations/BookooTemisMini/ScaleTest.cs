@@ -72,7 +72,7 @@ public class ScaleTest
             .Setup(m => m.GetValueObservableAsync(It.IsAny<CancellationToken>()))
             .Returns(Task.FromResult(Observable.Empty<byte[]>()));
         var scale = new Scale(TestScaleDb, bluetoothServiceMock.Object);
-        await scale.Connect(CancellationToken.None);
+        await scale.ConnectAsync(CancellationToken.None);
         bluetoothServiceMock.Verify(
             m => m.ConnectDeviceAsync(TestScaleDb.Identifier, It.IsAny<CancellationToken>()),
             Times.Once
