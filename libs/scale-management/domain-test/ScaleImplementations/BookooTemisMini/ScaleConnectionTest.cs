@@ -147,7 +147,7 @@ public class ScaleConnectionTest
             Mock.Of<IBleCharacteristic>(),
             Mock.Of<IObservable<byte[]>>(),
             bleDeviceConnectionMock.Object
-        ).Disconnect(CancellationToken.None);
+        ).DisconnectAsync(CancellationToken.None);
         bleDeviceConnectionMock.Verify(
             m => m.Disconnect(It.IsAny<CancellationToken>()),
             Times.Once
@@ -174,7 +174,7 @@ public class ScaleConnectionTest
             bleCommandCharacteristicMock.Object,
             Mock.Of<IObservable<byte[]>>(),
             Mock.Of<IBleDeviceConnection>()
-        ).Tare(CancellationToken.None);
+        ).TareAsync(CancellationToken.None);
         bleCommandCharacteristicMock.Verify(
             m => m.SendCommandAsync(It.IsAny<byte[]>(), It.IsAny<CancellationToken>()),
             Times.Once

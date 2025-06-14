@@ -18,7 +18,7 @@ public class Scale(ScaleDb scaleDb, IBluetoothService bluetoothService) : IScale
         "0000FF11-0000-1000-8000-00805F9B34FB"
     );
 
-    public async Task<IScaleConnection> Connect(CancellationToken ct)
+    public async Task<IScaleConnection> ConnectAsync(CancellationToken ct)
     {
         var bleConnection = await bluetoothService.ConnectDeviceAsync(scaleDb.Identifier, ct);
         var scaleService = await bleConnection.GetServiceAsync(ServiceId, ct);

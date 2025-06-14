@@ -10,7 +10,6 @@ import {
   scanForScales,
   ScanProcess,
 } from '@micra-pro/scale-management/data-access';
-import { handleError } from '../utils/handleError';
 import { useTranslationContext } from '../generated/language-types';
 import { Dynamic } from 'solid-js/web';
 import {
@@ -19,6 +18,7 @@ import {
   SpinnerButton,
   TextFieldRoot,
   TextField,
+  handleError,
 } from '@micra-pro/shared/ui';
 
 export const ScanScalesDialog: Component<{
@@ -48,7 +48,7 @@ export const ScanScalesDialog: Component<{
     const process = scanProcess();
     if (process.state === 'error') {
       console.error(process.debugInformation);
-      handleError({ message: t('failed-to-scan') });
+      handleError({ title: t('error'), message: t('failed-to-scan') });
       props.close();
     }
   });

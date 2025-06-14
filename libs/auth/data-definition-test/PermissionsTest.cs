@@ -22,6 +22,10 @@ public class PermissionsTest
         // Asset Management
         (3000, Permission.ReadAssets),
         (3001, Permission.WriteAssets),
+        // Asset Management
+        (4000, Permission.BrewCoffee),
+        (4001, Permission.ReadStatistics),
+        (4002, Permission.WriteStatistics),
         // Configuration Strings
         (7000, Permission.ReadConfiguration),
         (7001, Permission.WriteConfiguration),

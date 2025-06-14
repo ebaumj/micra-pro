@@ -54,6 +54,7 @@
     "@types/jsonwebtoken": "^9.0.9",
     "@vercel/blob": "^1.1.1",
     "autoprefixer": "^10.4.21",
+    "chart.js": "^4.4.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "country-codes-list": "^2.0.0",

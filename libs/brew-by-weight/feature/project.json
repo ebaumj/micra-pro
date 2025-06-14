@@ -1,0 +1,40 @@
+{
+  "name": "brew-by-weight-feature",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/brew-by-weight/feature/src",
+  "projectType": "library",
+  "tags": ["type:feature"],
+  "targets": {
+    "build": {
+      "outputs": ["{workspaceRoot}/dist/libs/brew-by-weight/feature"],
+      "options": {
+        "outDir": "../../../dist/libs/brew-by-weight/feature"
+      }
+    },
+    "codegen": {
+      "dependsOn": ["codegen-translations", "codegen-recursive-import"]
+    },
+    "codegen-recursive-import": {
+      "executor": "@micra-pro/workspace-extensions:recursive-import",
+      "options": {
+        "importDir": "libs/brew-by-weight/feature/src/assets/pictures",
+        "outputFile": "libs/brew-by-weight/feature/src/generated/pictures-import.ts"
+      },
+      "outputs": ["{projectRoot}/src/generated/pictures-import.ts"],
+      "dependsOn": ["workspace-extensions:build"]
+    },
+    "codegen-translations": {
+      "executor": "@micra-pro/workspace-extensions:icu-to-typescript",
+      "options": {
+        "inputFile": "libs/brew-by-weight/feature/src/locales/en.json",
+        "outputFile": "libs/brew-by-weight/feature/src/generated/language-types.tsx",
+        "namespace": "brew-by-weight",
+        "localesFolderRelativeToOutputFile": "../locales/"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "dependsOn": ["codegen"]
+    }
+  }
+}
