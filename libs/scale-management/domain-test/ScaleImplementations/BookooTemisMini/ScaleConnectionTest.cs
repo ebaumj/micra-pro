@@ -152,7 +152,6 @@ public class ScaleConnectionTest
             m => m.Disconnect(It.IsAny<CancellationToken>()),
             Times.Once
         );
-        bleDeviceConnectionMock.Verify(m => m.Dispose(), Times.Once);
         bleDeviceConnectionMock.VerifyNoOtherCalls();
     }
 

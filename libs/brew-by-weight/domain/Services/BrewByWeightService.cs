@@ -167,7 +167,15 @@ public class BrewByWeightService(
             stopwatch.Start();
             await paddleAccess.SetBrewPaddleOnAsync(true, ct);
             using var subscription = connection.Data.Subscribe(d =>
-                updateState(new BrewByWeightTracking.Running(d.Flow, d.Weight, stopwatch.Elapsed))
+                updateState(
+                    spout == IBrewByWeightService.Spout.Double
+                        ? new BrewByWeightTracking.Running(
+                            d.Flow * 2,
+                            d.Weight * 2,
+                            stopwatch.Elapsed
+                        )
+                        : new BrewByWeightTracking.Running(d.Flow, d.Weight, stopwatch.Elapsed)
+                )
             );
             await connection.Data.TakeUntil(d => d.Weight >= inCupQuantity - retention).ToTask(ct);
             var extractionTime = stopwatch.Elapsed;
