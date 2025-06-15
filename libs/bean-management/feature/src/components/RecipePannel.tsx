@@ -120,6 +120,7 @@ export const RecipePannel: Component<{
   beanId: string | null;
   startEspressoBrewing: (beanId: string, recipe: EspressoProperties) => void;
   onClose: () => void;
+  scale?: string;
 }> = (props) => {
   const [recipe, setRecipe] = createSignal<
     | ({ type: 'Espresso' } & EspressoProperties)
@@ -145,6 +146,7 @@ export const RecipePannel: Component<{
     if (espressoProps && !v60Props)
       setRecipe({ type: 'Espresso', ...espressoProps });
     if (v60Props && !espressoProps) setRecipe({ type: 'V60', ...v60Props });
+    if (!v60Props && !espressoProps) props.onClose();
   });
 
   const selectParams = (): Component<{ class?: string }> => {
@@ -237,7 +239,7 @@ export const RecipePannel: Component<{
               </div>
             </div>
             <Dynamic component={selectParams()} class="w-full px-6" />
-            <Show when={recipe()?.type === 'Espresso'}>
+            <Show when={recipe()?.type === 'Espresso' && props.scale}>
               <div class="flex w-full justify-center py-2">
                 <Button
                   variant="default"

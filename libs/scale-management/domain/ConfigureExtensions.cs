@@ -18,6 +18,7 @@ public static class ConfigureExtensions
             .AddSingleton<
                 IScaleImplementationCollectionService,
                 ScaleImplementationCollectionService
-            >();
+            >()
+            .AddSingleton<ScaleImplementationMemoryService>();
     }
 }

@@ -5,41 +5,23 @@ using MicraPro.Shared.UtilsDotnet;
 
 namespace MicraPro.ScaleManagement.Infrastructure.BluetoothAccess.LinuxBluetooth;
 
-public class BleService(IGattService1 service, Guid serviceId) : IBleService
+public class BleService(IGattService1 service) : IBleService
 {
-    public Guid ServiceId => serviceId;
+    private static readonly TimeSpan CharacteristicSearchTimeout = TimeSpan.FromSeconds(1);
 
     public async Task<IBleCharacteristic> GetCharacteristicAsync(
-        Guid characteristicId,
+        string characteristicId,
         CancellationToken ct
-    ) =>
-        await CreateCharacteristicAsync(
-            await service.GetCharacteristicAsync(characteristicId.ToString()),
-            ct
-        );
-
-    public async Task<IBleCharacteristic[]> GetCharacteristicsAsync(CancellationToken ct) =>
-        (
-            await (await service.GetCharacteristicsAsync().WaitAsync(ct)).SelectAsync(c =>
-                CreateCharacteristicAsync(c, ct)
-            )
-        ).ToArray();
-
-    private async Task<IBleCharacteristic> CreateCharacteristicAsync(
-        IGattCharacteristic1 characteristic,
-        CancellationToken ct
-    ) =>
-        await GetCharacteristicAsync(
-            Guid.Parse(await characteristic.GetUUIDAsync().WaitAsync(ct)),
-            ct
-        );
-
-    private static async Task<IBleCharacteristic> CreateCharacteristicAsync(
-        GattCharacteristic characteristic,
-        CancellationToken ct
-    ) =>
-        new BleCharacteristic(
-            characteristic,
-            Guid.Parse(await characteristic.GetUUIDAsync().WaitAsync(ct))
-        );
+    )
+    {
+        GattCharacteristic? characteristic;
+        do
+        {
+            characteristic = (GattCharacteristic?)
+                await service
+                    .GetCharacteristicAsync(characteristicId)
+                    .WaitAsync(CharacteristicSearchTimeout, ct);
+        } while (characteristic == null);
+        return new BleCharacteristic(characteristic);
+    }
 }

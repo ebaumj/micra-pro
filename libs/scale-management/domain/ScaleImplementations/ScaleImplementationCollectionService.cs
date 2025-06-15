@@ -11,7 +11,7 @@ public class ScaleImplementationCollectionService(IBluetoothService bluetoothSer
     private record ScaleImplementation(
         string Name,
         Func<ScaleDb, IScale> CreateScale,
-        Guid[] RequiredServices
+        string[] RequiredServices
     );
 
     private readonly IImmutableList<ScaleImplementation> _scaleImplementations =
@@ -28,10 +28,6 @@ public class ScaleImplementationCollectionService(IBluetoothService bluetoothSer
             .FirstOrDefault(i => i.Name == scaleDb.ImplementationType)
             ?.CreateScale(scaleDb) ?? throw new Exception("Scale implementation not found!");
 
-    public Guid[] GetRequiredServices(string implementation) =>
-        _scaleImplementations.FirstOrDefault(i => i.Name == implementation)?.RequiredServices
-        ?? throw new Exception("Scale implementation not found!");
-
-    public (string Name, Guid[] RequiredServices)[] Implementations =>
+    public (string Name, string[] RequiredServices)[] Implementations =>
         _scaleImplementations.Select(i => (i.Name, i.RequiredServices)).ToArray();
 }

@@ -1,0 +1,74 @@
+fragment BrewByWeightTrackingFields on BrewByWeightTracking {
+  ... on BrewProcessStarted {
+    __typename
+  }
+  ... on BrewProcessRunning {
+    __typename
+    flow
+    totalQuantity
+    totalTime
+  }
+  ... on BrewProcessFinished {
+    __typename
+    averageFlow
+    totalQuantity
+    totalTime
+  }
+  ... on BrewProcessCancelled {
+    __typename
+    averageFlow
+    totalQuantity
+    totalTime
+  }
+  ... on BrewProcessFailed {
+    __typename
+    averageFlow
+    totalQuantity
+    totalTime
+    exception {
+      __typename
+    }
+  }
+}
+
+mutation StartBrewProcess(
+  $beanId: UUID!
+  $coffeeQuantity: Float!
+  $grindSetting: Float!
+  $inCupQuantity: Float!
+  $scaleId: UUID!
+  $spout: Spout!
+  $targetExtractionTime: TimeSpan!
+) {
+  startBrewProcess(
+    input: {
+      beanId: $beanId
+      coffeeQuantity: $coffeeQuantity
+      grindSetting: $grindSetting
+      inCupQuantity: $inCupQuantity
+      scaleId: $scaleId
+      spout: $spout
+      targetExtractionTime: $targetExtractionTime
+    }
+  ) {
+    uuid
+  }
+}
+
+mutation StopBrewProcess($processId: UUID!) {
+  stopBrewProcess(input: { processId: $processId }) {
+    uuid
+  }
+}
+
+query BrewStatePoll($processId: UUID!) {
+  brewState(processId: $processId) {
+    ...BrewByWeightTrackingFields
+  }
+}
+
+subscription BrewState($processId: UUID!) {
+  brewState(processId: $processId) {
+    ...BrewByWeightTrackingFields
+  }
+}

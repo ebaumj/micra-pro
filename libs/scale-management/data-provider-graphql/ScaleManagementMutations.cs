@@ -1,5 +1,6 @@
 using MicraPro.Auth.DataDefinition;
 using MicraPro.ScaleManagement.DataDefinition;
+using MicraPro.ScaleManagement.DataDefinition.ValueObjects;
 using MicraPro.ScaleManagement.DataProviderGraphQl.Types;
 
 namespace MicraPro.ScaleManagement.DataProviderGraphQl;
@@ -35,19 +36,27 @@ public static class ScaleManagementMutations
     ) => new(await scaleService.RenameScale(scaleId, name, ct));
 
     [RequiredPermissions([Permission.ReadScales])]
-    public static async Task<string[]> ScanForScales(
+    public static async Task<bool> ScanForScales(
         [Service] IScaleService scaleService,
+        [Service] ScanCancellationContainerService scanCancellationContainerService,
         TimeSpan? maxScanTime,
-        CancellationToken ct
+        CancellationToken _
     )
     {
-        var cancellation = ct;
-        if (maxScanTime != null)
-        {
-            var token = new CancellationTokenSource((TimeSpan)maxScanTime);
-            ct.Register(token.Cancel);
-            cancellation = token.Token;
-        }
-        return (await scaleService.Scan(cancellation)).ToArray();
+        var token = new CancellationTokenSource();
+        var timeout = maxScanTime.GetValueOrDefault(TimeSpan.FromSeconds(30));
+        scanCancellationContainerService.AddCancellationToken(token, timeout);
+        await scaleService.ScanAsync(timeout, token.Token);
+        return true;
+    }
+
+    [RequiredPermissions([Permission.ReadScales])]
+    public static Task<bool> StopScanning(
+        [Service] ScanCancellationContainerService scanCancellationContainerService,
+        CancellationToken _
+    )
+    {
+        scanCancellationContainerService.CancelAll();
+        return Task.FromResult(true);
     }
 }

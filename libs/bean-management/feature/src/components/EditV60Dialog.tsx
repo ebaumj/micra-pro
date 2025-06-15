@@ -114,7 +114,7 @@ export const EditV60Dialog: Component<{
                 rawValue={store.properties.inCupQuantity}
                 formatOptions={{ style: 'unit', unit: 'milliliter' }}
                 minValue={10}
-                maxValue={60}
+                maxValue={800}
                 step={1}
               >
                 <NumberFieldGroup>

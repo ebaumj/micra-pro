@@ -11,7 +11,10 @@ public static class ConfigureExtensions
     ) =>
         services
             .AddGraphQLServer(disableCostAnalyzer: true)
-            .ModifyRequestOptions(o => o.IncludeExceptionDetails = includeExceptionDetails)
+            .ModifyRequestOptions(o =>
+            {
+                o.IncludeExceptionDetails = includeExceptionDetails;
+            })
             .AddInMemorySubscriptions()
             .AddMutationConventions()
             .AddQueryConventions()

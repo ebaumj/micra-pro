@@ -1,8 +1,10 @@
-import { createScalesAccessor } from '@micra-pro/scale-management/data-access';
+import {
+  createScalesAccessor,
+  createScanAccessor,
+} from '@micra-pro/scale-management/data-access';
 import {
   AlertDialog,
   AlertDialogContent,
-  Button,
   Dialog,
   DialogContent,
   Icon,
@@ -11,11 +13,12 @@ import {
   TextField,
   TextFieldRoot,
 } from '@micra-pro/shared/ui';
-import { Component, createSignal, For } from 'solid-js';
+import { Component, createEffect, createSignal, For } from 'solid-js';
 import { ScanScalesDialog } from './ScanScalesDialog';
 
 export const EditScalesPage: Component = () => {
   const scalesAccessor = createScalesAccessor();
+  const scanAccessor = createScanAccessor();
   const scales = () =>
     scalesAccessor.scales().map((s) => {
       const [name, setName] = createSignal(s.name);
@@ -33,6 +36,10 @@ export const EditScalesPage: Component = () => {
     });
 
   const [scanDialog, setScanDialog] = createSignal(false);
+
+  createEffect(() => {
+    if (!scanDialog() && scanAccessor.isScanning()) scanAccessor.stopScanning();
+  });
 
   const addDevice = (identifier: string, name: string) => {
     scalesAccessor.add(identifier, name, () => setScanDialog(false));
@@ -54,6 +61,7 @@ export const EditScalesPage: Component = () => {
             isOpen={scanDialog()}
             close={() => setScanDialog(false)}
             addDevice={addDevice}
+            isScanning={scanAccessor.isScanning()}
           />
         </DialogContent>
       </Dialog>
@@ -96,13 +104,15 @@ export const EditScalesPage: Component = () => {
         </For>
       </div>
       <div class="flex justify-end pt-4">
-        <Button
+        <SpinnerButton
           class="flex h-14 w-14 items-center justify-center shadow-md"
           variant="outline"
           onClick={() => setScanDialog(true)}
+          loading={scanAccessor.isScanning()}
+          disabled={scanAccessor.isScanning()}
         >
           <Icon iconName="bluetooth_searching" />
-        </Button>
+        </SpinnerButton>
       </div>
     </div>
   );

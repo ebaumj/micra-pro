@@ -33,6 +33,27 @@ mutation RemoveScale($scaleId: UUID!) {
 
 mutation ScanForScales($maxScanTime: TimeSpan) {
   scanForScales(input: { maxScanTime: $maxScanTime }) {
-    string
+    boolean
+  }
+}
+
+mutation StopScanning {
+  stopScanning {
+    boolean
+  }
+}
+
+query IsScannungPoll {
+  isScanning
+}
+
+subscription IsScannung {
+  isScanning
+}
+
+subscription ScanResult {
+  scanResult {
+    name
+    id
   }
 }

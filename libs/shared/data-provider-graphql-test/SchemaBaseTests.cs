@@ -19,6 +19,8 @@ public static class SchemaBaseTests
             ))
             .BuildServiceProvider()
             .GetRequiredService<RequestExecutorProxy>();
-        return (await executor.GetSchemaAsync(default)).ToString().Replace("\\/", "/");
+        return (await executor.GetSchemaAsync(CancellationToken.None))
+            .ToString()
+            .Replace("\\/", "/");
     }
 }

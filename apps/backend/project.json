@@ -17,8 +17,7 @@
       },
       "configurations": {
         "production": {
-          "configuration": "Release",
-          "extraParameters": "-p:PublishSingleFile=true -p:SelfContained=false"
+          "configuration": "Release"
         }
       }
     },

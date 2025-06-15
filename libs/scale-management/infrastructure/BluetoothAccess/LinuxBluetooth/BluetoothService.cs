@@ -1,78 +1,64 @@
 using System.Reactive.Linq;
-using System.Reactive.Threading.Tasks;
+using System.Reactive.Subjects;
 using Linux.Bluetooth;
 using Linux.Bluetooth.Extensions;
 using MicraPro.ScaleManagement.Domain.BluetoothAccess;
-using MicraPro.Shared.UtilsDotnet;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
 namespace MicraPro.ScaleManagement.Infrastructure.BluetoothAccess.LinuxBluetooth;
 
-public class BluetoothService(
-    IMemoryCache cache,
-    IOptions<ScaleManagementInfrastructureOptions> configuration
-) : IBluetoothService, IHostedService
+public class BluetoothService(IOptions<ScaleManagementInfrastructureOptions> configuration)
+    : IBluetoothService,
+        IHostedService
 {
-    private static string GetServiceImplementationCacheKey(string deviceId, Guid service) =>
-        $"{typeof(BluetoothService).FullName}.Services.{deviceId}.{service}";
+    private Adapter? _bleAdapter;
+    private Adapter BleAdapter => _bleAdapter ?? throw new Exception("Bluetooth adapter not found");
 
-    private IAdapter1? _bleAdapter;
-    private IAdapter1 BleAdapter =>
-        _bleAdapter ?? throw new Exception("Bluetooth adapter not found");
+    private static readonly TimeSpan DeviceSearchTimeout = TimeSpan.FromSeconds(5);
 
-    private readonly TimeSpan _scanTimeout = TimeSpan.FromSeconds(30);
+    private readonly BehaviorSubject<bool> _isScanning = new(false);
+    private readonly ReplaySubject<BluetoothScanResult> _discoveredDevices = new();
+    public IObservable<bool> IsScanning => _isScanning;
+    public IObservable<BluetoothScanResult> DetectedDevices =>
+        _discoveredDevices.Distinct(d => d.Id);
 
-    public Task<string[]> ScanDevicesAsync(CancellationToken ct) => ScanDevicesAsync([], ct);
-
-    public async Task<string[]> ScanDevicesAsync(
-        IEnumerable<Guid> requiredServiceIds,
-        CancellationToken ct
-    )
+    private async Task DeviceChangeEventHandlerAsync(Adapter sender, DeviceFoundEventArgs eventArgs)
     {
-        var requiredServices = requiredServiceIds.ToArray();
-        await BleAdapter.StartDiscoveryAsync();
-        await Observable.Timer(_scanTimeout).ToTask(ct);
-        await BleAdapter.StopDiscoveryAsync();
-        var devices = await BleAdapter.GetDevicesAsync();
-        var services = requiredServices.ToArray();
-        var ids = new List<string>();
-        foreach (var dev in devices)
-        {
-            if (await HasRequiredServiceIds(services, dev))
-                ids.Add(await dev.GetAddressAsync());
-        }
-        foreach (var dev in ids)
-        foreach (var service in requiredServices)
-            cache.Set(dev, service);
-        return ids.ToArray();
-    }
-
-    public Task<bool> HasRequiredServiceIdsAsync(
-        string deviceId,
-        IEnumerable<Guid> requiredServiceIds,
-        CancellationToken ct
-    ) =>
-        Task.FromResult(
-            requiredServiceIds.All(s =>
-                cache.TryGetValue(GetServiceImplementationCacheKey(deviceId, s), out _)
+        var device = (Device?)eventArgs.Device;
+        if (device == null)
+            return;
+        var properties = await device.GetPropertiesAsync();
+        if (properties.Address is null)
+            return;
+        _discoveredDevices.OnNext(
+            new BluetoothScanResult(
+                properties.Name ?? properties.Address,
+                properties.Address,
+                properties.UUIDs ?? []
             )
         );
+    }
 
-    private static async Task<bool> HasRequiredServiceIds(
-        IEnumerable<Guid> requiredServiceIds,
-        Device device
-    )
+    private async Task StopDiscoveryAsync()
     {
-        var timeout = TimeSpan.FromSeconds(15);
-        await device.ConnectAsync();
-        await device.WaitForPropertyValueAsync("Connected", value: true, timeout);
-        await device.WaitForPropertyValueAsync("ServicesResolved", value: true, timeout);
-        var services = await (await device.GetServicesAsync()).SelectAsync(s => s.GetUUIDAsync());
-        await device.DisconnectAsync();
-        return requiredServiceIds.All(id =>
-            services.FirstOrDefault(s => s == id.ToString()) != null
+        await BleAdapter.StopDiscoveryAsync();
+        _isScanning.OnNext(false);
+    }
+
+    public async Task DiscoverAsync(TimeSpan discoveryTime, CancellationToken ct)
+    {
+        await BleAdapter.StartDiscoveryAsync();
+        _isScanning.OnNext(true);
+        var subscription = Observable
+            .Timer(discoveryTime)
+            .Select(_ => Observable.FromAsync(async () => await StopDiscoveryAsync()))
+            .Merge()
+            .Subscribe(_ => { });
+        ct.Register(() =>
+            Observable
+                .FromAsync(async () => await StopDiscoveryAsync())
+                .Subscribe(_ => subscription.Dispose())
         );
     }
 
@@ -81,9 +67,14 @@ public class BluetoothService(
         CancellationToken ct
     )
     {
-        var device = await BleAdapter.GetDeviceAsync(deviceId);
-        if (device == null)
-            throw new Exception("Device not found");
+        await BleAdapter.StartDiscoveryAsync();
+        Device? device;
+        do
+        {
+            device = (Device?)
+                await BleAdapter.GetDeviceAsync(deviceId).WaitAsync(DeviceSearchTimeout, ct);
+        } while (device == null);
+        await BleAdapter.StopDiscoveryAsync();
         await device.ConnectAsync();
         return new BleDeviceConnection(device);
     }
@@ -93,6 +84,7 @@ public class BluetoothService(
         _bleAdapter = await BlueZManager.GetAdapterAsync(
             configuration.Value.LinuxBluetoothAdapterName
         );
+        BleAdapter.DeviceFound += DeviceChangeEventHandlerAsync;
     }
 
     public Task StopAsync(CancellationToken cancellationToken)

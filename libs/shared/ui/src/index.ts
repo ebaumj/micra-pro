@@ -25,3 +25,5 @@ export * from './Components/LanguageSelector';
 export * from './Components/CountryFlag';
 export * from './Components/CountrySelector';
 export * from './Components/Sheet';
+export * from './utils/handleError';
+export * from './Components/Chart';

@@ -6,26 +6,24 @@ namespace MicraPro.ScaleManagement.Domain.ScaleImplementations.BookooThemisMini;
 
 public class Scale(ScaleDb scaleDb, IBluetoothService bluetoothService) : IScale
 {
-    public static Guid[] RequiredServiceIds => [ServiceId];
+    public static string[] RequiredServiceIds => [ServiceId];
     public Guid Id => scaleDb.Id;
     public string Name => scaleDb.Name;
 
-    private static readonly Guid ServiceId = Guid.Parse("00000FFE-0000-1000-8000-00805F9B34FB");
-    private static readonly Guid CommandCharacteristicId = Guid.Parse(
-        "0000FF12-0000-1000-8000-00805F9B34FB"
-    );
-    private static readonly Guid WeightDataCharacteristicId = Guid.Parse(
-        "0000FF11-0000-1000-8000-00805F9B34FB"
-    );
+    private static readonly string ServiceId = "00000FFE-0000-1000-8000-00805F9B34FB";
+    private static readonly string CommandCharacteristicId = "0000FF12-0000-1000-8000-00805F9B34FB";
+    private static readonly string WeightDataCharacteristicId =
+        "0000FF11-0000-1000-8000-00805F9B34FB";
 
-    public async Task<IScaleConnection> Connect(CancellationToken ct)
+    public async Task<IScaleConnection> ConnectAsync(CancellationToken ct)
     {
         var bleConnection = await bluetoothService.ConnectDeviceAsync(scaleDb.Identifier, ct);
-        var scaleService = await bleConnection.GetServiceAsync(ServiceId, ct);
+        var bleService = await bleConnection.GetServiceAsync(ServiceId, ct);
+        var c1 = await bleService.GetCharacteristicAsync(CommandCharacteristicId, ct);
         return new ScaleConnection(
-            await scaleService.GetCharacteristicAsync(CommandCharacteristicId, ct),
+            await bleService.GetCharacteristicAsync(CommandCharacteristicId, ct),
             await (
-                await scaleService.GetCharacteristicAsync(WeightDataCharacteristicId, ct)
+                await bleService.GetCharacteristicAsync(WeightDataCharacteristicId, ct)
             ).GetValueObservableAsync(ct),
             bleConnection
         );

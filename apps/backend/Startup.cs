@@ -4,6 +4,10 @@ using MicraPro.Auth.DataProvider;
 using MicraPro.Auth.Domain;
 using MicraPro.BeanManagement.Domain;
 using MicraPro.BeanManagement.Infrastructure;
+using MicraPro.BrewByWeight.DataProviderGraphQl;
+using MicraPro.BrewByWeight.Domain;
+using MicraPro.BrewByWeight.Infrastructure;
+using MicraPro.ScaleManagement.DataProviderGraphQl;
 using MicraPro.ScaleManagement.Domain;
 using MicraPro.ScaleManagement.Infrastructure;
 using MicraPro.Shared.Infrastructure;
@@ -21,10 +25,14 @@ public class Startup(IConfiguration configuration)
             .AddSharedInfrastructureServices()
             .AddScaleManagementDomainServices(configuration)
             .AddScaleManagementInfrastructureServices(configuration)
+            .AddScaleManagementDataProviderGraphQlServices(configuration)
             .AddBeanManagementDomainServices(configuration)
             .AddBeanManagementInfrastructureServices(configuration)
             .AddAssetManagementDomainServices(configuration)
             .AddAssetManagementInfrastructureServices(configuration)
+            .AddBrewByWeightDomainServices(configuration)
+            .AddBrewByWeightInfrastructureServices(configuration)
+            .AddBrewByWeightDataProviderGraphQlServices(configuration)
             .AddCors(options =>
             {
                 options.AddDefaultPolicy(b =>
