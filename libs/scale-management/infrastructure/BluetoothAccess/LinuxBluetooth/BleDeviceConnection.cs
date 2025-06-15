@@ -1,3 +1,4 @@
+using System.Reactive.Linq;
 using Linux.Bluetooth;
 using Linux.Bluetooth.Extensions;
 using MicraPro.ScaleManagement.Domain.BluetoothAccess;
@@ -18,10 +19,20 @@ public class BleDeviceConnection(IDevice1 device) : IBleDeviceConnection
         return new BleService(await device.GetServiceAsync(serviceId));
     }
 
-    public Task Disconnect(CancellationToken ct) => device.DisconnectAsync().WaitAsync(ct);
+    public async Task Disconnect(CancellationToken ct)
+    {
+        try
+        {
+            await device.DisconnectAsync();
+        }
+        catch
+        {
+            // device is disconnected
+        }
+    }
 
     public void Dispose()
     {
-        device.DisconnectAsync();
+        Observable.FromAsync(async ct => await Disconnect(ct)).Subscribe(_ => { });
     }
 }
