@@ -3,6 +3,10 @@ import { T } from '../../generated/language-types';
 import { EditScalesPage } from '@micra-pro/scale-management/feature';
 import { EditBeansPage } from '@micra-pro/bean-management/feature';
 import { MainscreenConfigPage } from '../MainscreenConfigPage';
+import {
+  BrewByWeightHistoryPage,
+  BrewByWeightStatisticsPage,
+} from '@micra-pro/brew-by-weight/feature';
 
 export const navigationElements: {
   link: string;
@@ -27,6 +31,18 @@ export const navigationElements: {
     link: 'scales',
     icon: 'scale',
     component: EditScalesPage,
+  },
+  {
+    name: () => <T key={'menu-sidebar-statistics'} />,
+    link: 'statistics',
+    icon: 'bar_chart',
+    component: BrewByWeightStatisticsPage,
+  },
+  {
+    name: () => <T key={'menu-sidebar-history'} />,
+    link: 'hisotry',
+    icon: 'access_time',
+    component: BrewByWeightHistoryPage,
   },
 ];
 

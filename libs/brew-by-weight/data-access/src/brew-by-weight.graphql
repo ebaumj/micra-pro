@@ -12,7 +12,7 @@ fragment BrewByWeightTrackingFields on BrewByWeightTracking {
     __typename
     averageFlow
     totalQuantity
-    totalTime
+    extractionTime
   }
   ... on BrewProcessCancelled {
     __typename

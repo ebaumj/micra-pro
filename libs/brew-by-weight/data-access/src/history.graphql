@@ -1,0 +1,59 @@
+fragment BrewByWeightHistoryFields on BrewByWeightHistoryEntry {
+  id
+  timestamp
+
+  beanId
+  scaleId
+  coffeeQuantity
+  inCupQuantity
+  grindSetting
+  targetExtractionTime
+  spout
+
+  totalQuantity
+  averageFlow
+
+  __typename
+  ... on HistoryEntryProcessFinished {
+    extractionTime
+  }
+  ... on HistoryEntryProcessCancelled {
+    totalTime
+  }
+  ... on HistoryEntryProcessFailed {
+    totalTime
+    errorType
+  }
+
+  runtimeData {
+    flow
+    totalQuantity
+    totalTime
+  }
+}
+
+query BrewByWeightHistory {
+  brewByWeightHistory {
+    ...BrewByWeightHistoryFields
+  }
+}
+
+mutation CleanupBrewByWeightHistory(
+  $keepLatestDistinctByProcessInputs: Boolean!
+) {
+  cleanupBrewByWeightHistory(
+    input: {
+      keepLatestDistinctByProcessInputs: $keepLatestDistinctByProcessInputs
+    }
+  ) {
+    brewByWeightHistoryEntry {
+      ...BrewByWeightHistoryFields
+    }
+  }
+}
+
+mutation RemoveHistoryEntry($entryId: UUID!) {
+  removeHistoryEntry(input: { entryId: $entryId }) {
+    uuid
+  }
+}

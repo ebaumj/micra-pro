@@ -1,6 +1,9 @@
 using System.Runtime.InteropServices;
 using MicraPro.BrewByWeight.Domain.HardwareAccess;
+using MicraPro.BrewByWeight.Domain.StorageAccess;
 using MicraPro.BrewByWeight.Infrastructure.HardwareAccess;
+using MicraPro.BrewByWeight.Infrastructure.StorageAccess;
+using MicraPro.Shared.UtilsDotnet;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -24,6 +27,9 @@ public static class ConfigureExtensions
             .Configure<BrewByWeightInfrastructureOptions>(
                 configurationManager.GetSection(BrewByWeightInfrastructureOptions.SectionName)
             )
-            .AddTransient<IScaleAccess, ScaleAccess>();
+            .AddTransient<IScaleAccess, ScaleAccess>()
+            .AddScoped<IProcessRepository, ProcessRepository>()
+            .AddScoped<IProcessRuntimeDataRepository, ProcessRuntimeDataRepository>()
+            .AddDbContextAndMigrationService<BrewByWeightDbContext>();
     }
 }

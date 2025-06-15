@@ -15,6 +15,8 @@ public static class ConfigureExtensions
     {
         return services
             .AddSingleton<IBrewByWeightService, BrewByWeightService>()
-            .AddSingleton<IRetentionService, RetentionService>();
+            .AddTransient<IRetentionService, RetentionService>()
+            .AddScoped<IBrewByWeightHistoryService, BrewByWeightHistoryService>()
+            .AddScoped<IBrewByWeightDbService, BrewByWeightDbService>();
     }
 }

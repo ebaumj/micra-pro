@@ -7,7 +7,7 @@ public abstract record BrewByWeightTracking
     public record Running(double Flow, double TotalQuantity, TimeSpan TotalTime)
         : BrewByWeightTracking();
 
-    public record Finished(double AverageFlow, double TotalQuantity, TimeSpan TotalTime)
+    public record Finished(double AverageFlow, double TotalQuantity, TimeSpan ExtractionTime)
         : BrewByWeightTracking;
 
     public record Cancelled(double AverageFlow, double TotalQuantity, TimeSpan TotalTime)
