@@ -1,4 +1,3 @@
-using MicraPro.AssetManagement.DataDefinition;
 using MicraPro.AssetManagement.Domain.AssetAccess;
 using MicraPro.AssetManagement.Domain.Interfaces;
 using Microsoft.Extensions.DependencyInjection;

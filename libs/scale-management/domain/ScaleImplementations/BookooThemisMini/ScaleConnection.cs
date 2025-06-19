@@ -43,5 +43,5 @@ public class ScaleConnection(
     }
 
     public IObservable<ScaleDataPoint> Data =>
-        weightDataCharacteristicObservable.Select(FromBookooWeightData).NotNull();
+        weightDataCharacteristicObservable.Select(FromBookooWeightData).Where(v => v != null)!;
 }

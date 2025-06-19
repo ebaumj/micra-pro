@@ -12,11 +12,4 @@ public static class BeanQueries
         [Service] IBeanService beanService,
         CancellationToken ct
     ) => (await beanService.GetBeansAsync(ct)).Select(r => r.ToApi()).ToList();
-
-    [RequiredPermissions([Permission.ReadBeans])]
-    public static async Task<BeanApi> GetBean(
-        [Service] IBeanService beanService,
-        Guid beanId,
-        CancellationToken ct
-    ) => (await beanService.GetBeanAsync(beanId, ct)).ToApi();
 }

@@ -12,11 +12,4 @@ public static class RecipeQueries
         [Service] IRecipeService roasteryService,
         CancellationToken ct
     ) => (await roasteryService.GetRecipesAsync(ct)).Select(r => r.ToApi()).ToList();
-
-    [RequiredPermissions([Permission.ReadRecipes])]
-    public static async Task<RecipeApi> GetRecipe(
-        [Service] IRecipeService roasteryService,
-        Guid recipeId,
-        CancellationToken ct
-    ) => (await roasteryService.GetRecipeAsync(recipeId, ct)).ToApi();
 }

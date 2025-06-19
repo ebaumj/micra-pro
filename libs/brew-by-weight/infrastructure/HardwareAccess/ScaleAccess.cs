@@ -14,7 +14,7 @@ public class ScaleAccess(IServiceScopeFactory serviceScopeFactory) : IScaleAcces
         var scale = await serviceScopeFactory
             .CreateScope()
             .ServiceProvider.GetRequiredService<IScaleService>()
-            .GetScale(scaleId, ct);
+            .GetScaleAsync(scaleId, ct);
         return new ScaleConnection(await scale.ConnectAsync(ct));
     }
 

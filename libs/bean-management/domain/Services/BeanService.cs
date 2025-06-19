@@ -27,9 +27,6 @@ public class BeanService(IBeanRepository beanRepository) : IBeanService
     public async Task<IEnumerable<IBean>> GetBeansAsync(CancellationToken ct) =>
         (await beanRepository.GetAllAsync(ct)).Select(entity => new Bean(entity));
 
-    public async Task<IBean> GetBeanAsync(Guid beanId, CancellationToken ct) =>
-        new Bean(await beanRepository.GetByIdAsync(beanId, ct));
-
     public async Task<IBean> UpdateBeanAsync(
         Guid beanId,
         BeanProperties properties,

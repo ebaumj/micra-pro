@@ -4,7 +4,6 @@ using MicraPro.ScaleManagement.DataDefinition.ValueObjects;
 using MicraPro.ScaleManagement.Domain.BluetoothAccess;
 using MicraPro.ScaleManagement.Domain.ScaleImplementations;
 using MicraPro.ScaleManagement.Domain.StorageAccess;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace MicraPro.ScaleManagement.Domain.Services;
 
@@ -42,7 +41,7 @@ public class ScaleService(
 
     public IObservable<bool> IsScanning => bluetoothService.IsScanning;
 
-    public async Task<IScale> AddScale(string name, string identifier, CancellationToken ct)
+    public async Task<IScale> AddScaleAsync(string name, string identifier, CancellationToken ct)
     {
         var valueObject = new ScaleDb(
             identifier,
@@ -54,25 +53,25 @@ public class ScaleService(
         return scaleImplementationCollectionService.CreateScale(valueObject);
     }
 
-    public async Task<Guid> RemoveScale(Guid scaleId, CancellationToken ct)
+    public async Task<Guid> RemoveScaleAsync(Guid scaleId, CancellationToken ct)
     {
         await scaleRepository.DeleteAsync(scaleId, ct);
         await scaleRepository.SaveAsync(ct);
         return scaleId;
     }
 
-    public async Task<IEnumerable<IScale>> GetScales(CancellationToken ct) =>
+    public async Task<IEnumerable<IScale>> GetScalesAsync(CancellationToken ct) =>
         (await scaleRepository.GetAllAsync(ct)).Select(
             scaleImplementationCollectionService.CreateScale
         );
 
-    public async Task<IScale> GetScale(Guid scaleId, CancellationToken ct) =>
+    public async Task<IScale> GetScaleAsync(Guid scaleId, CancellationToken ct) =>
         scaleImplementationCollectionService.CreateScale(
             await scaleRepository.GetByIdAsync(scaleId, ct)
         );
 
-    public async Task<IScale> RenameScale(Guid scaleId, string name, CancellationToken ct) =>
+    public async Task<IScale> RenameScaleAsync(Guid scaleId, string name, CancellationToken ct) =>
         scaleImplementationCollectionService.CreateScale(
-            await scaleRepository.UpdateName(scaleId, name, ct)
+            await scaleRepository.UpdateNameAsync(scaleId, name, ct)
         );
 }

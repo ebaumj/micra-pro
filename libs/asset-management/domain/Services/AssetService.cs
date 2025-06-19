@@ -1,4 +1,3 @@
-using System.Reactive.Linq;
 using MicraPro.AssetManagement.DataDefinition;
 using MicraPro.AssetManagement.Domain.AssetAccess;
 using MicraPro.AssetManagement.Domain.Interfaces;
@@ -73,7 +72,7 @@ public class AssetService(
         var assets = await assetRepository.GetAllAsync(ct);
         try
         {
-            await remoteAssetService.FetchRemoteAssets(ct);
+            await remoteAssetService.FetchRemoteAssetsAsync(ct);
         }
         catch
         {

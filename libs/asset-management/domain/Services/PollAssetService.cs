@@ -33,11 +33,11 @@ public class PollAssetService(
                 .CreateScope()
                 .ServiceProvider.GetRequiredService<IAssetRepository>();
             var asset = await repository.GetByIdAsync(assetId, ct);
-            await remoteAssetService.FetchRemoteAssets(ct);
+            await remoteAssetService.FetchRemoteAssetsAsync(ct);
             if (!remoteAssetService.AvailableAssets.Contains(assetId))
                 return (false, 0);
             var remoteAsset = await remoteAssetService.ReadRemoteAssetAsync(asset.Id, ct);
-            if (remoteAsset.Data.Length != size)
+            if (remoteAsset.Data.Length != size || remoteAsset.Data.Length == 0)
                 return (false, remoteAsset.Data.Length);
             var path = Path.ChangeExtension(asset.RelativePath, remoteAsset.FileEnding);
             asset.RelativePath = path;

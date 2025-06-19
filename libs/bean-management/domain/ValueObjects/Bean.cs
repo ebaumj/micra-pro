@@ -4,12 +4,7 @@ using MicraPro.BeanManagement.Domain.StorageAccess;
 
 namespace MicraPro.BeanManagement.Domain.ValueObjects;
 
-public record Bean(
-    Guid Id,
-    Guid RoasteryId,
-    BeanProperties Properties,
-    IEnumerable<IRecipe> Recipes
-) : IBean
+public record Bean(Guid Id, Guid RoasteryId, BeanProperties Properties) : IBean
 {
     public Bean(BeanDb db)
         : this(
@@ -19,7 +14,6 @@ public record Bean(
                 db.Name,
                 db.CountryCode,
                 db.AssetId == Guid.Empty ? null : db.AssetId
-            ),
-            db.Recipes.Select(r => r.ToRecipe())
+            )
         ) { }
 }

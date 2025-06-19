@@ -20,7 +20,7 @@ public class TokenCreatorService(
     );
 
     private readonly TimeSpan _uploadTokenLifeTime = TimeSpan.FromMinutes(
-        double.Parse(options.Value.JwtTokenLifeTimeInMinutes)
+        double.Parse(options.Value.JwtUploadTokenLifeTimeInMinutes)
     );
 
     private string CreateAccessToken(TimeSpan lifetime, IEnumerable<Claim> claims) =>

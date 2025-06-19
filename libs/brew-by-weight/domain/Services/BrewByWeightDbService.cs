@@ -10,7 +10,7 @@ public class BrewByWeightDbService(
     IProcessRuntimeDataRepository processRuntimeDataRepository
 ) : IBrewByWeightDbService
 {
-    public async Task StoreProcess(
+    public async Task StoreProcessAsync(
         Guid beanId,
         Guid scaleId,
         double inCupQuantity,

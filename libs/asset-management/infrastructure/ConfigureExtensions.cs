@@ -36,6 +36,8 @@ public static class ConfigureExtensions
             .AddSingleton<IAssetDirectoryService, AssetDirectoryService>()
             .AddSingleton<IRemoteAssetService, RemoteAssetService>()
             .AddTransient<ITokenCreatorService, TokenCreatorService>()
+            .AddTransient<IHttpClientWrapperFactory, HttpClientWrapperFactory>()
+            .AddTransient<IFileSystemAccess, FileSystemAccess>()
             .AddScoped<IAssetRepository, AssetRepository>()
             .AddDbContextAndMigrationService<AssetManagementDbContext>();
     }

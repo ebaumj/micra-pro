@@ -21,9 +21,6 @@ public class RoasteryService(IRoasteryRepository roasteryRepository) : IRoastery
     public async Task<IEnumerable<IRoastery>> GetRoasteriesAsync(CancellationToken ct) =>
         (await roasteryRepository.GetAllAsync(ct)).Select(entity => new Roastery(entity));
 
-    public async Task<IRoastery> GetRoasteryAsync(Guid roasteryId, CancellationToken ct) =>
-        new Roastery(await roasteryRepository.GetByIdAsync(roasteryId, ct));
-
     public async Task<IRoastery> UpdateRoasteryAsync(
         Guid roasteryId,
         RoasteryProperties properties,

@@ -6,5 +6,4 @@ public interface IRoastery
 {
     Guid Id { get; }
     RoasteryProperties Properties { get; }
-    IEnumerable<IBean> Beans { get; }
 }

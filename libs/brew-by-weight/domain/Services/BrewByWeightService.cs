@@ -120,7 +120,7 @@ public class BrewByWeightService(
                 {
                     subject.OnCompleted();
                     await paddleAccess.SetBrewPaddleOnAsync(false, CancellationToken.None);
-                    await BrewByWeightDbService.StoreProcess(
+                    await BrewByWeightDbService.StoreProcessAsync(
                         beanId,
                         scaleId,
                         inCupQuantity,

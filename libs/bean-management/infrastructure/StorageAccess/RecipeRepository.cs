@@ -14,7 +14,7 @@ public class RecipeRepository(MigratedContextProvider<BeanManagementDbContext> c
     protected override async Task<DbContext> GetContextAsync(CancellationToken ct) =>
         await contextProvider.GetContextAsync(ct);
 
-    public async Task<RecipeDb> UpdateEspressoAsync(
+    public async Task<EspressoRecipeDb> UpdateEspressoAsync(
         Guid recipeId,
         double grindSetting,
         double coffeeQuantity,
@@ -36,7 +36,7 @@ public class RecipeRepository(MigratedContextProvider<BeanManagementDbContext> c
         return entity;
     }
 
-    public async Task<RecipeDb> UpdateV60Async(
+    public async Task<V60RecipeDb> UpdateV60Async(
         Guid recipeId,
         double grindSetting,
         double coffeeQuantity,

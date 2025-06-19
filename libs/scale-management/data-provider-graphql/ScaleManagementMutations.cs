@@ -14,7 +14,7 @@ public static class ScaleManagementMutations
         string scaleIdentifier,
         string name,
         CancellationToken ct
-    ) => new(await scaleService.AddScale(name, scaleIdentifier, ct));
+    ) => new(await scaleService.AddScaleAsync(name, scaleIdentifier, ct));
 
     [RequiredPermissions([Permission.WriteScales])]
     public static async Task<Guid> RemoveScale(
@@ -23,7 +23,7 @@ public static class ScaleManagementMutations
         CancellationToken ct
     )
     {
-        await scaleService.RemoveScale(scaleId, ct);
+        await scaleService.RemoveScaleAsync(scaleId, ct);
         return scaleId;
     }
 
@@ -33,7 +33,7 @@ public static class ScaleManagementMutations
         Guid scaleId,
         string name,
         CancellationToken ct
-    ) => new(await scaleService.RenameScale(scaleId, name, ct));
+    ) => new(await scaleService.RenameScaleAsync(scaleId, name, ct));
 
     [RequiredPermissions([Permission.ReadScales])]
     public static async Task<bool> ScanForScales(

@@ -6,7 +6,7 @@ namespace MicraPro.BrewByWeight.Domain.Interfaces;
 
 public interface IBrewByWeightDbService
 {
-    Task StoreProcess(
+    Task StoreProcessAsync(
         Guid beanId,
         Guid scaleId,
         double inCupQuantity,

@@ -21,9 +21,6 @@ public class RecipeService(IRecipeRepository recipeRepository) : IRecipeService
     public async Task<IEnumerable<IRecipe>> GetRecipesAsync(CancellationToken ct) =>
         (await recipeRepository.GetAllAsync(ct)).Select(entity => entity.ToRecipe());
 
-    public async Task<IRecipe> GetRecipeAsync(Guid recipeId, CancellationToken ct) =>
-        (await recipeRepository.GetByIdAsync(recipeId, ct)).ToRecipe();
-
     public async Task<IRecipe> UpdateRecipeAsync(
         Guid recipeId,
         RecipeProperties properties,

@@ -4,7 +4,7 @@ namespace MicraPro.BeanManagement.Domain.StorageAccess;
 
 public interface IRecipeRepository : IRepository<RecipeDb>
 {
-    Task<RecipeDb> UpdateEspressoAsync(
+    Task<EspressoRecipeDb> UpdateEspressoAsync(
         Guid recipeId,
         double grindSetting,
         double coffeeQuantity,
@@ -14,7 +14,7 @@ public interface IRecipeRepository : IRepository<RecipeDb>
         CancellationToken ct
     );
 
-    Task<RecipeDb> UpdateV60Async(
+    Task<V60RecipeDb> UpdateV60Async(
         Guid recipeId,
         double grindSetting,
         double coffeeQuantity,

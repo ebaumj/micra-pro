@@ -1,5 +1,3 @@
-using MicraPro.AssetManagement.Domain.StorageAccess;
-
 namespace MicraPro.AssetManagement.Domain.Interfaces;
 
 public interface IPollAssetService

@@ -46,14 +46,13 @@ public class RolePermissionService : IRolePermissionService<Permission>
         if (_permissions.TryGetValue(role, out var permission))
             permissions.AddRange(permission);
         if (_includedRoles.TryGetValue(role, out var includedRole))
-            includedRole
-                .Where(r => _permissions.ContainsKey(r))
-                .SelectMany(r => _permissions[r])
-                .ForEach(p =>
-                {
-                    if (!permissions.Contains(p))
-                        permissions.Add(p);
-                });
+            foreach (
+                var p in includedRole
+                    .Where(r => _permissions.ContainsKey(r))
+                    .SelectMany(r => _permissions[r])
+            )
+                if (!permissions.Contains(p))
+                    permissions.Add(p);
         return permissions;
     }
 }

@@ -1,10 +1,13 @@
 using MicraPro.AssetManagement.Domain.AssetAccess;
+using MicraPro.AssetManagement.Infrastructure.Interfaces;
 using Microsoft.Extensions.Options;
 
 namespace MicraPro.AssetManagement.Infrastructure.AssetAccess;
 
-public class AssetDirectoryService(IOptions<AssetManagementInfrastructureOptions> options)
-    : IAssetDirectoryService
+public class AssetDirectoryService(
+    IFileSystemAccess fileSystemAccess,
+    IOptions<AssetManagementInfrastructureOptions> options
+) : IAssetDirectoryService
 {
     public string CreateRandomFileNameWithoutExtension() => Path.GetRandomFileName();
 
@@ -17,9 +20,9 @@ public class AssetDirectoryService(IOptions<AssetManagementInfrastructureOptions
 
     public async Task WriteFileAsync(string path, byte[] content, CancellationToken ct)
     {
-        if (!Directory.Exists(options.Value.LocalFileServerFolder))
-            Directory.CreateDirectory(options.Value.LocalFileServerFolder);
-        await File.WriteAllBytesAsync(
+        if (!fileSystemAccess.DirectoryExists(options.Value.LocalFileServerFolder))
+            fileSystemAccess.CreateDirectory(options.Value.LocalFileServerFolder);
+        await fileSystemAccess.WriteFileAsync(
             Path.Join(options.Value.LocalFileServerFolder, path),
             content,
             ct
@@ -31,7 +34,7 @@ public class AssetDirectoryService(IOptions<AssetManagementInfrastructureOptions
     {
         try
         {
-            File.Delete(Path.Join(options.Value.LocalFileServerFolder, path));
+            fileSystemAccess.DeleteFile(Path.Join(options.Value.LocalFileServerFolder, path));
         }
         catch (FileNotFoundException)
         {
@@ -43,9 +46,9 @@ public class AssetDirectoryService(IOptions<AssetManagementInfrastructureOptions
 
     public Task ReadFilesAsync(CancellationToken ct)
     {
-        if (!Directory.Exists(options.Value.LocalFileServerFolder))
-            Directory.CreateDirectory(options.Value.LocalFileServerFolder);
-        _files = Directory
+        if (!fileSystemAccess.DirectoryExists(options.Value.LocalFileServerFolder))
+            fileSystemAccess.CreateDirectory(options.Value.LocalFileServerFolder);
+        _files = fileSystemAccess
             .GetFiles(options.Value.LocalFileServerFolder, "*.*", SearchOption.AllDirectories)
             .Select(f => Path.GetRelativePath(options.Value.LocalFileServerFolder, f))
             .ToList();

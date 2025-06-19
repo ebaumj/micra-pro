@@ -14,7 +14,7 @@ public static class ScaleManagementQueries
     public static async Task<ScaleApi[]> GetScales(
         [Service] IScaleService scaleService,
         CancellationToken ct
-    ) => (await scaleService.GetScales(ct)).Select(s => new ScaleApi(s)).ToArray();
+    ) => (await scaleService.GetScalesAsync(ct)).Select(s => new ScaleApi(s)).ToArray();
 
     [RequiredPermissions([Permission.ReadScales])]
     public static Task<bool> GetScanResultsAvailable(CancellationToken _) => Task.FromResult(true);

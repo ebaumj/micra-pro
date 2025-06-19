@@ -1,4 +1,3 @@
-using System.Collections.Concurrent;
 using System.Reactive.Subjects;
 using MicraPro.AssetManagement.DataDefinition;
 

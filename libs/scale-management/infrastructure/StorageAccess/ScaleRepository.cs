@@ -15,7 +15,7 @@ internal class ScaleRepository(MigratedContextProvider<ScaleManagementDbContext>
     protected override async Task<DbContext> GetContextAsync(CancellationToken ct) =>
         await contextProvider.GetContextAsync(ct);
 
-    public async Task<ScaleDb> UpdateName(Guid scaleId, string name, CancellationToken ct)
+    public async Task<ScaleDb> UpdateNameAsync(Guid scaleId, string name, CancellationToken ct)
     {
         var entity = await GetByIdAsync(scaleId, ct);
         entity.Name = name;

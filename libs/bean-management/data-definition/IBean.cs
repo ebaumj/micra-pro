@@ -7,5 +7,4 @@ public interface IBean
     Guid Id { get; }
     Guid RoasteryId { get; }
     BeanProperties Properties { get; }
-    IEnumerable<IRecipe> Recipes { get; }
 }
