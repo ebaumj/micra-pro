@@ -6,6 +6,7 @@ using MicraPro.BrewByWeight.DataDefinition;
 using MicraPro.BrewByWeight.DataDefinition.ValueObjects;
 using MicraPro.BrewByWeight.Domain.HardwareAccess;
 using MicraPro.BrewByWeight.Domain.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace MicraPro.BrewByWeight.Domain.Services;
@@ -14,6 +15,7 @@ public class BrewByWeightService(
     IRetentionService retentionService,
     IPaddleAccess paddleAccess,
     IScaleAccess scaleAccess,
+    IServiceScopeFactory serviceScopeFactory,
     ILogger<BrewByWeightService> logger
 ) : IBrewByWeightService
 {
@@ -24,6 +26,11 @@ public class BrewByWeightService(
 
     private readonly BehaviorSubject<BrewByWeightState> _state = new(new BrewByWeightState.Idle());
     private ProcessDisposableToken[] _processDisposables = [];
+
+    private IBrewByWeightDbService BrewByWeightDbService =>
+        serviceScopeFactory
+            .CreateScope()
+            .ServiceProvider.GetRequiredService<IBrewByWeightDbService>();
 
     public IObservable<BrewByWeightState> State => _state;
 
@@ -113,6 +120,17 @@ public class BrewByWeightService(
                 {
                     subject.OnCompleted();
                     await paddleAccess.SetBrewPaddleOnAsync(false, CancellationToken.None);
+                    await BrewByWeightDbService.StoreProcess(
+                        beanId,
+                        scaleId,
+                        inCupQuantity,
+                        grindSetting,
+                        coffeeQuantity,
+                        targetExtractionTime,
+                        spout,
+                        await subject.ToArray().ToTask(CancellationToken.None),
+                        CancellationToken.None
+                    );
                 }
             })
             .Subscribe(_ =>
@@ -167,7 +185,15 @@ public class BrewByWeightService(
             stopwatch.Start();
             await paddleAccess.SetBrewPaddleOnAsync(true, ct);
             using var subscription = connection.Data.Subscribe(d =>
-                updateState(new BrewByWeightTracking.Running(d.Flow, d.Weight, stopwatch.Elapsed))
+                updateState(
+                    spout == IBrewByWeightService.Spout.Double
+                        ? new BrewByWeightTracking.Running(
+                            d.Flow * 2,
+                            d.Weight * 2,
+                            stopwatch.Elapsed
+                        )
+                        : new BrewByWeightTracking.Running(d.Flow, d.Weight, stopwatch.Elapsed)
+                )
             );
             await connection.Data.TakeUntil(d => d.Weight >= inCupQuantity - retention).ToTask(ct);
             var extractionTime = stopwatch.Elapsed;

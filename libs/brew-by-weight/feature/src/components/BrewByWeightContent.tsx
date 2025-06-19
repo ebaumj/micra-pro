@@ -63,8 +63,11 @@ export const BrewByWeightContent: Component<{
       case 'BrewProcessRunning':
       case 'BrewProcessCancelled':
       case 'BrewProcessFailed':
-      case 'BrewProcessFinished':
         return moment.duration(accessor.dataStore.state.totalTime).asSeconds();
+      case 'BrewProcessFinished':
+        return moment
+          .duration(accessor.dataStore.state.extractionTime)
+          .asSeconds();
     }
   };
   const quantity = (): number => {
@@ -126,10 +129,10 @@ export const BrewByWeightContent: Component<{
               message: t('scale-connection-failed'),
             });
             return;
-          case 'ScaleDisconnected':
+          case 'BrewServiceNotReady':
             handleError({
               title: t('error'),
-              message: t('scale-disconnected'),
+              message: t('not-ready'),
             });
             return;
           default:

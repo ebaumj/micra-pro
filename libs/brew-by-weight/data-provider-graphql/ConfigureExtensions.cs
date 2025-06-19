@@ -9,6 +9,45 @@ namespace MicraPro.BrewByWeight.DataProviderGraphQl;
 
 public static class ConfigureExtensions
 {
+    private static Action<IRequestExecutorBuilder> CreateAddBrewByWeightHistoryEntryTypeAction(
+        Type type
+    ) =>
+        builder =>
+        {
+            typeof(SchemaRequestExecutorBuilderExtensions)
+                .GetMethods()
+                .FirstOrDefault(m =>
+                    m.Name == "AddObjectType"
+                    && m.GetParameters().Length == 2
+                    && m is { IsGenericMethod: true, IsStatic: true }
+                )!
+                .MakeGenericMethod(type)
+                .Invoke(
+                    null,
+                    [
+                        builder,
+                        (object descriptor) =>
+                        {
+                            typeof(IObjectTypeDescriptor<>)
+                                .MakeGenericType(type)
+                                .GetMethods()
+                                .FirstOrDefault(m =>
+                                    m.Name == "Implements" && m.GetParameters().Length == 0
+                                )!
+                                .MakeGenericMethod(typeof(InterfaceType<BrewByWeightHistoryEntry>))
+                                .Invoke(descriptor, []);
+                            typeof(IObjectTypeDescriptor<>)
+                                .MakeGenericType(type)
+                                .GetMethods()
+                                .FirstOrDefault(m =>
+                                    m.Name == "Name" && m.GetParameters().Length == 1
+                                )!
+                                .Invoke(descriptor, [$"HistoryEntry{type.Name}"]);
+                        },
+                    ]
+                );
+        };
+
     private static Action<IRequestExecutorBuilder> CreateAddBrewByWeightTrackingTypeAction(
         Type type
     ) =>
@@ -139,11 +178,31 @@ public static class ConfigureExtensions
         return builder;
     }
 
+    private static readonly IEnumerable<
+        Action<IRequestExecutorBuilder>
+    > BrewByWeightHistoryEntryTypes = typeof(BrewByWeightHistoryEntry)
+        .Assembly.GetTypes()
+        .Where(a => a.IsSubclassOf(typeof(BrewByWeightHistoryEntry)))
+        .Select(CreateAddBrewByWeightHistoryEntryTypeAction);
+
+    private static IRequestExecutorBuilder ConfigureBrewByWeightHistoryEntryType(
+        this IRequestExecutorBuilder builder
+    )
+    {
+        builder.AddInterfaceType<BrewByWeightHistoryEntry>();
+        foreach (var addTypeAction in BrewByWeightHistoryEntryTypes)
+            addTypeAction(builder);
+        return builder;
+    }
+
     public static IRequestExecutorBuilder AddBrewByWeightDataProviderGraphQlTypes(
         this IRequestExecutorBuilder builder
     )
     {
-        return builder.AddDataProviderGraphQlTypes().ConfigureBrewByWeightTrackingType();
+        return builder
+            .AddDataProviderGraphQlTypes()
+            .ConfigureBrewByWeightTrackingType()
+            .ConfigureBrewByWeightHistoryEntryType();
     }
 
     public static IServiceCollection AddBrewByWeightDataProviderGraphQlServices(

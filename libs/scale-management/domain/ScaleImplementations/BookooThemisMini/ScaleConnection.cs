@@ -15,7 +15,6 @@ public class ScaleConnection(
     public async Task DisconnectAsync(CancellationToken ct)
     {
         await connection.Disconnect(ct);
-        connection.Dispose();
     }
 
     public Task TareAsync(CancellationToken ct) =>
