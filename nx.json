@@ -38,7 +38,6 @@
     "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
   },
   "workspaceLayout": { "appsDir": "apps", "libsDir": "libs" },
-  "nxCloudId": "684ae7d8430f766b0daa7b3e",
   "plugins": [
     {
       "plugin": "@nx-dotnet/core",
