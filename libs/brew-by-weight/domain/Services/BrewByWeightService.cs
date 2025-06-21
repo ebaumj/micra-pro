@@ -202,6 +202,7 @@ public class BrewByWeightService(
             await connection
                 .Data.TakeUntil(d => d.Flow < 0.1 || stopwatch.Elapsed > finishTime)
                 .ToTask(ct);
+            stopwatch.Stop();
             await Task.Delay(TimeSpan.FromSeconds(3), ct);
             return extractionTime;
         }
