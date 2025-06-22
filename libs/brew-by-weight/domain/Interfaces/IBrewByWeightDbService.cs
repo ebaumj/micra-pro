@@ -19,4 +19,9 @@ public interface IBrewByWeightDbService
     );
 
     Task<IEnumerable<FinishedProcessDb>> GetFinishedAsync(CancellationToken ct);
+
+    Task<IEnumerable<ProcessRuntimeDataDb>> GetRuntimeDataAsync(
+        Guid processId,
+        CancellationToken ct
+    );
 }

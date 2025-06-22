@@ -94,4 +94,16 @@ public class BrewByWeightDbService(
 
     public async Task<IEnumerable<FinishedProcessDb>> GetFinishedAsync(CancellationToken ct) =>
         (await processRepository.GetAllAsync(ct)).OfType<FinishedProcessDb>();
+
+    public async Task<IEnumerable<ProcessRuntimeDataDb>> GetRuntimeDataAsync(
+        Guid processId,
+        CancellationToken ct
+    )
+    {
+        var list = (await processRuntimeDataRepository.GetAllAsync(ct))
+            .Where(p => p.ProcessId == processId)
+            .ToList();
+        list.Sort((a, b) => a.TotalTime.CompareTo(b.TotalTime));
+        return list;
+    }
 }
