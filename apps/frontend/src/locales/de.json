@@ -6,5 +6,9 @@
   "root.menu-sidebar-mainscreen-config": "Hauptansicht",
   "root.menu-sidebar-statistics": "Statistik",
   "root.menu-sidebar-history": "Verlauf",
-  "root.scale": "Waage"
+  "root.scale": "Waage",
+  "root.reboot": "Neu Starten",
+  "root.shutdown": "Herunterfahren",
+  "root.reboot-failed": "Neustart fehlgeschlagen",
+  "root.shutdown-failed": "Herunterfahren fehlgeschlagen"
 }

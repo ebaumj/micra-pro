@@ -9,6 +9,7 @@ public class PermissionsTest
     {
         // Common
         (0, Permission.TestConnection),
+        (1, Permission.SystemAccess),
         // Scale Management
         (1000, Permission.ReadScales),
         (1001, Permission.WriteScales),

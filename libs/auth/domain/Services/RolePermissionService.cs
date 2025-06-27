@@ -29,6 +29,7 @@ public class RolePermissionService : IRolePermissionService<Permission>
         {
             AccessRoles.Admin,
             [
+                Permission.SystemAccess,
                 Permission.WriteConfiguration,
                 Permission.WriteScales,
                 Permission.WriteRoasteries,

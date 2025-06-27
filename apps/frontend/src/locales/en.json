@@ -6,5 +6,9 @@
   "root.menu-sidebar-mainscreen-config": "Mainscreen",
   "root.menu-sidebar-statistics": "Statistics",
   "root.menu-sidebar-history": "History",
-  "root.scale": "Scale"
+  "root.scale": "Scale",
+  "root.reboot": "Reboot",
+  "root.shutdown": "Shutdown",
+  "root.reboot-failed": "Reboot failed",
+  "root.shutdown-failed": "Shutdown failed"
 }
