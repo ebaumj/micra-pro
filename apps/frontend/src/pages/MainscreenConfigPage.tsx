@@ -12,16 +12,9 @@ import {
   LongPressDiv,
   Spinner,
 } from '@micra-pro/shared/ui';
-import { readConfig, writeConfig } from '@micra-pro/shared/utils-ts';
+import { createConfigAccessor } from '@micra-pro/shared/utils-ts';
 import { trackStore } from '@solid-primitives/deep';
-import {
-  Component,
-  createEffect,
-  createResource,
-  createSignal,
-  For,
-  Show,
-} from 'solid-js';
+import { Component, createEffect, createSignal, For, on, Show } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
 export type MainScreenConfig = {
@@ -84,40 +77,32 @@ const BeanPreview: Component<{
   );
 };
 
-export const readMainScreenConfig = () => {
-  const [config] = createResource(async () => {
-    try {
-      return await readConfig<MainScreenConfig>('MainScreenConfig');
-    } catch {
-      return defaultConfig;
-    }
-  });
-  return config;
-};
-
 export const MainscreenConfigPage: Component<{}> = () => {
   const [currentPosition, setCurrentPosition] = createSignal<
     { x: number; y: number } | undefined
   >();
+  const configAccessor = createConfigAccessor('MainScreenConfig');
   const [config, setConfig] = createStore(defaultConfig);
-  const [configLoading, setConfigLoading] = createSignal(true);
-
-  readConfig<MainScreenConfig>('MainScreenConfig')
-    .then((c) => setConfig(c))
-    .finally(() => {
-      setConfigLoading(false);
-    });
-
-  createEffect(
-    () =>
-      !configLoading() && writeConfig('MainScreenConfig', trackStore(config)),
-  );
-
   const roasteries = fetchRoasteriesLevel();
   const [deleting, setDeleting] = createSignal(false);
-
-  const isLoading = () => roasteries.isLoading() || configLoading();
-
+  const isLoading = () => roasteries.isLoading() || configAccessor.loading();
+  createEffect(
+    on(
+      configAccessor.loading,
+      (loading) => {
+        if (!loading) {
+          const read = configAccessor.config();
+          if (read) setConfig(read);
+        }
+      },
+      { defer: true },
+    ),
+  );
+  createEffect(
+    () =>
+      !configAccessor.loading() &&
+      configAccessor.writeConfig(trackStore(config)),
+  );
   const tileLongPress = (x: number, y: number) => {
     const index = config.buttons.findIndex(
       (b) => b.pos.x === x && b.pos.y === y,

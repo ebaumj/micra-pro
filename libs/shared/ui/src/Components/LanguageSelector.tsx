@@ -1,9 +1,8 @@
-import { Component, createEffect, createSignal, Show } from 'solid-js';
+import { Component, createEffect, Show } from 'solid-js';
 import { Select } from './Select';
 import {
-  readConfig,
+  createConfigAccessor,
   useTranslationContext,
-  writeConfig,
 } from '@micra-pro/shared/utils-ts';
 import * as flags from 'country-flag-icons/string/3x2';
 import { twMerge } from 'tailwind-merge';
@@ -44,22 +43,12 @@ const LanguageFlag: Component<{ language?: string; class?: string }> = (
 };
 
 export const LanguageSelector: Component<{ class?: string }> = (props) => {
-  let storageValue: string | undefined;
   const context = useTranslationContext();
-  const [initialRead, setInitialRead] = createSignal(false);
   const keyboard = useKeyboardInternal();
-  readConfig<{ language: string }>('Language')
-    .then((l) => {
-      context.changeLanguage(l.language);
-      storageValue = l.language;
-    })
-    .finally(() => setInitialRead(true));
+  const configAccessor = createConfigAccessor<{ language: string }>('Language');
   createEffect(() => {
-    var lan = context.language();
-    if (lan !== storageValue && initialRead())
-      writeConfig('Language', { language: lan }).then(
-        (l) => (storageValue = l.language),
-      );
+    const lan = configAccessor.config()?.language;
+    if (lan) context.changeLanguage(lan);
   });
   createEffect(() => {
     var lan = context.language();
@@ -75,7 +64,7 @@ export const LanguageSelector: Component<{ class?: string }> = (props) => {
           </div>
         </div>
       )}
-      onChange={(val) => context.changeLanguage(val)}
+      onChange={(val) => configAccessor.writeConfig({ language: val })}
       value={context.language()}
       class={props.class}
     />

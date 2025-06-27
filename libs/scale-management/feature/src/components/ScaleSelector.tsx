@@ -11,14 +11,6 @@ export const ScaleSelector: Component<{ class?: string }> = (props) => {
   var scalesAccessor = createScalesAccessor();
   var navigate = useNavigate();
 
-  const setScale = (value: string): Promise<void> =>
-    new Promise<void>((resolve, reject) =>
-      ctx
-        .setSelectedScale(value)
-        .then(() => resolve())
-        .catch((e) => reject(e)),
-    );
-
   const setupScales = () => {
     navigate('/menu/scales', { replace: true });
   };
@@ -33,7 +25,7 @@ export const ScaleSelector: Component<{ class?: string }> = (props) => {
               {scalesAccessor.scales().find((s) => s.id === id)?.name}
             </div>
           )}
-          onChange={(val) => setScale(val)}
+          onChange={(val) => ctx.setSelectedScale(val)}
           value={ctx.selectedScale()}
           class={props.class}
         />
