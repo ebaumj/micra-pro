@@ -9,25 +9,23 @@ public class RetentionService(IServiceScopeFactory serviceScopeFactory) : IReten
 {
     private const double DefaultSingleSpoutRetention = 5;
     private const double DefaultDoubleSpoutRetention = 5;
-    private const double DefaultNakedFilterRetention = 5;
+    private const double DefaultNakedFilterRetention = 1;
 
-    private async Task<double> CalculateRetentionFromNewestEntry(
-        IReadOnlyCollection<FinishedProcessDb> entries,
+    private async Task<double> CalculateRetentionAsync(
+        FinishedProcessDb entry,
         CancellationToken ct
     )
     {
-        var latest = entries.MaxBy(e => e.Timestamp)!;
         var runtimeData = await serviceScopeFactory
             .CreateScope()
             .ServiceProvider.GetRequiredService<IBrewByWeightDbService>()
-            .GetRuntimeDataAsync(latest.Id, ct);
-        var totalQuantity = latest.TotalQuantity;
+            .GetRuntimeDataAsync(entry.Id, ct);
         var stopQuantity =
-            runtimeData.LastOrDefault(r => r.TotalTime < latest.ExtractionTime)?.TotalQuantity
-            ?? totalQuantity;
-        if (stopQuantity > totalQuantity)
+            runtimeData.LastOrDefault(r => r.TotalTime < entry.ExtractionTime)?.TotalQuantity
+            ?? entry.TotalQuantity;
+        if (stopQuantity > entry.TotalQuantity)
             return 0;
-        return totalQuantity - stopQuantity;
+        return entry.TotalQuantity - stopQuantity;
     }
 
     public async Task<double> CalculateRetentionWeightAsync(
@@ -40,7 +38,7 @@ public class RetentionService(IServiceScopeFactory serviceScopeFactory) : IReten
         CancellationToken ct
     )
     {
-        var allProcessDataForSpout = (
+        var processes = (
             await serviceScopeFactory
                 .CreateScope()
                 .ServiceProvider.GetRequiredService<IBrewByWeightDbService>()
@@ -48,36 +46,33 @@ public class RetentionService(IServiceScopeFactory serviceScopeFactory) : IReten
         )
             .Where(p => p.Spout == spout)
             .ToArray();
-        if (allProcessDataForSpout.Length == 0)
+        if (processes.Length == 0)
             return spout switch
             {
                 IBrewByWeightService.Spout.Single => DefaultSingleSpoutRetention,
                 IBrewByWeightService.Spout.Double => DefaultDoubleSpoutRetention,
                 _ => DefaultNakedFilterRetention,
             };
-        var sameCoffeeQuantity = allProcessDataForSpout
-            .Where(p => Math.Abs(p.CoffeeQuantity - coffeeQuantity) < 0.5)
-            .ToArray();
-        if (sameCoffeeQuantity.Length == 0)
-            return await CalculateRetentionFromNewestEntry(allProcessDataForSpout, ct);
-        var sameGrindSetting = sameCoffeeQuantity
-            .Where(p => Math.Abs(p.GrindSetting - coffeeQuantity) < 0.2)
-            .ToArray();
-        if (sameGrindSetting.Length == 0)
-            return await CalculateRetentionFromNewestEntry(sameCoffeeQuantity, ct);
-        var sameTargetExtractionTime = sameGrindSetting
-            .Where(p => p.TargetExtractionTime == targetExtractionTime)
-            .ToArray();
-        if (sameTargetExtractionTime.Length == 0)
-            return await CalculateRetentionFromNewestEntry(sameGrindSetting, ct);
-        var sameInCupQuantity = sameCoffeeQuantity
-            .Where(p => Math.Abs(p.InCupQuantity - coffeeQuantity) < 0.5)
-            .ToArray();
-        if (sameInCupQuantity.Length == 0)
-            return await CalculateRetentionFromNewestEntry(sameTargetExtractionTime, ct);
-        var sameBeanId = sameCoffeeQuantity.Where(p => p.BeanId == beanId).ToArray();
-        if (sameBeanId.Length == 0)
-            return await CalculateRetentionFromNewestEntry(sameInCupQuantity, ct);
-        return await CalculateRetentionFromNewestEntry(sameBeanId, ct);
+        return await CalculateRetentionAsync(
+            processes
+                // Same Bean
+                .WhereOrAll(p => p.BeanId == beanId)
+                // Same Target Average Flow
+                .WhereOrAll(p =>
+                    Math.Abs(
+                        p.InCupQuantity / p.TargetExtractionTime.TotalSeconds
+                            - inCupQuantity / targetExtractionTime.TotalSeconds
+                    ) < 0.1
+                )
+                // Same Ratio
+                .WhereOrAll(p =>
+                    Math.Abs(p.CoffeeQuantity / p.InCupQuantity - coffeeQuantity / inCupQuantity)
+                    < 0.01
+                )
+                // Same Grind Setting
+                .WhereOrAll(p => Math.Abs(p.GrindSetting - grindSetting) < 0.5)
+                .MaxByOrFirst(p => p.Timestamp),
+            ct
+        );
     }
 }
