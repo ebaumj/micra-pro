@@ -19,6 +19,9 @@ public class BrewByWeightService(
     ILogger<BrewByWeightService> logger
 ) : IBrewByWeightService
 {
+    private static readonly TimeSpan MaximumDripTime = TimeSpan.FromSeconds(10);
+    private static readonly TimeSpan WaitTimeAfterCupFull = TimeSpan.FromSeconds(3);
+
     private record ProcessDisposableToken(Guid ProcessId, IDisposable Disposable);
 
     private record BrewProcess(Guid ProcessId, IObservable<BrewByWeightTracking> State)
@@ -159,16 +162,19 @@ public class BrewByWeightService(
     {
         if (_state.Value is not BrewByWeightState.Idle)
             throw new BrewByWeightException.BrewServiceNotReady();
-        var retention = await retentionService.CalculateRetentionWeightAsync(
-            beanId,
-            inCupQuantity,
-            grindSetting,
-            coffeeQuantity,
-            targetExtractionTime,
-            spout,
-            ct
-        );
+        var paddleOffWeight =
+            inCupQuantity
+            - await retentionService.CalculateRetentionWeightAsync(
+                beanId,
+                inCupQuantity,
+                grindSetting,
+                coffeeQuantity,
+                targetExtractionTime,
+                spout,
+                ct
+            );
         IScaleConnection connection;
+        Stopwatch stopwatch = new Stopwatch();
         try
         {
             connection = await scaleAccess.ConnectScaleAsync(scaleId, ct);
@@ -181,7 +187,6 @@ public class BrewByWeightService(
         {
             await connection.TareAsync(ct);
             await connection.Data.TakeUntil(d => d.Weight is < 0.2 and > -0.2).ToTask(ct);
-            var stopwatch = new Stopwatch();
             stopwatch.Start();
             await paddleAccess.SetBrewPaddleOnAsync(true, ct);
             using var subscription = connection.Data.Subscribe(d =>
@@ -195,19 +200,19 @@ public class BrewByWeightService(
                         : new BrewByWeightTracking.Running(d.Flow, d.Weight, stopwatch.Elapsed)
                 )
             );
-            await connection.Data.TakeUntil(d => d.Weight >= inCupQuantity - retention).ToTask(ct);
+            await connection.Data.TakeUntil(d => d.Weight >= paddleOffWeight).ToTask(ct);
             var extractionTime = stopwatch.Elapsed;
             await paddleAccess.SetBrewPaddleOnAsync(false, ct);
-            var finishTime = stopwatch.Elapsed + TimeSpan.FromSeconds(10);
+            var finishTime = stopwatch.Elapsed + MaximumDripTime;
             await connection
                 .Data.TakeUntil(d => d.Flow < 0.1 || stopwatch.Elapsed > finishTime)
                 .ToTask(ct);
-            stopwatch.Stop();
-            await Task.Delay(TimeSpan.FromSeconds(3), ct);
+            await Task.Delay(WaitTimeAfterCupFull, ct);
             return extractionTime;
         }
         finally
         {
+            stopwatch.Stop();
             Observable
                 .FromAsync(async t => await connection.DisconnectAsync(t))
                 .Subscribe(_ => { });
