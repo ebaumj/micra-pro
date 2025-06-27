@@ -1,0 +1,11 @@
+mutation Reboot {
+  reboot {
+    boolean
+  }
+}
+
+mutation Shutdown {
+  shutdown {
+    boolean
+  }
+}

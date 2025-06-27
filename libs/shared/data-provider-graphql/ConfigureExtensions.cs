@@ -27,7 +27,8 @@ public static class ConfigureExtensions
         builder = builder
             .AddTypeExtension(typeof(ConfigurationMutations))
             .AddTypeExtension(typeof(ConfigurationQueries))
-            .AddTypeExtension(typeof(ConnectionTestQueries));
+            .AddTypeExtension(typeof(ConnectionTestQueries))
+            .AddTypeExtension(typeof(SystemMutations));
         builder.ConfigureSchema(b =>
             b.TryAddRootType(
                 () => new ObjectType(d => d.Name(OperationTypeNames.Query)),

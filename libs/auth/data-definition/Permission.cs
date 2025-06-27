@@ -4,6 +4,7 @@ public enum Permission
 {
     // Common
     TestConnection = 0,
+    SystemAccess,
 
     // Scale Management
     ReadScales = 1000,

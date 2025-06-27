@@ -1,5 +1,5 @@
 import { ScaleSelector } from '@micra-pro/scale-management/feature';
-import { CountryFlag, Icon } from '@micra-pro/shared/ui';
+import { Button, CountryFlag, Icon } from '@micra-pro/shared/ui';
 import { A } from '@solidjs/router';
 import { Component, createSignal, For, ParentComponent, Show } from 'solid-js';
 import { T } from '../generated/language-types';
@@ -15,6 +15,7 @@ import { RecipePannel } from '@micra-pro/bean-management/feature';
 import { BrewByWeightPannel } from '@micra-pro/brew-by-weight/feature';
 import { useSelectedScaleContext } from '@micra-pro/scale-management/feature';
 import { createConfigAccessor } from '@micra-pro/shared/utils-ts';
+import { PowerButton } from '../components/PowerButton';
 
 const BeanButtons: Component<{
   beans: Bean[];
@@ -147,6 +148,14 @@ const Layout: ParentComponent = (props) => {
           </div>
           <ScaleSelector class="w-64" />
           <LanguageSelector class="w-40" />
+          <Button
+            variant="outline"
+            class="w-24"
+            onClick={() => location.reload()}
+          >
+            <Icon iconName="refresh" />
+          </Button>
+          <PowerButton class="w-24" />
         </div>
         <div class="h-full w-full">{props.children}</div>
       </div>
