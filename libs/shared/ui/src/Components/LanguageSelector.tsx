@@ -1,9 +1,15 @@
-import { Component, Show } from 'solid-js';
+import { Component, createEffect, createSignal, Show } from 'solid-js';
 import { Select } from './Select';
-import { useTranslationContext } from '@micra-pro/shared/utils-ts';
+import {
+  readConfig,
+  useTranslationContext,
+  writeConfig,
+} from '@micra-pro/shared/utils-ts';
 import * as flags from 'country-flag-icons/string/3x2';
 import { twMerge } from 'tailwind-merge';
 import { CountryFlag } from './CountryFlag';
+import { useKeyboardInternal } from './Keyboard/KeyboardContext';
+import { LayoutOptions, Layouts } from './Keyboard/Keyboards';
 
 const LanguageFlag: Component<{ language?: string; class?: string }> = (
   props,
@@ -38,7 +44,27 @@ const LanguageFlag: Component<{ language?: string; class?: string }> = (
 };
 
 export const LanguageSelector: Component<{ class?: string }> = (props) => {
+  let storageValue: string | undefined;
   const context = useTranslationContext();
+  const [initialRead, setInitialRead] = createSignal(false);
+  const keyboard = useKeyboardInternal();
+  readConfig<{ language: string }>('Language')
+    .then((l) => {
+      context.changeLanguage(l.language);
+      storageValue = l.language;
+    })
+    .finally(() => setInitialRead(true));
+  createEffect(() => {
+    var lan = context.language();
+    if (lan !== storageValue && initialRead())
+      writeConfig('Language', { language: lan }).then(
+        (l) => (storageValue = l.language),
+      );
+  });
+  createEffect(() => {
+    var lan = context.language();
+    if (LayoutOptions.includes(lan)) keyboard.setLayout(lan as Layouts);
+  });
   return (
     <Select
       options={context.languages().map((l) => l)}
