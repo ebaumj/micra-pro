@@ -9,11 +9,12 @@ import {
   EspressoProperties,
   fetchBeansLevel,
 } from '@micra-pro/bean-management/data-access';
-import { MainScreenConfig, readMainScreenConfig } from './MainscreenConfigPage';
+import { MainScreenConfig } from './MainscreenConfigPage';
 import { Asset } from '@micra-pro/asset-management/feature';
 import { RecipePannel } from '@micra-pro/bean-management/feature';
 import { BrewByWeightPannel } from '@micra-pro/brew-by-weight/feature';
 import { useSelectedScaleContext } from '@micra-pro/scale-management/feature';
+import { createConfigAccessor } from '@micra-pro/shared/utils-ts';
 
 const BeanButtons: Component<{
   beans: Bean[];
@@ -73,10 +74,11 @@ const BeanButtons: Component<{
 
 function MainScreen() {
   const beans = fetchBeansLevel();
-  const config = readMainScreenConfig();
+  const configAccessor =
+    createConfigAccessor<MainScreenConfig>('MainScreenConfig');
   const scales = useSelectedScaleContext();
 
-  const isLoading = () => beans.isLoading() || !config.latest;
+  const isLoading = () => beans.isLoading() || !configAccessor.config();
 
   const [selectedBean, setSelectedBean] = createSignal<string | null>(null);
 
@@ -106,9 +108,6 @@ function MainScreen() {
   return (
     <Layout>
       <div class="flex h-full w-full items-center justify-center">
-        <Show when={isLoading()}>
-          <div class="h-full w-full p-4">Main</div>
-        </Show>
         <Show when={!isLoading()}>
           <RecipePannel
             beans={beans.beans()}
@@ -124,7 +123,7 @@ function MainScreen() {
           <div class="w-full">
             <BeanButtons
               beans={beans.beans()}
-              config={config.latest!}
+              config={configAccessor.config()!}
               onButtonClick={(b) => setSelectedBean(b.id)}
             />
           </div>
