@@ -13,7 +13,7 @@ import {
 } from '../generated/graphql';
 import { createEffect } from 'solid-js';
 
-export type ConfigKey = 'MainScreenConfig' | 'SelectedScale';
+export type ConfigKey = 'MainScreenConfig' | 'SelectedScale' | 'Language';
 
 export function readConfig<T>(key: ConfigKey): Promise<T> {
   const query = createQuery<

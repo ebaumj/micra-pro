@@ -7,3 +7,4 @@ export const keyboards = {
 };
 
 export type Layouts = keyof typeof keyboards;
+export const LayoutOptions = Object.keys(keyboards);
