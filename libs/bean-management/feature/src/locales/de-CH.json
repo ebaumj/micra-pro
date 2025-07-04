@@ -1,0 +1,15 @@
+{
+  "bean-management.name": "Name",
+  "bean-management.location": "Ort",
+  "bean-management.country-code": "Land",
+  "bean-management.save": "Spichere",
+  "bean-management.remove": "Lösche",
+  "bean-management.brew-temperature": "Wassertemperatur",
+  "bean-management.coffee-quantity": "So viu Kafi",
+  "bean-management.grind-setting": "So mahle",
+  "bean-management.in-cup-quantity": "So viu im Tassli",
+  "bean-management.water-quantity": "So viu Wasser",
+  "bean-management.target-extraction-time": "So lang",
+  "bean-management.start-espresso": "Mach kafi!",
+  "bean-management.select-brew-mehtod": "Wie wosch kafi mache?"
+}
