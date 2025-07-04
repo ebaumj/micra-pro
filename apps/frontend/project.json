@@ -29,6 +29,13 @@
       },
       "outputs": ["{projectRoot}/src/generated/language-types.tsx"]
     },
+    "import-translations": {
+      "executor": "@micra-pro/workspace-extensions:import-translations",
+      "options": {
+        "outputFolder": "apps/frontend/src/locales/",
+        "namespace": "root"
+      }
+    },
     "lint": {
       "executor": "@nx/eslint:lint"
     }

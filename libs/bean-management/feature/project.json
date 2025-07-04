@@ -32,6 +32,13 @@
         "localesFolderRelativeToOutputFile": "../locales/"
       }
     },
+    "import-translations": {
+      "executor": "@micra-pro/workspace-extensions:import-translations",
+      "options": {
+        "outputFolder": "libs/bean-management/feature/src/locales/",
+        "namespace": "bean-management"
+      }
+    },
     "lint": {
       "executor": "@nx/eslint:lint",
       "dependsOn": ["codegen"]

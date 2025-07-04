@@ -22,7 +22,7 @@ const LanguageFlag: Component<{ language?: string; class?: string }> = (
     switch (language) {
       case 'en':
         return 'GB';
-      case 'de-CH':
+      case 'de_CH':
         return 'CH';
     }
     return undefined;

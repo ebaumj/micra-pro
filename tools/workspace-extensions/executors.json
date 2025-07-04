@@ -14,6 +14,16 @@
       "implementation": "./src/executors/icu-to-typescript/executor",
       "schema": "./src/executors/icu-to-typescript/schema.json",
       "description": "icu-to-typescript executor"
+    },
+    "import-translations": {
+      "implementation": "./src/executors/import-translations/executor",
+      "schema": "./src/executors/import-translations/schema.json",
+      "description": "import-translations executor"
+    },
+    "clear-translations": {
+      "implementation": "./src/executors/clear-translations/executor",
+      "schema": "./src/executors/clear-translations/schema.json",
+      "description": "clear-translations executor"
     }
   }
 }

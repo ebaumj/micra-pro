@@ -32,6 +32,13 @@
         "localesFolderRelativeToOutputFile": "../locales/"
       }
     },
+    "import-translations": {
+      "executor": "@micra-pro/workspace-extensions:import-translations",
+      "options": {
+        "outputFolder": "libs/brew-by-weight/feature/src/locales/",
+        "namespace": "brew-by-weight"
+      }
+    },
     "lint": {
       "executor": "@nx/eslint:lint",
       "dependsOn": ["codegen"]

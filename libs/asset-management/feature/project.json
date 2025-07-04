@@ -32,6 +32,13 @@
         "localesFolderRelativeToOutputFile": "../locales/"
       }
     },
+    "import-translations": {
+      "executor": "@micra-pro/workspace-extensions:import-translations",
+      "options": {
+        "outputFolder": "libs/asset-management/feature/src/locales/",
+        "namespace": "asset-management"
+      }
+    },
     "lint": {
       "executor": "@nx/eslint:lint",
       "dependsOn": ["codegen"]

@@ -1,0 +1,21 @@
+{
+  "name": "tools-translation-cleanup",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/tools/translation-cleanup",
+  "projectType": "application",
+  "tags": ["type:app"],
+  "targets": {
+    "cleanup": {
+      "executor": "@micra-pro/workspace-extensions:clear-translations",
+      "options": {
+        "write": true
+      }
+    },
+    "lint": {
+      "executor": "@micra-pro/workspace-extensions:clear-translations",
+      "options": {
+        "write": false
+      }
+    }
+  }
+}
