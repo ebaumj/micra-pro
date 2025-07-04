@@ -1,3 +1,4 @@
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using MicraPro.AssetManagement.Domain.AssetAccess;
 using MicraPro.AssetManagement.Domain.Interfaces;
@@ -11,6 +12,8 @@ public class StartupAssetFetcher(
     IAssetDirectoryService assetDirectoryService
 ) : IHostedService
 {
+    private IDisposable _subscription = Disposable.Empty;
+
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         await assetDirectoryService.ReadFilesAsync(cancellationToken);
@@ -22,18 +25,26 @@ public class StartupAssetFetcher(
             .GetRequiredService<IAssetCleaner>()
             .CleanupAssetsAsync(cancellationToken);
         if (!success)
-            Observable
-                .Timer(TimeSpan.FromSeconds(3))
-                .Select(_ =>
-                    Observable.FromAsync(async ct =>
-                        await serviceProvider
-                            .GetRequiredService<IAssetManagementService>()
-                            .SyncAssets(ct)
-                    )
-                )
-                .Merge()
+            _subscription = Observable
+                .FromAsync(async ct => await SyncUntilSuccessAsync(ct))
                 .Subscribe(_ => { });
     }
 
-    public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+    private async Task SyncUntilSuccessAsync(CancellationToken ct)
+    {
+        while (
+            !ct.IsCancellationRequested
+            && !await serviceScopeFactory
+                .CreateScope()
+                .ServiceProvider.GetRequiredService<IAssetManagementService>()
+                .SyncAssets(ct)
+        )
+            await Task.Delay(TimeSpan.FromSeconds(3), ct);
+    }
+
+    public Task StopAsync(CancellationToken cancellationToken)
+    {
+        _subscription.Dispose();
+        return Task.CompletedTask;
+    }
 }
