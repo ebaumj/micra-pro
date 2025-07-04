@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "format": "nx format:write && nx run-many --target=format --configuration=write --write=true",
-    "serve": "npx nx run-many -t serve -p backend frontend asset-server"
+    "serve": "nx run-many -t serve -p backend frontend asset-server",
+    "import-translations": "nx run-many -t import-translations && nx format:write && nx run tools-translation-cleanup:cleanup"
   },
   "private": true,
   "devDependencies": {
