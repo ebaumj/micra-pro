@@ -173,8 +173,10 @@ public class BrewByWeightService(
                 spout,
                 ct
             );
+        if (spout == IBrewByWeightService.Spout.Double)
+            paddleOffWeight /= 2;
         IScaleConnection connection;
-        Stopwatch stopwatch = new Stopwatch();
+        var stopwatch = new Stopwatch();
         try
         {
             connection = await scaleAccess.ConnectScaleAsync(scaleId, ct);
