@@ -2,6 +2,7 @@ using HotChocolate.Execution.Configuration;
 using MicraPro.AssetManagement.DataProviderGraphQl;
 using MicraPro.BeanManagement.DataProviderGraphQl;
 using MicraPro.BrewByWeight.DataProviderGraphQl;
+using MicraPro.FlowProfiling.DataProviderGraphQl;
 using MicraPro.ScaleManagement.DataProviderGraphQl;
 using MicraPro.Shared.DataProviderGraphQl;
 
@@ -33,7 +34,8 @@ internal static class ConfigureGraphQlExtensions
             .AddScaleManagementDataProviderGraphQlTypes()
             .AddBeanManagementDataProviderGraphQlTypes()
             .AddAssetManagementDataProviderGraphQlTypes()
-            .AddBrewByWeightDataProviderGraphQlTypes();
+            .AddBrewByWeightDataProviderGraphQlTypes()
+            .AddFlowProfilingDataProviderGraphQlTypes();
     }
 
     // ReSharper disable once ClassNeverInstantiated.Global
