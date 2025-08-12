@@ -11,6 +11,8 @@ import { Spout, StartCoffee } from '@micra-pro/brew-by-weight/data-access';
 import { T, useTranslationContext } from '../generated/language-types';
 import moment from 'moment';
 import { twMerge } from 'tailwind-merge';
+import { StartFlowProfiling } from '@micra-pro/flow-profiling/data-access';
+import { createStore } from 'solid-js/store';
 
 export const BrewByWeightContent: Component<{
   recipe: {
@@ -19,6 +21,10 @@ export const BrewByWeightContent: Component<{
     grindSetting: number;
     inCupQuantity: number;
     targetExtractionTime: string;
+    flowProfile?: {
+      startFlow: number;
+      dataPoints: { flow: number; time: any }[];
+    };
     spout: Spout;
   };
   onClose: () => void;
@@ -27,6 +33,48 @@ export const BrewByWeightContent: Component<{
   const [isStopping, setIsStopping] = createSignal(false);
   // eslint-disable-next-line solid/reactivity
   const accessor = StartCoffee(props.recipe);
+  // eslint-disable-next-line solid/reactivity
+  const flowProfilingAccessor = props.recipe.flowProfile
+    ? // eslint-disable-next-line solid/reactivity
+      StartFlowProfiling(props.recipe.flowProfile)
+    : undefined;
+  const [runtimeData, setRuntimData] = createStore<{
+    data: {
+      flowOutside: number;
+      flowInside: number;
+      quantity: number;
+      time: number;
+    }[];
+  }>({ data: [{ flowOutside: 0, flowInside: 0, quantity: 0, time: 0 }] });
+  const addRuntimeDataInside = (flow: number, time: any) => {
+    if (
+      !runtimeData.data.find((d) => d.flowInside === flow && d.time === time)
+    ) {
+      const last = runtimeData.data[runtimeData.data.length - 1];
+      setRuntimData('data', runtimeData.data.length, {
+        flowInside: flow,
+        flowOutside: last.flowOutside,
+        quantity: last.quantity,
+        time: time,
+      });
+    }
+  };
+  const addRuntimeDataOutside = (flow: number, quantity: number, time: any) => {
+    if (
+      !runtimeData.data.find(
+        (d) =>
+          d.flowOutside === flow && d.time === time && d.quantity === quantity,
+      )
+    ) {
+      const last = runtimeData.data[runtimeData.data.length - 1];
+      setRuntimData('data', runtimeData.data.length, {
+        flowInside: last.flowInside,
+        flowOutside: flow,
+        quantity: quantity,
+        time: time,
+      });
+    }
+  };
   const isStarting = () => {
     switch (accessor.dataStore.state.__typename) {
       case 'Created':
@@ -113,15 +161,25 @@ export const BrewByWeightContent: Component<{
   createEffect(() => {
     switch (accessor.dataStore.state.__typename) {
       case 'Created':
-      case 'BrewProcessFinished':
-      case 'BrewProcessRunning':
-      case 'BrewProcessCancelled':
       case 'BrewProcessStarted':
+        return;
+      case 'BrewProcessRunning':
+        addRuntimeDataOutside(
+          accessor.dataStore.state.flow,
+          accessor.dataStore.state.totalQuantity,
+          accessor.dataStore.state.totalTime,
+        );
+        return;
+      case 'BrewProcessFinished':
+      case 'BrewProcessCancelled':
+        flowProfilingAccessor?.cancel();
         return;
       case 'NotStarted':
         handleError({ title: t('error'), message: t('unknown-error') });
+        flowProfilingAccessor?.cancel();
         return;
       case 'BrewProcessFailed':
+        flowProfilingAccessor?.cancel();
         switch (accessor.dataStore.state.exception.__typename) {
           case 'ScaleConnectionFailed':
             handleError({
@@ -141,6 +199,44 @@ export const BrewByWeightContent: Component<{
         }
     }
   });
+  createEffect(() => {
+    const state = flowProfilingAccessor?.dataStore.state;
+    switch (state?.__typename) {
+      case undefined:
+      case 'Created':
+      case 'FlowProfilingProcessFinished':
+      case 'FlowProfilingProcessProfileDone':
+      case 'FlowProfilingProcessCancelled':
+      case 'FlowProfilingProcessStarted':
+        return;
+      case 'FlowProfilingProcessRunning':
+        addRuntimeDataInside(state.flow, state.totalTime);
+        return;
+      case 'NotStarted':
+        handleError({ title: t('error'), message: t('unknown-error') });
+        return;
+      case 'FlowProfilingProcessFailed':
+        switch (state.exception.__typename) {
+          case 'FlowRegulationNotAvailable':
+            handleError({
+              title: t('error'),
+              message: t('flow-profile-not-availble'),
+            });
+            return;
+          case 'FlowProfilingServiceNotReady':
+            handleError({
+              title: t('error'),
+              message: t('flow-profile-not-ready'),
+            });
+            return;
+          default:
+            handleError({ title: t('error'), message: t('unknown-error') });
+            return;
+        }
+    }
+  });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const _colorImportHack = 'bg-accent-alt';
   return (
     <div class="flex w-full flex-col items-center justify-center gap-6">
       <div
@@ -176,21 +272,28 @@ export const BrewByWeightContent: Component<{
             <Show when={!isStarting()}>
               <LineChart
                 data={{
-                  labels: accessor.dataStore.brewData.map((d) =>
-                    moment.duration(d.totalTime).asSeconds(),
+                  labels: runtimeData.data.map((d) =>
+                    moment.duration(d.time).asSeconds(),
                   ),
                   datasets: [
                     {
-                      data: accessor.dataStore.brewData.map((d) => d.flow),
+                      data: runtimeData.data.map((d) => d.flowOutside),
                       label: t('flow'),
                       pointStyle: false,
                       animation: false,
                       borderColor: twColor('accent'),
                     },
                     {
-                      data: accessor.dataStore.brewData.map(
-                        (d) => d.totalQuantity,
-                      ),
+                      data: flowProfilingAccessor
+                        ? runtimeData.data.map((d) => d.flowInside)
+                        : [],
+                      label: t('flow'),
+                      pointStyle: false,
+                      animation: false,
+                      borderColor: twColor('accent-alt'),
+                    },
+                    {
+                      data: runtimeData.data.map((d) => d.quantity),
                       label: t('liquid'),
                       pointStyle: false,
                       animation: false,
@@ -216,7 +319,26 @@ export const BrewByWeightContent: Component<{
                       min: 0,
                       max:
                         Math.max(
-                          ...accessor.dataStore.brewData.map((d) => d.flow),
+                          ...runtimeData.data.map((d) => {
+                            if (
+                              Number.isNaN(d.flowInside) &&
+                              Number.isNaN(d.flowOutside)
+                            )
+                              return 0;
+                            if (
+                              Number.isNaN(d.flowInside) &&
+                              !Number.isNaN(d.flowOutside)
+                            )
+                              return d.flowOutside;
+                            if (
+                              !Number.isNaN(d.flowInside) &&
+                              Number.isNaN(d.flowOutside)
+                            )
+                              return d.flowInside;
+                            if (d.flowInside > d.flowOutside)
+                              return d.flowInside;
+                            return d.flowOutside;
+                          }),
                         ) * 1.1,
                       grid: {
                         display: false,
@@ -292,6 +414,7 @@ export const BrewByWeightContent: Component<{
           spinnerClass="h-6"
           onClick={() => {
             accessor.cancel();
+            flowProfilingAccessor?.cancel();
             setIsStopping(true);
           }}
           loading={isStopping()}
