@@ -1,0 +1,12 @@
+{
+  "name": "flow-profiling-data-definition",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/flow-profiling/data-definition",
+  "targets": {
+    "format": {
+      "executor": "@micra-pro/workspace-extensions:csharpier"
+    }
+  },
+  "tags": ["type:data-definition"]
+}

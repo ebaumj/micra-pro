@@ -1,0 +1,49 @@
+fragment FlowProfilePropertiesFields on FlowProfileProperties {
+  startFlow
+  flowSettings {
+    flow
+    time
+  }
+}
+
+fragment FlowProfileFields on FlowProfile {
+  id
+  recipeId
+  properties {
+    ...FlowProfilePropertiesFields
+  }
+}
+
+query FlowProfiles {
+  flowProfiles {
+    ...FlowProfileFields
+  }
+}
+
+mutation UpdateFlowProfile(
+  $properties: FlowProfilePropertiesInput!
+  $profileId: UUID!
+) {
+  updateFlowProfile(input: { properties: $properties, profileId: $profileId }) {
+    flowProfile {
+      ...FlowProfileFields
+    }
+  }
+}
+
+mutation AddFlowProfile(
+  $properties: FlowProfilePropertiesInput!
+  $recipeId: UUID!
+) {
+  addFlowProfile(input: { properties: $properties, recipeId: $recipeId }) {
+    flowProfile {
+      ...FlowProfileFields
+    }
+  }
+}
+
+mutation RemoveFlowProfile($profileId: UUID!) {
+  removeFlowProfile(input: { profileId: $profileId }) {
+    uuid
+  }
+}

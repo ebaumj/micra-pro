@@ -1,0 +1,12 @@
+{
+  "name": "serial-communication-data-definition",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/serial-communication/data-definition",
+  "targets": {
+    "format": {
+      "executor": "@micra-pro/workspace-extensions:csharpier"
+    }
+  },
+  "tags": ["type:data-definition"]
+}

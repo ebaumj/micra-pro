@@ -1,0 +1,21 @@
+{
+  "name": "flow-profiling-data-definition-graphql",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/flow-profiling/data-definition-graphql",
+  "targets": {
+    "codegen": {
+      "command": "dotnet test",
+      "options": {
+        "cwd": "{projectRoot}"
+      },
+      "outputs": [
+        "{workspaceRoot}/libs/flow-profiling/data-definition-graphql/src/generated"
+      ]
+    },
+    "format": {
+      "executor": "@micra-pro/workspace-extensions:csharpier"
+    }
+  },
+  "tags": ["type:data-provider-test"]
+}

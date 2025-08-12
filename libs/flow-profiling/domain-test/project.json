@@ -1,0 +1,17 @@
+{
+  "name": "flow-profiling-domain-test",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/flow-profiling/domain-test",
+  "targets": {
+    "test": {
+      "options": {
+        "cwd": "{projectRoot}"
+      }
+    },
+    "format": {
+      "executor": "@micra-pro/workspace-extensions:csharpier"
+    }
+  },
+  "tags": ["type:domain-test"]
+}

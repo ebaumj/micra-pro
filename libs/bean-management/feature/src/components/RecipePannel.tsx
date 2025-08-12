@@ -15,14 +15,26 @@ import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
+  Switch,
+  SwitchControl,
+  SwitchThumb,
 } from '@micra-pro/shared/ui';
-import { Component, createEffect, createSignal, Show } from 'solid-js';
+import {
+  Component,
+  createEffect,
+  createSignal,
+  onCleanup,
+  onMount,
+  Show,
+} from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import { T } from '../generated/language-types';
 import { JSX } from 'solid-js/jsx-runtime';
 import moment from 'moment';
 import picturesImport from '../generated/pictures-import';
 import { useNavigate } from '@solidjs/router';
+import { twMerge } from 'tailwind-merge';
+import { IsFlowProfilingAvailable } from '@micra-pro/flow-profiling/data-access';
 
 const NumberField: Component<{
   value: number;
@@ -124,15 +136,27 @@ export const RecipePannel: Component<{
     beanId: string,
     recipe: EspressoProperties,
     brewByTime: boolean,
+    flowProfile?: {
+      startFlow: number;
+      dataPoints: { flow: number; time: any }[];
+    },
   ) => void;
   onClose: () => void;
 }> = (props) => {
   const pictures = selectPicturesForMode(picturesImport);
+  const flowProfileAvailable = IsFlowProfilingAvailable();
   const [recipe, setRecipe] = createSignal<
-    | ({ type: 'Espresso' } & EspressoProperties)
+    | ({
+        type: 'Espresso';
+        flowProfile?: {
+          startFlow: number;
+          dataPoints: { flow: number; time: any }[];
+        };
+      } & EspressoProperties)
     | ({ type: 'V60' } & V60Properties)
     | null
   >(null);
+  const [useFlowProfiling, setUseFlowProfiling] = createSignal(true);
   createEffect(() => {
     if (!props.beanId) setRecipe(null);
   });
@@ -140,20 +164,34 @@ export const RecipePannel: Component<{
     props.beans.find((b) => b.id === props.beanId) ?? null;
 
   const espresso = () =>
-    selectedBean()?.recipes.find((r) => r.__typename == 'EspressoProperties')
-      ?.properties;
+    selectedBean()?.recipes.find((r) => r.__typename == 'EspressoProperties');
   const v60 = () =>
-    selectedBean()?.recipes.find((r) => r.__typename == 'V60Properties')
-      ?.properties;
+    selectedBean()?.recipes.find((r) => r.__typename == 'V60Properties');
 
   createEffect(() => {
-    const espressoProps = espresso();
-    const v60Props = v60();
-    if (espressoProps && !v60Props)
-      setRecipe({ type: 'Espresso', ...espressoProps });
-    if (v60Props && !espressoProps) setRecipe({ type: 'V60', ...v60Props });
-    if (!v60Props && !espressoProps) props.onClose();
+    const espressoRecipe = espresso();
+    const v60Recipe = v60();
+    if (espressoRecipe && !v60Recipe)
+      setRecipe({
+        type: 'Espresso',
+        flowProfile: parseFlowProfile(espressoRecipe.flowProfile),
+        ...espressoRecipe.properties,
+      });
+    if (v60Recipe && !espressoRecipe)
+      setRecipe({ type: 'V60', ...v60Recipe.properties });
+    if (!v60Recipe && !espressoRecipe) props.onClose();
   });
+
+  const parseFlowProfile = (profile?: {
+    startFlow: number;
+    flowSettings: { flow: number; time: any }[];
+  }) =>
+    profile
+      ? {
+          startFlow: profile.startFlow,
+          dataPoints: profile.flowSettings,
+        }
+      : undefined;
 
   const selectParams = (): Component<{ class?: string }> => {
     const rec = recipe();
@@ -169,7 +207,14 @@ export const RecipePannel: Component<{
   const start = (brewByTime: boolean) => {
     const rec = recipe();
     if (props.beanId && rec?.type === 'Espresso')
-      props.startEspressoBrewing(props.beanId, rec, brewByTime);
+      props.startEspressoBrewing(
+        props.beanId,
+        rec,
+        brewByTime,
+        useFlowProfiling() && flowProfileAvailable.isAvailable()
+          ? rec.flowProfile
+          : undefined,
+      );
   };
   const navigate = useNavigate();
   const edit = () => {
@@ -178,6 +223,18 @@ export const RecipePannel: Component<{
       `menu/beans?beanId=${bean?.id}&${recipe()?.type === 'V60' ? 'showV60=true' : 'showEspresso=true'}`,
     );
   };
+
+  let timer: NodeJS.Timeout | null = null;
+  onMount(() => {
+    const refetchFlowProfiling = () => {
+      flowProfileAvailable.refetch();
+      timer = setTimeout(refetchFlowProfiling, 1000);
+    };
+    refetchFlowProfiling();
+  });
+  onCleanup(() => {
+    if (timer) clearTimeout(timer);
+  });
 
   return (
     <>
@@ -192,11 +249,17 @@ export const RecipePannel: Component<{
             </SheetTitle>
             <SheetDescription class="flex flex-col gap-4 pt-4">
               <Show when={espresso()}>
-                {(props) => (
+                {(rec) => (
                   <Button
                     variant="outline"
                     class="flex h-14 w-full justify-center py-2"
-                    onClick={() => setRecipe({ type: 'Espresso', ...props() })}
+                    onClick={() =>
+                      setRecipe({
+                        type: 'Espresso',
+                        flowProfile: parseFlowProfile(rec().flowProfile),
+                        ...rec().properties,
+                      })
+                    }
                   >
                     <img
                       src={pictures().espresso}
@@ -205,7 +268,7 @@ export const RecipePannel: Component<{
                   </Button>
                 )}
               </Show>
-              <Show when={v60()}>
+              <Show when={v60()?.properties}>
                 {(props) => (
                   <Button
                     variant="outline"
@@ -260,7 +323,15 @@ export const RecipePannel: Component<{
                     <Icon iconName="timer" />
                   </Button>
                 </div>
-                <div class="absolute top-2 left-1/2 -translate-x-1/2">
+                <div
+                  class={twMerge(
+                    'absolute top-2',
+                    espresso()?.flowProfile &&
+                      flowProfileAvailable.isAvailable()
+                      ? 'left-1/3 -translate-x-1/3'
+                      : 'left-1/2 -translate-x-1/2',
+                  )}
+                >
                   <Button
                     variant="default"
                     class="flex h-12 w-48 items-center justify-center gap-2 rounded-xl shadow-lg"
@@ -270,6 +341,34 @@ export const RecipePannel: Component<{
                     <T key="start-espresso" />
                   </Button>
                 </div>
+                <Show
+                  when={
+                    espresso()?.flowProfile &&
+                    flowProfileAvailable.isAvailable()
+                  }
+                >
+                  <div class="absolute top-2 left-2/3 -translate-x-1/3">
+                    <div
+                      class={twMerge(
+                        'flex h-12 items-center justify-center gap-2 rounded-lg border px-4',
+                      )}
+                    >
+                      <Icon
+                        iconName="area_chart"
+                        class={useFlowProfiling() ? '' : 'opacity-50'}
+                      />
+                      <Switch
+                        checked={useFlowProfiling()}
+                        onChange={setUseFlowProfiling}
+                        class="flex h-full items-center"
+                      >
+                        <SwitchControl>
+                          <SwitchThumb />
+                        </SwitchControl>
+                      </Switch>
+                    </div>
+                  </div>
+                </Show>
               </Show>
               <div class="absolute top-2 right-6">
                 <Button

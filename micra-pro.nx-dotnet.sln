@@ -95,6 +95,30 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.Cleaning.Domain.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.Cleaning.Infrastructure", "libs\cleaning\infrastructure\MicraPro.Cleaning.Infrastructure.csproj", "{E465C866-0996-4AD4-AA6B-61082B8920CE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "flow-profiling", "flow-profiling", "{9515ED47-C904-49CE-9915-D9731906A6E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.FlowProfiling.DataDefinition", "libs\flow-profiling\data-definition\MicraPro.FlowProfiling.DataDefinition.csproj", "{25B478C7-1A49-4D91-8B4C-39233A13A926}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.FlowProfiling.Domain", "libs\flow-profiling\domain\MicraPro.FlowProfiling.Domain.csproj", "{F91C9397-DBE5-46AA-9099-5C878DD0EEE6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.FlowProfiling.Domain.Test", "libs\flow-profiling\domain-test\MicraPro.FlowProfiling.Domain.Test.csproj", "{A0A78F40-ED3B-4FC5-8B1F-A249593A1D9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.FlowProfiling.Infrastructure", "libs\flow-profiling\infrastructure\MicraPro.FlowProfiling.Infrastructure.csproj", "{DE70B7F8-07B9-4D97-A267-C247F83A265D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.FlowProfiling.DataDefinitionGraphQl", "libs\flow-profiling\data-definition-graphql\MicraPro.FlowProfiling.DataDefinitionGraphQl.csproj", "{05524D2C-0E08-4257-86B0-413588A3FCA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.FlowProfiling.DataProviderGraphQl", "libs\flow-profiling\data-provider-graphql\MicraPro.FlowProfiling.DataProviderGraphQl.csproj", "{B527890A-9698-43AE-810D-56F42C08E449}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "serial-communication", "serial-communication", "{EA5AD780-ABC7-43FF-BF12-45628A5F4D82}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.SerialCommunication.DataDefinition", "libs\serial-communication\data-definition\MicraPro.SerialCommunication.DataDefinition.csproj", "{24F72568-A245-486B-BA47-A0D747016DEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.SerialCommunication.Domain", "libs\serial-communication\domain\MicraPro.SerialCommunication.Domain.csproj", "{9B55E1E5-62FD-4563-AE5B-2CEE650497E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.SerialCommunication.Domain.Test", "libs\serial-communication\domain-test\MicraPro.SerialCommunication.Domain.Test.csproj", "{0546725F-708B-4760-9EEA-32CDAF2A36DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.SerialCommunication.Infrastructure", "libs\serial-communication\infrastructure\MicraPro.SerialCommunication.Infrastructure.csproj", "{782AC708-21F1-4790-B48A-8B3AE36E53F3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -254,6 +278,46 @@ Global
 		{E465C866-0996-4AD4-AA6B-61082B8920CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E465C866-0996-4AD4-AA6B-61082B8920CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E465C866-0996-4AD4-AA6B-61082B8920CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25B478C7-1A49-4D91-8B4C-39233A13A926}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25B478C7-1A49-4D91-8B4C-39233A13A926}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25B478C7-1A49-4D91-8B4C-39233A13A926}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25B478C7-1A49-4D91-8B4C-39233A13A926}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F91C9397-DBE5-46AA-9099-5C878DD0EEE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F91C9397-DBE5-46AA-9099-5C878DD0EEE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F91C9397-DBE5-46AA-9099-5C878DD0EEE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F91C9397-DBE5-46AA-9099-5C878DD0EEE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0A78F40-ED3B-4FC5-8B1F-A249593A1D9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0A78F40-ED3B-4FC5-8B1F-A249593A1D9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0A78F40-ED3B-4FC5-8B1F-A249593A1D9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0A78F40-ED3B-4FC5-8B1F-A249593A1D9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE70B7F8-07B9-4D97-A267-C247F83A265D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE70B7F8-07B9-4D97-A267-C247F83A265D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE70B7F8-07B9-4D97-A267-C247F83A265D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE70B7F8-07B9-4D97-A267-C247F83A265D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05524D2C-0E08-4257-86B0-413588A3FCA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05524D2C-0E08-4257-86B0-413588A3FCA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05524D2C-0E08-4257-86B0-413588A3FCA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05524D2C-0E08-4257-86B0-413588A3FCA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B527890A-9698-43AE-810D-56F42C08E449}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B527890A-9698-43AE-810D-56F42C08E449}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B527890A-9698-43AE-810D-56F42C08E449}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B527890A-9698-43AE-810D-56F42C08E449}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24F72568-A245-486B-BA47-A0D747016DEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24F72568-A245-486B-BA47-A0D747016DEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24F72568-A245-486B-BA47-A0D747016DEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24F72568-A245-486B-BA47-A0D747016DEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B55E1E5-62FD-4563-AE5B-2CEE650497E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B55E1E5-62FD-4563-AE5B-2CEE650497E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B55E1E5-62FD-4563-AE5B-2CEE650497E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B55E1E5-62FD-4563-AE5B-2CEE650497E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0546725F-708B-4760-9EEA-32CDAF2A36DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0546725F-708B-4760-9EEA-32CDAF2A36DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0546725F-708B-4760-9EEA-32CDAF2A36DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0546725F-708B-4760-9EEA-32CDAF2A36DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{782AC708-21F1-4790-B48A-8B3AE36E53F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{782AC708-21F1-4790-B48A-8B3AE36E53F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{782AC708-21F1-4790-B48A-8B3AE36E53F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{782AC708-21F1-4790-B48A-8B3AE36E53F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{37887E29-4FD9-46AD-914E-5F38D82AEA36} = {DCF673B4-820A-481E-BB5E-3CE6B4A1B39A}
@@ -300,5 +364,17 @@ Global
 		{583B0B55-E842-4963-8546-C03201F1D0C1} = {F164A8CC-F156-41E4-AD85-18B4E43F0B58}
 		{C398B237-7841-490C-9C50-62C3F39772FE} = {F164A8CC-F156-41E4-AD85-18B4E43F0B58}
 		{E465C866-0996-4AD4-AA6B-61082B8920CE} = {F164A8CC-F156-41E4-AD85-18B4E43F0B58}
+		{9515ED47-C904-49CE-9915-D9731906A6E2} = {DCF673B4-820A-481E-BB5E-3CE6B4A1B39A}
+		{25B478C7-1A49-4D91-8B4C-39233A13A926} = {9515ED47-C904-49CE-9915-D9731906A6E2}
+		{F91C9397-DBE5-46AA-9099-5C878DD0EEE6} = {9515ED47-C904-49CE-9915-D9731906A6E2}
+		{A0A78F40-ED3B-4FC5-8B1F-A249593A1D9C} = {9515ED47-C904-49CE-9915-D9731906A6E2}
+		{DE70B7F8-07B9-4D97-A267-C247F83A265D} = {9515ED47-C904-49CE-9915-D9731906A6E2}
+		{05524D2C-0E08-4257-86B0-413588A3FCA0} = {9515ED47-C904-49CE-9915-D9731906A6E2}
+		{B527890A-9698-43AE-810D-56F42C08E449} = {9515ED47-C904-49CE-9915-D9731906A6E2}
+		{EA5AD780-ABC7-43FF-BF12-45628A5F4D82} = {DCF673B4-820A-481E-BB5E-3CE6B4A1B39A}
+		{24F72568-A245-486B-BA47-A0D747016DEA} = {EA5AD780-ABC7-43FF-BF12-45628A5F4D82}
+		{9B55E1E5-62FD-4563-AE5B-2CEE650497E0} = {EA5AD780-ABC7-43FF-BF12-45628A5F4D82}
+		{0546725F-708B-4760-9EEA-32CDAF2A36DF} = {EA5AD780-ABC7-43FF-BF12-45628A5F4D82}
+		{782AC708-21F1-4790-B48A-8B3AE36E53F3} = {EA5AD780-ABC7-43FF-BF12-45628A5F4D82}
 	EndGlobalSection
 EndGlobal

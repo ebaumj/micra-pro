@@ -1,0 +1,17 @@
+{
+  "name": "serial-communication-domain-test",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/serial-communication/domain-test",
+  "targets": {
+    "test": {
+      "options": {
+        "cwd": "{projectRoot}"
+      }
+    },
+    "format": {
+      "executor": "@micra-pro/workspace-extensions:csharpier"
+    }
+  },
+  "tags": ["type:domain-test"]
+}
