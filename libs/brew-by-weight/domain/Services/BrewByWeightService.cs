@@ -35,7 +35,7 @@ public class BrewByWeightService(
             .CreateScope()
             .ServiceProvider.GetRequiredService<IBrewByWeightDbService>();
 
-    public IObservable<BrewByWeightState> State => _state;
+    public IObservable<BrewByWeightState> State => _state.DistinctUntilChanged();
 
     private (double Flow, double Weight, TimeSpan Time) CalculateResultAsync(
         IReadOnlyCollection<BrewByWeightTracking.Running> dataUpdates
@@ -76,6 +76,7 @@ public class BrewByWeightService(
                         targetExtractionTime,
                         spout,
                         state => subject.OnNext(state),
+                        () => _state.OnNext(new BrewByWeightState.Running(processId)),
                         ct
                     );
                     var result = CalculateResultAsync(allDataUpdates);
@@ -122,6 +123,7 @@ public class BrewByWeightService(
                 finally
                 {
                     subject.OnCompleted();
+                    _state.OnNext(new BrewByWeightState.Idle());
                     await paddleAccess.SetBrewPaddleOnAsync(false, CancellationToken.None);
                     await BrewByWeightDbService.StoreProcessAsync(
                         beanId,
@@ -157,11 +159,13 @@ public class BrewByWeightService(
         TimeSpan targetExtractionTime,
         IBrewByWeightService.Spout spout,
         Action<BrewByWeightTracking> updateState,
+        Action start,
         CancellationToken ct
     )
     {
         if (_state.Value is not BrewByWeightState.Idle)
             throw new BrewByWeightException.BrewServiceNotReady();
+        start();
         var paddleOffWeight =
             inCupQuantity
             - await retentionService.CalculateRetentionWeightAsync(
