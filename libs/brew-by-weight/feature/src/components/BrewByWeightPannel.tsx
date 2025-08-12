@@ -11,6 +11,10 @@ export const BrewByWeightPannel: Component<{
     grindSetting: number;
     inCupQuantity: number;
     targetExtractionTime: string;
+    flowProfile?: {
+      startFlow: number;
+      dataPoints: { flow: number; time: any }[];
+    };
   } | null;
   onClose: () => void;
 }> = (props) => {
@@ -21,6 +25,10 @@ export const BrewByWeightPannel: Component<{
         grindSetting: number;
         inCupQuantity: number;
         targetExtractionTime: string;
+        flowProfile?: {
+          startFlow: number;
+          dataPoints: { flow: number; time: any }[];
+        };
         spout: Spout;
       }
     | undefined
