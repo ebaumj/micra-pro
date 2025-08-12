@@ -10,6 +10,7 @@ public class BeanManagementDbContext(IConfiguration? configuration = null) : DbC
     public DbSet<RoasteryDb> RoasteryEntries { get; set; }
     public DbSet<BeanDb> BeanEntries { get; set; }
     public DbSet<RecipeDb> RecipeEntries { get; set; }
+    public DbSet<FlowProfileDb> FlowProfileEntries { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -38,6 +39,12 @@ public class BeanManagementDbContext(IConfiguration? configuration = null) : DbC
             .IsRequired();
         var recipeEntity = modelBuilder.Entity<RecipeDb>();
         recipeEntity.HasKey(e => e.Id);
+        recipeEntity
+            .HasMany(e => e.FlowProfiles)
+            .WithOne(e => e.RecipeObject)
+            .HasForeignKey(e => e.RecipeId)
+            .OnDelete(DeleteBehavior.Cascade)
+            .IsRequired();
         var recipeEspressoEntity = modelBuilder.Entity<EspressoRecipeDb>();
         recipeEspressoEntity.Property(e => e.GrindSetting).IsRequired();
         recipeEspressoEntity.Property(e => e.CoffeeQuantity).IsRequired();
@@ -51,5 +58,12 @@ public class BeanManagementDbContext(IConfiguration? configuration = null) : DbC
         recipeV60Entity.Property(e => e.InCupQuantity).IsRequired();
         recipeV60Entity.Property(e => e.BrewTemperature).IsRequired();
         recipeV60Entity.HasBaseType<RecipeDb>();
+        var flowProfileEntity = modelBuilder.Entity<FlowProfileDb>();
+        flowProfileEntity.HasKey(e => e.Id);
+        flowProfileEntity.Property(e => e.StartFlow).IsRequired();
+        flowProfileEntity
+            .Property(e => e.FlowSettings)
+            .HasConversion(FlowProfileRepository.FlowSettingsConverter)
+            .IsRequired();
     }
 }

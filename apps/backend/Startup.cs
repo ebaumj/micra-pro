@@ -8,9 +8,14 @@ using MicraPro.BrewByWeight.Infrastructure;
 using MicraPro.Cleaning.DataProviderGraphQl;
 using MicraPro.Cleaning.Domain;
 using MicraPro.Cleaning.Infrastructure;
+using MicraPro.FlowProfiling.DataProviderGraphQl;
+using MicraPro.FlowProfiling.Domain;
+using MicraPro.FlowProfiling.Infrastructure;
 using MicraPro.ScaleManagement.DataProviderGraphQl;
 using MicraPro.ScaleManagement.Domain;
 using MicraPro.ScaleManagement.Infrastructure;
+using MicraPro.SerialCommunication.Domain;
+using MicraPro.SerialCommunication.Infrastructure;
 using MicraPro.Shared.Infrastructure;
 
 namespace MicraPro.Backend;
@@ -36,6 +41,11 @@ public class Startup(IConfiguration configuration)
             .AddCleaningDomainServices(configuration)
             .AddCleaningInfrastructureServices(configuration)
             .AddCleaningDataProviderGraphQlServices(configuration)
+            .AddFlowProfilingDomainServices(configuration)
+            .AddFlowProfilingInfrastructureServices(configuration)
+            .AddFlowProfilingDataProviderGraphQlServices(configuration)
+            .AddSerialCommunicationDomainServices(configuration)
+            .AddSerialCommunicationInfrastructureServices(configuration)
             .AddCors(options =>
             {
                 options.AddDefaultPolicy(b =>

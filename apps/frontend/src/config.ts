@@ -11,8 +11,8 @@ const config = {
   useLostBackendConnectionModal: true,
   display: {
     resolution: {
-      width: 800,
-      height: 480,
+      width: 1280,
+      height: 720,
     },
   },
 };

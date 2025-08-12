@@ -27,6 +27,7 @@
 
   --color-accent: hsl(348, 100%, 19%);
   --color-accent-variant: hsl(180, 100%, 19%);
+  --color-accent-alt: hsl(0, 0%, 26%);
 }
 
 @theme {
@@ -46,6 +47,7 @@
 
   --color-accent: hsl(348, 100%, 61%);
   --color-accent-variant: hsl(180, 100%, 61%);
+  --color-accent-alt: hsl(0, 0%, 89%);
 
   --color-destructive: hsl(0 61% 45%);
   --color-destructive-foreground: hsl(0 0% 98%);
@@ -130,6 +132,8 @@
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+@source inline('underline');
 
 @layer base {
   body {
