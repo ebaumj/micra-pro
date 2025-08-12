@@ -28,4 +28,7 @@ public static class ApiTypesExtensions
                 $"Recipe Properties Type {recipe.Properties.GetType().Name} is not implemented!"
             ),
         };
+
+    public static FlowProfileApi ToApi(this IFlowProfile flowProfile) =>
+        new(flowProfile.Id, flowProfile.RecipeId, flowProfile.Properties);
 }

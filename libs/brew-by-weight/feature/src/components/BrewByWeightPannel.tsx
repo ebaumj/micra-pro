@@ -12,6 +12,10 @@ export const BrewByWeightPannel: Component<{
     inCupQuantity: number;
     scaleId: string;
     targetExtractionTime: string;
+    flowProfile?: {
+      startFlow: number;
+      dataPoints: { flow: number; time: any }[];
+    };
   } | null;
   onClose: () => void;
 }> = (props) => {
@@ -23,6 +27,10 @@ export const BrewByWeightPannel: Component<{
         inCupQuantity: number;
         scaleId: string;
         targetExtractionTime: string;
+        flowProfile?: {
+          startFlow: number;
+          dataPoints: { flow: number; time: any }[];
+        };
         spout: Spout;
       }
     | undefined
@@ -39,7 +47,7 @@ export const BrewByWeightPannel: Component<{
         <AlertDialogContent
           onOpenAutoFocus={(e) => e.preventDefault()}
           onInteractOutside={(e) => e.preventDefault()}
-          class="border-none bg-transparent shadow-none"
+          class="flex justify-center gap-2 border-none bg-transparent shadow-none"
         >
           <Show when={recipe()}>
             {(r) => (
