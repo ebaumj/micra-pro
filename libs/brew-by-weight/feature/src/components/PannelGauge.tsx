@@ -1,6 +1,7 @@
 import { Gauge, Spinner, twColor } from '@micra-pro/shared/ui';
 import { Component, Show } from 'solid-js';
 import { T } from '../generated/language-types';
+import { twMerge } from 'tailwind-merge';
 
 const WeightTolerance = 1;
 const WeightOverhead = 4 * WeightTolerance;
@@ -13,7 +14,10 @@ export const PannelGauge: Component<{
   time: number;
   targetTime: number;
   targetQuantity: number;
+  flowInside: number;
+  useFlowProfiling: boolean;
 }> = (props) => {
+  const flow = () => (props.useFlowProfiling ? props.flowInside : props.flow);
   return (
     <div class="relative flex h-full w-full flex-col items-center justify-center">
       <div class="absolute flex h-full w-full">
@@ -33,9 +37,25 @@ export const PannelGauge: Component<{
           </Show>
         </div>
         <div class="flex w-1/3 items-end">
-          <div class="h-1/3 w-full justify-center pb-20">
+          <div
+            class={twMerge(
+              'w-full justify-center',
+              props.useFlowProfiling ? 'pb-10' : 'pb-14',
+            )}
+          >
             <Show when={!props.isStarting}>
               <div class="inset-shadow-primary-shadow w-full rounded-lg py-1 inset-shadow-sm">
+                <Show when={props.useFlowProfiling}>
+                  <div class="flex w-full items-center justify-center text-xs">
+                    <T key="inside" />
+                  </div>
+                  <div class="flex w-full items-center justify-center text-2xl font-bold">
+                    {props.flowInside.toFixed(1)}
+                  </div>
+                  <div class="flex w-full items-center justify-center text-xs">
+                    <T key="outside" />
+                  </div>
+                </Show>
                 <div class="flex w-full items-center justify-center text-2xl font-bold">
                   {props.flow.toFixed(1)}
                 </div>
@@ -108,18 +128,18 @@ export const PannelGauge: Component<{
               {
                 strokeStyle: twColor('accent'),
                 min: 0,
-                max: props.flow,
+                max: flow(),
                 height: 1.0,
               },
               {
                 strokeStyle: twColor('accent'),
-                min: props.flow,
-                max: props.flow + 0.05,
+                min: flow(),
+                max: flow() + 0.05,
                 height: 1.4,
               },
               {
                 strokeStyle: twColor('primary-foreground'),
-                min: props.flow + 0.05,
+                min: flow() + 0.05,
                 max: MaxFlow,
                 height: 1.0,
               },

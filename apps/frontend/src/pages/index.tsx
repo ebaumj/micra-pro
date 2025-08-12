@@ -85,13 +85,23 @@ function MainScreen() {
 
   const [selectedBean, setSelectedBean] = createSignal<string | null>(null);
 
-  const startEspressoBrewing = (beanId: string, recipe: EspressoProperties) => {
+  const startEspressoBrewing = (
+    beanId: string,
+    recipe: EspressoProperties,
+    flowProfile?: {
+      startFlow: number;
+      dataPoints: { flow: number; time: any }[];
+    },
+  ) => {
     setRecipe({
       beanId: beanId,
       coffeeQuantity: recipe.coffeeQuantity,
       grindSetting: recipe.grindSetting,
       inCupQuantity: recipe.inCupQuantity,
       targetExtractionTime: recipe.targetExtractionTime,
+      flowProfile: flowProfile
+        ? JSON.parse(JSON.stringify(flowProfile))
+        : undefined,
     });
     setSelectedBean(null);
   };
@@ -102,6 +112,10 @@ function MainScreen() {
     grindSetting: number;
     inCupQuantity: number;
     targetExtractionTime: string;
+    flowProfile?: {
+      startFlow: number;
+      dataPoints: { flow: number; time: any }[];
+    };
   } | null>(null);
 
   return (

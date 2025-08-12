@@ -12,4 +12,5 @@ public class SharedInfrastructureOptions
     public string UpdateFileName { get; set; } = string.Empty;
     public string UpdatePublicKey { get; set; } = string.Empty;
     public bool AllowUpdates { get; set; } = false;
+    public string BrewPaddleAccess { get; set; } = string.Empty;
 }

@@ -7,6 +7,8 @@ import { twMerge } from 'tailwind-merge';
 import { PannelGraph } from './PannelGraph';
 import { PannelGauge } from './PannelGauge';
 import { usePannelStyle } from './PannelStyleProvider';
+import { StartFlowProfiling } from '@micra-pro/flow-profiling/data-access';
+import { createStore } from 'solid-js/store';
 
 export const BrewByWeightContent: Component<{
   recipe: {
@@ -15,15 +17,62 @@ export const BrewByWeightContent: Component<{
     grindSetting: number;
     inCupQuantity: number;
     targetExtractionTime: string;
+    flowProfile?: {
+      startFlow: number;
+      dataPoints: { flow: number; time: any }[];
+    };
     spout: Spout;
   };
   onClose: () => void;
 }> = (props) => {
   const { t } = useTranslationContext();
   const [isStopping, setIsStopping] = createSignal(false);
+  const [flowInside, setFlowInside] = createSignal(0);
   const pannelStyle = usePannelStyle().pannelStyle;
   // eslint-disable-next-line solid/reactivity
   const accessor = StartCoffee(props.recipe);
+  // eslint-disable-next-line solid/reactivity
+  const flowProfilingAccessor = props.recipe.flowProfile
+    ? // eslint-disable-next-line solid/reactivity
+      StartFlowProfiling(props.recipe.flowProfile)
+    : undefined;
+  const [runtimeData, setRuntimData] = createStore<{
+    data: {
+      flowOutside: number;
+      flowInside: number;
+      quantity: number;
+      time: number;
+    }[];
+  }>({ data: [{ flowOutside: 0, flowInside: 0, quantity: 0, time: 0 }] });
+  const addRuntimeDataInside = (flow: number, time: any) => {
+    if (
+      !runtimeData.data.find((d) => d.flowInside === flow && d.time === time)
+    ) {
+      const last = runtimeData.data[runtimeData.data.length - 1];
+      setRuntimData('data', runtimeData.data.length, {
+        flowInside: flow,
+        flowOutside: last.flowOutside,
+        quantity: last.quantity,
+        time: time,
+      });
+    }
+  };
+  const addRuntimeDataOutside = (flow: number, quantity: number, time: any) => {
+    if (
+      !runtimeData.data.find(
+        (d) =>
+          d.flowOutside === flow && d.time === time && d.quantity === quantity,
+      )
+    ) {
+      const last = runtimeData.data[runtimeData.data.length - 1];
+      setRuntimData('data', runtimeData.data.length, {
+        flowInside: last.flowInside,
+        flowOutside: flow,
+        quantity: quantity,
+        time: time,
+      });
+    }
+  };
   const isStarting = () => {
     switch (accessor.dataStore.state.__typename) {
       case 'Created':
@@ -51,6 +100,24 @@ export const BrewByWeightContent: Component<{
         return accessor.dataStore.state.averageFlow;
     }
   };
+  createEffect(() => {
+    switch (flowProfilingAccessor?.dataStore.state.__typename) {
+      case 'Created':
+      case 'FlowProfilingProcessStarted':
+      case 'NotStarted':
+      case undefined:
+        setFlowInside(0);
+        break;
+      case 'FlowProfilingProcessFailed':
+      case 'FlowProfilingProcessCancelled':
+      case 'FlowProfilingProcessFinished':
+        setFlowInside(flowProfilingAccessor.dataStore.state.averageFlow);
+        break;
+      case 'FlowProfilingProcessRunning':
+        setFlowInside(flowProfilingAccessor.dataStore.state.flow);
+        break;
+    }
+  });
   const timeSeconds = (): number => {
     switch (accessor.dataStore.state.__typename) {
       case 'Created':
@@ -110,15 +177,25 @@ export const BrewByWeightContent: Component<{
   createEffect(() => {
     switch (accessor.dataStore.state.__typename) {
       case 'Created':
-      case 'BrewProcessFinished':
-      case 'BrewProcessRunning':
-      case 'BrewProcessCancelled':
       case 'BrewProcessStarted':
+        return;
+      case 'BrewProcessRunning':
+        addRuntimeDataOutside(
+          accessor.dataStore.state.flow,
+          accessor.dataStore.state.totalQuantity,
+          accessor.dataStore.state.totalTime,
+        );
+        return;
+      case 'BrewProcessFinished':
+      case 'BrewProcessCancelled':
+        flowProfilingAccessor?.cancel();
         return;
       case 'NotStarted':
         handleError({ title: t('error'), message: t('unknown-error') });
+        flowProfilingAccessor?.cancel();
         return;
       case 'BrewProcessFailed':
+        flowProfilingAccessor?.cancel();
         switch (accessor.dataStore.state.exception.__typename) {
           case 'ScaleConnectionFailed':
             handleError({
@@ -138,8 +215,47 @@ export const BrewByWeightContent: Component<{
         }
     }
   });
+  createEffect(() => {
+    const state = flowProfilingAccessor?.dataStore.state;
+    switch (state?.__typename) {
+      case undefined:
+      case 'Created':
+      case 'FlowProfilingProcessFinished':
+      case 'FlowProfilingProcessProfileDone':
+      case 'FlowProfilingProcessCancelled':
+      case 'FlowProfilingProcessStarted':
+        return;
+      case 'FlowProfilingProcessRunning':
+        addRuntimeDataInside(state.flow, state.totalTime);
+        return;
+      case 'NotStarted':
+        handleError({ title: t('error'), message: t('unknown-error') });
+        return;
+      case 'FlowProfilingProcessFailed':
+        switch (state.exception.__typename) {
+          case 'FlowRegulationNotAvailable':
+            handleError({
+              title: t('error'),
+              message: t('flow-profile-not-availble'),
+            });
+            return;
+          case 'FlowProfilingServiceNotReady':
+            handleError({
+              title: t('error'),
+              message: t('flow-profile-not-ready'),
+            });
+            return;
+          default:
+            handleError({ title: t('error'), message: t('unknown-error') });
+            return;
+        }
+    }
+  });
   return (
     <div class="flex w-full flex-col items-center justify-center gap-6">
+      <div class="bg-accent-alt invisible h-0 w-0 overflow-hidden">
+        {/* Color import Hack */}
+      </div>
       <div
         class={twMerge(
           'bg-primary text-primary-foreground flex h-80 w-80 flex-col overflow-hidden rounded-full shadow-lg',
@@ -152,7 +268,8 @@ export const BrewByWeightContent: Component<{
       >
         <Show when={pannelStyle() === 'Graph'}>
           <PannelGraph
-            brewData={accessor.dataStore.brewData}
+            brewData={runtimeData.data}
+            useFlowProfiling={!!flowProfilingAccessor}
             flow={flow()}
             isStarting={isStarting()}
             quantity={quantity()}
@@ -165,6 +282,8 @@ export const BrewByWeightContent: Component<{
         </Show>
         <Show when={pannelStyle() === 'Gauge'}>
           <PannelGauge
+            useFlowProfiling={!!flowProfilingAccessor}
+            flowInside={flowInside()}
             flow={flow()}
             isStarting={isStarting()}
             quantity={quantity()}
@@ -182,6 +301,7 @@ export const BrewByWeightContent: Component<{
           class="border-destructive h-12 w-36 text-lg shadow-xl"
           onClick={() => {
             accessor.cancel();
+            flowProfilingAccessor?.cancel();
             setIsStopping(true);
           }}
           loading={isStopping()}

@@ -40,3 +40,5 @@ export { type BeanProperties } from './beansAccessor';
 export { type EspressoProperties, type V60Properties } from './recipesAccessor';
 export { type Roastery, type Bean } from './dataFetcher';
 export {} from './grinderSettings';
+
+export * from './flowProfilesAccessor';
