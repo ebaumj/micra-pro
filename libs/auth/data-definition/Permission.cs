@@ -17,6 +17,8 @@ public enum Permission
     WriteBeans,
     ReadRecipes,
     WriteRecipes,
+    ReadFlowProfiles,
+    WriteFLowProfiles,
 
     // Asset Management
     ReadAssets = 3000,

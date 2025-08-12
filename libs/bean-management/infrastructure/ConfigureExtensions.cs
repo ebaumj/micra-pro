@@ -18,6 +18,7 @@ public static class ConfigureExtensions
             .AddScoped<IRoasteryRepository, RoasteryRepository>()
             .AddScoped<IRecipeRepository, RecipeRepository>()
             .AddScopedAssetConsumer<IBeanRepository, BeanRepository>()
+            .AddScoped<IFlowProfileRepository, FlowProfileRepository>()
             .AddDbContextAndMigrationService<BeanManagementDbContext>();
     }
 }
