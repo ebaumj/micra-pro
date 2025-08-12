@@ -35,3 +35,4 @@ export * from './Components/Switch';
 export * from './Components/Collapsible';
 export * from './Components/Gauge';
 export * from './Components/NumberPicker/NumberPickerStyleProvider';
+export * from './Components/Slider';

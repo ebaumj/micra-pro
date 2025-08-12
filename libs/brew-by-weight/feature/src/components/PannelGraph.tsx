@@ -12,10 +12,12 @@ export const PannelGraph: Component<{
   time: number;
   targetTime: number;
   targetQuantity: number;
+  useFlowProfiling: boolean;
   brewData: {
-    totalTime: any;
-    flow: number;
-    totalQuantity: number;
+    flowOutside: number;
+    flowInside: number;
+    quantity: number;
+    time: number;
   }[];
   extractionTimeResult: ExtractionTimeResult;
 }> = (props) => {
@@ -46,18 +48,27 @@ export const PannelGraph: Component<{
             <LineChart
               data={{
                 labels: props.brewData.map((d) =>
-                  moment.duration(d.totalTime).asSeconds(),
+                  moment.duration(d.time).asSeconds(),
                 ),
                 datasets: [
                   {
-                    data: props.brewData.map((d) => d.flow),
+                    data: props.brewData.map((d) => d.flowOutside),
                     label: t('flow'),
                     pointStyle: false,
                     animation: false,
                     borderColor: twColor('accent'),
                   },
                   {
-                    data: props.brewData.map((d) => d.totalQuantity),
+                    data: props.useFlowProfiling
+                      ? props.brewData.map((d) => d.flowInside)
+                      : [],
+                    label: t('flow'),
+                    pointStyle: false,
+                    animation: false,
+                    borderColor: twColor('accent-alt'),
+                  },
+                  {
+                    data: props.brewData.map((d) => d.quantity),
                     label: t('liquid'),
                     pointStyle: false,
                     animation: false,
@@ -81,7 +92,28 @@ export const PannelGraph: Component<{
                       color: twColor('accent'),
                     },
                     min: 0,
-                    max: Math.max(...props.brewData.map((d) => d.flow)) * 1.1,
+                    max:
+                      Math.max(
+                        ...props.brewData.map((d) => {
+                          if (
+                            Number.isNaN(d.flowInside) &&
+                            Number.isNaN(d.flowOutside)
+                          )
+                            return 0;
+                          if (
+                            Number.isNaN(d.flowInside) &&
+                            !Number.isNaN(d.flowOutside)
+                          )
+                            return d.flowOutside;
+                          if (
+                            !Number.isNaN(d.flowInside) &&
+                            Number.isNaN(d.flowOutside)
+                          )
+                            return d.flowInside;
+                          if (d.flowInside > d.flowOutside) return d.flowInside;
+                          return d.flowOutside;
+                        }),
+                      ) * 1.1,
                     grid: {
                       display: false,
                     },
@@ -96,7 +128,7 @@ export const PannelGraph: Component<{
                     min: 0,
                     max:
                       Math.max(
-                        ...props.brewData.map((d) => d.totalQuantity),
+                        ...props.brewData.map((d) => d.quantity),
                         props.targetQuantity,
                       ) * 1.1,
                     grid: {

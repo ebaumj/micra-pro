@@ -90,6 +90,10 @@ function MainScreen() {
     beanId: string,
     recipe: EspressoProperties,
     brewByTime: boolean,
+    flowProfile?: {
+      startFlow: number;
+      dataPoints: { flow: number; time: any }[];
+    },
   ) => {
     setMethod(undefined);
     setRecipe({
@@ -98,6 +102,9 @@ function MainScreen() {
       grindSetting: recipe.grindSetting,
       inCupQuantity: recipe.inCupQuantity,
       targetExtractionTime: recipe.targetExtractionTime,
+      flowProfile: flowProfile
+        ? JSON.parse(JSON.stringify(flowProfile))
+        : undefined,
     });
     setMethod(brewByTime ? 'time' : 'weight');
     setSelectedBean(null);
@@ -109,6 +116,10 @@ function MainScreen() {
     grindSetting: number;
     inCupQuantity: number;
     targetExtractionTime: string;
+    flowProfile?: {
+      startFlow: number;
+      dataPoints: { flow: number; time: any }[];
+    };
   } | null>(null);
 
   const [method, setMethod] = createSignal<BrewMethod | undefined>();

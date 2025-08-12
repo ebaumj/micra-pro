@@ -30,6 +30,7 @@
   <ItemGroup>
     <ProjectReference Include="..\domain\MicraPro.Shared.Domain.csproj" />
     <ProjectReference Include="..\..\asset-management\data-definition\MicraPro.AssetManagement.DataDefinition.csproj" />
+    <ProjectReference Include="..\..\serial-communication\data-definition\MicraPro.SerialCommunication.DataDefinition.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="crypto\**">

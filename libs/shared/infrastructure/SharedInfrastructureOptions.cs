@@ -14,4 +14,5 @@ public class SharedInfrastructureOptions
     public bool AllowUpdates { get; set; } = false;
     public bool UseBackups { get; set; } = false;
     public string BackupConfigFile { get; set; } = string.Empty;
+    public string BrewPaddleAccess { get; set; } = string.Empty;
 }

@@ -9,12 +9,15 @@ import {
 import {
   BeanProperties,
   createBeansAccessor,
+  createFlowProfilesAccessor,
   createRecipesAccessor,
   createRoasteriesAccessor,
   EspressoProperties,
+  FlowProfileProperties,
   RoasteryProperties,
   V60Properties,
 } from '@micra-pro/bean-management/data-access';
+import { IsFlowProfilingAvailable } from '@micra-pro/flow-profiling/data-access';
 import {
   Button,
   Icon,
@@ -37,12 +40,18 @@ import { EditV60Dialog, EditV60DialogContent } from './EditV60Dialog';
 import { useAuthentication } from '@micra-pro/recipe-hub/data-access';
 import { RemoteRecipeSelectorDialog } from './RemoteRecipeSelectorDialog';
 import { useSearchParams } from '@solidjs/router';
+import {
+  EditFlowProfileDialogContent,
+  EditFlowProfilingDialog,
+} from './EditFlowProfileDialog';
 
 export const EditBeansPage: Component = () => {
   const pictures = selectPicturesForMode(picturesImport);
   const roasteriesAccessor = createRoasteriesAccessor();
   const beansAccessor = createBeansAccessor();
   const recipesAccessor = createRecipesAccessor();
+  const flowProfilesAccessor = createFlowProfilesAccessor();
+  const isFlowProfilingAvailble = IsFlowProfilingAvailable();
 
   const [selectedRoastery, setSelectedRoastery] = createSignal('');
   const [editRoasteryDialog, setEditRoasteryDialog] = createSignal<
@@ -155,10 +164,51 @@ export const EditBeansPage: Component = () => {
     }
   });
 
+  const [editFlowProfileDialog, setEditFlowProfileDialog] = createSignal<
+    EditFlowProfileDialogContent | undefined
+  >(undefined);
+  const [isAddingFlowProfile, setIsAddingFlowProfile] = createSignal(false);
+  const addFlowProfile = (
+    recipeId: string,
+    properties: FlowProfileProperties,
+  ) => {
+    setIsAddingFlowProfile(true);
+    flowProfilesAccessor.add(recipeId, properties, () => {
+      setEditFlowProfileDialog(undefined);
+      setIsAddingFlowProfile(false);
+    });
+  };
+
   const isLoading = () =>
     roasteriesAccessor.isLoading() ||
     beansAccessor.isLoading() ||
-    recipesAccessor.isLoading();
+    recipesAccessor.isLoading() ||
+    flowProfilesAccessor.isLoading();
+
+  const flowProfileEdit = () => {
+    const recipe = currentEspressoRecipe();
+    if (!recipe) return;
+    const currentProfile = flowProfilesAccessor
+      .flowProfiles()
+      .find((p) => p.recipeId === recipe.id);
+    setEditFlowProfileDialog({
+      properties: currentProfile?.properties,
+      targetExtractionTime: recipe.properties.targetExtractionTime,
+      onSave: (properties: FlowProfileProperties) =>
+        currentProfile
+          ? currentProfile.update(properties, () =>
+              setEditFlowProfileDialog(undefined),
+            )
+          : addFlowProfile(recipe.id, properties),
+      onRemove: currentProfile
+        ? () => currentProfile.remove(() => setEditFlowProfileDialog(undefined))
+        : undefined,
+      isSaving: currentProfile
+        ? currentProfile.isUpdating
+        : isAddingFlowProfile,
+      isRemoving: currentProfile?.isDeleting,
+    });
+  };
 
   const authentication = useAuthentication();
 
@@ -200,6 +250,10 @@ export const EditBeansPage: Component = () => {
       <EditV60Dialog
         content={editV60Dialog()}
         onClose={() => setEditV60Dialog(undefined)}
+      />
+      <EditFlowProfilingDialog
+        content={editFlowProfileDialog()}
+        onClose={() => setEditFlowProfileDialog(undefined)}
       />
       <Show when={!isLoading()}>
         <div
@@ -374,6 +428,14 @@ export const EditBeansPage: Component = () => {
                             currentEspressoRecipe()?.isUpdating() ?? false,
                           isRemoving: () =>
                             currentEspressoRecipe()?.isDeleting() ?? false,
+                          // eslint-disable-next-line solid/reactivity
+                          onFlowProfileSelect:
+                            isFlowProfilingAvailble.isAvailable()
+                              ? () => {
+                                  flowProfileEdit();
+                                  setEditEspressoDialog(undefined);
+                                }
+                              : undefined,
                         })
                       }
                     >

@@ -3,6 +3,7 @@ using MicraPro.AssetManagement.DataProviderGraphQl;
 using MicraPro.BeanManagement.DataProviderGraphQl;
 using MicraPro.BrewByWeight.DataProviderGraphQl;
 using MicraPro.Cleaning.DataProviderGraphQl;
+using MicraPro.FlowProfiling.DataProviderGraphQl;
 using MicraPro.ScaleManagement.DataProviderGraphQl;
 using MicraPro.Shared.DataProviderGraphQl;
 
@@ -35,7 +36,8 @@ internal static class ConfigureGraphQlExtensions
             .AddBeanManagementDataProviderGraphQlTypes()
             .AddAssetManagementDataProviderGraphQlTypes()
             .AddBrewByWeightDataProviderGraphQlTypes()
-            .AddCleaningDataProviderGraphQlTypes();
+            .AddCleaningDataProviderGraphQlTypes()
+            .AddFlowProfilingDataProviderGraphQlTypes();
     }
 
     // ReSharper disable once ClassNeverInstantiated.Global

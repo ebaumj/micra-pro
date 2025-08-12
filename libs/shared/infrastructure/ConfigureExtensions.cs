@@ -25,9 +25,7 @@ public static class ConfigureExtensions
                 .AddSingleton<ISystemService>(sp => sp.GetRequiredService<SystemService>())
                 .AddSingleton<IWifiEnableService>(sp => sp.GetRequiredService<SystemService>())
                 .AddHostedService<WifiEnableHostService>()
-                .AddSingleton<BrewPaddleAccess>()
-                .AddSingleton<IBrewPaddleAccess>(sp => sp.GetRequiredService<BrewPaddleAccess>())
-                .AddHostedService(sp => sp.GetRequiredService<BrewPaddleAccess>())
+                .AddBrewPaddle(configurationManager)
                 .AddSingleton<BluetoothService>()
                 .AddHostedService(p => p.GetRequiredService<BluetoothService>())
                 .AddSingleton<IBluetoothService>(provider =>
@@ -50,4 +48,32 @@ public static class ConfigureExtensions
             .AddScoped<IRemoteFileService, RemoteFileService>()
             .AddScoped<IBackupService, BackupService>();
     }
+
+    private static IServiceCollection AddBrewPaddle(
+        this IServiceCollection services,
+        IConfiguration configuration
+    )
+    {
+        if (
+            configuration
+                .GetSection(SharedInfrastructureOptions.SectionName)
+                .GetValue<string>("BrewPaddleAccess") == "Serial"
+        )
+            services.AddBrewPaddleSerial();
+        else
+            services.AddBrewPaddleGpio();
+        return services;
+    }
+
+    private static IServiceCollection AddBrewPaddleGpio(this IServiceCollection services) =>
+        services
+            .AddSingleton<BrewPaddleAccess>()
+            .AddSingleton<IBrewPaddleAccess>(sp => sp.GetRequiredService<BrewPaddleAccess>())
+            .AddHostedService(sp => sp.GetRequiredService<BrewPaddleAccess>());
+
+    private static IServiceCollection AddBrewPaddleSerial(this IServiceCollection services) =>
+        services
+            .AddSingleton<BrewPaddleAccessSerial>()
+            .AddSingleton<IBrewPaddleAccess>(sp => sp.GetRequiredService<BrewPaddleAccessSerial>())
+            .AddHostedService(sp => sp.GetRequiredService<BrewPaddleAccessSerial>());
 }
