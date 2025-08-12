@@ -19,6 +19,7 @@ public static class ConfigureExtensions
             .AddScoped<IRecipeRepository, RecipeRepository>()
             .AddScoped<IKeyValueStore, KeyValueStore>()
             .AddScopedAssetConsumer<IBeanRepository, BeanRepository>()
+            .AddScoped<IFlowProfileRepository, FlowProfileRepository>()
             .AddDbContextAndMigrationService<BeanManagementDbContext>();
     }
 }

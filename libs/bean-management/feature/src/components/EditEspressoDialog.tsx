@@ -1,7 +1,9 @@
 import { EspressoProperties } from '@micra-pro/bean-management/data-access';
 import {
+  Button,
   Dialog,
   DialogContent,
+  Icon,
   NumberField,
   NumberFieldDecrementTrigger,
   NumberFieldGroup,
@@ -31,6 +33,7 @@ export type EditEspressoDialogContent = {
   onRemove?: () => void;
   isSaving?: Accessor<boolean>;
   isRemoving?: Accessor<boolean>;
+  onFlowProfileSelect?: () => void;
 };
 
 export const EditEspressoDialog: Component<{
@@ -182,25 +185,38 @@ export const EditEspressoDialog: Component<{
               </NumberField>
             </div>
           </div>
-          <div class="flex w-full justify-end gap-2 pt-4">
-            <Show when={props.content?.onRemove}>
+          <div class="flex w-full pt-4">
+            <div class="flex justify-start">
+              <Show when={props.content?.onFlowProfileSelect}>
+                <Button
+                  variant="outline"
+                  class="flex h-10 w-10 items-center justify-center p-0"
+                  onClick={props.content?.onFlowProfileSelect}
+                >
+                  <Icon iconName="area_chart" />
+                </Button>
+              </Show>
+            </div>
+            <div class="flex w-full justify-end gap-2">
+              <Show when={props.content?.onRemove}>
+                <SpinnerButton
+                  class="h-10 w-28"
+                  variant="destructive"
+                  onClick={() => props.content?.onRemove?.()}
+                  loading={props.content?.isRemoving?.() ?? false}
+                >
+                  <T key="remove" />
+                </SpinnerButton>
+              </Show>
               <SpinnerButton
                 class="h-10 w-28"
-                variant="destructive"
-                onClick={() => props.content?.onRemove?.()}
-                loading={props.content?.isRemoving?.() ?? false}
+                variant="default"
+                onClick={() => props.content?.onSave(store.properties)}
+                loading={props.content?.isSaving?.() ?? false}
               >
-                <T key="remove" />
+                <T key="save" />
               </SpinnerButton>
-            </Show>
-            <SpinnerButton
-              class="h-10 w-28"
-              variant="default"
-              onClick={() => props.content?.onSave(store.properties)}
-              loading={props.content?.isSaving?.() ?? false}
-            >
-              <T key="save" />
-            </SpinnerButton>
+            </div>
           </div>
         </div>
       </DialogContent>

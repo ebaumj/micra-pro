@@ -105,6 +105,22 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.Cleaning.Infrastru
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.Cleaning.Infrastructure.Test", "libs\cleaning\infrastructure-test\MicraPro.Cleaning.Infrastructure.Test.csproj", "{6B23A924-C643-49D5-82E7-25D6884D8162}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "flow-profiling", "flow-profiling", "{9515ED47-C904-49CE-9915-D9731906A6E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.FlowProfiling.DataDefinition", "libs\flow-profiling\data-definition\MicraPro.FlowProfiling.DataDefinition.csproj", "{25B478C7-1A49-4D91-8B4C-39233A13A926}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.FlowProfiling.Domain", "libs\flow-profiling\domain\MicraPro.FlowProfiling.Domain.csproj", "{F91C9397-DBE5-46AA-9099-5C878DD0EEE6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.FlowProfiling.Domain.Test", "libs\flow-profiling\domain-test\MicraPro.FlowProfiling.Domain.Test.csproj", "{A0A78F40-ED3B-4FC5-8B1F-A249593A1D9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.FlowProfiling.Infrastructure", "libs\flow-profiling\infrastructure\MicraPro.FlowProfiling.Infrastructure.csproj", "{DE70B7F8-07B9-4D97-A267-C247F83A265D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.FlowProfiling.Infrastructure.Test", "libs\flow-profiling\infrastructure-test\MicraPro.FlowProfiling.Infrastructure.Test.csproj", "{1F2D265F-74AB-4E70-96EC-BADD8683B13A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.FlowProfiling.DataDefinitionGraphQl", "libs\flow-profiling\data-definition-graphql\MicraPro.FlowProfiling.DataDefinitionGraphQl.csproj", "{05524D2C-0E08-4257-86B0-413588A3FCA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicraPro.FlowProfiling.DataProviderGraphQl", "libs\flow-profiling\data-provider-graphql\MicraPro.FlowProfiling.DataProviderGraphQl.csproj", "{B527890A-9698-43AE-810D-56F42C08E449}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -284,6 +300,34 @@ Global
 		{6B23A924-C643-49D5-82E7-25D6884D8162}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B23A924-C643-49D5-82E7-25D6884D8162}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B23A924-C643-49D5-82E7-25D6884D8162}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25B478C7-1A49-4D91-8B4C-39233A13A926}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25B478C7-1A49-4D91-8B4C-39233A13A926}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25B478C7-1A49-4D91-8B4C-39233A13A926}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25B478C7-1A49-4D91-8B4C-39233A13A926}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F91C9397-DBE5-46AA-9099-5C878DD0EEE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F91C9397-DBE5-46AA-9099-5C878DD0EEE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F91C9397-DBE5-46AA-9099-5C878DD0EEE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F91C9397-DBE5-46AA-9099-5C878DD0EEE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0A78F40-ED3B-4FC5-8B1F-A249593A1D9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0A78F40-ED3B-4FC5-8B1F-A249593A1D9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0A78F40-ED3B-4FC5-8B1F-A249593A1D9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0A78F40-ED3B-4FC5-8B1F-A249593A1D9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE70B7F8-07B9-4D97-A267-C247F83A265D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE70B7F8-07B9-4D97-A267-C247F83A265D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE70B7F8-07B9-4D97-A267-C247F83A265D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE70B7F8-07B9-4D97-A267-C247F83A265D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F2D265F-74AB-4E70-96EC-BADD8683B13A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F2D265F-74AB-4E70-96EC-BADD8683B13A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F2D265F-74AB-4E70-96EC-BADD8683B13A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F2D265F-74AB-4E70-96EC-BADD8683B13A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05524D2C-0E08-4257-86B0-413588A3FCA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05524D2C-0E08-4257-86B0-413588A3FCA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05524D2C-0E08-4257-86B0-413588A3FCA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05524D2C-0E08-4257-86B0-413588A3FCA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B527890A-9698-43AE-810D-56F42C08E449}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B527890A-9698-43AE-810D-56F42C08E449}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B527890A-9698-43AE-810D-56F42C08E449}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B527890A-9698-43AE-810D-56F42C08E449}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{37887E29-4FD9-46AD-914E-5F38D82AEA36} = {DCF673B4-820A-481E-BB5E-3CE6B4A1B39A}
@@ -335,5 +379,13 @@ Global
 		{C398B237-7841-490C-9C50-62C3F39772FE} = {F164A8CC-F156-41E4-AD85-18B4E43F0B58}
 		{E465C866-0996-4AD4-AA6B-61082B8920CE} = {F164A8CC-F156-41E4-AD85-18B4E43F0B58}
 		{6B23A924-C643-49D5-82E7-25D6884D8162} = {F164A8CC-F156-41E4-AD85-18B4E43F0B58}
+		{9515ED47-C904-49CE-9915-D9731906A6E2} = {DCF673B4-820A-481E-BB5E-3CE6B4A1B39A}
+		{25B478C7-1A49-4D91-8B4C-39233A13A926} = {9515ED47-C904-49CE-9915-D9731906A6E2}
+		{F91C9397-DBE5-46AA-9099-5C878DD0EEE6} = {9515ED47-C904-49CE-9915-D9731906A6E2}
+		{A0A78F40-ED3B-4FC5-8B1F-A249593A1D9C} = {9515ED47-C904-49CE-9915-D9731906A6E2}
+		{DE70B7F8-07B9-4D97-A267-C247F83A265D} = {9515ED47-C904-49CE-9915-D9731906A6E2}
+		{1F2D265F-74AB-4E70-96EC-BADD8683B13A} = {9515ED47-C904-49CE-9915-D9731906A6E2}
+		{05524D2C-0E08-4257-86B0-413588A3FCA0} = {9515ED47-C904-49CE-9915-D9731906A6E2}
+		{B527890A-9698-43AE-810D-56F42C08E449} = {9515ED47-C904-49CE-9915-D9731906A6E2}
 	EndGlobalSection
 EndGlobal

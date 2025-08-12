@@ -8,6 +8,8 @@ public abstract class RecipeDb(Guid id, Guid beanId) : IEntity
     public Guid BeanId { get; } = beanId;
 
     public BeanDb BeanObject { get; init; } = null!;
+
+    public ICollection<FlowProfileDb> FlowProfiles { get; } = new List<FlowProfileDb>();
 }
 
 public class EspressoRecipeDb : RecipeDb

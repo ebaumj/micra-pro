@@ -15,6 +15,9 @@ import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
+  Switch,
+  SwitchControl,
+  SwitchThumb,
 } from '@micra-pro/shared/ui';
 import { Component, createEffect, createSignal, Show } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
@@ -22,6 +25,8 @@ import { T } from '../generated/language-types';
 import { JSX } from 'solid-js/jsx-runtime';
 import moment from 'moment';
 import picturesImport from '../generated/pictures-import';
+import { twMerge } from 'tailwind-merge';
+import { IsFlowProfilingAvailable } from '@micra-pro/flow-profiling/data-access';
 
 const NumberField: Component<{
   value: number;
@@ -119,15 +124,30 @@ const V60Params: Component<{ recipe: V60Properties; class?: string }> = (
 export const RecipePannel: Component<{
   beans: Bean[];
   beanId: string | null;
-  startEspressoBrewing: (beanId: string, recipe: EspressoProperties) => void;
+  startEspressoBrewing: (
+    beanId: string,
+    recipe: EspressoProperties,
+    flowProfile?: {
+      startFlow: number;
+      dataPoints: { flow: number; time: any }[];
+    },
+  ) => void;
   onClose: () => void;
 }> = (props) => {
   const pictures = selectPicturesForMode(picturesImport);
+  const flowProfileAvailable = IsFlowProfilingAvailable();
   const [recipe, setRecipe] = createSignal<
-    | ({ type: 'Espresso' } & EspressoProperties)
+    | ({
+        type: 'Espresso';
+        flowProfile?: {
+          startFlow: number;
+          dataPoints: { flow: number; time: any }[];
+        };
+      } & EspressoProperties)
     | ({ type: 'V60' } & V60Properties)
     | null
   >(null);
+  const [useFlowProfiling, setUseFlowProfiling] = createSignal(true);
   createEffect(() => {
     if (!props.beanId) setRecipe(null);
   });
@@ -135,20 +155,34 @@ export const RecipePannel: Component<{
     props.beans.find((b) => b.id === props.beanId) ?? null;
 
   const espresso = () =>
-    selectedBean()?.recipes.find((r) => r.__typename == 'EspressoProperties')
-      ?.properties;
+    selectedBean()?.recipes.find((r) => r.__typename == 'EspressoProperties');
   const v60 = () =>
-    selectedBean()?.recipes.find((r) => r.__typename == 'V60Properties')
-      ?.properties;
+    selectedBean()?.recipes.find((r) => r.__typename == 'V60Properties');
 
   createEffect(() => {
-    const espressoProps = espresso();
-    const v60Props = v60();
-    if (espressoProps && !v60Props)
-      setRecipe({ type: 'Espresso', ...espressoProps });
-    if (v60Props && !espressoProps) setRecipe({ type: 'V60', ...v60Props });
-    if (!v60Props && !espressoProps) props.onClose();
+    const espressoRecipe = espresso();
+    const v60Recipe = v60();
+    if (espressoRecipe && !v60Recipe)
+      setRecipe({
+        type: 'Espresso',
+        flowProfile: parseFlowProfile(espressoRecipe.flowProfile),
+        ...espressoRecipe.properties,
+      });
+    if (v60Recipe && !espressoRecipe)
+      setRecipe({ type: 'V60', ...v60Recipe.properties });
+    if (!v60Recipe && !espressoRecipe) props.onClose();
   });
+
+  const parseFlowProfile = (profile?: {
+    startFlow: number;
+    flowSettings: { flow: number; time: any }[];
+  }) =>
+    profile
+      ? {
+          startFlow: profile.startFlow,
+          dataPoints: profile.flowSettings,
+        }
+      : undefined;
 
   const selectParams = (): Component<{ class?: string }> => {
     const rec = recipe();
@@ -164,7 +198,13 @@ export const RecipePannel: Component<{
   const start = () => {
     const rec = recipe();
     if (props.beanId && rec?.type === 'Espresso')
-      props.startEspressoBrewing(props.beanId, rec);
+      props.startEspressoBrewing(
+        props.beanId,
+        rec,
+        useFlowProfiling() && flowProfileAvailable.isAvailable()
+          ? rec.flowProfile
+          : undefined,
+      );
   };
   return (
     <>
@@ -179,11 +219,17 @@ export const RecipePannel: Component<{
             </SheetTitle>
             <SheetDescription class="flex flex-col gap-4 pt-4">
               <Show when={espresso()}>
-                {(props) => (
+                {(rec) => (
                   <Button
                     variant="outline"
                     class="flex h-14 w-full justify-center py-2"
-                    onClick={() => setRecipe({ type: 'Espresso', ...props() })}
+                    onClick={() =>
+                      setRecipe({
+                        type: 'Espresso',
+                        flowProfile: parseFlowProfile(rec().flowProfile),
+                        ...rec().properties,
+                      })
+                    }
                   >
                     <img
                       src={pictures().espresso}
@@ -192,7 +238,7 @@ export const RecipePannel: Component<{
                   </Button>
                 )}
               </Show>
-              <Show when={v60()}>
+              <Show when={v60()?.properties}>
                 {(props) => (
                   <Button
                     variant="outline"
@@ -238,7 +284,7 @@ export const RecipePannel: Component<{
             </div>
             <Dynamic component={selectParams()} class="w-full px-6" />
             <Show when={recipe()?.type === 'Espresso'}>
-              <div class="flex w-full justify-center py-2">
+              <div class="flex w-full justify-center gap-4 py-2">
                 <Button
                   variant="default"
                   class="flex h-12 w-48 items-center justify-center gap-2 rounded-xl shadow-lg"
@@ -247,6 +293,32 @@ export const RecipePannel: Component<{
                   <Icon iconName="play_arrow" />
                   <T key="start-espresso" />
                 </Button>
+                <Show
+                  when={
+                    espresso()?.flowProfile &&
+                    flowProfileAvailable.isAvailable()
+                  }
+                >
+                  <div
+                    class={twMerge(
+                      'flex h-12 items-center justify-center gap-2 rounded-lg border px-4',
+                    )}
+                  >
+                    <Icon
+                      iconName="area_chart"
+                      class={useFlowProfiling() ? '' : 'opacity-50'}
+                    />
+                    <Switch
+                      checked={useFlowProfiling()}
+                      onChange={setUseFlowProfiling}
+                      class="flex h-full items-center"
+                    >
+                      <SwitchControl>
+                        <SwitchThumb />
+                      </SwitchControl>
+                    </Switch>
+                  </div>
+                </Show>
               </div>
             </Show>
           </div>
