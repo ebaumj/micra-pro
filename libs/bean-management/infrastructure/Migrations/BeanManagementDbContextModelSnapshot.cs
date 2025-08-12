@@ -44,6 +44,29 @@ namespace MicraPro.BeanManagement.Infrastructure.Migrations
                     b.ToTable("BeanEntries");
                 });
 
+            modelBuilder.Entity("MicraPro.BeanManagement.Domain.StorageAccess.FlowProfileDb", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FlowSettings")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("RecipeId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<double>("StartFlow")
+                        .HasColumnType("REAL");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RecipeId");
+
+                    b.ToTable("FlowProfileEntries");
+                });
+
             modelBuilder.Entity("MicraPro.BeanManagement.Domain.StorageAccess.RecipeDb", b =>
                 {
                     b.Property<Guid>("Id")
@@ -169,6 +192,17 @@ namespace MicraPro.BeanManagement.Infrastructure.Migrations
                     b.Navigation("RoasteryObject");
                 });
 
+            modelBuilder.Entity("MicraPro.BeanManagement.Domain.StorageAccess.FlowProfileDb", b =>
+                {
+                    b.HasOne("MicraPro.BeanManagement.Domain.StorageAccess.RecipeDb", "RecipeObject")
+                        .WithMany("FlowProfiles")
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RecipeObject");
+                });
+
             modelBuilder.Entity("MicraPro.BeanManagement.Domain.StorageAccess.RecipeDb", b =>
                 {
                     b.HasOne("MicraPro.BeanManagement.Domain.StorageAccess.BeanDb", "BeanObject")
@@ -183,6 +217,11 @@ namespace MicraPro.BeanManagement.Infrastructure.Migrations
             modelBuilder.Entity("MicraPro.BeanManagement.Domain.StorageAccess.BeanDb", b =>
                 {
                     b.Navigation("Recipes");
+                });
+
+            modelBuilder.Entity("MicraPro.BeanManagement.Domain.StorageAccess.RecipeDb", b =>
+                {
+                    b.Navigation("FlowProfiles");
                 });
 
             modelBuilder.Entity("MicraPro.BeanManagement.Domain.StorageAccess.RoasteryDb", b =>
