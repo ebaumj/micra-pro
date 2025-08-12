@@ -1,0 +1,34 @@
+{
+  "name": "flow-profiling-data-access",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/flow-profiling/data-access/src/",
+  "projectType": "library",
+  "implicitDependencies": ["flow-profiling-data-definition-graphql"],
+  "tags": ["type:data"],
+  "targets": {
+    "build": {
+      "outputs": ["{workspaceRoot}/dist/libs/flow-profiling/data-access"],
+      "options": {
+        "outDir": "../../../dist/libs/flow-profiling/data-access"
+      }
+    },
+    "codegen": {
+      "executor": "nx:run-commands",
+      "outputs": [
+        "{workspaceRoot}/libs/flow-profiling/data-access/src/generated"
+      ],
+      "inputs": [
+        { "dependentTasksOutputFiles": "**/*.graphqls" },
+        "{workspaceRoot}/libs/flow-profiling/data-access/src/**/*.graphql"
+      ],
+      "options": {
+        "command": "graphql-codegen --config codegen.ts",
+        "cwd": "{workspaceRoot}/libs/flow-profiling/data-access"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "dependsOn": ["codegen"]
+    }
+  }
+}

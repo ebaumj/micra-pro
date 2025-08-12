@@ -29,3 +29,5 @@ export * from './utils/handleError';
 export * from './utils/makeToast';
 export * from './Components/Chart';
 export * from './Components/OTPField';
+export * from './Components/Slider';
+export * from './Components/Switch';

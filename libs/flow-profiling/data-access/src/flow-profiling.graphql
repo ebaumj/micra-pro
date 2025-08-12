@@ -1,0 +1,64 @@
+fragment FlowProfileTrackingFields on FlowProfileTracking {
+  ... on FlowProfilingProcessStarted {
+    __typename
+  }
+  ... on FlowProfilingProcessRunning {
+    __typename
+    flow
+    totalTime
+  }
+  ... on FlowProfilingProcessProfileDone {
+    __typename
+  }
+  ... on FlowProfilingProcessFinished {
+    __typename
+    averageFlow
+    totalTime
+  }
+  ... on FlowProfilingProcessCancelled {
+    __typename
+    averageFlow
+    totalTime
+  }
+  ... on FlowProfilingProcessFailed {
+    __typename
+    averageFlow
+    totalTime
+    exception {
+      __typename
+    }
+  }
+}
+
+mutation StartFlowProfilingProcess(
+  $startFlow: Float!
+  $dataPoints: [FlowDataPointInput!]!
+) {
+  startFlowProfilingProcess(
+    input: { startFlow: $startFlow, dataPoints: $dataPoints }
+  ) {
+    uuid
+  }
+}
+
+mutation StopFlowProfilingProcess($processId: UUID!) {
+  stopFlowProfilingProcess(input: { processId: $processId }) {
+    uuid
+  }
+}
+
+query FlowProfilingStatePoll($processId: UUID!) {
+  flowProfileState(processId: $processId) {
+    ...FlowProfileTrackingFields
+  }
+}
+
+subscription FlowProfilingState($processId: UUID!) {
+  flowProfileState(processId: $processId) {
+    ...FlowProfileTrackingFields
+  }
+}
+
+query IsFlowProfilingAvailable {
+  isFlowProfilingAvailable
+}
