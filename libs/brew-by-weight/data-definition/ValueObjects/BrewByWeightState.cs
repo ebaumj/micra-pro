@@ -1,6 +1,6 @@
 namespace MicraPro.BrewByWeight.DataDefinition.ValueObjects;
 
-public abstract record BrewByWeightState()
+public abstract record BrewByWeightState
 {
     public record Idle : BrewByWeightState;
 

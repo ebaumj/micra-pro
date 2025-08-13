@@ -4,7 +4,7 @@ using Path = System.IO.Path;
 
 namespace MicraPro.ScaleManagement.DataDefinitionGraphQl;
 
-public class Codegen()
+public class Codegen
 {
     [Fact]
     public async Task GenerateSchemaTest()

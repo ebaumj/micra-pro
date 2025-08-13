@@ -5,7 +5,7 @@ namespace MicraPro.BeanManagement.DataDefinition;
 public interface IRecipeService
 {
     Task<IRecipe> AddRecipeAsync(RecipeProperties properties, Guid beanId, CancellationToken ct);
-    public Task<IEnumerable<IRecipe>> GetRecipesAsync(CancellationToken ct);
+    Task<IEnumerable<IRecipe>> GetRecipesAsync(CancellationToken ct);
     Task<IRecipe> UpdateRecipeAsync(
         Guid recipeId,
         RecipeProperties properties,
