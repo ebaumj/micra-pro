@@ -5,7 +5,7 @@ namespace MicraPro.ScaleManagement.DataDefinition;
 public interface IScaleService
 {
     IObservable<bool> IsScanning { get; }
-    public IObservable<BluetoothScale> DetectedScales { get; }
+    IObservable<BluetoothScale> DetectedScales { get; }
     Task ScanAsync(TimeSpan scanTime, CancellationToken ct);
     Task<IScale> AddScaleAsync(string name, string identifier, CancellationToken ct);
     Task<Guid> RemoveScaleAsync(Guid scaleId, CancellationToken ct);
