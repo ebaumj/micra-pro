@@ -3,7 +3,22 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "apps/backend",
+  "tags": ["type:app"],
   "targets": {
+    "deploy": {
+      "executor": "@micra-pro/workspace-extensions:deploy",
+      "options": {
+        "sshTarget": {
+          "target": "micra",
+          "user": "micra"
+        },
+        "paths": {
+          "origin": "apps/backend/bin/Release/net8.0/linux-arm64/publish/*",
+          "destination": "/usr/lib/micra-pro/backend/"
+        },
+        "affectedServices": ["backend.service"]
+      }
+    },
     "build": {
       "executor": "@nx-dotnet/core:publish",
       "outputs": ["{projectRoot}/bin", "{projectRoot}/obj"],
@@ -35,6 +50,5 @@
     "format": {
       "executor": "@micra-pro/workspace-extensions:csharpier"
     }
-  },
-  "tags": ["scope:backend"]
+  }
 }
