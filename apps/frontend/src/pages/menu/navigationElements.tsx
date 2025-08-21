@@ -7,6 +7,7 @@ import {
   BrewByWeightHistoryPage,
   BrewByWeightStatisticsPage,
 } from '@micra-pro/brew-by-weight/feature';
+import { RecipeHubProfilePage } from '@micra-pro/recipe-hub/feature';
 
 export const navigationElements: {
   link: string;
@@ -43,6 +44,12 @@ export const navigationElements: {
     link: 'hisotry',
     icon: 'access_time',
     component: BrewByWeightHistoryPage,
+  },
+  {
+    name: () => <T key={'menu-sidebar-profile'} />,
+    link: 'profile',
+    icon: 'account_circle',
+    component: RecipeHubProfilePage,
   },
 ];
 

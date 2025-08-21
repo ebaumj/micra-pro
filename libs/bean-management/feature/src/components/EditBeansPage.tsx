@@ -28,6 +28,8 @@ import {
   EditEspressoDialogContent,
 } from './EditEspressoDialog';
 import { EditV60Dialog, EditV60DialogContent } from './EditV60Dialog';
+import { useAuthentication } from '@micra-pro/recipe-hub/data-access';
+import { RemoteRecipeSelectorDialog } from './RemoteRecipeSelectorDialog';
 
 export const EditBeansPage: Component = () => {
   const roasteriesAccessor = createRoasteriesAccessor();
@@ -97,6 +99,14 @@ export const EditBeansPage: Component = () => {
     beansAccessor.isLoading() ||
     recipesAccessor.isLoading();
 
+  const authentication = useAuthentication();
+
+  const [remoteEspressoRecipeSelect, setRemoteEspressoRecipeSelect] =
+    createSignal<((properties: EspressoProperties) => void) | undefined>();
+  const [remoteV60RecipeSelect, setRemoteV60RecipeSelect] = createSignal<
+    ((properties: V60Properties) => void) | undefined
+  >();
+
   return (
     <div class="no-scrollbar h-full w-full overflow-hidden">
       <AlertDialog open={isLoading()}>
@@ -104,6 +114,16 @@ export const EditBeansPage: Component = () => {
           <Spinner class="h-20 w-20" />
         </AlertDialogContent>
       </AlertDialog>
+      <RemoteRecipeSelectorDialog
+        isOpenEspresso={!!remoteEspressoRecipeSelect()}
+        isOpenV60={!!remoteV60RecipeSelect()}
+        close={() => {
+          setRemoteEspressoRecipeSelect(undefined);
+          setRemoteV60RecipeSelect(undefined);
+        }}
+        onEspressoSelected={remoteEspressoRecipeSelect()}
+        onV60Selected={remoteV60RecipeSelect()}
+      />
       <EditRoasteryDialog
         content={editRoasteryDialog()}
         onClose={() => setEditRoasteryDialog(undefined)}
@@ -294,9 +314,9 @@ export const EditBeansPage: Component = () => {
                 </div>
               </Show>
               <Show when={!currentEspressoRecipe()}>
-                <div class="flex h-full w-full items-center justify-center">
+                <div class="flex h-full w-full items-center justify-center gap-2">
                   <Button
-                    class="flex h-8 w-20 items-center justify-center"
+                    class="flex h-8 w-16 items-center justify-center"
                     variant="outline"
                     onClick={() =>
                       setEditEspressoDialog({
@@ -307,6 +327,24 @@ export const EditBeansPage: Component = () => {
                     }
                   >
                     <Icon iconName="add" />
+                  </Button>
+                  <Button
+                    class="flex h-8 w-16 items-center justify-center"
+                    variant="outline"
+                    onClick={() =>
+                      setRemoteEspressoRecipeSelect(
+                        (_) => (props: EspressoProperties) =>
+                          setEditEspressoDialog({
+                            properties: props,
+                            onSave: (props: EspressoProperties) =>
+                              addEspresso(selectedBean(), props),
+                            isSaving: isAddingEspresso,
+                          }),
+                      )
+                    }
+                    disabled={!authentication.currentUser()}
+                  >
+                    <Icon iconName="download" />
                   </Button>
                 </div>
               </Show>
@@ -351,9 +389,9 @@ export const EditBeansPage: Component = () => {
                 </div>
               </Show>
               <Show when={!currentV60Recipe()}>
-                <div class="flex h-full w-full items-center justify-center">
+                <div class="flex h-full w-full items-center justify-center gap-2">
                   <Button
-                    class="flex h-8 w-20 items-center justify-center"
+                    class="flex h-8 w-16 items-center justify-center"
                     variant="outline"
                     onClick={() =>
                       setEditV60Dialog({
@@ -364,6 +402,24 @@ export const EditBeansPage: Component = () => {
                     }
                   >
                     <Icon iconName="add" />
+                  </Button>
+                  <Button
+                    class="flex h-8 w-16 items-center justify-center"
+                    variant="outline"
+                    onClick={() =>
+                      setRemoteV60RecipeSelect(
+                        (_) => (props: V60Properties) =>
+                          setEditV60Dialog({
+                            properties: props,
+                            onSave: (props: V60Properties) =>
+                              addV60(selectedBean(), props),
+                            isSaving: isAddingV60,
+                          }),
+                      )
+                    }
+                    disabled={!authentication.currentUser()}
+                  >
+                    <Icon iconName="download" />
                   </Button>
                 </div>
               </Show>

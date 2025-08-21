@@ -10,6 +10,9 @@ import type { PolymorphicProps } from '@kobalte/core/polymorphic';
 import type { ComponentProps, ParentProps, ValidComponent } from 'solid-js';
 import { splitProps } from 'solid-js';
 import { buttonVariants } from './Button';
+import { useKeyboardInternal } from './Keyboard/KeyboardContext';
+import { useDialogContext } from './DialogContext';
+import { InteractOutsideEvent } from '@kobalte/core/*';
 
 export const AlertDialog = AlertDialogPrimitive;
 export const AlertDialogTrigger = AlertDialogPrimitive.Trigger;
@@ -26,16 +29,46 @@ export const AlertDialogContent = <T extends ValidComponent = 'div'>(
   const [local, rest] = splitProps(props as alertDialogContentProps, [
     'class',
     'children',
+    'onInteractOutside',
   ]);
 
+  const getKeyboardContext = () => {
+    try {
+      return useKeyboardInternal();
+    } catch {
+      return null;
+    }
+  };
+
+  const dialogContext = useDialogContext();
+  const keyboardContext = getKeyboardContext();
+  let dialogContentRef: HTMLDivElement = null!;
+  let dialogOverlayRef: HTMLDivElement = null!;
+
+  const interactOutside = (e: InteractOutsideEvent) => {
+    if (local.onInteractOutside) local.onInteractOutside(e);
+    if (keyboardContext?.isOpen()) {
+      // prevent the dialog from closing when clicking outside the dialog
+      // for example when clicking the keyboard or the overlay (backdrop)
+      e.preventDefault();
+
+      // when the user clicked on the overlay (backdrop) focus the dialog
+      // -> this will close the keyboard
+      if (e.target === dialogOverlayRef) {
+        dialogContentRef.focus();
+      }
+    }
+  };
+
   return (
-    <AlertDialogPrimitive.Portal>
+    <AlertDialogPrimitive.Portal mount={dialogContext.mount}>
       <AlertDialogPrimitive.Overlay
         class={cn(
           'fixed inset-0 z-50 bg-background/80',
           'data-[expanded]:animate-in data-[expanded]:fade-in-0',
           'data-[closed]:animate-out data-[closed]:fade-out-0',
         )}
+        ref={dialogOverlayRef}
       />
       <AlertDialogPrimitive.Content
         class={cn(
@@ -45,6 +78,8 @@ export const AlertDialogContent = <T extends ValidComponent = 'div'>(
           local.class,
         )}
         {...rest}
+        onInteractOutside={interactOutside}
+        ref={dialogContentRef}
       >
         {local.children}
       </AlertDialogPrimitive.Content>

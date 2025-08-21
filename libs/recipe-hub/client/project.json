@@ -1,0 +1,18 @@
+{
+  "name": "recipe-hub-client",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/recipe-hub/client/src",
+  "projectType": "library",
+  "tags": ["type:client"],
+  "targets": {
+    "build": {
+      "outputs": ["{workspaceRoot}/dist/libs/recipe-hub/client"],
+      "options": {
+        "outDir": "../../../dist/libs/recipe-hub/client"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

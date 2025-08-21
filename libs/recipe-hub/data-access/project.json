@@ -1,0 +1,19 @@
+{
+  "name": "recipe-hub-data-access",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/recipe-hub/data-access/src/",
+  "projectType": "library",
+  "tags": ["type:data"],
+  "targets": {
+    "build": {
+      "outputs": ["{workspaceRoot}/dist/libs/recipe-hub/data-access"],
+      "options": {
+        "outDir": "../../../dist/libs/recipe-hub/data-access"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "dependsOn": ["codegen"]
+    }
+  }
+}

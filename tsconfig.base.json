@@ -33,6 +33,14 @@
       "@micra-pro/brew-by-weight/feature": [
         "libs/brew-by-weight/feature/src/index.ts"
       ],
+      "@micra-pro/recipe-hub/client": ["libs/recipe-hub/client/src/index.ts"],
+      "@micra-pro/recipe-hub/data-access": [
+        "libs/recipe-hub/data-access/src/index.ts"
+      ],
+      "@micra-pro/recipe-hub/data-definition": [
+        "libs/recipe-hub/data-definition/src/index.ts"
+      ],
+      "@micra-pro/recipe-hub/feature": ["libs/recipe-hub/feature/src/index.ts"],
       "@micra-pro/scale-management/data-access": [
         "libs/scale-management/data-access/src/index.ts"
       ],
