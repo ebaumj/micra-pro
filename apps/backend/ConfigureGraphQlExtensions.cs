@@ -43,7 +43,12 @@ internal static class ConfigureGraphQlExtensions
     {
         public IError OnError(IError error)
         {
-            if (error.Exception is not null)
+            if (error.Exception is ConfigDoesNotExistException configDoesNotExistException)
+                logger.LogInformation(
+                    "Read not existing config {configKey}",
+                    configDoesNotExistException.Key
+                );
+            else if (error.Exception is not null)
                 logger.LogError("Uncaught server exception: {exception}", error.Exception);
             else if (error.Code != "AUTH_NOT_AUTHORIZED")
                 logger.LogError("Unknown server error: {message}", error.Message);
