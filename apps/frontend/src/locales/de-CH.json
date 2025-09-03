@@ -10,5 +10,6 @@
   "root.reboot": "Neu starte",
   "root.shutdown": "Abefahre",
   "root.reboot-failed": "Neu starte het nid funktioniert",
-  "root.shutdown-failed": "Abefahre het nid funktioniert"
+  "root.shutdown-failed": "Abefahre het nid funktioniert",
+  "root.menu-sidebar-profile": "Profil"
 }

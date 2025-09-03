@@ -11,5 +11,8 @@
   "bean-management.water-quantity": "Wassermenge",
   "bean-management.target-extraction-time": "Extraktionszeit (Referenz)",
   "bean-management.start-espresso": "Espresso starten",
-  "bean-management.select-brew-mehtod": "Brühverfahren auswählen"
+  "bean-management.select-brew-mehtod": "Brühverfahren auswählen",
+  "bean-management.bean-name": "Kaffebohne",
+  "bean-management.roastery": "Rösterei",
+  "bean-management.username": "Benutzername"
 }
