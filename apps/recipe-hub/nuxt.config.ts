@@ -36,7 +36,7 @@ export default defineNuxtConfig({
   },
   $production: {
     runtimeConfig: {
-      userConfirmApi: 'http://localhost:3002/new',
+      userConfirmApi: 'https://micra-pro.vercel.app/new',
     },
   },
   $development: {
