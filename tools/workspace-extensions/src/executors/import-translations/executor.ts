@@ -15,13 +15,15 @@ export async function runExecutor(
       content: Object.entries(
         JSON.parse(
           (await FileStream.readFile(path.join(inputPath, f))).toString(),
-        ),
-      )
-        .filter((e) => e[0].startsWith(options.namespace))
-        .map((e) => ({ key: e[0], value: e[1] as string })),
+        )[options.namespace],
+      ).map((e) => ({
+        key: `${options.namespace}.${e[0]}`,
+        value: e[1] as string,
+      })),
       fileName: f,
     })),
   );
+  console.log(locales[0].content);
   await Promise.all(
     locales.map(async (locale) => {
       const outputFile = path.join(outputPath, locale.fileName);
@@ -39,6 +41,8 @@ export async function runExecutor(
             a[v.key] = v.value;
             return a;
           }, current),
+          null,
+          2,
         ),
       );
     }),

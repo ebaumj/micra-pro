@@ -29,3 +29,4 @@ jobs:
       - uses: nrwl/nx-set-shas@v4
 
       - run: npx nx affected -t lint test build
+      - run: npx tolgee push --api-key $TOLGEE_API_KEY
