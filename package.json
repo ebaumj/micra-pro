@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "format": "nx format:write && nx run-many --target=format --configuration=write --write=true",
-    "serve": "nx run-many -t serve -p backend frontend asset-server",
+    "serve": "nx run-many -t serve -p backend frontend asset-server recipe-hub",
     "import-translations": "tolgee pull && nx run-many -t import-translations && nx format:write && nx run tools-translation-cleanup:cleanup"
   },
   "private": true,

@@ -7,7 +7,7 @@ const config = {
     foreverAdminToken: import.meta.env.VITE_FOREVER_ADMIN_TOKEN,
   },
   recipeHub: {
-    uri: 'http://micra-pro.vercel.app',
+    uri: 'https://micra-pro.vercel.app',
   },
   useLostBackendConnectionModal: true,
   display: {
