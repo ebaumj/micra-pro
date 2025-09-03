@@ -6,6 +6,9 @@ const config = {
     httpUri: 'http://localhost:5232/graphql',
     foreverAdminToken: import.meta.env.VITE_FOREVER_ADMIN_TOKEN,
   },
+  recipeHub: {
+    uri: 'http://micra-pro.vercel.app',
+  },
   useLostBackendConnectionModal: true,
   display: {
     resolution: {

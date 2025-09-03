@@ -1,0 +1,47 @@
+{
+  "name": "recipe-hub-feature",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/recipe-hub/feature/src",
+  "projectType": "library",
+  "tags": ["type:feature"],
+  "targets": {
+    "build": {
+      "outputs": ["{workspaceRoot}/dist/libs/recipe-hub/feature"],
+      "options": {
+        "outDir": "../../../dist/libs/recipe-hub/feature"
+      }
+    },
+    "codegen": {
+      "dependsOn": ["codegen-translations", "codegen-recursive-import"]
+    },
+    "codegen-recursive-import": {
+      "executor": "@micra-pro/workspace-extensions:recursive-import",
+      "options": {
+        "importDir": "libs/recipe-hub/feature/src/assets/pictures",
+        "outputFile": "libs/recipe-hub/feature/src/generated/pictures-import.ts"
+      },
+      "outputs": ["{projectRoot}/src/generated/pictures-import.ts"],
+      "dependsOn": ["workspace-extensions:build"]
+    },
+    "codegen-translations": {
+      "executor": "@micra-pro/workspace-extensions:icu-to-typescript",
+      "options": {
+        "inputFile": "libs/recipe-hub/feature/src/locales/en.json",
+        "outputFile": "libs/recipe-hub/feature/src/generated/language-types.tsx",
+        "namespace": "recipe-hub",
+        "localesFolderRelativeToOutputFile": "../locales/"
+      }
+    },
+    "import-translations": {
+      "executor": "@micra-pro/workspace-extensions:import-translations",
+      "options": {
+        "outputFolder": "libs/recipe-hub/feature/src/locales/",
+        "namespace": "recipe-hub"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "dependsOn": ["codegen"]
+    }
+  }
+}

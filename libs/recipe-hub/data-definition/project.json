@@ -1,0 +1,19 @@
+{
+  "name": "recipe-hub-data-definition",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/recipe-hub/data-definition/src/",
+  "projectType": "library",
+  "tags": ["type:data"],
+  "targets": {
+    "build": {
+      "outputs": ["{workspaceRoot}/dist/libs/recipe-hub/data-definition"],
+      "options": {
+        "outDir": "../../../dist/libs/recipe-hub/data-definition"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "dependsOn": ["codegen"]
+    }
+  }
+}

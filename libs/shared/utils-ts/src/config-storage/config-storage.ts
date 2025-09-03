@@ -13,7 +13,11 @@ import {
 } from '../generated/graphql';
 import { Accessor, createEffect, createSignal } from 'solid-js';
 
-export type ConfigKey = 'MainScreenConfig' | 'SelectedScale' | 'Language';
+export type ConfigKey =
+  | 'MainScreenConfig'
+  | 'SelectedScale'
+  | 'Language'
+  | 'RecipeHub';
 
 export const createConfigAccessor = <T>(
   key: ConfigKey,

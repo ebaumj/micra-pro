@@ -26,4 +26,6 @@ export * from './Components/CountryFlag';
 export * from './Components/CountrySelector';
 export * from './Components/Sheet';
 export * from './utils/handleError';
+export * from './utils/makeToast';
 export * from './Components/Chart';
+export * from './Components/OTPField';
