@@ -10,5 +10,6 @@
   "root.reboot": "Neu starten",
   "root.shutdown": "Herunterfahren",
   "root.reboot-failed": "Neustart fehlgeschlagen",
-  "root.shutdown-failed": "Herunterfahren fehlgeschlagen"
+  "root.shutdown-failed": "Herunterfahren fehlgeschlagen",
+  "root.menu-sidebar-profile": "Profil"
 }
