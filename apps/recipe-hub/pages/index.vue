@@ -10,5 +10,4 @@
       >Build yours now...</a
     >
   </div>
-  <div class="h-screen w-screen bg-black" />
 </template>
