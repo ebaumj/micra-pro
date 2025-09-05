@@ -34,9 +34,6 @@ const AppLayout: ParentComponent = (props) => {
 
   return (
     <>
-      <Show when={config.useLostBackendConnectionModal}>
-        <BackendConnectionTracker />
-      </Show>
       <div class="flex min-h-screen items-center justify-center bg-primary">
         <div class="absolute top-1/2 -translate-y-[450px] text-3xl tracking-wider text-gray-400 dark:text-gray-600">
           MICRA PRO
@@ -56,6 +53,9 @@ const AppLayout: ParentComponent = (props) => {
             }}
           >
             <DialogContextProvider>
+              <Show when={config.useLostBackendConnectionModal}>
+                <BackendConnectionTracker />
+              </Show>
               <ScaleSelectorContextProvider>
                 <SpoutSelectorContextProvider>
                   {props.children}
