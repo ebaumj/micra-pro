@@ -17,9 +17,6 @@ export default defineNuxtConfig({
       jwtAudience: 'MicraProAssetServer',
       jwtValidIssuers: ['MicraPro'],
     },
-    blobStorage: {
-      host: 'localFile' as 'vercelBlob' | 'localFile',
-    },
   },
   $production: {
     runtimeConfig: {

@@ -13,7 +13,6 @@
   "dependencies": {
     "@nuxt/types": "^2.18.1",
     "@types/jsonwebtoken": "^9.0.9",
-    "@vercel/blob": "^1.1.1",
     "autoprefixer": "^10.4.21",
     "image-resize-compress": "^2.1.1",
     "jsonwebtoken": "^9.0.2",
