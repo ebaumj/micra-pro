@@ -242,8 +242,8 @@ export const RecipePannel: Component<{
             <Show when={recipe()?.type === 'Espresso' && props.scale}>
               <div class="flex w-full justify-center py-2">
                 <Button
-                  variant="default"
-                  class="flex w-44 items-center justify-center gap-2 bg-green-800"
+                  variant="outline"
+                  class="flex h-12 w-48 items-center justify-center gap-2 rounded-xl border-green-800 bg-gray-100 shadow-lg"
                   onClick={start}
                 >
                   <Icon iconName="play_arrow" />
