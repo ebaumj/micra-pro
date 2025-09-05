@@ -1,6 +1,6 @@
 # micra-pro
 
-brew by weight, recipe management and statistics for la marzocco linea micra
+brew by weight, recipe management, statistics and recipe sharing for la marzocco linea micra
 
 ## Implementations
 
@@ -9,13 +9,15 @@ brew by weight, recipe management and statistics for la marzocco linea micra
 - Bookoo Themis Mini Scale API
 - Bean Management on SQLite
 - History Management on SQLite
-- Asset Management with remote Access Server on Vercel Blob storage
+- Asset Management with Local Asset Server (setup do be easily implemented remotely)
+- Remote Recipe Hub for sharing coffee recipes with PostgreSQL
 
 ## Tech Stack
 
 - Local Backend: .Net 8.0
 - Local Frontend: Solid-JS
-- Remote Asset Server: Nuxt.js
+- Asset Server: Nuxt.js
+- Recipe Hub: Nuxt.js
 - Monorepo Management: Nx
 
 ## Build Instructions
@@ -30,7 +32,7 @@ brew by weight, recipe management and statistics for la marzocco linea micra
 #### Backend (apps/backend/.env)
 
 - JWT_PRIVATE_KEY: Private Key for signing Local Access Token (32 characters)
-- REMOTE_ASSET_SERVER_PRIVATE_KEY: Private Key for signing Remote Server Access Token (32 characters)
+- REMOTE_ASSET_SERVER_PRIVATE_KEY: Private Key for signing Server Access Token (32 characters)
 
 #### Frontend (apps/frontend/.env)
 
@@ -41,10 +43,9 @@ brew by weight, recipe management and statistics for la marzocco linea micra
   - iss: "MicraPro"
   - aud: "MicraPro"
 
-#### Remote Asset Server (apps/asset-server/.env)
+#### Asset Server (apps/asset-server/.env)
 
 - REMOTE_ASSET_SERVER_PRIVATE_KEY: same Private Key as in Backend
-- BLOB_READ_WRITE_TOKEN: token for vercel blob storage (only if you use vercel blob)
 
 ### CLI Commands
 
@@ -60,7 +61,7 @@ brew by weight, recipe management and statistics for la marzocco linea micra
 - `npx nx run frontend:build`
   - Output in dist/apps/frontend/
 
-#### Build Remote Asset Server
+#### Build Asset Server
 
 - `npx nx run asset-server:build`
   - Output in apps/asset-server/.output/
@@ -95,19 +96,12 @@ To Enable the Brew Paddle, just connect the two pins shown on the picture to you
 7. Run Backend (cd {your location} && ./MicraPro.Backend)
 8. Open Browser in Kiosk Mode on localhost:3000
 
-## Configure Asset Server for Vercel Hosting
-
-- apps/asset-server/nuxt.config.ts:
-  - runtimeConfig.blobStorage.host: 'vercelBlob'
-  - runtimeConfig.blobStorage.folder: folder inside your blob storage bucket ('images' is recommended)
-
-## Self-host Asset Server on Raspberry Pi
+## Deploy Asset Server on Raspberry Pi
 
 1. Install Node runtime (Version >= 20) on raspberry pi
 2. Configure server:
 
 - apps/asset-server/nuxt.config.ts:
-  - runtimeConfig.blobStorage.host: 'localFile'
   - runtimeConfig.blobStorage.folder: folder on your raspberry pi with access rights for the node server
 
 3. Copy Asset Server output to a selected folder
