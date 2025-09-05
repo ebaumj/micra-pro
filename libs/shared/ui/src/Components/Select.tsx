@@ -43,7 +43,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
       )}
       class={props.class}
     >
-      <SelectTrigger class="">
+      <SelectTrigger>
         <SelectValue<string>>{props.displayElement(props.value)}</SelectValue>
       </SelectTrigger>
       <SelectContent />

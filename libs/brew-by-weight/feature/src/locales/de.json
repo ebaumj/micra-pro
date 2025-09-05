@@ -3,7 +3,6 @@
   "brew-by-weight.unknown-error": "Unbekannter Fehler!",
   "brew-by-weight.scale-connection-failed": "Waage konnte nicht verbunden werden!",
   "brew-by-weight.not-ready": "Modul nicht verfügbar!",
-  "brew-by-weight.select-spout": "Auslauf wählen",
   "brew-by-weight.spout": "Auslauf",
   "brew-by-weight.scale": "Waage",
   "brew-by-weight.spout-single": "Einzel",

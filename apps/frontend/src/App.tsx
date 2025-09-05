@@ -11,6 +11,7 @@ import { Navigate, Route, Router } from '@solidjs/router';
 import MainScreen from './pages';
 import { ToastRegion, ToastList } from '@micra-pro/shared/ui';
 import { ScaleSelectorContextProvider } from '@micra-pro/scale-management/feature';
+import { SpoutSelectorContextProvider } from '@micra-pro/brew-by-weight/feature';
 
 const AppLayout: ParentComponent = (props) => {
   const keyboardInfo = useKeyboardInfo();
@@ -56,10 +57,12 @@ const AppLayout: ParentComponent = (props) => {
           >
             <DialogContextProvider>
               <ScaleSelectorContextProvider>
-                {props.children}
-                <ToastRegion>
-                  <ToastList />
-                </ToastRegion>
+                <SpoutSelectorContextProvider>
+                  {props.children}
+                  <ToastRegion>
+                    <ToastList />
+                  </ToastRegion>
+                </SpoutSelectorContextProvider>
               </ScaleSelectorContextProvider>
             </DialogContextProvider>
           </div>
