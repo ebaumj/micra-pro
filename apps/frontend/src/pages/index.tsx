@@ -2,7 +2,6 @@ import { ScaleSelector } from '@micra-pro/scale-management/feature';
 import { Button, CountryFlag, Icon } from '@micra-pro/shared/ui';
 import { A } from '@solidjs/router';
 import { Component, createSignal, For, ParentComponent, Show } from 'solid-js';
-import { T } from '../generated/language-types';
 import { LanguageSelector } from '@micra-pro/shared/ui';
 import {
   Bean,
@@ -12,7 +11,10 @@ import {
 import { MainScreenConfig } from './MainscreenConfigPage';
 import { Asset } from '@micra-pro/asset-management/feature';
 import { RecipePannel } from '@micra-pro/bean-management/feature';
-import { BrewByWeightPannel } from '@micra-pro/brew-by-weight/feature';
+import {
+  BrewByWeightPannel,
+  SpoutSelector,
+} from '@micra-pro/brew-by-weight/feature';
 import { useSelectedScaleContext } from '@micra-pro/scale-management/feature';
 import { createConfigAccessor } from '@micra-pro/shared/utils-ts';
 import { PowerButton } from '../components/PowerButton';
@@ -143,10 +145,8 @@ const Layout: ParentComponent = (props) => {
       <div class="absolute flex h-full w-full flex-col">
         <div class="flex h-16 w-full items-center gap-2 pl-20 pr-2 shadow-md">
           <div class="w-full" />
-          <div class="text-sm">
-            <T key="scale" />:
-          </div>
-          <ScaleSelector class="w-64" />
+          <SpoutSelector class="w-36 min-w-36" />
+          <ScaleSelector class="w-36 min-w-36" />
           <LanguageSelector class="w-40" />
           <Button
             variant="outline"

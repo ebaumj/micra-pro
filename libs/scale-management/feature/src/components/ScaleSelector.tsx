@@ -1,6 +1,6 @@
 import { Component, Show } from 'solid-js';
 import { useScaleSelectorContext } from './ScaleSelectorContextProvider';
-import { Button, Select } from '@micra-pro/shared/ui';
+import { Button, Icon, Select } from '@micra-pro/shared/ui';
 import { createScalesAccessor } from '@micra-pro/scale-management/data-access';
 import { twMerge } from 'tailwind-merge';
 import { useNavigate } from '@solidjs/router';
@@ -21,7 +21,8 @@ export const ScaleSelector: Component<{ class?: string }> = (props) => {
         <Select
           options={scalesAccessor.scales().map((s) => s.id)}
           displayElement={(id) => (
-            <div class="px-1">
+            <div class="flex items-center px-1">
+              <Icon iconName="scale" class="mr-2" />
               {scalesAccessor.scales().find((s) => s.id === id)?.name}
             </div>
           )}
