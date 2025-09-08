@@ -217,7 +217,7 @@ export const RecipesTable: Component<{
   };
   return (
     <div class="no-scrollbar flex h-full flex-col rounded-b-md border-b border-l border-r text-base shadow-inner">
-      <div class="block h-full w-full overflow-hidden">
+      <div class="flex h-full w-full flex-col">
         <div class="flex h-12 w-full border-b font-bold shadow-sm">
           <div class="flex w-full">
             <div class="flex w-1/2 items-center border-r px-2">
