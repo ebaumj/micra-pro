@@ -1,6 +1,7 @@
 using HotChocolate.AspNetCore;
 using HotChocolate.AspNetCore.Subscriptions;
 using HotChocolate.AspNetCore.Subscriptions.Protocols;
+using MicraPro.Auth.Domain.Interfaces;
 using MicraPro.Auth.Domain.Services;
 
 namespace MicraPro.Auth.DataProvider;

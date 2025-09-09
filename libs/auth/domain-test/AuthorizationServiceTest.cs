@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using MicraPro.Auth.DataDefinition;
+using MicraPro.Auth.Domain.Interfaces;
 using MicraPro.Auth.Domain.Services;
 using Moq;
 
@@ -28,35 +29,7 @@ public class AuthorizationServiceTest
         new([new ClaimsIdentity(roles.Select(r => new Claim(ClaimTypes.Role, r)))]);
 
     [Fact]
-    public void HasPermissionAsyncTest()
-    {
-        var service = CreateService();
-        var claims = CreateClaims(["Role1"]);
-        Assert.True(service.HasPermission(claims, PermissionDummy.Permission1));
-        Assert.True(service.HasPermission(claims, PermissionDummy.Permission2));
-        Assert.False(service.HasPermission(claims, PermissionDummy.Permission3));
-        claims = CreateClaims(["Role2"]);
-        Assert.False(service.HasPermission(claims, PermissionDummy.Permission1));
-        Assert.False(service.HasPermission(claims, PermissionDummy.Permission2));
-        Assert.True(service.HasPermission(claims, PermissionDummy.Permission3));
-    }
-
-    [Fact]
-    public void HasPermissionsAsyncTest()
-    {
-        var service = CreateService();
-        var claims = CreateClaims(["Role1"]);
-        Assert.True(service.HasPermission(claims, PermissionDummy.Permission1));
-        Assert.True(service.HasPermission(claims, PermissionDummy.Permission2));
-        Assert.False(service.HasPermission(claims, PermissionDummy.Permission3));
-        claims = CreateClaims(["Role2"]);
-        Assert.False(service.HasPermission(claims, PermissionDummy.Permission1));
-        Assert.False(service.HasPermission(claims, PermissionDummy.Permission2));
-        Assert.True(service.HasPermission(claims, PermissionDummy.Permission3));
-    }
-
-    [Fact]
-    public void GetPermissionsAsync()
+    public void HasPermissionsTest()
     {
         var service = CreateService();
         var claims = CreateClaims(["Role1"]);
@@ -81,53 +54,5 @@ public class AuthorizationServiceTest
             )
         );
         Assert.False(service.HasPermissions(claims, [PermissionDummy.Permission3]));
-    }
-
-    [Fact]
-    public void AssertPermissionAsyncTest()
-    {
-        var service = CreateService();
-        var claims = CreateClaims(["Role1"]);
-        service.AssertPermission(claims, PermissionDummy.Permission1);
-        service.AssertPermission(claims, PermissionDummy.Permission2);
-        Assert.Throws<IAuthorizationService<PermissionDummy>.AuthorizationException>(() =>
-            service.AssertPermission(claims, PermissionDummy.Permission3)
-        );
-        claims = CreateClaims(["Role2"]);
-        Assert.Throws<IAuthorizationService<PermissionDummy>.AuthorizationException>(() =>
-            service.AssertPermission(claims, PermissionDummy.Permission1)
-        );
-        Assert.Throws<IAuthorizationService<PermissionDummy>.AuthorizationException>(() =>
-            service.AssertPermission(claims, PermissionDummy.Permission2)
-        );
-        service.AssertPermission(claims, PermissionDummy.Permission3);
-    }
-
-    [Fact]
-    public void AssertPermissionsAsyncTest()
-    {
-        var service = CreateService();
-        var claims = CreateClaims(["Role1"]);
-        service.AssertPermissions(
-            claims,
-            [PermissionDummy.Permission1, PermissionDummy.Permission2]
-        );
-        service.AssertPermissions(claims, [PermissionDummy.Permission1]);
-        service.AssertPermissions(claims, [PermissionDummy.Permission2]);
-        Assert.Throws<IAuthorizationService<PermissionDummy>.AuthorizationException>(() =>
-            service.AssertPermissions(
-                claims,
-                [PermissionDummy.Permission1, PermissionDummy.Permission3]
-            )
-        );
-        Assert.Throws<IAuthorizationService<PermissionDummy>.AuthorizationException>(() =>
-            service.AssertPermissions(
-                claims,
-                [PermissionDummy.Permission2, PermissionDummy.Permission3]
-            )
-        );
-        Assert.Throws<IAuthorizationService<PermissionDummy>.AuthorizationException>(() =>
-            service.AssertPermissions(claims, [PermissionDummy.Permission3])
-        );
     }
 }

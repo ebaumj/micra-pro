@@ -1,4 +1,5 @@
 using HotChocolate.Execution.Configuration;
+using MicraPro.Auth.Domain.Interfaces;
 using MicraPro.Auth.Domain.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
