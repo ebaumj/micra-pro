@@ -53,7 +53,7 @@ export const LanguageSelector: Component<{ class?: string }> = (props) => {
     if (lan) context.changeLanguage(lan);
   });
   createEffect(() => {
-    var lan = context.language();
+    const lan = keyboardSelect(context.language());
     if (LayoutOptions.includes(lan)) keyboard.setLayout(lan as Layouts);
   });
   return (
@@ -71,4 +71,13 @@ export const LanguageSelector: Component<{ class?: string }> = (props) => {
       class={props.class}
     />
   );
+};
+
+const keyboardSelect = (lang: string): string => {
+  switch (lang) {
+    case 'de-CH':
+      return 'de';
+    default:
+      return lang;
+  }
 };
