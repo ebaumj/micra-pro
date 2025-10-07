@@ -9,3 +9,20 @@ mutation Shutdown {
     boolean
   }
 }
+
+mutation ConnectWifi($ssid: String!, $password: String) {
+  connectWifi(input: { ssid: $ssid, password: $password }) {
+    boolean
+  }
+}
+
+query ConnectedWifi {
+  connectedWifi
+}
+
+query ScanWifi {
+  scanWifi {
+    ssid
+    passwordRequired
+  }
+}

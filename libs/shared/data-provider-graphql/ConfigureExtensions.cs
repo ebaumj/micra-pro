@@ -28,6 +28,7 @@ public static class ConfigureExtensions
             .AddTypeExtension(typeof(ConfigurationMutations))
             .AddTypeExtension(typeof(ConfigurationQueries))
             .AddTypeExtension(typeof(ConnectionTestQueries))
+            .AddTypeExtension(typeof(SystemQueries))
             .AddTypeExtension(typeof(SystemMutations));
         builder.ConfigureSchema(b =>
             b.TryAddRootType(
