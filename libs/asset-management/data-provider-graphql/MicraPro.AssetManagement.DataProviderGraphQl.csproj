@@ -19,7 +19,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\data-definition\MicraPro.AssetManagement.DataDefinition.csproj" />
-    <ProjectReference Include="..\..\auth\data-definition\MicraPro.Auth.DataDefinition.csproj" />
     <ProjectReference Include="..\..\shared\utils-dotnet\MicraPro.Shared.UtilsDotnet.csproj" />
   </ItemGroup>
 </Project>

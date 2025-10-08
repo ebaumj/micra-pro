@@ -1,7 +1,5 @@
 using MicraPro.AssetManagement.Domain;
 using MicraPro.AssetManagement.Infrastructure;
-using MicraPro.Auth.DataProvider;
-using MicraPro.Auth.Domain;
 using MicraPro.BeanManagement.Domain;
 using MicraPro.BeanManagement.Infrastructure;
 using MicraPro.BrewByWeight.DataProviderGraphQl;
@@ -21,7 +19,6 @@ public class Startup(IConfiguration configuration)
         serviceCollection
             .AddMemoryCache()
             .AddGraphQlServices(configuration)
-            .AddAuthDomainServices(configuration)
             .AddSharedInfrastructureServices(configuration)
             .AddScaleManagementDomainServices(configuration)
             .AddScaleManagementInfrastructureServices(configuration)
@@ -44,7 +41,6 @@ public class Startup(IConfiguration configuration)
 
     public void Configure(IApplicationBuilder app, ILogger<Startup> logger)
     {
-        app.UseAuthDataProvider();
         app.UseWebSockets();
         app.UseCors();
         app.MapGraphQL("/graphql", Schema.DefaultName);

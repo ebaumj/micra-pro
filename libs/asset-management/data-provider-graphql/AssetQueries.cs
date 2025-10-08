@@ -2,14 +2,12 @@ using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using MicraPro.AssetManagement.DataDefinition;
 using MicraPro.AssetManagement.DataProviderGraphQl.Types;
-using MicraPro.Auth.DataDefinition;
 
 namespace MicraPro.AssetManagement.DataProviderGraphQl;
 
 [QueryType]
 public static class AssetQueries
 {
-    [RequiredPermissions([Permission.ReadAssets])]
     public static async Task<List<AssetApi>> GetAvailableAssets(
         [Service] IAssetService assetService,
         CancellationToken ct
@@ -19,7 +17,6 @@ public static class AssetQueries
             .Select(a => a.ToApi())
             .ToList();
 
-    [RequiredPermissions([Permission.ReadAssets])]
     public static async Task<List<AssetUploadQueryApi>> GetUnfinishedAssets(
         [Service] IAssetService assetService,
         CancellationToken ct
@@ -34,7 +31,6 @@ public static class AssetQueries
             .Select(q => q.ToApi())
             .ToList();
 
-    [RequiredPermissions([Permission.ReadAssets])]
     public static Task<bool> GetIsAssetPolling(
         [Service] IAssetService assetService,
         Guid assetId,

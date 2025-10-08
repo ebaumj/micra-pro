@@ -11,7 +11,6 @@ export const createMutation = <TData extends object, TVariables extends object>(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${context.token()}`,
       },
       body: JSON.stringify({
         query: mutationDocument.loc?.source.body,

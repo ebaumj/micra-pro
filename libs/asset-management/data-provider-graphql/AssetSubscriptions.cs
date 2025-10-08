@@ -3,7 +3,6 @@ using System.Reactive.Threading.Tasks;
 using HotChocolate.Execution;
 using MicraPro.AssetManagement.DataDefinition;
 using MicraPro.AssetManagement.DataProviderGraphQl.Types;
-using MicraPro.Auth.DataDefinition;
 using MicraPro.Shared.UtilsDotnet;
 
 namespace MicraPro.AssetManagement.DataProviderGraphQl;
@@ -12,18 +11,15 @@ namespace MicraPro.AssetManagement.DataProviderGraphQl;
 public static class AssetSubscriptions
 {
     [Subscribe(With = nameof(SubscribeToAvailableAssetsChanged))]
-    [RequiredPermissions([Permission.ReadAssets])]
     public static List<AssetApi> AvailableAssetsChanged([EventMessage] List<AssetApi> assets) =>
         assets;
 
     [Subscribe(With = nameof(SubscribeToUnfinishedAssetsChanged))]
-    [RequiredPermissions([Permission.ReadAssets])]
     public static List<AssetUploadQueryApi> UnfinishedAssetsChanged(
         [EventMessage] List<AssetUploadQueryApi> assets
     ) => assets;
 
     [Subscribe(With = nameof(SubscribeToIsAssetPollingChanged))]
-    [RequiredPermissions([Permission.ReadAssets])]
     public static bool IsAssetPolling([EventMessage] bool isPolling) => isPolling;
 
     public static ValueTask<ISourceStream<List<AssetApi>>> SubscribeToAvailableAssetsChanged(

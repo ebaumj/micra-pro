@@ -20,6 +20,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\backend\MicraPro.Backend.csproj" />
-    <ProjectReference Include="..\..\libs\auth\data-definition\MicraPro.Auth.DataDefinition.csproj" />
   </ItemGroup>
 </Project>
