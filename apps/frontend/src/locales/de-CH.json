@@ -10,5 +10,10 @@
   "root.shutdown": "Abefahre",
   "root.reboot-failed": "Neu starte het nid funktioniert",
   "root.shutdown-failed": "Abefahre het nid funktioniert",
-  "root.menu-sidebar-profile": "Profil"
+  "root.menu-sidebar-profile": "Profil",
+  "root.menu-sidebar-wifi": "WLAN",
+  "root.wifi-connect": "Verbinde",
+  "root.wifi-failed": "Cha nid mit {network} verbinde",
+  "root.wifi-failed-title": "Het nid verbunde",
+  "root.wifi-password": "Passwort"
 }
