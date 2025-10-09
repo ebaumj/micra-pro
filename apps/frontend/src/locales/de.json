@@ -10,5 +10,10 @@
   "root.shutdown": "Herunterfahren",
   "root.reboot-failed": "Neustart fehlgeschlagen",
   "root.shutdown-failed": "Herunterfahren fehlgeschlagen",
-  "root.menu-sidebar-profile": "Profil"
+  "root.menu-sidebar-profile": "Profil",
+  "root.menu-sidebar-wifi": "WLAN",
+  "root.wifi-connect": "Verbinden",
+  "root.wifi-failed": "Verbindung mit {network} fehlgeschlagen",
+  "root.wifi-failed-title": "Verbindung fehlgeschlagen",
+  "root.wifi-password": "Passwort"
 }
