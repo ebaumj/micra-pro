@@ -8,6 +8,7 @@ import {
   BrewByWeightStatisticsPage,
 } from '@micra-pro/brew-by-weight/feature';
 import { RecipeHubProfilePage } from '@micra-pro/recipe-hub/feature';
+import { WifiSetupPage } from '../WifiSetupPage';
 
 export const navigationElements: {
   link: string;
@@ -50,6 +51,12 @@ export const navigationElements: {
     link: 'profile',
     icon: 'account_circle',
     component: RecipeHubProfilePage,
+  },
+  {
+    name: () => <T key={'menu-sidebar-wifi'} />,
+    link: 'wifi',
+    icon: 'wifi',
+    component: WifiSetupPage,
   },
 ];
 
