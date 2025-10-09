@@ -1,6 +1,4 @@
-using MicraPro.Auth.DataDefinition;
 using MicraPro.ScaleManagement.DataDefinition;
-using MicraPro.ScaleManagement.DataDefinition.ValueObjects;
 using MicraPro.ScaleManagement.DataProviderGraphQl.Types;
 
 namespace MicraPro.ScaleManagement.DataProviderGraphQl;
@@ -8,7 +6,6 @@ namespace MicraPro.ScaleManagement.DataProviderGraphQl;
 [MutationType]
 public static class ScaleManagementMutations
 {
-    [RequiredPermissions([Permission.WriteScales])]
     public static async Task<ScaleApi> AddScale(
         [Service] IScaleService scaleService,
         string scaleIdentifier,
@@ -16,7 +13,6 @@ public static class ScaleManagementMutations
         CancellationToken ct
     ) => new(await scaleService.AddScaleAsync(name, scaleIdentifier, ct));
 
-    [RequiredPermissions([Permission.WriteScales])]
     public static async Task<Guid> RemoveScale(
         [Service] IScaleService scaleService,
         Guid scaleId,
@@ -27,7 +23,6 @@ public static class ScaleManagementMutations
         return scaleId;
     }
 
-    [RequiredPermissions([Permission.WriteScales])]
     public static async Task<ScaleApi> RenameScale(
         [Service] IScaleService scaleService,
         Guid scaleId,
@@ -35,7 +30,6 @@ public static class ScaleManagementMutations
         CancellationToken ct
     ) => new(await scaleService.RenameScaleAsync(scaleId, name, ct));
 
-    [RequiredPermissions([Permission.ReadScales])]
     public static async Task<bool> ScanForScales(
         [Service] IScaleService scaleService,
         [Service] ScanCancellationContainerService scanCancellationContainerService,
@@ -50,7 +44,6 @@ public static class ScaleManagementMutations
         return true;
     }
 
-    [RequiredPermissions([Permission.ReadScales])]
     public static Task<bool> StopScanning(
         [Service] ScanCancellationContainerService scanCancellationContainerService,
         CancellationToken _

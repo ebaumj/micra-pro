@@ -17,7 +17,6 @@ render(
   () => (
     <>
       <GraphQlProvider
-        token={config.graphql.foreverAdminToken}
         url={config.graphql.httpUri}
         wsUrl={config.graphql.wsUri}
       >

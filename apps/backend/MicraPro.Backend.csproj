@@ -22,8 +22,6 @@
     <PackageReference Include="Tmds.Systemd.Logging" Version="0.8.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\libs\auth\data-provider\MicraPro.Auth.DataProvider.csproj" />
-    <ProjectReference Include="..\..\libs\auth\domain\MicraPro.Auth.Domain.csproj" />
     <ProjectReference Include="..\..\libs\shared\data-provider-graphql\MicraPro.Shared.DataProviderGraphQl.csproj" />
     <ProjectReference Include="..\..\libs\shared\domain\MicraPro.Shared.Domain.csproj" />
     <ProjectReference Include="..\..\libs\shared\infrastructure\MicraPro.Shared.Infrastructure.csproj" />

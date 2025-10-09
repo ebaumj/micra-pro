@@ -1,4 +1,3 @@
-using MicraPro.Auth.DataDefinition;
 using MicraPro.Shared.Domain;
 
 namespace MicraPro.Shared.DataProviderGraphQl;
@@ -6,7 +5,6 @@ namespace MicraPro.Shared.DataProviderGraphQl;
 [MutationType]
 public static class ConfigurationMutations
 {
-    [RequiredPermissions([Permission.WriteConfiguration])]
     public static async Task<string> WriteConfiguration(
         [Service] IConfigurationRepository service,
         string key,
@@ -18,7 +16,6 @@ public static class ConfigurationMutations
         return jsonValue;
     }
 
-    [RequiredPermissions([Permission.WriteConfiguration])]
     public static async Task<string> DeleteConfiguration(
         [Service] IConfigurationRepository service,
         string key,

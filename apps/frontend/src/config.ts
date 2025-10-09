@@ -4,7 +4,6 @@ const config = {
   graphql: {
     wsUri: 'ws://localhost:5232/graphql',
     httpUri: 'http://localhost:5232/graphql',
-    foreverAdminToken: import.meta.env.VITE_FOREVER_ADMIN_TOKEN,
   },
   recipeHub: {
     uri: 'https://micra-pro.vercel.app',

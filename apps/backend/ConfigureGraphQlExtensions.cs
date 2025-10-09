@@ -1,6 +1,5 @@
 using HotChocolate.Execution.Configuration;
 using MicraPro.AssetManagement.DataProviderGraphQl;
-using MicraPro.Auth.DataProvider;
 using MicraPro.BeanManagement.DataProviderGraphQl;
 using MicraPro.BrewByWeight.DataProviderGraphQl;
 using MicraPro.ScaleManagement.DataProviderGraphQl;
@@ -23,7 +22,6 @@ internal static class ConfigureGraphQlExtensions
                     ?.IncludeExceptionDetails ?? false
             )
             .AddErrorFilter<ErrorLogger>()
-            .AddAuthDataProviderServices()
             .AddMicraProTypes();
         return services;
     }

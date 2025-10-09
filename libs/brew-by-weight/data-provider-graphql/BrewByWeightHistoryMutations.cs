@@ -1,4 +1,3 @@
-using MicraPro.Auth.DataDefinition;
 using MicraPro.BrewByWeight.DataDefinition;
 using MicraPro.BrewByWeight.DataDefinition.ValueObjects;
 
@@ -7,7 +6,6 @@ namespace MicraPro.BrewByWeight.DataProviderGraphQl;
 [MutationType]
 public static class BrewByWeightHistoryMutations
 {
-    [RequiredPermissions([Permission.WriteStatistics])]
     public static async Task<List<BrewByWeightHistoryEntry>> CleanupBrewByWeightHistory(
         [Service] IBrewByWeightHistoryService brewByWeightHistoryService,
         bool keepLatestDistinctByProcessInputs,
@@ -20,7 +18,6 @@ public static class BrewByWeightHistoryMutations
             )
         ).ToList();
 
-    [RequiredPermissions([Permission.WriteStatistics])]
     public static async Task<Guid> RemoveHistoryEntry(
         [Service] IBrewByWeightHistoryService brewByWeightHistoryService,
         Guid entryId,

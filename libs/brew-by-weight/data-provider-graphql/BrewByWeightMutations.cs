@@ -1,4 +1,3 @@
-using MicraPro.Auth.DataDefinition;
 using MicraPro.BrewByWeight.DataDefinition;
 
 namespace MicraPro.BrewByWeight.DataProviderGraphQl;
@@ -6,7 +5,6 @@ namespace MicraPro.BrewByWeight.DataProviderGraphQl;
 [MutationType]
 public static class BrewByWeightMutations
 {
-    [RequiredPermissions([Permission.BrewCoffee])]
     public static Task<Guid> StartBrewProcess(
         [Service] IBrewByWeightService brewByWeightService,
         [Service] BrewProcessContainerService containerService,
@@ -33,7 +31,6 @@ public static class BrewByWeightMutations
         return Task.FromResult(process.ProcessId);
     }
 
-    [RequiredPermissions([Permission.BrewCoffee])]
     public static Task<Guid> StopBrewProcess(
         [Service] IBrewByWeightService brewByWeightService,
         Guid processId,

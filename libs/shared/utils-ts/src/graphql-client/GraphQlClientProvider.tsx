@@ -9,21 +9,16 @@ import { createClient } from 'graphql-ws';
 
 const createGraphQlClient = (
   url: Accessor<string>,
-  token: Accessor<string>,
   wsUrl: Accessor<string>,
 ) => {
   const client = createMemo(() =>
     createClient({
       url: wsUrl(),
-      connectionParams: {
-        authorization: `Bearer ${token()}`,
-      },
     }),
   );
 
   return {
     url,
-    token,
     client,
   };
 };
@@ -34,7 +29,6 @@ export const GraphQlClientContext =
 export type GraphQlProviderProps = {
   url: string;
   wsUrl: string;
-  token: string;
 };
 
 export const GraphQlProvider: ParentComponent<GraphQlProviderProps> = (
@@ -42,7 +36,6 @@ export const GraphQlProvider: ParentComponent<GraphQlProviderProps> = (
 ) => {
   const context = createGraphQlClient(
     () => props.url,
-    () => props.token,
     () => props.wsUrl,
   );
 

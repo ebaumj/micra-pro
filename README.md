@@ -31,17 +31,7 @@ brew by weight, recipe management, statistics and recipe sharing for la marzocco
 
 #### Backend (apps/backend/.env)
 
-- JWT_PRIVATE_KEY: Private Key for signing Local Access Token (32 characters)
 - REMOTE_ASSET_SERVER_PRIVATE_KEY: Private Key for signing Server Access Token (32 characters)
-
-#### Frontend (apps/frontend/.env)
-
-- VITE_FOREVER_ADMIN_TOKEN: JWT signed with your local private key from backend, containing following claims:
-  - roles: "Admin"
-  - userId: reserved for future use
-  - exp: unix timestamp as number, preferably as far in the future as possible
-  - iss: "MicraPro"
-  - aud: "MicraPro"
 
 #### Asset Server (apps/asset-server/.env)
 

@@ -32,7 +32,6 @@ export const createQuery = <TData extends object, TVariables>(
 
   const getQueryData = () => ({
     url: context.url(),
-    token: context.token(),
     queryVariables: variables(),
     subscriptionData: subscriptionData(),
     subscriptionDocument: subscriptionData()?.document,
@@ -52,7 +51,6 @@ export const createQuery = <TData extends object, TVariables>(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${data.token}`,
       },
       body: JSON.stringify({
         query: queryDocument.loc?.source.body,
