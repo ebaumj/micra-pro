@@ -1,4 +1,5 @@
 using MicraPro.Auth.DataDefinition;
+using MicraPro.Auth.Domain.Interfaces;
 using MicraPro.Shared.UtilsDotnet;
 
 namespace MicraPro.Auth.Domain.Services;

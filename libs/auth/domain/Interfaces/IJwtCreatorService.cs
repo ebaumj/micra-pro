@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-namespace MicraPro.Auth.Domain.Services;
+namespace MicraPro.Auth.Domain.Interfaces;
 
 public interface IJwtCreatorService
 {

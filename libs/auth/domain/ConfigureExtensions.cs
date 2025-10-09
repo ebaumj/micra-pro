@@ -1,4 +1,5 @@
 using MicraPro.Auth.DataDefinition;
+using MicraPro.Auth.Domain.Interfaces;
 using MicraPro.Auth.Domain.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
