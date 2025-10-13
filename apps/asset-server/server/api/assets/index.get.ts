@@ -1,6 +1,6 @@
-import authorize from '../../../utils/authorize';
 import * as fs from 'fs';
 import { promises as FileStream } from 'fs';
+import { authorize } from '../../utils/authorize';
 
 export default defineEventHandler(async (event) => {
   const runtimeConfig = useRuntimeConfig();

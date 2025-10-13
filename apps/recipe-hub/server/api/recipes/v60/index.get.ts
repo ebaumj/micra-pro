@@ -1,9 +1,9 @@
-import { throwInternalServerError } from '../../../../utils/errors';
-import authorize from '../../../../utils/authorize';
+import { throwInternalServerError } from '../../../utils/errors';
+import authorize from '../../../utils/authorize';
 import {
   getUserRepository,
   getV60RecipeRepository,
-} from '../../../../utils/database/database_access';
+} from '../../../utils/database/database_access';
 
 export default defineEventHandler(async (event) => {
   authorize((getQuery(event)['token'] as string | undefined) ?? null);

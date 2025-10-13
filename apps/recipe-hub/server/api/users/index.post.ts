@@ -1,5 +1,5 @@
-import { throwInternalServerError } from '../../../utils/errors';
-import { getUserRepository } from '../../../utils/database/database_access';
+import { throwInternalServerError } from '../../utils/errors';
+import { getUserRepository } from '../../utils/database/database_access';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import emailValidator from 'node-email-verifier';

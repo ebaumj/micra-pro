@@ -26,6 +26,13 @@
         "cwd": "{workspaceRoot}/apps/asset-server"
       }
     },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "nuxt typecheck",
+        "cwd": "{workspaceRoot}/apps/asset-server"
+      }
+    },
     "serve": {
       "executor": "nx:run-commands",
       "options": {

@@ -4,7 +4,7 @@ import { Kysely, PostgresDialect, sql } from 'kysely';
 import { initialCreateMigration } from './migrations/initial-create';
 import { imageTableMigration } from './migrations/image-table';
 
-export type Migration = {
+export type MigrationAction = {
   name: string;
   up: (db: Kysely<any>) => Promise<void>;
   down: (db: Kysely<any>) => Promise<void>;
@@ -22,7 +22,10 @@ const getDatabase = (connection: string) =>
     }),
   });
 
-const migrations: Migration[] = [initialCreateMigration, imageTableMigration];
+const migrations: MigrationAction[] = [
+  initialCreateMigration,
+  imageTableMigration,
+];
 
 export const migratedDb = async (
   connection: string,

@@ -1,5 +1,5 @@
-import { throwInternalServerError } from '../../../utils/errors';
-import { getUserRepository } from '../../../utils/database/database_access';
+import { throwInternalServerError } from '../../utils/errors';
+import { getUserRepository } from '../../utils/database/database_access';
 import { confirmIssuer } from './index.post';
 import jwt from 'jsonwebtoken';
 import { authenticator } from 'otplib';

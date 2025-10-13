@@ -7,7 +7,10 @@ const authorize = (token: string | null, userId?: string) => {
   try {
     const jwtPayload = jwt.verify(token, runtimeConfig.secrets.privateKey, {
       audience: runtimeConfig.authorization.jwtAudience,
-      issuer: runtimeConfig.authorization.jwtValidIssuers,
+      issuer: [
+        runtimeConfig.authorization.jwtValidIssuers[0]!,
+        ...runtimeConfig.authorization.jwtValidIssuers,
+      ],
       subject: userId ?? undefined,
     }) as JwtPayload;
     if (!jwtPayload.sub) throw new Error();

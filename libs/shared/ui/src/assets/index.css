@@ -1,9 +1,7 @@
 @import './fonts/MaterialSymbols/material-symbols.css';
 @import './fonts/Brown/brown.css';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
 @layer base {
   body {

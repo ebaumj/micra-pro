@@ -1,4 +1,4 @@
-import { getImages } from '../../utils/database/database_access';
+import { getImages } from '../utils/database/database_access';
 
 export default defineEventHandler(async () => {
   const runtimeConfig = useRuntimeConfig();

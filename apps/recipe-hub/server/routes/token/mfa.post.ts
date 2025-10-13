@@ -1,4 +1,4 @@
-import { getUserRepository } from '../../../utils/database/database_access';
+import { getUserRepository } from '../../utils/database/database_access';
 import jwt from 'jsonwebtoken';
 import {
   createResponse,

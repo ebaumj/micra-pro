@@ -61,5 +61,6 @@ generated
 # Logs
 logs
 *.log
+*.tsbuildinfo
 
 nupkg/

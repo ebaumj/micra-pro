@@ -1,6 +1,6 @@
-import { throwInternalServerError } from '../../../utils/errors';
-import authorize from '../../../utils/authorize';
-import { getUserRepository } from '../../../utils/database/database_access';
+import { throwInternalServerError } from '../../utils/errors';
+import authorize from '../../utils/authorize';
+import { getUserRepository } from '../../utils/database/database_access';
 
 export default defineEventHandler(async (event) => {
   const runtimeConfig = useRuntimeConfig();

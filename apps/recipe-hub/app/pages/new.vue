@@ -28,13 +28,13 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const success = ref(false);
 const loading = ref(true);
 const token = useRoute().query.token;
 try {
   const { data } = await useFetch(`/api/users/confirm?token=${token}`);
-  if (data.value.success) success.value = true;
+  if (data.value?.success) success.value = true;
 } catch {
 } finally {
   loading.value = false;

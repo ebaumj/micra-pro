@@ -1,7 +1,7 @@
 import {
   type EspressoRecipe,
   type V60Recipe,
-} from '../../../../libs/recipe-hub/data-definition/src';
+} from '../../../../../libs/recipe-hub/data-definition/src';
 import { migratedDb } from './database';
 import { v4 as uuid } from 'uuid';
 import type { Image, User } from './types';

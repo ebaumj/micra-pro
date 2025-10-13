@@ -8,6 +8,6 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const success = useRoute().query.success;
 </script>

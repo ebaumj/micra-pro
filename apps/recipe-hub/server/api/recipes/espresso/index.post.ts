@@ -1,6 +1,6 @@
-import { throwInternalServerError } from '../../../../utils/errors';
-import authorize from '../../../../utils/authorize';
-import { getEspressoRecipeRepository } from '../../../../utils/database/database_access';
+import { throwInternalServerError } from '../../../utils/errors';
+import authorize from '../../../utils/authorize';
+import { getEspressoRecipeRepository } from '../../../utils/database/database_access';
 
 export default defineEventHandler(async (event) => {
   const body = JSON.parse(await readBody(event));

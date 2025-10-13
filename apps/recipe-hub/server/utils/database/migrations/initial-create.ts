@@ -1,5 +1,5 @@
 import { Kysely, sql } from 'kysely';
-import type { Migration } from '../database';
+import type { MigrationAction } from '../database';
 
 async function up(db: Kysely<any>): Promise<void> {
   await db.schema
@@ -64,7 +64,7 @@ async function down(db: Kysely<any>): Promise<void> {
   await db.schema.dropTable('v60Recipe').execute();
 }
 
-export const initialCreateMigration: Migration = {
+export const initialCreateMigration: MigrationAction = {
   name: 'initial-create',
   up,
   down,

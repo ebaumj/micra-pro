@@ -1,4 +1,4 @@
-import { getUserRepository } from '../../../utils/database/database_access';
+import { getUserRepository } from '../../utils/database/database_access';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
@@ -118,7 +118,10 @@ const responseFromRefreshToken = (
 ) => {
   const tokenDecoded = jwt.verify(token, config.secrets.privateKey, {
     audience: config.authorization.jwtAudience,
-    issuer: config.authorization.jwtValidIssuers,
+    issuer: [
+      config.authorization.jwtValidIssuers[0]!,
+      ...config.authorization.jwtValidIssuers,
+    ],
   }) as jwt.JwtPayload;
   if (!clientId || tokenDecoded.clientId !== clientId)
     return errorEvent(event, unauthorizedClient);
