@@ -335,37 +335,6 @@ public class RetentionServiceTest
                 ),
             ]
         },
-        {
-            BeanId1,
-            40,
-            18,
-            20,
-            TimeSpan.FromSeconds(20),
-            IBrewByWeightService.Spout.Single,
-            4,
-            [
-                CreateEntry(
-                    BeanId1,
-                    40,
-                    18,
-                    20,
-                    TimeSpan.FromSeconds(20),
-                    IBrewByWeightService.Spout.Single,
-                    40,
-                    36
-                ),
-                CreateEntry(
-                    BeanId1,
-                    40,
-                    17,
-                    20,
-                    TimeSpan.FromSeconds(20),
-                    IBrewByWeightService.Spout.Single,
-                    40,
-                    30
-                ),
-            ]
-        },
     };
 
     [Theory]

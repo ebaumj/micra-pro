@@ -15,5 +15,6 @@
   "root.reboot": "Reboot",
   "root.shutdown": "Shutdown",
   "root.reboot-failed": "Reboot failed",
-  "root.shutdown-failed": "Shutdown failed"
+  "root.shutdown-failed": "Shutdown failed",
+  "root.grinder-offset": "Grinder Offset"
 }

@@ -87,4 +87,20 @@ public static class RecipeExtensions
                 $"Recipe Properties Type {properties.GetType().Name} is not implemented!"
             ),
         };
+
+    public static RecipeProperties WithGrinderOffset(
+        this RecipeProperties properties,
+        double offset
+    ) =>
+        properties switch
+        {
+            RecipeProperties.Espresso espresso => espresso with
+            {
+                GrindSetting = espresso.GrindSetting + offset,
+            },
+            RecipeProperties.V60 v60 => v60 with { GrindSetting = v60.GrindSetting + offset },
+            _ => throw new NotImplementedException(
+                $"Recipe Properties Type {properties.GetType().Name} is not implemented!"
+            ),
+        };
 }

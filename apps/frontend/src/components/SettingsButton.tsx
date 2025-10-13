@@ -9,8 +9,12 @@ import {
 } from '@micra-pro/shared/ui';
 import { createSystemAccessor } from '@micra-pro/shared/utils-ts';
 import { T, useTranslationContext } from '../generated/language-types';
+import { GrinderOffsetSelector } from '@micra-pro/bean-management/feature';
 
-export const PowerButton: Component<{ class?: string }> = (props) => {
+export const SettingsButton: Component<{
+  class?: string;
+  onSettingChanged?: () => void;
+}> = (props) => {
   const { t } = useTranslationContext();
   const [shutdown, setShutdown] = createSignal(false);
   const [reboot, setReboot] = createSignal(false);
@@ -38,7 +42,7 @@ export const PowerButton: Component<{ class?: string }> = (props) => {
         class={props.class}
         onClick={() => setMenuOpen(true)}
       >
-        <Icon iconName="settings_power" />
+        <Icon iconName="settings" />
       </Button>
       <SheetContent
         onInteractOutside={(e) => e.preventDefault()}
@@ -46,12 +50,17 @@ export const PowerButton: Component<{ class?: string }> = (props) => {
         class="flex w-80 flex-col p-4"
         closeButton={false}
       >
+        <div class="itemx-start flex justify-end">
+          <Button variant="ghost" onClick={() => setMenuOpen(false)}>
+            <Icon iconName="close" />
+          </Button>
+        </div>
+        <T key="grinder-offset" />
+        <GrinderOffsetSelector
+          class="-mt-2 w-full"
+          onChanged={props.onSettingChanged}
+        />
         <Show when={!shutdown() && !reboot()}>
-          <div class="itemx-start flex justify-end">
-            <Button variant="ghost" onClick={() => setMenuOpen(false)}>
-              <Icon iconName="close" />
-            </Button>
-          </div>
           <div class="flex h-full w-full flex-col items-end justify-end gap-4">
             <Button
               variant="default"

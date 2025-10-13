@@ -113,4 +113,13 @@ public class RecipeExtensionsCoverageTest
         }
         recipeRepositoryMock.VerifyNoOtherCalls();
     }
+
+    [Theory]
+    [MemberData(nameof(RecipePropertiesTypes))]
+    public void WithGrinderOffsetTest(Type recipePropertiesType)
+    {
+        var instance = CreateObject<RecipeProperties>(recipePropertiesType);
+        Assert.NotNull(instance);
+        Assert.NotNull(instance.WithGrinderOffset(0));
+    }
 }

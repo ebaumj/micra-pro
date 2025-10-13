@@ -15,5 +15,6 @@
   "root.wifi-connect": "Verbinde",
   "root.wifi-failed": "Cha nid mit {network} verbinde",
   "root.wifi-failed-title": "Het nid verbunde",
-  "root.wifi-password": "Passwort"
+  "root.wifi-password": "Passwort",
+  "root.grinder-offset": "Offset Mühli"
 }
