@@ -78,7 +78,7 @@ export const EditEspressoDialog: Component<{
                 formatOptions={{ style: 'unit', unit: 'gram' }}
                 minValue={1}
                 maxValue={40}
-                step={0.1}
+                step={0.5}
               >
                 <NumberFieldGroup>
                   <NumberFieldDecrementTrigger aria-label="Decrement" />
