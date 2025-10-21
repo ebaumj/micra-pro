@@ -17,6 +17,7 @@ public static class ConfigureExtensions
         return services
             .AddScoped<IRoasteryRepository, RoasteryRepository>()
             .AddScoped<IRecipeRepository, RecipeRepository>()
+            .AddScoped<IKeyValueStore, KeyValueStore>()
             .AddScopedAssetConsumer<IBeanRepository, BeanRepository>()
             .AddDbContextAndMigrationService<BeanManagementDbContext>();
     }

@@ -15,6 +15,7 @@ public static class ConfigureExtensions
         return services
             .AddScoped<IBeanService, BeanService>()
             .AddScoped<IRoasteryService, RoasteryService>()
-            .AddScoped<IRecipeService, RecipeService>();
+            .AddScoped<IRecipeService, RecipeService>()
+            .AddScoped<IGrinderSettings, GrinderSettings>();
     }
 }

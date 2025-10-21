@@ -1,0 +1,9 @@
+query GrinderOffset {
+  grinderOffset
+}
+
+mutation SetGrinderOffset($grinderOffset: Float!) {
+  setGrinderOffset(input: { grinderOffset: $grinderOffset }) {
+    float
+  }
+}

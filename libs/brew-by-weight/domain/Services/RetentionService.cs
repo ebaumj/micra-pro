@@ -69,8 +69,6 @@ public class RetentionService(IServiceScopeFactory serviceScopeFactory) : IReten
                     Math.Abs(p.CoffeeQuantity / p.InCupQuantity - coffeeQuantity / inCupQuantity)
                     < 0.01
                 )
-                // Same Grind Setting
-                .WhereOrAll(p => Math.Abs(p.GrindSetting - grindSetting) < 0.5)
                 .MaxByOrFirst(p => p.Timestamp),
             ct
         );

@@ -17,7 +17,7 @@ import {
 } from '@micra-pro/brew-by-weight/feature';
 import { useSelectedScaleContext } from '@micra-pro/scale-management/feature';
 import { createConfigAccessor } from '@micra-pro/shared/utils-ts';
-import { PowerButton } from '../components/PowerButton';
+import { SettingsButton } from '../components/SettingsButton';
 
 const BeanButtons: Component<{
   beans: Bean[];
@@ -109,7 +109,7 @@ function MainScreen() {
   } | null>(null);
 
   return (
-    <Layout>
+    <Layout refetch={beans.refetch}>
       <div class="flex h-full w-full items-center justify-center">
         <Show when={!isLoading()}>
           <RecipePannel
@@ -136,7 +136,7 @@ function MainScreen() {
   );
 }
 
-const Layout: ParentComponent = (props) => {
+const Layout: ParentComponent<{ refetch?: () => void }> = (props) => {
   return (
     <div class="relative h-full w-full">
       <A href="/menu" class="absolute z-10 ml-3 mt-1 active:opacity-50">
@@ -155,7 +155,7 @@ const Layout: ParentComponent = (props) => {
           >
             <Icon iconName="refresh" />
           </Button>
-          <PowerButton class="w-24" />
+          <SettingsButton class="w-24" onSettingChanged={props.refetch} />
         </div>
         <div class="h-full w-full">{props.children}</div>
       </div>

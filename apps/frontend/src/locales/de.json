@@ -15,5 +15,6 @@
   "root.wifi-connect": "Verbinden",
   "root.wifi-failed": "Verbindung mit {network} fehlgeschlagen",
   "root.wifi-failed-title": "Verbindung fehlgeschlagen",
-  "root.wifi-password": "Passwort"
+  "root.wifi-password": "Passwort",
+  "root.grinder-offset": "Offset Mühle"
 }
