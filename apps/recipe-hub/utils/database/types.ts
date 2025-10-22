@@ -5,6 +5,7 @@ export interface Database {
   v60Recipe: V60RecipeTable;
   user: UserTable;
   migration: MigrationTable;
+  image: ImageTable;
 }
 
 export interface MigrationTable {
@@ -58,3 +59,13 @@ export interface V60RecipeTable extends RecipeBaseTable {
 export type V60Recipe = Selectable<V60RecipeTable>;
 export type NewV60Recipe = Insertable<V60RecipeTable>;
 export type V60RecipeUpdate = Updateable<V60RecipeTable>;
+
+export interface ImageTable {
+  version: string;
+  link?: string;
+  created_at: Date;
+}
+
+export type Image = Selectable<ImageTable>;
+export type NewImage = Insertable<ImageTable>;
+export type UpdateImage = Updateable<ImageTable>;

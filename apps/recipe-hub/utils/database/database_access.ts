@@ -4,7 +4,7 @@ import {
 } from '../../../../libs/recipe-hub/data-definition/src';
 import { migratedDb } from './database';
 import { v4 as uuid } from 'uuid';
-import type { User } from './types';
+import type { Image, User } from './types';
 
 type Entity = {
   id: string;
@@ -49,6 +49,13 @@ export const getUserRepository: (connection: string) => Repository<User> & {
   getByUsername: (username: string) => getUserByUsername(connection, username),
   getById: (id: string) => getUserById(connection, id),
 });
+
+export const getImages = async (connection: string): Promise<Image[]> => {
+  const db = await migratedDb(connection);
+  const dbObject = await db.selectFrom('image').selectAll().execute();
+  if (!dbObject) throw new Error();
+  return dbObject;
+};
 
 const addEspressoRecipe = async (
   connection: string,
