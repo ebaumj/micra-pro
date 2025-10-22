@@ -2,6 +2,7 @@ import { type Database } from './types';
 import { Pool } from 'pg';
 import { Kysely, PostgresDialect, sql } from 'kysely';
 import { initialCreateMigration } from './migrations/initial-create';
+import { imageTableMigration } from './migrations/image-table';
 
 export type Migration = {
   name: string;
@@ -21,7 +22,7 @@ const getDatabase = (connection: string) =>
     }),
   });
 
-const migrations: Migration[] = [initialCreateMigration];
+const migrations: Migration[] = [initialCreateMigration, imageTableMigration];
 
 export const migratedDb = async (
   connection: string,
