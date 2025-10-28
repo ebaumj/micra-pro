@@ -53,3 +53,8 @@
   font-weight: 700;
   font-style: italic;
 }
+
+@theme {
+  --font-brown: Brown, -apple-system, system-ui, Segoe UI, Helvetica, Arial,
+    sans-serif;
+}

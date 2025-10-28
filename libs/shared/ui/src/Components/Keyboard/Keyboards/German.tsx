@@ -104,16 +104,16 @@ export const German: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
         <Key value={shift() ? `;` : ','} />
         <Key value={shift() ? `:` : '.'} />
         <Key value={shift() ? `_` : '-'} />
-        <ShiftKey class="grow-[4]">Shift</ShiftKey>
+        <ShiftKey class="grow-4">Shift</ShiftKey>
       </KeyboardRow>
       <KeyboardRow>
-        <div class="grow-[1]" />
+        <div class="grow" />
         <LayoutSelectionKey>
           <Icon class="font-extralight" iconName="language" />
         </LayoutSelectionKey>
-        <Key class="grow-[8]" value=" " />
+        <Key class="grow-8" value=" " />
         <AltGrKey>AltGr</AltGrKey>
-        <div class="grow-[2]" />
+        <div class="grow-2" />
       </KeyboardRow>
     </KeyboardContainer>
   );

@@ -52,7 +52,7 @@ export const EditBeanDialog: Component<{
         <div class="flex flex-col gap-2 px-6">
           <div class="flex w-full justify-center pb-2">
             <AssetSelector
-              class="flex h-36 w-36 items-center rounded-md border object-contain p-2 shadow-sm"
+              class="flex h-36 w-36 items-center rounded-md border object-contain p-2 shadow-xs"
               onIdChange={(id) => setStore('properties', 'assetId', id)}
               assetId={store.properties.assetId ?? undefined}
               onRemove={() => setStore('properties', 'assetId', null)}

@@ -165,12 +165,12 @@ export const BrewByWeightHistoryPage: Component = () => {
             </div>
           </div>
         </div>
-        <div class="flex h-[22rem] w-full flex-col py-4">
+        <div class="flex h-88 w-full flex-col py-4">
           <Dynamic component={selectTable()} />
         </div>
         <div class="flex h-10 w-full items-center justify-end">
           <Button
-            class="px-8 shadow-sm"
+            class="px-8 shadow-xs"
             variant="outline"
             onClick={() => historyAccessor.cleanup()}
           >

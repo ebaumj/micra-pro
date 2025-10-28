@@ -1,10 +1,11 @@
 import { defineConfig } from 'vite';
 import solidPlugin from 'vite-plugin-solid';
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   root: __dirname,
-  plugins: [solidPlugin(), nxViteTsPaths()],
+  plugins: [solidPlugin(), nxViteTsPaths(), tailwindcss()],
   server: {
     host: true,
     port: 3000,
