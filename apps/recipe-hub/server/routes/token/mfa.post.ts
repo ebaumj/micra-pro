@@ -1,4 +1,4 @@
-import { getUserRepository } from '../../../utils/database/database_access';
+import { getUserRepository } from '@micra-pro/recipe-hub/database';
 import jwt from 'jsonwebtoken';
 import {
   createResponse,

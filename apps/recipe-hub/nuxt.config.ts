@@ -1,13 +1,23 @@
+import tailwindcss from '@tailwindcss/vite';
+import { fileURLToPath } from 'node:url';
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: '2025-05-15',
-  devtools: { enabled: true },
-  css: ['./assets/css/main.css'],
-  postcss: {
-    plugins: {
-      tailwindcss: {},
-      autoprefixer: {},
-    },
+  compatibilityDate: '2025-10-28',
+  vite: {
+    plugins: [tailwindcss()],
+  },
+  css: ['./app/assets/css/main.css'],
+  alias: {
+    '@micra-pro/recipe-hub/data-definition': fileURLToPath(
+      new URL(
+        '../../libs/recipe-hub/data-definition/src/index.ts',
+        import.meta.url,
+      ),
+    ),
+    '@micra-pro/recipe-hub/database': fileURLToPath(
+      new URL('server/utils/database/index.ts', import.meta.url),
+    ),
   },
   routeRules: {
     '/api/**': {

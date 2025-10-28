@@ -1,5 +1,5 @@
-import { throwInternalServerError } from '../../../utils/errors';
-import { getUserRepository } from '../../../utils/database/database_access';
+import { throwInternalServerError } from '../../utils/errors';
+import { getUserRepository } from '@micra-pro/recipe-hub/database';
 import { confirmIssuer } from './index.post';
 import jwt from 'jsonwebtoken';
 import { authenticator } from 'otplib';

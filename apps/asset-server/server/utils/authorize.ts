@@ -16,7 +16,10 @@ const authorize = (header: string | null, assetId?: string) => {
   try {
     jwt.verify(token, runtimeConfig.secrets.privateKey, {
       audience: runtimeConfig.authorization.jwtAudience,
-      issuer: runtimeConfig.authorization.jwtValidIssuers,
+      issuer: [
+        runtimeConfig.authorization.jwtValidIssuers[0]!,
+        ...runtimeConfig.authorization.jwtValidIssuers,
+      ],
       subject: assetId,
     });
   } catch {

@@ -131,7 +131,7 @@ export const NumberFieldGroup = (props: ComponentProps<'div'>) => {
       {local.children}
       <div
         onClick={openNumberPad}
-        class="absolute left-10 right-10 top-0 h-full bg-none"
+        class="absolute top-0 right-10 left-10 h-full bg-none"
       />
     </div>
   );
@@ -150,7 +150,7 @@ export const NumberFieldInput = <T extends ValidComponent = 'input'>(
   return (
     <NumberFieldPrimitive.Input
       class={cn(
-        'flex h-9 w-full rounded-md border border-input bg-transparent px-10 py-1 text-center text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+        'border-input placeholder:text-muted-foreground flex h-9 w-full rounded-md border bg-transparent px-10 py-1 text-center text-sm shadow-xs focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50',
         local.class,
       )}
       {...rest}
@@ -177,7 +177,7 @@ export const NumberFieldDecrementTrigger = <
   return (
     <NumberFieldPrimitive.DecrementTrigger
       class={cn(
-        'absolute left-0 top-1/2 -translate-y-1/2 p-3 disabled:cursor-not-allowed disabled:opacity-20',
+        'absolute top-1/2 left-0 -translate-y-1/2 p-3 disabled:cursor-not-allowed disabled:opacity-20',
         local.class,
       )}
       {...rest}
@@ -220,7 +220,7 @@ export const NumberFieldIncrementTrigger = <
   return (
     <NumberFieldPrimitive.IncrementTrigger
       class={cn(
-        'absolute right-0 top-1/2 -translate-y-1/2 p-3 disabled:cursor-not-allowed disabled:opacity-20',
+        'absolute top-1/2 right-0 -translate-y-1/2 p-3 disabled:cursor-not-allowed disabled:opacity-20',
         local.class,
       )}
       {...rest}

@@ -64,17 +64,17 @@ export const AlertDialogContent = <T extends ValidComponent = 'div'>(
     <AlertDialogPrimitive.Portal mount={dialogContext.mount}>
       <AlertDialogPrimitive.Overlay
         class={cn(
-          'fixed inset-0 z-50 bg-background/80',
-          'data-[expanded]:animate-in data-[expanded]:fade-in-0',
-          'data-[closed]:animate-out data-[closed]:fade-out-0',
+          'bg-background/80 fixed inset-0 z-50',
+          'data-expanded:animate-in data-expanded:fade-in-0',
+          'data-closed:animate-out data-closed:fade-out-0',
         )}
         ref={dialogOverlayRef}
       />
       <AlertDialogPrimitive.Content
         class={cn(
-          'data-[expanded]:duration-200 data-[expanded]:animate-in data-[expanded]:fade-in-0 data-[expanded]:zoom-in-95 data-[expanded]:slide-in-from-left-1/2 data-[expanded]:slide-in-from-top-[48%]',
-          'data-[closed]:duration-200 data-[closed]:animate-out data-[closed]:fade-out-0 data-[closed]:zoom-out-95 data-[closed]:slide-out-to-left-1/2 data-[closed]:slide-out-to-top-[48%]',
-          'fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border bg-background p-6 text-center shadow-lg outline-none',
+          'data-expanded:animate-in data-expanded:fade-in-0 data-expanded:zoom-in-95 data-expanded:slide-in-from-top-1/2 data-expanded:duration-200',
+          'data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 data-closed:slide-out-to-top-1/2 data-closed:duration-200',
+          'bg-background fixed top-[50%] left-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border p-6 text-center shadow-lg outline-hidden',
           local.class,
         )}
         {...rest}

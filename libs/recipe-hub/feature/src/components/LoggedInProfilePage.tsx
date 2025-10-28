@@ -185,7 +185,7 @@ const Tab: Component<{
 }> = (props) => (
   <div
     class={twMerge(
-      'flex h-full w-1/3 items-center justify-center rounded-t-xl border-l border-r border-t',
+      'flex h-full w-1/3 items-center justify-center rounded-t-xl border-t border-r border-l',
       props.current === props.tab ? 'bg-slate-50 shadow-inner' : '',
     )}
     onClick={() => props.setTab(props.tab)}
@@ -216,9 +216,9 @@ export const RecipesTable: Component<{
       .finally(() => setDeleting((d) => d.filter((i) => i !== id)));
   };
   return (
-    <div class="no-scrollbar flex h-full flex-col rounded-b-md border-b border-l border-r text-base shadow-inner">
+    <div class="no-scrollbar flex h-full flex-col rounded-b-md border-r border-b border-l text-base shadow-inner">
       <div class="flex h-full w-full flex-col">
-        <div class="flex h-12 w-full border-b font-bold shadow-sm">
+        <div class="flex h-12 w-full border-b font-bold shadow-xs">
           <div class="flex w-full">
             <div class="flex w-1/2 items-center border-r px-2">
               <T key="roastery" />

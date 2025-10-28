@@ -36,7 +36,7 @@ export const ComboboxInput = <T extends ValidComponent = 'input'>(
       onFocusIn={() => keyboard.inputFocused(input)}
       onFocusOut={() => keyboard.inputBlurred()}
       class={cn(
-        'h-full bg-transparent text-sm placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+        'placeholder:text-muted-foreground h-full bg-transparent text-sm focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50',
         local.class,
       )}
       {...rest}
@@ -62,7 +62,7 @@ export const ComboboxTrigger = <T extends ValidComponent = 'button'>(
     <ComboboxPrimitive.Control>
       <ComboboxPrimitive.Trigger
         class={cn(
-          'flex h-9 w-full items-center justify-between rounded-md border border-input px-3 shadow-sm',
+          'border-input flex h-9 w-full items-center justify-between rounded-md border px-3 shadow-xs',
           local.class,
         )}
         {...rest}
@@ -104,7 +104,7 @@ export const ComboboxContent = <T extends ValidComponent = 'div'>(
     <ComboboxPrimitive.Portal>
       <ComboboxPrimitive.Content
         class={cn(
-          'relative z-50 min-w-[8rem] origin-[--kb-combobox-content-transform-origin] overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-md data-[expanded]:animate-in data-[closed]:animate-out data-[closed]:fade-out-0 data-[expanded]:fade-in-0 data-[closed]:zoom-out-95 data-[expanded]:zoom-in-95',
+          'bg-popover text-popover-foreground data-[expanded]:animate-in data-[closed]:animate-out data-[closed]:fade-out-0 data-[expanded]:fade-in-0 data-[closed]:zoom-out-95 data-[expanded]:zoom-in-95 relative z-50 min-w-32 origin-(--kb-combobox-content-transform-origin) overflow-hidden rounded-md border shadow-md',
           local.class,
         )}
         {...rest}
@@ -132,7 +132,7 @@ export const ComboboxItem = <T extends ValidComponent = 'li'>(
   return (
     <ComboboxPrimitive.Item
       class={cn(
-        'relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-2 pr-8 text-sm outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[disabled]:opacity-50',
+        'data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground relative flex w-full cursor-default items-center rounded-xs py-1.5 pr-8 pl-2 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50',
         local.class,
       )}
       {...rest}

@@ -31,10 +31,7 @@ export const OTPField = <T extends ValidComponent = 'div'>(
 
   return (
     <OTPFieldPrimitive
-      class={cn(
-        'flex items-center gap-2 has-[:disabled]:opacity-50',
-        local.class,
-      )}
+      class={cn('flex items-center gap-2 has-disabled:opacity-50', local.class)}
       {...rest}
     />
   );
@@ -80,8 +77,8 @@ export const OTPFieldSlot = (
   return (
     <div
       class={cn(
-        'relative flex size-9 items-center justify-center border-y border-r border-input text-sm shadow-sm transition-shadow first:rounded-l-md first:border-l last:rounded-r-md',
-        isActive() && 'z-10 ring-[1.5px] ring-ring',
+        'border-input relative flex size-9 items-center justify-center border-y border-r text-sm shadow-xs transition-shadow first:rounded-l-md first:border-l last:rounded-r-md',
+        isActive() && 'ring-ring z-10 ring-[1.5px]',
         local.class,
       )}
       {...rest}
@@ -89,7 +86,7 @@ export const OTPFieldSlot = (
       {char()}
       <Show when={hasFakeCaret()}>
         <div class="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <div class="animate-caret-blink h-4 w-px bg-foreground" />
+          <div class="animate-caret-blink bg-foreground h-4 w-px" />
         </div>
       </Show>
     </div>

@@ -4,24 +4,8 @@ const typescriptEslintPlugin = require('@typescript-eslint/eslint-plugin');
 const js = require('@eslint/js');
 const typescriptEslintParser = require('@typescript-eslint/parser');
 const graphqlEslintPlugin = require('@graphql-eslint/eslint-plugin');
-const vitest = require('@vitest/eslint-plugin');
 
 module.exports = [
-  {
-    files: ['**/*.test.ts'],
-    plugins: {
-      vitest,
-    },
-    languageOptions: {
-      globals: {
-        ...vitest.environments.env.globals,
-      },
-    },
-    rules: {
-      ...vitest.configs.recommended.rules,
-      'vitest/max-nested-describe': ['error', { max: 3 }],
-    },
-  },
   js.configs.recommended,
   {
     plugins: {

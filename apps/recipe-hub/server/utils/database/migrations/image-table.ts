@@ -1,5 +1,5 @@
 import { Kysely, sql } from 'kysely';
-import type { Migration } from '../database';
+import type { MigrationProcess } from '../database';
 
 async function up(db: Kysely<any>): Promise<void> {
   await db.schema
@@ -17,7 +17,7 @@ async function down(db: Kysely<any>): Promise<void> {
   await db.schema.dropTable('image').execute();
 }
 
-export const imageTableMigration: Migration = {
+export const imageTableMigration: MigrationProcess = {
   name: 'image-table',
   up,
   down,
