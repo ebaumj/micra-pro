@@ -32,11 +32,11 @@ export const LayoutSelectionKey: ParentComponent<
       <Show when={position() !== null}>
         <Portal>
           <div
-            class="pointer-events-auto fixed left-0 top-0 z-40 h-screen w-screen"
+            class="pointer-events-auto fixed top-0 left-0 z-60 h-screen w-screen"
             onClick={() => setPosition(null)}
           />
           <div
-            class="'min-w-8rem pointer-events-auto fixed z-50 flex min-w-24 -translate-y-full flex-col gap-1 rounded-md border bg-popover p-1 text-popover-foreground"
+            class="'min-w-8rem bg-popover text-popover-foreground pointer-events-auto fixed z-60 flex min-w-24 -translate-y-full flex-col gap-1 rounded-md border p-1"
             style={{
               top: position()?.top + 'px',
               left: position()?.left + 'px',
@@ -46,7 +46,7 @@ export const LayoutSelectionKey: ParentComponent<
               {(layout) => {
                 return (
                   <button
-                    class="w-full p-2 text-left hover:bg-accent hover:text-accent-foreground"
+                    class="hover:bg-accent hover:text-accent-foreground w-full p-2 text-left"
                     onClick={() => {
                       keyboardContext.setLayout(layout);
                       setPosition(null);

@@ -1,6 +1,6 @@
-import { throwInternalServerError } from '../../../utils/errors';
-import authorize from '../../../utils/authorize';
-import { getUserRepository } from '../../../utils/database/database_access';
+import { throwInternalServerError } from '../../utils/errors';
+import authorize from '../../utils/authorize';
+import { getUserRepository } from '@micra-pro/recipe-hub/database';
 
 export default defineEventHandler(async (event) => {
   const userId = getRouterParam(event, 'id');

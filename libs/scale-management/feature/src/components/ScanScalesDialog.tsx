@@ -35,7 +35,7 @@ export const ScanScalesDialog: Component<{
       <div class="no-scrollbar flex h-full w-full flex-col gap-2 overflow-scroll px-6">
         <For each={scales.scales}>
           {(device, index) => (
-            <div class="flex w-full gap-4 rounded-lg border bg-slate-50 p-2 shadow-sm">
+            <div class="flex w-full gap-4 rounded-lg border bg-slate-50 p-2 shadow-xs">
               <div class="flex h-full w-full items-center">
                 <TextFieldRoot
                   onChange={(name) =>

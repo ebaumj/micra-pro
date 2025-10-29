@@ -1,9 +1,9 @@
 import {
   throwInternalServerError,
   throwUnauthorizedError,
-} from '../../../../utils/errors';
-import authorize from '../../../../utils/authorize';
-import { getUserRepository } from '../../../../utils/database/database_access';
+} from '../../../utils/errors';
+import authorize from '../../../utils/authorize';
+import { getUserRepository } from '@micra-pro/recipe-hub/database';
 import { authenticator } from 'otplib';
 
 type ChangeMfaRequestBodyType = {

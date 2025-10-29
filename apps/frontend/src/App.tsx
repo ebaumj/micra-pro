@@ -34,12 +34,12 @@ const AppLayout: ParentComponent = (props) => {
 
   return (
     <>
-      <div class="flex min-h-screen items-center justify-center bg-primary">
+      <div class="bg-primary flex min-h-screen items-center justify-center">
         <div class="absolute top-1/2 -translate-y-[450px] text-3xl tracking-wider text-gray-400 dark:text-gray-600">
           MICRA PRO
         </div>
         <div
-          class="max-w-screen relative max-h-screen overflow-hidden bg-background text-lg shadow-2xl shadow-gray-400 dark:shadow-gray-800"
+          class="bg-background relative max-h-screen max-w-screen overflow-hidden text-lg shadow-2xl shadow-gray-400 dark:shadow-gray-800"
           style={{
             width: `${config.display.resolution.width}px`,
             height: `${config.display.resolution.height}px`,
@@ -71,7 +71,7 @@ const AppLayout: ParentComponent = (props) => {
             class="absolute bottom-0 left-0 w-full transition-[transform,opacity] duration-500"
             classList={{
               'translate-y-0 opacity-100': keyboardInfo.isOpen(),
-              'translate-y-[100%] opacity-0': !keyboardInfo.isOpen(),
+              'translate-y-full opacity-0': !keyboardInfo.isOpen(),
             }}
           />
         </div>

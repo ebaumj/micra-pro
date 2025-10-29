@@ -1,5 +1,5 @@
-import { throwInternalServerError } from '../../../utils/errors';
-import authorize from '../../../utils/authorize';
+import { throwInternalServerError } from '../../utils/errors';
+import authorize from '../../utils/authorize';
 import * as fs from 'fs';
 import { promises as FileStream } from 'fs';
 

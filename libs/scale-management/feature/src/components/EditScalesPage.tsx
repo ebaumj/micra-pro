@@ -68,7 +68,7 @@ export const EditScalesPage: Component = () => {
       <div class="no-scrollbar flex h-full flex-col gap-2 overflow-scroll">
         <For each={scales()}>
           {(scale) => (
-            <div class="flex w-full gap-4 rounded-lg border bg-slate-50 p-2 shadow-sm">
+            <div class="flex w-full gap-4 rounded-lg border bg-slate-50 p-2 shadow-xs">
               <div class="flex h-full w-full items-center">
                 <TextFieldRoot
                   onChange={(name) => scale.setName(name)}

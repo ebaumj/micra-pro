@@ -37,18 +37,18 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { fromBlob } from 'image-resize-compress';
 const maxFileSizeInBytes = 100000;
 const route = useRoute();
 const { assetId } = route.params;
 const token = route.query.token;
 const isLoading = ref(false);
-const handelFileUpload = async (event) => {
-  const files = event.target.files;
+const handelFileUpload = async (event: Event) => {
+  const files = (event.target as HTMLInputElement | null)?.files;
   if (!files || files.length === 0) return;
   isLoading.value = true;
-  const file = files[0];
+  const file = files[0]!;
   const compressedFile =
     file.size > maxFileSizeInBytes
       ? await fromBlob(

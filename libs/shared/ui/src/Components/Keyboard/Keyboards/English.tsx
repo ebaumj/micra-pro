@@ -87,12 +87,12 @@ export const English: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
         <div class="grow" />
       </KeyboardRow>
       <KeyboardRow>
-        <div class="grow-[1]" />
+        <div class="grow" />
         <LayoutSelectionKey>
           <Icon class="font-extralight" iconName="language" />
         </LayoutSelectionKey>
-        <Key class="grow-[8]" value=" " />
-        <div class="grow-[2]" />
+        <Key class="grow-8" value=" " />
+        <div class="grow-2" />
       </KeyboardRow>
     </KeyboardContainer>
   );
