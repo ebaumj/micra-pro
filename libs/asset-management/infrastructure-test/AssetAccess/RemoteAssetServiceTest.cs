@@ -9,13 +9,6 @@ namespace MicraPro.AssetManagement.Infrastructure.Test.AssetAccess;
 
 public class RemoteAssetServiceTest
 {
-    private class Options(string remoteFileServerDomain)
-        : IOptions<AssetManagementInfrastructureOptions>
-    {
-        public AssetManagementInfrastructureOptions Value { get; } =
-            new() { RemoteFileServerDomain = remoteFileServerDomain };
-    }
-
     [Fact]
     public async Task FetchRemoteAssetsAsyncTest()
     {
@@ -38,10 +31,12 @@ public class RemoteAssetServiceTest
             .Returns(httpClientWrapperMock.Object);
         var tokenCreatorServiceMock = new Mock<ITokenCreatorService>();
         tokenCreatorServiceMock.Setup(m => m.GenerateAccessToken()).Returns(token);
+        var domainProviderMock = new Mock<IAssetServerDomainProvider>();
+        domainProviderMock.Setup(m => m.AssetServerLocalDomain).Returns("MyDomain");
         var service = new RemoteAssetService(
             tokenCreatorServiceMock.Object,
             httpClientWrapperFactoryMock.Object,
-            new Options("MyDomain")
+            domainProviderMock.Object
         );
         Assert.Empty(service.AvailableAssets);
         await service.FetchRemoteAssetsAsync(CancellationToken.None);
@@ -83,10 +78,12 @@ public class RemoteAssetServiceTest
             .Returns(httpClientWrapperMock.Object);
         var tokenCreatorServiceMock = new Mock<ITokenCreatorService>();
         tokenCreatorServiceMock.Setup(m => m.GenerateAccessToken(assetId)).Returns(token);
+        var domainProviderMock = new Mock<IAssetServerDomainProvider>();
+        domainProviderMock.Setup(m => m.AssetServerLocalDomain).Returns("MyDomain");
         var service = new RemoteAssetService(
             tokenCreatorServiceMock.Object,
             httpClientWrapperFactoryMock.Object,
-            new Options("MyDomain")
+            domainProviderMock.Object
         );
         var result = await service.ReadRemoteAssetAsync(assetId, CancellationToken.None);
         Assert.Equal("dummy", result.FileEnding);
@@ -130,10 +127,12 @@ public class RemoteAssetServiceTest
         var tokenCreatorServiceMock = new Mock<ITokenCreatorService>();
         tokenCreatorServiceMock.Setup(m => m.GenerateAccessToken(assetId1)).Returns(token);
         tokenCreatorServiceMock.Setup(m => m.GenerateAccessToken()).Returns(token);
+        var domainProviderMock = new Mock<IAssetServerDomainProvider>();
+        domainProviderMock.Setup(m => m.AssetServerLocalDomain).Returns("MyDomain");
         var service = new RemoteAssetService(
             tokenCreatorServiceMock.Object,
             httpClientWrapperFactoryMock.Object,
-            new Options("MyDomain")
+            domainProviderMock.Object
         );
         Assert.Empty(service.AvailableAssets);
         await service.FetchRemoteAssetsAsync(CancellationToken.None);
@@ -173,10 +172,12 @@ public class RemoteAssetServiceTest
         var tokenCreatorServiceMock = new Mock<ITokenCreatorService>();
         tokenCreatorServiceMock.Setup(m => m.GenerateUploadAccessToken(assetId1)).Returns(token1);
         tokenCreatorServiceMock.Setup(m => m.GenerateUploadAccessToken(assetId2)).Returns(token2);
+        var domainProviderMock = new Mock<IAssetServerDomainProvider>();
+        domainProviderMock.Setup(m => m.AssetServerExternDomain).Returns("MyDomain");
         var service = new RemoteAssetService(
             tokenCreatorServiceMock.Object,
             Mock.Of<IHttpClientWrapperFactory>(),
-            new Options("MyDomain")
+            domainProviderMock.Object
         );
         Assert.Equal(
             $"MyDomain/upload/{assetId1.ToString()}?token=MyToken1",

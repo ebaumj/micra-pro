@@ -7,7 +7,7 @@ public class AssetManagementInfrastructureOptions
     public string LocalFileServerFolder { get; set; } = string.Empty;
     public string LocalFileServerDomain { get; set; } = string.Empty;
     public string LocalFileServerRelativePath { get; set; } = string.Empty;
-    public string RemoteFileServerDomain { get; set; } = string.Empty;
+    public string? RemoteFileServerDomain { get; set; }
     public string JwtIssuer { get; set; } = string.Empty;
     public string JwtTokenLifeTimeInMinutes { get; set; } = string.Empty;
     public string JwtUploadTokenLifeTimeInMinutes { get; set; } = string.Empty;
