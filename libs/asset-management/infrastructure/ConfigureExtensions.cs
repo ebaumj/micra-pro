@@ -38,6 +38,7 @@ public static class ConfigureExtensions
             .AddTransient<ITokenCreatorService, TokenCreatorService>()
             .AddTransient<IHttpClientWrapperFactory, HttpClientWrapperFactory>()
             .AddTransient<IFileSystemAccess, FileSystemAccess>()
+            .AddTransient<IAssetServerDomainProvider, AssetServerDomainProvider>()
             .AddScoped<IAssetRepository, AssetRepository>()
             .AddDbContextAndMigrationService<AssetManagementDbContext>();
     }

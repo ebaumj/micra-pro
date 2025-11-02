@@ -9,7 +9,7 @@ namespace MicraPro.AssetManagement.Infrastructure.AssetAccess;
 public class RemoteAssetService(
     ITokenCreatorService tokenCreatorService,
     IHttpClientWrapperFactory clientFactory,
-    IOptions<AssetManagementInfrastructureOptions> options
+    IAssetServerDomainProvider domainProvider
 ) : IRemoteAssetService
 {
     private const string EndpointAll = "api/assets";
@@ -24,7 +24,7 @@ public class RemoteAssetService(
     {
         var client = clientFactory.CreateClient(tokenCreatorService.GenerateAccessToken());
         var response = await client.MakeGetRequestAsync(
-            $"{options.Value.RemoteFileServerDomain}/{EndpointAll}",
+            $"{domainProvider.AssetServerLocalDomain}/{EndpointAll}",
             ct
         );
         client.Dispose();
@@ -39,7 +39,7 @@ public class RemoteAssetService(
     {
         var client = clientFactory.CreateClient(tokenCreatorService.GenerateAccessToken(assetId));
         var response = await client.MakeGetRequestAsync(
-            $"{options.Value.RemoteFileServerDomain}/{EndpointId(assetId)}",
+            $"{domainProvider.AssetServerLocalDomain}/{EndpointId(assetId)}",
             ct
         );
         client.Dispose();
@@ -51,7 +51,7 @@ public class RemoteAssetService(
     {
         var client = clientFactory.CreateClient(tokenCreatorService.GenerateAccessToken(assetId));
         await client.MakeDeleteRequestAsync(
-            $"{options.Value.RemoteFileServerDomain}/{EndpointId(assetId)}",
+            $"{domainProvider.AssetServerLocalDomain}/{EndpointId(assetId)}",
             ct
         );
         client.Dispose();
@@ -60,6 +60,6 @@ public class RemoteAssetService(
 
     public Task<string> CreateAssetUploadPathAsync(Guid assetId, CancellationToken ct) =>
         Task.FromResult(
-            $"{options.Value.RemoteFileServerDomain}/{EndpointUpload}/{assetId.ToString()}?token={tokenCreatorService.GenerateUploadAccessToken(assetId)}"
+            $"{domainProvider.AssetServerExternDomain}/{EndpointUpload}/{assetId.ToString()}?token={tokenCreatorService.GenerateUploadAccessToken(assetId)}"
         );
 }
