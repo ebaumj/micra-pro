@@ -104,7 +104,7 @@ export const ComboboxContent = <T extends ValidComponent = 'div'>(
     <ComboboxPrimitive.Portal>
       <ComboboxPrimitive.Content
         class={cn(
-          'bg-popover text-popover-foreground data-[expanded]:animate-in data-[closed]:animate-out data-[closed]:fade-out-0 data-[expanded]:fade-in-0 data-[closed]:zoom-out-95 data-[expanded]:zoom-in-95 relative z-50 min-w-32 origin-(--kb-combobox-content-transform-origin) overflow-hidden rounded-md border shadow-md',
+          'bg-popover text-popover-foreground data-expanded:animate-in data-closed:animate-out data-closed:fade-out-0 data-expanded:fade-in-0 data-closed:zoom-out-95 data-expanded:zoom-in-95 relative z-50 min-w-32 origin-(--kb-combobox-content-transform-origin) overflow-hidden rounded-md border shadow-md',
           local.class,
         )}
         {...rest}
@@ -132,7 +132,7 @@ export const ComboboxItem = <T extends ValidComponent = 'li'>(
   return (
     <ComboboxPrimitive.Item
       class={cn(
-        'data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground relative flex w-full cursor-default items-center rounded-xs py-1.5 pr-8 pl-2 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50',
+        'data-highlighted:bg-accent data-highlighted:text-accent-foreground relative flex w-full cursor-default items-center rounded-xs py-1.5 pr-8 pl-2 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50',
         local.class,
       )}
       {...rest}
