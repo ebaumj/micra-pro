@@ -46,4 +46,12 @@ public class SystemServiceDummy(ILogger<SystemServiceDummy> logger) : ISystemSer
         };
         return _wifi != null;
     }
+
+    public async Task<bool> DisconnectWifiAsync(string ssid, CancellationToken ct)
+    {
+        await Task.Delay(200, ct);
+        if (_wifi == ssid)
+            _wifi = null;
+        return true;
+    }
 }

@@ -17,4 +17,10 @@ public static class SystemMutations
         string? password,
         CancellationToken ct
     ) => service.ConnectWifiAsync(ssid, password, ct);
+
+    public static Task<bool> DisconnectWifi(
+        [Service] ISystemService service,
+        string ssid,
+        CancellationToken ct
+    ) => service.DisconnectWifiAsync(ssid, ct);
 }
