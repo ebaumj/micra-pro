@@ -175,10 +175,10 @@ export const EditBeansPage: Component = () => {
                     </div>
                   </div>
                   <div class="w-full gap-0 py-1">
-                    <div class="overflow-hidden whitespace-nowrap text-base font-bold">
+                    <div class="overflow-hidden text-base font-bold whitespace-nowrap">
                       {r.properties.name}
                     </div>
-                    <div class="overflow-hidden whitespace-nowrap text-xs">
+                    <div class="overflow-hidden text-xs whitespace-nowrap">
                       {r.properties.location}
                     </div>
                   </div>
@@ -238,10 +238,10 @@ export const EditBeansPage: Component = () => {
                   <img src={picturesImport.bean} class="h-full w-full p-3" />
                 </div>
                 <div class="w-full gap-0 overflow-hidden py-1">
-                  <div class="overflow-hidden whitespace-nowrap text-base font-bold">
+                  <div class="overflow-hidden text-base font-bold whitespace-nowrap">
                     {b.properties.name}
                   </div>
-                  <div class="overflow-hidden whitespace-nowrap text-xs">
+                  <div class="overflow-hidden text-xs whitespace-nowrap">
                     {b.properties.countryCode}
                   </div>
                 </div>
@@ -333,13 +333,15 @@ export const EditBeansPage: Component = () => {
                     variant="outline"
                     onClick={() =>
                       setRemoteEspressoRecipeSelect(
-                        (_) => (props: EspressoProperties) =>
+                        (_) => (props: EspressoProperties) => {
                           setEditEspressoDialog({
                             properties: props,
                             onSave: (props: EspressoProperties) =>
                               addEspresso(selectedBean(), props),
                             isSaving: isAddingEspresso,
-                          }),
+                          });
+                          setRemoteEspressoRecipeSelect(undefined);
+                        },
                       )
                     }
                     disabled={!authentication.currentUser()}
@@ -408,13 +410,15 @@ export const EditBeansPage: Component = () => {
                     variant="outline"
                     onClick={() =>
                       setRemoteV60RecipeSelect(
-                        (_) => (props: V60Properties) =>
+                        (_) => (props: V60Properties) => {
                           setEditV60Dialog({
                             properties: props,
                             onSave: (props: V60Properties) =>
                               addV60(selectedBean(), props),
                             isSaving: isAddingV60,
-                          }),
+                          });
+                          setRemoteV60RecipeSelect(undefined);
+                        },
                       )
                     }
                     disabled={!authentication.currentUser()}
