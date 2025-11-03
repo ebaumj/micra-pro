@@ -67,7 +67,7 @@ export const SheetContent = <T extends ValidComponent = 'div'>(
       >
         {local.children}
         <Show when={local.closeButton !== false}>
-          <DialogPrimitive.CloseButton class="ring-offset-background focus:ring-ring absolute top-4 right-4 rounded-xs opacity-70 transition-[opacity,box-shadow] hover:opacity-100 focus:ring-[1.5px] focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none">
+          <DialogPrimitive.CloseButton class="ring-offset-background focus:ring-ring absolute top-4 right-4 rounded-xs opacity-70 transition-[opacity,box-shadow] focus:ring-[1.5px] focus:ring-offset-2 focus:outline-hidden active:opacity-100 disabled:pointer-events-none">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"

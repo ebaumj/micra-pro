@@ -133,7 +133,7 @@ export const ToastContent = (props: ComponentProps<'div'>) => {
   return (
     <div class={cn('flex w-full flex-col', local.class)} {...rest}>
       <div>{local.children}</div>
-      <ToastPrimitive.CloseButton class="text-foreground/50 hover:text-foreground absolute top-1 right-1 rounded-md p-1 opacity-0 transition-opacity group-hover:opacity-100 group-[.destructive]:text-red-300 hover:group-[.destructive]:text-red-50 focus:opacity-100 focus:outline-hidden">
+      <ToastPrimitive.CloseButton class="text-foreground/50 active:text-foreground absolute top-1 right-1 rounded-md p-1 opacity-100 transition-opacity group-[.destructive]:text-red-300 active:group-[.destructive]:text-red-50">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="h-4 w-4"

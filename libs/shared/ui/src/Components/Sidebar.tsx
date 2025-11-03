@@ -10,15 +10,15 @@ const SidebarItem: ParentComponent<{
 }> = (props) => {
   return (
     <A
-      class="flex items-center rounded-lg px-2 py-1 hover:bg-secondary active:bg-secondary"
+      class="active:bg-secondary flex items-center rounded-lg px-2 py-1"
       activeClass={props.highlightActive ? 'bg-secondary' : ''}
       href={props.link}
     >
       <Icon
         iconName={props.iconName}
-        class="mr-2 shrink-0 align-middle text-3xl font-extralight leading-none"
+        class="mr-2 shrink-0 align-middle text-3xl leading-none font-extralight"
       />
-      <span class="truncate py-1 text-base font-light leading-none">
+      <span class="truncate py-1 text-base leading-none font-light">
         {props.children}
       </span>
     </A>
@@ -40,7 +40,7 @@ export const SidebarLayout: ParentComponent<SidebarLayoutProps> = (props) => {
   return (
     <div class="flex h-full max-h-full w-full">
       <div class="left-0 flex h-full max-h-full w-60 shrink-0 flex-col gap-2 border-r">
-        <div class="mx-2 mt-2 w-fit pl-2 pt-2">
+        <div class="mx-2 mt-2 w-fit pt-2 pl-2">
           <MicraProLogo class="h-14 w-14" />
         </div>
         <ul class="m-4 flex grow flex-col gap-2 overflow-auto">
