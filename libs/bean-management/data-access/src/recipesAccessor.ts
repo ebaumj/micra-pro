@@ -114,7 +114,10 @@ export const createRecipesAccessor = (): RecipesAccessor => {
     callback?: () => void,
   ) => {
     setUpdating(id);
-    updateEspressoMutation({ properties: properties, recipeId: id })
+    updateEspressoMutation({
+      properties: reduceEspressoProperties(properties),
+      recipeId: id,
+    })
       .then((result) => {
         const index =
           query.resource.latest?.recipes.findIndex(
@@ -143,7 +146,10 @@ export const createRecipesAccessor = (): RecipesAccessor => {
     callback?: () => void,
   ) => {
     setUpdating(id);
-    updateV60Mutation({ properties: properties, recipeId: id })
+    updateV60Mutation({
+      properties: reduceV60Properties(properties),
+      recipeId: id,
+    })
       .then((result) => {
         const index =
           query.resource.latest?.recipes.findIndex(
@@ -168,7 +174,10 @@ export const createRecipesAccessor = (): RecipesAccessor => {
     properties: EspressoFieldsFragment,
     callback?: () => void,
   ) => {
-    addEspressoMutation({ beanId: beanId, properties: properties })
+    addEspressoMutation({
+      beanId: beanId,
+      properties: reduceEspressoProperties(properties),
+    })
       .then((result) => {
         if (!result.addEspressoRecipe.recipe) return;
         const index = query.resource.latest?.recipes.length ?? -1;
@@ -185,7 +194,10 @@ export const createRecipesAccessor = (): RecipesAccessor => {
     properties: V60FieldsFragment,
     callback?: () => void,
   ) => {
-    addV60Mutation({ beanId: beanId, properties: properties })
+    addV60Mutation({
+      beanId: beanId,
+      properties: reduceV60Properties(properties),
+    })
       .then((result) => {
         if (!result.addV60Recipe.recipe) return;
         const index = query.resource.latest?.recipes.length ?? -1;
@@ -243,3 +255,22 @@ export const createRecipesAccessor = (): RecipesAccessor => {
     isLoading: () => query.resource.state !== 'ready',
   };
 };
+
+const reduceEspressoProperties = (
+  properties: EspressoFieldsFragment,
+): EspressoFieldsFragment => ({
+  brewTemperature: properties.brewTemperature,
+  coffeeQuantity: properties.coffeeQuantity,
+  grindSetting: properties.grindSetting,
+  inCupQuantity: properties.inCupQuantity,
+  targetExtractionTime: properties.targetExtractionTime,
+});
+
+const reduceV60Properties = (
+  properties: V60FieldsFragment,
+): V60FieldsFragment => ({
+  brewTemperature: properties.brewTemperature,
+  coffeeQuantity: properties.coffeeQuantity,
+  grindSetting: properties.grindSetting,
+  inCupQuantity: properties.inCupQuantity,
+});
