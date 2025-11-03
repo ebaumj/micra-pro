@@ -97,4 +97,21 @@ public class SystemService(
             return false;
         }
     }
+
+    public async Task<bool> DisconnectWifiAsync(string ssid, CancellationToken ct)
+    {
+        try
+        {
+            var response = await Bash("/usr/bin/nmcli", $"connection delete id \"{ssid}\"");
+            if (response.StartsWith("Error"))
+                throw new Exception($"Failed to connect network: {response}");
+            await Task.Delay(TimeSpan.FromMilliseconds(500), ct);
+            return true;
+        }
+        catch (Exception e)
+        {
+            logger.LogWarning(e.Message);
+            return false;
+        }
+    }
 }

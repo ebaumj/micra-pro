@@ -5,6 +5,9 @@ import {
   ConnectWifiDocument,
   ConnectWifiMutation,
   ConnectWifiMutationVariables,
+  DisconnectWifiDocument,
+  DisconnectWifiMutation,
+  DisconnectWifiMutationVariables,
   RebootDocument,
   RebootMutation,
   RebootMutationVariables,
@@ -53,6 +56,7 @@ export const wifiAccess = (): {
   available: () => Wifi[];
   isScanning: () => boolean;
   connect: (ssid: string, password?: string) => Promise<boolean>;
+  disconnect: (ssid: string) => Promise<void>;
 } => {
   const currentNetworkQuery = createQuery<
     ConnectedWifiQuery,
@@ -66,6 +70,10 @@ export const wifiAccess = (): {
     ConnectWifiMutation,
     ConnectWifiMutationVariables
   >(ConnectWifiDocument);
+  const disconnectMutation = createMutation<
+    DisconnectWifiMutation,
+    DisconnectWifiMutationVariables
+  >(DisconnectWifiDocument);
   return {
     current: () => currentNetworkQuery.resource.latest?.connectedWifi,
     available: () => scanQuery.resource.latest?.scanWifi ?? [],
@@ -78,6 +86,11 @@ export const wifiAccess = (): {
       const current = await currentNetworkQuery.resourceActions.refetch();
       if (current) currentNetworkQuery.resourceActions.mutate(current);
       return result.connectWifi.boolean ?? false;
+    },
+    disconnect: async (ssid: string): Promise<void> => {
+      await disconnectMutation({ ssid });
+      const current = await currentNetworkQuery.resourceActions.refetch();
+      if (current) currentNetworkQuery.resourceActions.mutate(current);
     },
   };
 };

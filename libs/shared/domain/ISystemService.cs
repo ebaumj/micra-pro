@@ -9,4 +9,5 @@ public interface ISystemService
     Task<string?> GetConnectedWifiAsync(CancellationToken ct);
     Task<Wifi[]> ScanWifiAsync(CancellationToken ct);
     Task<bool> ConnectWifiAsync(string ssid, string? password, CancellationToken ct);
+    Task<bool> DisconnectWifiAsync(string ssid, CancellationToken ct);
 }

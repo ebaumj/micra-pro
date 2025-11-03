@@ -37,7 +37,7 @@ const Network: Component<{
       });
   };
   return (
-    <div class="flex h-12 w-full gap-4 rounded-md border px-2">
+    <div class="flex h-12 w-full gap-4 rounded-md border pl-2">
       <div class="flex items-center justify-center">
         <Icon iconName={props.passwordRequired ? 'wifi' : 'wifi_password'} />
       </div>
@@ -68,16 +68,39 @@ const Network: Component<{
 
 export const WifiSetupPage: Component<{}> = () => {
   const wifiAccessor = wifiAccess();
+  const [disconnecting, setDisconnecting] = createSignal(false);
+  const disconnect = (ssid: string) => {
+    setDisconnecting(true);
+    wifiAccessor.disconnect(ssid).finally(() => setDisconnecting(false));
+  };
   return (
     <div class="flex h-full flex-col">
       <div class="flex min-h-14 w-full items-center gap-4 rounded-md bg-slate-100 px-2 shadow-md">
         <Show when={wifiAccessor.current() !== undefined}>
           <>
-            <Icon
-              iconName={wifiAccessor.current() ? 'wifi' : 'wifi_off'}
-              class={wifiAccessor.current() ? 'opacity-100' : 'opacity-50'}
-            />
-            {wifiAccessor.current()}
+            <div class="flex gap-4 whitespace-nowrap">
+              <Icon
+                iconName={wifiAccessor.current() ? 'wifi' : 'wifi_off'}
+                class={wifiAccessor.current() ? 'opacity-100' : 'opacity-50'}
+              />
+              {wifiAccessor.current()}
+            </div>
+            <div class="flex w-full justify-end">
+              <Show when={wifiAccessor.current()}>
+                {(ssid) => (
+                  <SpinnerButton
+                    spinnerClass="h-full"
+                    variant="outline"
+                    class="flex items-center justify-center px-8"
+                    onClick={() => disconnect(ssid())}
+                    loading={disconnecting()}
+                    disabled={disconnecting()}
+                  >
+                    <Icon iconName="wifi_off" />
+                  </SpinnerButton>
+                )}
+              </Show>
+            </div>
           </>
         </Show>
         <Show when={wifiAccessor.current() === undefined}>

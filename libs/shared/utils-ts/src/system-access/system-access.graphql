@@ -16,6 +16,12 @@ mutation ConnectWifi($ssid: String!, $password: String) {
   }
 }
 
+mutation DisconnectWifi($ssid: String!) {
+  disconnectWifi(input: { ssid: $ssid }) {
+    boolean
+  }
+}
+
 query ConnectedWifi {
   connectedWifi
 }
