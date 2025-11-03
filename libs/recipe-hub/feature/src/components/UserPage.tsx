@@ -125,7 +125,7 @@ const MfaHandler: Component<{
             <div class="flex h-32 w-full items-center justify-center gap-2 text-base font-bold">
               <img src={qrCodeUrl()} class="h-full w-full object-contain" />
             </div>
-            <div class="flex justify-center overflow-hidden whitespace-nowrap py-1 text-xs">
+            <div class="flex justify-center overflow-hidden py-1 text-xs whitespace-nowrap">
               <T key="scan-mfa" />
             </div>
             <div class="flex w-full items-center justify-center gap-2 pt-3">
@@ -165,7 +165,7 @@ const MfaHandler: Component<{
                       <OTPFieldSlot index={5} />
                     </OTPFieldGroup>
                   </OTPField>
-                  <div class="flex justify-center overflow-hidden whitespace-nowrap py-1 text-xs font-normal">
+                  <div class="flex justify-center overflow-hidden py-1 text-xs font-normal whitespace-nowrap">
                     <T key="enter-mfa-code" />
                   </div>
                 </>
@@ -236,7 +236,7 @@ export const UserPage: Component<{
         {props.user.username}
       </div>
       <div class="flex w-full gap-2 border-b py-2">
-        <div class="flex w-1/2 flex-col gap-2 border-r pr-2">
+        <div class="flex w-1/2 flex-col gap-2 border-r pr-2 pl-1">
           <div class="flex w-full justify-center text-base font-bold">
             <T key="change-password" />
           </div>
@@ -245,7 +245,7 @@ export const UserPage: Component<{
             onChange={(v) => setPassword('old', v.trim().replace(' ', ''))}
           >
             <TextField
-              class="w-full focus:ring-0 focus-visible:ring-0 focus-visible:ring-transparent active:ring-0"
+              class="w-full"
               placeholder={t('old-password')}
               type="password"
             />
@@ -255,7 +255,7 @@ export const UserPage: Component<{
             onChange={(v) => setPassword('new', v.trim().replace(' ', ''))}
           >
             <TextField
-              class="w-full focus:ring-0 focus-visible:ring-0 focus-visible:ring-transparent active:ring-0"
+              class="w-full"
               placeholder={t('new-password')}
               type="password"
             />
@@ -265,7 +265,7 @@ export const UserPage: Component<{
             onChange={(v) => setPassword('repeat', v.trim().replace(' ', ''))}
           >
             <TextField
-              class="w-full focus:ring-0 focus-visible:ring-0 focus-visible:ring-transparent active:ring-0"
+              class="w-full"
               placeholder={t('repeat-new-password')}
               type="password"
             />
