@@ -23,10 +23,7 @@ const TextInput: Component<{
   placeholder?: string;
 }> = (props) => (
   <TextFieldRoot value={props.text} onChange={props.set}>
-    <TextField
-      placeholder={props.placeholder}
-      class="focus:ring-0 focus-visible:ring-0 focus-visible:ring-transparent active:ring-0"
-    />
+    <TextField placeholder={props.placeholder} />
   </TextFieldRoot>
 );
 
@@ -55,24 +52,24 @@ function SharedRemoteRecipeSelectorDialogContent<T>(props: {
     setFilter('beanName', '');
   };
   return (
-    <div class="flex h-80 w-full flex-col px-2 pb-2 pt-4">
+    <div class="flex h-80 w-full flex-col px-2 pt-4 pb-2">
       <div>
         <div class="flex w-full py-1 text-base">
-          <div class="flex w-1/3 items-center overflow-hidden whitespace-nowrap pr-1">
+          <div class="flex w-1/3 items-center overflow-hidden pr-1 whitespace-nowrap">
             <TextInput
               text={filter.username}
               set={(t: string) => setFilter('username', t)}
               placeholder={t('username')}
             />
           </div>
-          <div class="flex w-1/3 items-center overflow-hidden whitespace-nowrap px-1">
+          <div class="flex w-1/3 items-center overflow-hidden px-1 whitespace-nowrap">
             <TextInput
               text={filter.roastery}
               set={(t: string) => setFilter('roastery', t)}
               placeholder={t('roastery')}
             />
           </div>
-          <div class="flex w-1/3 items-center overflow-hidden whitespace-nowrap px-1">
+          <div class="flex w-1/3 items-center overflow-hidden px-1 whitespace-nowrap">
             <TextInput
               text={filter.beanName}
               set={(t: string) => setFilter('beanName', t)}
@@ -90,13 +87,13 @@ function SharedRemoteRecipeSelectorDialogContent<T>(props: {
         <For each={filteredRecipes()}>
           {(r) => (
             <div class="flex w-full border-b py-1">
-              <div class="flex w-1/3 items-center overflow-hidden whitespace-nowrap border-r px-2">
+              <div class="flex w-1/3 items-center overflow-hidden border-r px-2 whitespace-nowrap">
                 {r.username}
               </div>
-              <div class="flex w-1/3 items-center overflow-hidden whitespace-nowrap border-r px-2">
+              <div class="flex w-1/3 items-center overflow-hidden border-r px-2 whitespace-nowrap">
                 {r.roastery}
               </div>
-              <div class="flex w-1/3 items-center overflow-hidden whitespace-nowrap px-2">
+              <div class="flex w-1/3 items-center overflow-hidden px-2 whitespace-nowrap">
                 {r.beanName}
               </div>
               <div class="px-1">
@@ -139,7 +136,7 @@ const RemoteRecipeSelectorDialogContent: Component<{
         />
       </Show>
       <Show when={recipes.loading()}>
-        <div class="flex h-80 w-full flex-col items-center justify-center px-2 pb-2 pt-4">
+        <div class="flex h-80 w-full flex-col items-center justify-center px-2 pt-4 pb-2">
           <Spinner class="h-20 w-20" />
         </div>
       </Show>
