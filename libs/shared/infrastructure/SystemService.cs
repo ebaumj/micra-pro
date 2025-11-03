@@ -81,54 +81,13 @@ public class SystemService(
     {
         try
         {
+            password ??= "";
             var response = await Bash(
-                "/sbin/wpa_cli",
-                $"remove_network all -i {options.Value.WifiAdapter}"
+                "/usr/bin/nmcli",
+                $"device wifi connect \"{ssid}\" password \"{password}\" ifname \"{options.Value.WifiAdapter}\""
             );
-            if (response.Trim() != "OK")
-                throw new Exception($"Failed to remove networks: {response}");
-            response = (
-                await Bash("/sbin/wpa_cli", $"add_network -i {options.Value.WifiAdapter}")
-            ).Trim();
-            if (response.Trim() == "FAIL")
-                throw new Exception($"Failed to add network: {response}");
-            var networkIndex = int.Parse(response.Trim());
-            response = await Bash(
-                "/sbin/wpa_cli",
-                $"set_network {networkIndex} ssid \"\\\"{ssid}\\\"\" -i {options.Value.WifiAdapter}"
-            );
-            if (response.Trim() != "OK")
-                throw new Exception($"Failed to set network ssid: {response}");
-            if (password != null)
-            {
-                response = await Bash(
-                    "/sbin/wpa_cli",
-                    $"set_network {networkIndex} psk \"\\\"{password}\\\"\" -i {options.Value.WifiAdapter}"
-                );
-                if (response.Trim() != "OK")
-                    throw new Exception($"Failed to set network psk: {response}");
-            }
-            else
-            {
-                response = await Bash(
-                    "/sbin/wpa_cli",
-                    $"set_network {networkIndex} key_mgmt NONE -i {options.Value.WifiAdapter}"
-                );
-                if (response.Trim() != "OK")
-                    throw new Exception($"Failed to set network key_mgmt: {response}");
-            }
-            response = await Bash(
-                "/sbin/wpa_cli",
-                $"enable_network {networkIndex} -i {options.Value.WifiAdapter}"
-            );
-            if (response.Trim() != "OK")
-                throw new Exception($"Failed to enable network: {response}");
-            response = await Bash(
-                "/sbin/wpa_cli",
-                $"select_network {networkIndex} -i {options.Value.WifiAdapter}"
-            );
-            if (response.Trim() != "OK")
-                throw new Exception($"Failed to select network: {response}");
+            if (response.StartsWith("Error"))
+                throw new Exception($"Failed to connect network: {response}");
             await Task.Delay(1000, ct);
             return true;
         }
