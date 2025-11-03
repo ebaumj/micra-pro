@@ -31,7 +31,7 @@ export const textfieldLabel = cva(
   {
     variants: {
       label: {
-        true: 'data-[invalid]:text-destructive',
+        true: 'data-invalid:text-destructive',
       },
       error: {
         true: 'text-destructive text-xs',
