@@ -117,7 +117,7 @@ export const LoggedInProfilePage: Component<{
         <div class="flex h-full items-center py-1">
           <Button
             variant="outline"
-            class="flex h-full items-center justify-center rounded-lg shadow-inner"
+            class="flex h-full items-center justify-center rounded-lg inset-shadow-sm"
             onClick={props.logout}
           >
             <Icon iconName="logout" />
@@ -170,14 +170,6 @@ export const LoggedInProfilePage: Component<{
   );
 };
 
-const getTabName = (tab: Tabs) => {
-  return (
-    <div class="h-full py-2">
-      <img src={picturesImport[tab]} class="h-full object-scale-down" />
-    </div>
-  );
-};
-
 const Tab: Component<{
   tab: Tabs;
   current: Tabs;
@@ -186,11 +178,13 @@ const Tab: Component<{
   <div
     class={twMerge(
       'flex h-full w-1/3 items-center justify-center rounded-t-xl border-t border-r border-l',
-      props.current === props.tab ? 'bg-slate-50 shadow-inner' : '',
+      props.current === props.tab ? 'bg-secondary inset-shadow-sm' : '',
     )}
     onClick={() => props.setTab(props.tab)}
   >
-    {getTabName(props.tab)}
+    <div class="h-full py-2">
+      <img src={picturesImport[props.tab]} class="h-full object-scale-down" />
+    </div>
   </div>
 );
 
@@ -216,7 +210,7 @@ export const RecipesTable: Component<{
       .finally(() => setDeleting((d) => d.filter((i) => i !== id)));
   };
   return (
-    <div class="no-scrollbar flex h-full flex-col rounded-b-md border-r border-b border-l text-base shadow-inner">
+    <div class="no-scrollbar flex h-full flex-col rounded-b-md border-r border-b border-l text-base inset-shadow-sm">
       <div class="flex h-full w-full flex-col">
         <div class="flex h-12 w-full border-b font-bold shadow-xs">
           <div class="flex w-full">

@@ -62,7 +62,7 @@ export const ComboboxTrigger = <T extends ValidComponent = 'button'>(
     <ComboboxPrimitive.Control>
       <ComboboxPrimitive.Trigger
         class={cn(
-          'border-input flex h-9 w-full items-center justify-between rounded-md border px-3 shadow-xs',
+          'border-border flex h-9 w-full items-center justify-between rounded-md border px-3 shadow-xs',
           local.class,
         )}
         {...rest}
@@ -132,7 +132,7 @@ export const ComboboxItem = <T extends ValidComponent = 'li'>(
   return (
     <ComboboxPrimitive.Item
       class={cn(
-        'data-highlighted:bg-accent data-highlighted:text-accent-foreground relative flex w-full cursor-default items-center rounded-xs py-1.5 pr-8 pl-2 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50',
+        'data-highlighted:bg-secondary data-highlighted:text-secondary-foreground relative flex w-full cursor-default items-center rounded-xs py-1.5 pr-8 pl-2 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50',
         local.class,
       )}
       {...rest}

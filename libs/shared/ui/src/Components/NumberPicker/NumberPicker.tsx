@@ -52,7 +52,7 @@ const NumberPickerContent: Component<{
     <div class="px-6 pt-2">
       <input
         ref={element}
-        class="h-12 w-full rounded-lg border bg-white p-2 text-right text-xl"
+        class="bg-background h-12 w-full rounded-lg border p-2 text-right text-xl"
         disabled
       />
       <div class="flex h-16 w-full gap-2 pt-4">
@@ -97,7 +97,7 @@ export const NumberPicker: Component<{
   return (
     <Dialog open={ctx.open()} onOpenChange={ctx.setOpen}>
       <DialogContent
-        class="max-w-72 bg-slate-50"
+        class="bg-background max-w-72"
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
         <NumberPickerContent

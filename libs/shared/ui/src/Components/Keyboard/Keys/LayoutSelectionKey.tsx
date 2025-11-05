@@ -46,7 +46,7 @@ export const LayoutSelectionKey: ParentComponent<
               {(layout) => {
                 return (
                   <button
-                    class="active:bg-accent w-full p-2 text-left"
+                    class="active:bg-secondary w-full p-2 text-left"
                     onClick={() => {
                       keyboardContext.setLayout(layout);
                       setPosition(null);

@@ -64,7 +64,7 @@ export const EditBeanDialog: Component<{
             </div>
             <TextFieldRoot
               onChange={(name) => setStore('properties', 'name', name)}
-              class="w-full bg-white"
+              class="bg-background w-full"
             >
               <TextField value={store.properties.name} />
             </TextFieldRoot>

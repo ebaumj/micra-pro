@@ -54,7 +54,7 @@ export const EditRoasteryDialog: Component<{
             </div>
             <TextFieldRoot
               onChange={(name) => setStore('properties', 'name', name)}
-              class="w-full bg-white"
+              class="bg-background w-full"
             >
               <TextField value={store.properties.name} />
             </TextFieldRoot>
@@ -67,7 +67,7 @@ export const EditRoasteryDialog: Component<{
               onChange={(location) =>
                 setStore('properties', 'location', location)
               }
-              class="w-full bg-white"
+              class="bg-background w-full"
             >
               <TextField value={store.properties.location} />
             </TextFieldRoot>

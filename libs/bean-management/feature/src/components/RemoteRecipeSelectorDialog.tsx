@@ -83,7 +83,7 @@ function SharedRemoteRecipeSelectorDialogContent<T>(props: {
           </div>
         </div>
       </div>
-      <div class="no-scrollbar h-full overflow-y-scroll rounded-md border text-sm shadow-inner">
+      <div class="no-scrollbar h-full overflow-y-scroll rounded-md border text-sm inset-shadow-sm">
         <For each={filteredRecipes()}>
           {(r) => (
             <div class="flex w-full border-b py-1">

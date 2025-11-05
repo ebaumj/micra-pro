@@ -51,7 +51,7 @@ const BeanButtons: Component<{
             onClick={() => props.onButtonClick(btn.bean)}
           >
             <div class="col-start-1 col-end-2 row-start-1 row-end-2 h-full">
-              <div class="flex h-full w-full flex-col items-center justify-center rounded-lg border text-sm shadow-md">
+              <div class="bg-card text-card-foreground flex h-full w-full flex-col items-center justify-center rounded-lg border text-sm shadow-md">
                 <Show when={btn.bean.properties.assetId}>
                   <Asset
                     class="h-24 w-32 object-contain"
@@ -139,11 +139,11 @@ function MainScreen() {
 const Layout: ParentComponent<{ refetch?: () => void }> = (props) => {
   return (
     <div class="relative h-full w-full">
-      <A href="/menu" class="absolute z-10 ml-3 mt-1 active:opacity-50">
+      <A href="/menu" class="absolute z-10 mt-1 ml-3 active:opacity-50">
         <Icon iconName="menu" class="text-5xl" />
       </A>
       <div class="absolute flex h-full w-full flex-col">
-        <div class="flex h-16 w-full items-center gap-2 pl-20 pr-2 shadow-md">
+        <div class="flex h-16 w-full items-center gap-2 pr-2 pl-20 shadow-md">
           <div class="w-full" />
           <SpoutSelector class="w-36 min-w-36" />
           <ScaleSelector class="w-36 min-w-36" />

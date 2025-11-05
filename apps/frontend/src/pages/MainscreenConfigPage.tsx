@@ -16,6 +16,7 @@ import { createConfigAccessor } from '@micra-pro/shared/utils-ts';
 import { trackStore } from '@solid-primitives/deep';
 import { Component, createEffect, createSignal, For, on, Show } from 'solid-js';
 import { createStore } from 'solid-js/store';
+import { twMerge } from 'tailwind-merge';
 
 export type MainScreenConfig = {
   numberOfButtonsColumns: number;
@@ -161,7 +162,12 @@ export const MainscreenConfigPage: Component<{}> = () => {
                   >
                     <div class="col-start-1 col-end-2 row-start-1 row-end-2 h-full">
                       <LongPressDiv
-                        class="flex h-full w-full items-center justify-center rounded-lg border"
+                        class={twMerge(
+                          'flex h-full w-full items-center justify-center rounded-lg border',
+                          beanId(x, y)
+                            ? 'bg-card text-card-foreground shadow-sm'
+                            : 'border-dashed',
+                        )}
                         onClick={() => setCurrentPosition({ x, y })}
                         onLongPress={() => tileLongPress(x, y)}
                         onPressStart={() => setDeleting(true)}
@@ -170,10 +176,12 @@ export const MainscreenConfigPage: Component<{}> = () => {
                         maxShortPressTimeMs={300}
                       >
                         <Show when={beanId(x, y)}>
-                          <BeanPreview
-                            beanId={beanId(x, y)!}
-                            roasteries={roasteries.roasteries()}
-                          />
+                          {(b) => (
+                            <BeanPreview
+                              beanId={b()}
+                              roasteries={roasteries.roasteries()}
+                            />
+                          )}
                         </Show>
                       </LongPressDiv>
                     </div>
@@ -187,7 +195,7 @@ export const MainscreenConfigPage: Component<{}> = () => {
       <div class="flex h-12 w-full items-center justify-end gap-2 px-2">
         <Show when={deleting()}>
           <Icon iconName="delete" class="text-destructive" />
-          <div class="h-6 w-6 rotate-45 animate-spin-loader-1s rounded-full bg-destructive" />
+          <div class="animate-spin-loader-1s bg-destructive h-6 w-6 rotate-45 rounded-full" />
         </Show>
       </div>
     </div>

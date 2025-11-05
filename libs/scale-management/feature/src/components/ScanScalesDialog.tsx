@@ -35,20 +35,20 @@ export const ScanScalesDialog: Component<{
       <div class="no-scrollbar flex h-full w-full flex-col gap-2 overflow-scroll px-6">
         <For each={scales.scales}>
           {(device, index) => (
-            <div class="flex w-full gap-4 rounded-lg border bg-slate-50 p-2 shadow-xs">
+            <div class="flex w-full gap-4 rounded-lg border p-2 shadow-xs">
               <div class="flex h-full w-full items-center">
                 <TextFieldRoot
                   onChange={(name) =>
                     setScales('scales', index(), 'name', name)
                   }
-                  class="w-full bg-white"
+                  class="w-full"
                 >
                   <TextField value={device.name} />
                 </TextFieldRoot>
               </div>
               <div class="flex h-full items-center">
                 <SpinnerButton
-                  class="h-10 w-10 bg-white p-0"
+                  class="h-10 w-10 p-0"
                   spinnerClass="p-2"
                   variant="outline"
                   onClick={() => {

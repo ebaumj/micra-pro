@@ -5,6 +5,7 @@ import {
   LineChart,
   Spinner,
   SpinnerButton,
+  twColor,
 } from '@micra-pro/shared/ui';
 import { Spout, StartCoffee } from '@micra-pro/brew-by-weight/data-access';
 import { T, useTranslationContext } from '../generated/language-types';
@@ -145,16 +146,16 @@ export const BrewByWeightContent: Component<{
     <div class="flex w-full flex-col items-center justify-center gap-6">
       <div
         class={twMerge(
-          'flex h-80 w-80 flex-col overflow-hidden rounded-full bg-slate-600 text-white shadow-lg',
+          'bg-primary text-primary-foreground flex h-80 w-80 flex-col overflow-hidden rounded-full shadow-lg',
           successClass() === true
-            ? 'shadow-green-600'
+            ? 'shadow-positive'
             : successClass() === false
               ? 'shadow-destructive'
-              : 'shadow-slate-400',
+              : 'shadow-primary-shadow',
         )}
       >
         <div class="flex h-[35%] py-4">
-          <div class="flex h-full w-1/2 flex-col gap-0 border-r border-slate-500 pl-8 pt-8">
+          <div class="flex h-full w-1/2 flex-col gap-0 border-r pt-8 pl-8">
             <div class="flex h-full w-full items-center justify-center text-2xl font-bold">
               {flow().toFixed(1)}
             </div>
@@ -162,7 +163,7 @@ export const BrewByWeightContent: Component<{
               <T key="flow" /> [ml/s]
             </div>
           </div>
-          <div class="flex h-full w-1/2 flex-col gap-0 border-r pr-8 pt-8">
+          <div class="flex h-full w-1/2 flex-col gap-0 border-r pt-8 pr-8">
             <div class="flex h-full w-full items-center justify-center text-2xl font-bold">
               {quantity().toFixed(1)}
             </div>
@@ -185,7 +186,7 @@ export const BrewByWeightContent: Component<{
                       label: t('flow'),
                       pointStyle: false,
                       animation: false,
-                      borderColor: '#FFFFFF',
+                      borderColor: twColor('accent'),
                     },
                     {
                       data: accessor.dataStore.brewData.map(
@@ -194,7 +195,7 @@ export const BrewByWeightContent: Component<{
                       label: t('liquid'),
                       pointStyle: false,
                       animation: false,
-                      borderColor: '#00FFFF',
+                      borderColor: twColor('accent-variant'),
                       yAxisID: 'y2',
                     },
                   ],
@@ -211,7 +212,7 @@ export const BrewByWeightContent: Component<{
                     y: {
                       display: true,
                       ticks: {
-                        color: '#FFFFFF',
+                        color: twColor('accent'),
                       },
                       min: 0,
                       max:
@@ -226,7 +227,7 @@ export const BrewByWeightContent: Component<{
                       axis: 'y',
                       display: true,
                       ticks: {
-                        color: '#00FFFF',
+                        color: twColor('accent-variant'),
                       },
                       position: 'right',
                       min: 0,
@@ -259,12 +260,12 @@ export const BrewByWeightContent: Component<{
               />
             </Show>
             <Show when={isStarting()}>
-              <Spinner class="h-12 w-12 fill-slate-300" />
+              <Spinner class="h-12 w-12" />
             </Show>
           </div>
         </div>
         <div class="flex h-[35%] py-4">
-          <div class="flex h-full w-1/2 flex-col gap-0 border-r border-slate-500 pb-8 pl-8">
+          <div class="flex h-full w-1/2 flex-col gap-0 border-r pb-8 pl-8">
             <div class="flex h-6 w-full items-center justify-center text-sm">
               <T key="time" /> [s]
             </div>
@@ -272,7 +273,7 @@ export const BrewByWeightContent: Component<{
               {timeSeconds().toFixed(1)}
             </div>
           </div>
-          <div class="flex h-full w-1/2 flex-col gap-0 border-r pb-8 pr-8">
+          <div class="flex h-full w-1/2 flex-col gap-0 border-r pr-8 pb-8">
             <div class="flex h-6 w-full items-center justify-center text-sm">
               <T key="target-time" /> [s]
             </div>
@@ -288,7 +289,7 @@ export const BrewByWeightContent: Component<{
       <Show when={!canClose()}>
         <SpinnerButton
           variant="outline"
-          class="w-36 border-destructive p-6 text-lg text-destructive shadow-xl"
+          class="border-destructive w-36 p-6 text-lg shadow-xl"
           spinnerClass="h-6"
           onClick={() => {
             accessor.cancel();
@@ -302,7 +303,7 @@ export const BrewByWeightContent: Component<{
       <Show when={canClose()}>
         <Button
           variant="outline"
-          class="w-36 border-slate-600 p-6 text-lg shadow-xl"
+          class="border-primary w-36 p-6 text-lg shadow-xl"
           onClick={() => props.onClose()}
         >
           <T key="close" />

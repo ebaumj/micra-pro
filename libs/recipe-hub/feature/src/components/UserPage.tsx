@@ -102,7 +102,7 @@ const MfaHandler: Component<{
               <Icon
                 class={twMerge(
                   'flex items-center justify-center text-2xl font-normal',
-                  props.isEnabled ? 'text-green-500' : 'text-red-500',
+                  props.isEnabled ? 'text-positive' : 'text-destructive',
                 )}
                 iconName={props.isEnabled ? 'check_box' : 'disabled_by_default'}
               />
@@ -228,7 +228,7 @@ export const UserPage: Component<{
   };
   return (
     <div class="flex h-full w-full flex-col overflow-hidden">
-      <div class="my-2 flex w-full items-center justify-center rounded-lg border bg-slate-50 text-lg font-bold shadow-inner">
+      <div class="bg-secondary my-2 flex w-full items-center justify-center rounded-lg border text-lg font-bold inset-shadow-sm">
         <Icon
           class="mr-3 flex h-full items-center text-3xl font-normal"
           iconName="person"

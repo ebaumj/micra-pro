@@ -13,14 +13,14 @@ export const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-primary text-primary-foreground shadow-sm active:bg-primary/90',
+          'bg-primary text-primary-foreground shadow-sm active:bg-primary-active',
         destructive:
           'bg-destructive text-destructive-foreground shadow-xs active:bg-destructive/90',
         outline:
-          'border border-input bg-background shadow-xs active:bg-accent active:text-accent-foreground',
+          'border border-border bg-background shadow-xs active:bg-secondary active:text-secondary-foreground',
         secondary:
           'bg-secondary text-secondary-foreground shadow-xs active:bg-secondary/80',
-        ghost: 'active:bg-accent active:text-accent-foreground',
+        ghost: 'active:bg-secondary active:text-secondary-foreground',
         link: 'text-primary underline-offset-4 active:underline',
       },
       size: {

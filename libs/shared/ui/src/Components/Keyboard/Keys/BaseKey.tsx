@@ -9,7 +9,7 @@ export const BaseKey: ParentComponent<
   return (
     <button
       class={cn(
-        'grow basis-4 rounded-md border border-input active:bg-gray-200',
+        'border-border active:bg-secondary grow basis-4 rounded-md border',
         local.class,
       )}
       {...rest}

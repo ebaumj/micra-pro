@@ -34,12 +34,12 @@ const AppLayout: ParentComponent = (props) => {
 
   return (
     <>
-      <div class="bg-primary flex min-h-screen items-center justify-center">
-        <div class="absolute top-1/2 -translate-y-[450px] text-3xl tracking-wider text-gray-400 dark:text-gray-600">
+      <div class="flex min-h-screen items-center justify-center bg-black">
+        <div class="absolute top-1/2 -translate-y-80 text-3xl tracking-wider text-gray-500">
           MICRA PRO
         </div>
         <div
-          class="bg-background relative max-h-screen max-w-screen overflow-hidden text-lg shadow-2xl shadow-gray-400 dark:shadow-gray-800"
+          class="bg-background text-foreground relative max-h-screen max-w-screen overflow-hidden text-lg shadow-2xl shadow-gray-500"
           style={{
             width: `${config.display.resolution.width}px`,
             height: `${config.display.resolution.height}px`,

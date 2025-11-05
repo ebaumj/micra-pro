@@ -77,7 +77,7 @@ export const OTPFieldSlot = (
   return (
     <div
       class={cn(
-        'border-input relative flex size-9 items-center justify-center border-y border-r text-sm shadow-xs transition-shadow first:rounded-l-md first:border-l last:rounded-r-md',
+        'border-border relative flex size-9 items-center justify-center border-y border-r text-sm shadow-xs transition-shadow first:rounded-l-md first:border-l last:rounded-r-md',
         isActive() && 'ring-ring z-10 ring-[1.5px]',
         local.class,
       )}

@@ -125,13 +125,13 @@ export const BrewByWeightHistoryPage: Component = () => {
         <div class="flex h-10 w-full items-center">
           <Button
             variant="outline"
-            class="h-8 w-56 shadow-inner"
+            class="h-8 w-56 inset-shadow-sm"
             onClick={() => setBeanSelectorOpen(true)}
           >
             {selectedBean().name}
           </Button>
           <div class="flex w-full justify-end">
-            <div class="flex h-8 w-72 rounded-lg border shadow-inner">
+            <div class="flex h-8 w-72 rounded-lg border inset-shadow-sm">
               <div
                 class="z-10 flex w-1/3 items-center justify-center"
                 onClick={() => setSelectedDataTable('Finished')}
@@ -154,7 +154,7 @@ export const BrewByWeightHistoryPage: Component = () => {
             <div class="fixed flex h-8 w-72">
               <div
                 class={twMerge(
-                  'w-1/3 rounded-lg bg-slate-200 transition-transform duration-300',
+                  'bg-secondary w-1/3 rounded-lg inset-shadow-sm transition-transform duration-300',
                   selectedDataTable() === 'Finished'
                     ? 'translate-x-0'
                     : selectedDataTable() === 'Cancelled'

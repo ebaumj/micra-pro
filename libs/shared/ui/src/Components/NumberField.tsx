@@ -150,7 +150,7 @@ export const NumberFieldInput = <T extends ValidComponent = 'input'>(
   return (
     <NumberFieldPrimitive.Input
       class={cn(
-        'border-input placeholder:text-muted-foreground flex h-9 w-full rounded-md border bg-transparent px-10 py-1 text-center text-sm shadow-xs focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50',
+        'border-border placeholder:text-muted-foreground flex h-9 w-full rounded-md border bg-transparent px-10 py-1 text-center text-sm shadow-xs focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50',
         local.class,
       )}
       {...rest}

@@ -225,15 +225,15 @@ export const RecipePannel: Component<{
                   countryCode={selectedBean()?.properties.countryCode ?? ''}
                   class="mr-4 h-8"
                 />
-                <p class="flex w-full whitespace-nowrap text-xl font-bold">
+                <p class="flex w-full text-xl font-bold whitespace-nowrap">
                   {selectedBean()?.properties.name}
                 </p>
               </div>
               <div class="flex h-full w-[50%] flex-col overflow-hidden px-2">
-                <p class="flex h-full w-full items-center whitespace-nowrap text-base font-bold">
+                <p class="flex h-full w-full items-center text-base font-bold whitespace-nowrap">
                   {selectedBean()?.roastery.name}
                 </p>
-                <p class="flex h-full w-full items-center whitespace-nowrap text-sm">
+                <p class="flex h-full w-full items-center text-sm whitespace-nowrap">
                   {selectedBean()?.roastery.location}
                 </p>
               </div>
@@ -242,8 +242,8 @@ export const RecipePannel: Component<{
             <Show when={recipe()?.type === 'Espresso' && props.scale}>
               <div class="flex w-full justify-center py-2">
                 <Button
-                  variant="outline"
-                  class="flex h-12 w-48 items-center justify-center gap-2 rounded-xl border-green-800 bg-gray-100 shadow-lg"
+                  variant="default"
+                  class="flex h-12 w-48 items-center justify-center gap-2 rounded-xl shadow-lg"
                   onClick={start}
                 >
                   <Icon iconName="play_arrow" />
