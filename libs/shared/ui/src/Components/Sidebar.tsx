@@ -45,7 +45,7 @@ export const SidebarLayout: ParentComponent<SidebarLayoutProps> = (props) => {
     <div class="flex h-full max-h-full w-full">
       <div class="left-0 flex h-full max-h-full w-60 shrink-0 flex-col gap-2 border-r">
         <div class="mx-2 mt-2 w-fit pt-2 pl-2">
-          <MicraProLogo class="h-14 w-14" />
+          <MicraProLogo class="h-14 w-14 dark:rounded-full dark:border" />
         </div>
         <ul class="m-4 flex grow flex-col gap-2 overflow-auto">
           <For each={props.navigationElements}>

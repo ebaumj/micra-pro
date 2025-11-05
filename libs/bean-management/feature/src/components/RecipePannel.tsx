@@ -9,6 +9,7 @@ import {
   Dialog,
   DialogContent,
   Icon,
+  selectPicturesForMode,
   Sheet,
   SheetContent,
   SheetDescription,
@@ -122,6 +123,7 @@ export const RecipePannel: Component<{
   onClose: () => void;
   scale?: string;
 }> = (props) => {
+  const pictures = selectPicturesForMode(picturesImport);
   const [recipe, setRecipe] = createSignal<
     | ({ type: 'Espresso' } & EspressoProperties)
     | ({ type: 'V60' } & V60Properties)
@@ -185,7 +187,7 @@ export const RecipePannel: Component<{
                     onClick={() => setRecipe({ type: 'Espresso', ...props() })}
                   >
                     <img
-                      src={picturesImport.espresso}
+                      src={pictures().espresso}
                       class={'h-full object-contain'}
                     />
                   </Button>
@@ -198,10 +200,7 @@ export const RecipePannel: Component<{
                     class="flex h-14 w-full justify-center py-2"
                     onClick={() => setRecipe({ type: 'V60', ...props() })}
                   >
-                    <img
-                      src={picturesImport.v60}
-                      class={'h-full object-contain'}
-                    />
+                    <img src={pictures().v60} class={'h-full object-contain'} />
                   </Button>
                 )}
               </Show>

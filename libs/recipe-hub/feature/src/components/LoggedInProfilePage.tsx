@@ -2,6 +2,7 @@ import {
   Button,
   handleError,
   Icon,
+  selectPicturesForMode,
   Spinner,
   SpinnerButton,
 } from '@micra-pro/shared/ui';
@@ -174,19 +175,22 @@ const Tab: Component<{
   tab: Tabs;
   current: Tabs;
   setTab: (tab: Tabs) => void;
-}> = (props) => (
-  <div
-    class={twMerge(
-      'flex h-full w-1/3 items-center justify-center rounded-t-xl border-t border-r border-l',
-      props.current === props.tab ? 'bg-secondary inset-shadow-sm' : '',
-    )}
-    onClick={() => props.setTab(props.tab)}
-  >
-    <div class="h-full py-2">
-      <img src={picturesImport[props.tab]} class="h-full object-scale-down" />
+}> = (props) => {
+  const pictures = selectPicturesForMode(picturesImport);
+  return (
+    <div
+      class={twMerge(
+        'flex h-full w-1/3 items-center justify-center rounded-t-xl border-t border-r border-l',
+        props.current === props.tab ? 'bg-secondary inset-shadow-sm' : '',
+      )}
+      onClick={() => props.setTab(props.tab)}
+    >
+      <div class="h-full py-2">
+        <img src={pictures()[props.tab]} class="h-full object-scale-down" />
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export const RecipesTable: Component<{
   recipes: {
