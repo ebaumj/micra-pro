@@ -39,7 +39,7 @@ const Network: Component<{
   return (
     <div class="flex h-12 w-full gap-4 rounded-md border pl-2">
       <div class="flex items-center justify-center">
-        <Icon iconName={props.passwordRequired ? 'wifi' : 'wifi_password'} />
+        <Icon iconName={props.passwordRequired ? 'wifi_password' : 'wifi'} />
       </div>
       <div class="flex w-1/2 items-center">{props.ssid}</div>
       <div class="flex w-1/2 items-center">
