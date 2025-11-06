@@ -30,3 +30,4 @@ export * from './utils/makeToast';
 export * from './Components/Chart';
 export * from './Components/OTPField';
 export * from './utils/cssvar';
+export * from './Components/DarkModeProvider';

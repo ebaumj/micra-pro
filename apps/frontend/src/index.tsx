@@ -5,7 +5,7 @@ import config from './config';
 import { GraphQlProvider } from '@micra-pro/shared/utils-ts';
 import App from './App';
 import { TranslationProvider } from './TranslationProvider';
-import { KeyboardProvider } from '@micra-pro/shared/ui';
+import { DarkModeProvider, KeyboardProvider } from '@micra-pro/shared/ui';
 import { AssetContextProvider } from '@micra-pro/asset-management/feature';
 import { RecipeHubClientProvider } from '@micra-pro/recipe-hub/client';
 
@@ -24,7 +24,9 @@ render(
           <TranslationProvider>
             <KeyboardProvider>
               <AssetContextProvider>
-                <App />
+                <DarkModeProvider>
+                  <App />
+                </DarkModeProvider>
               </AssetContextProvider>
             </KeyboardProvider>
           </TranslationProvider>

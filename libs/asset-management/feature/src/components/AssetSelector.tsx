@@ -11,7 +11,11 @@ import picturesImport from '../generated/pictures-import';
 import { AssetCreator } from './AssetCreator';
 import { useAssetAccessor } from './AssetContextProvider';
 import { twMerge } from 'tailwind-merge';
-import { LongPressDiv, Spinner } from '@micra-pro/shared/ui';
+import {
+  LongPressDiv,
+  selectPicturesForMode,
+  Spinner,
+} from '@micra-pro/shared/ui';
 
 type AssetSelectorProps = Omit<JSX.HTMLAttributes<HTMLImageElement>, 'src'> & {
   assetId?: string;
@@ -21,6 +25,7 @@ type AssetSelectorProps = Omit<JSX.HTMLAttributes<HTMLImageElement>, 'src'> & {
 
 export const AssetSelector: Component<AssetSelectorProps> = (props) => {
   const accessor = useAssetAccessor();
+  const pictures = selectPicturesForMode(picturesImport);
   const [local, rest] = splitProps(props, ['assetId', 'onIdChange', 'class']);
   const [createOpen, setCreateOpen] = createSignal(false);
   const [unfinished, setUnfinished] = createSignal<string | undefined>();
@@ -66,7 +71,7 @@ export const AssetSelector: Component<AssetSelectorProps> = (props) => {
       </Show>
       <Show when={!props.assetId}>
         <img
-          src={picturesImport['image-add']}
+          src={pictures()['image-add']}
           {...rest}
           class={twMerge('opacity-50', local.class)}
           onClick={() => setCreateOpen(true)}

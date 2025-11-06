@@ -34,7 +34,7 @@ const AppLayout: ParentComponent = (props) => {
 
   return (
     <>
-      <div class="flex min-h-screen items-center justify-center bg-black">
+      <div class="flex min-h-screen items-center justify-center bg-black dark:bg-white">
         <div class="absolute top-1/2 -translate-y-80 text-3xl tracking-wider text-gray-500">
           MICRA PRO
         </div>

@@ -1,5 +1,10 @@
 import { Roastery } from '@micra-pro/bean-management/data-access';
-import { Dialog, DialogContent, Icon } from '@micra-pro/shared/ui';
+import {
+  Dialog,
+  DialogContent,
+  Icon,
+  selectPicturesForMode,
+} from '@micra-pro/shared/ui';
 import { Component, createEffect, createSignal, For, Show } from 'solid-js';
 import { twMerge } from 'tailwind-merge';
 import picturesImport from '../generated/pictures-import';
@@ -10,6 +15,7 @@ export const BeanSelectorDialog: Component<{
   onBeanSelected: (beanId: string) => void;
   roasteries: Roastery[];
 }> = (props) => {
+  const pictures = selectPicturesForMode(picturesImport);
   const [selectedRoastery, setSelectedRoastery] = createSignal(-1);
   const selectRoastery = (i: number) =>
     setSelectedRoastery((idx) => (idx === i ? -1 : i));
@@ -71,10 +77,7 @@ export const BeanSelectorDialog: Component<{
                 >
                   <div class="flex h-10 w-12 items-center justify-center">
                     <div class="">
-                      <img
-                        src={picturesImport.bean}
-                        class="h-full w-full p-3"
-                      />
+                      <img src={pictures().bean} class="h-full w-full p-3" />
                     </div>
                   </div>
                   <div class="w-full gap-0 py-1">

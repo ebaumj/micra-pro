@@ -6,10 +6,12 @@ import {
   Icon,
   Sheet,
   SheetContent,
+  useDarkModeContext,
 } from '@micra-pro/shared/ui';
 import { createSystemAccessor } from '@micra-pro/shared/utils-ts';
 import { T, useTranslationContext } from '../generated/language-types';
 import { GrinderOffsetSelector } from '@micra-pro/bean-management/feature';
+import { twMerge } from 'tailwind-merge';
 
 export const SettingsButton: Component<{
   class?: string;
@@ -20,6 +22,7 @@ export const SettingsButton: Component<{
   const [reboot, setReboot] = createSignal(false);
   const [menuOpen, setMenuOpen] = createSignal(false);
   const system = createSystemAccessor();
+  const darkMode = useDarkModeContext();
   const shutdownCommand = () => {
     setShutdown(true);
     system.shutdown().catch((e) => {
@@ -54,6 +57,30 @@ export const SettingsButton: Component<{
           <Button variant="ghost" onClick={() => setMenuOpen(false)}>
             <Icon iconName="close" />
           </Button>
+        </div>
+        <div class="flex w-full justify-center">
+          <div class="flex h-10 w-56">
+            <div
+              class="z-10 flex w-1/2 items-center justify-center"
+              onClick={() => darkMode.setDarkMode(false)}
+            >
+              <Icon iconName="light_mode" />
+            </div>
+            <div
+              class="z-10 flex w-1/2 items-center justify-center"
+              onClick={() => darkMode.setDarkMode(true)}
+            >
+              <Icon iconName="dark_mode" />
+            </div>
+          </div>
+          <div class="fixed flex h-10 w-56 rounded-md border inset-shadow-sm">
+            <div
+              class={twMerge(
+                'bg-secondary w-1/2 rounded inset-shadow-sm transition-transform duration-300',
+                darkMode.darkMode() ? 'translate-x-full' : 'translate-x-0',
+              )}
+            />
+          </div>
         </div>
         <T key="grinder-offset" />
         <GrinderOffsetSelector

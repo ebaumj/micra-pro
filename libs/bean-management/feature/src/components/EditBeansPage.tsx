@@ -14,6 +14,7 @@ import {
   Button,
   Icon,
   LongPressDiv,
+  selectPicturesForMode,
   Spinner,
 } from '@micra-pro/shared/ui';
 import { twMerge } from 'tailwind-merge';
@@ -32,6 +33,7 @@ import { useAuthentication } from '@micra-pro/recipe-hub/data-access';
 import { RemoteRecipeSelectorDialog } from './RemoteRecipeSelectorDialog';
 
 export const EditBeansPage: Component = () => {
+  const pictures = selectPicturesForMode(picturesImport);
   const roasteriesAccessor = createRoasteriesAccessor();
   const beansAccessor = createBeansAccessor();
   const recipesAccessor = createRecipesAccessor();
@@ -237,7 +239,7 @@ export const EditBeansPage: Component = () => {
                 }
               >
                 <div class="flex w-20 items-center justify-center">
-                  <img src={picturesImport.bean} class="h-full w-full p-3" />
+                  <img src={pictures().bean} class="h-full w-full p-3" />
                 </div>
                 <div class="w-full gap-0 overflow-hidden py-1">
                   <div class="overflow-hidden text-base font-bold whitespace-nowrap">
@@ -280,7 +282,7 @@ export const EditBeansPage: Component = () => {
           <div class="flex h-12 border-b">
             <div class="flex h-full w-16 items-center justify-center">
               <img
-                src={picturesImport.espresso}
+                src={pictures().espresso}
                 class={twMerge(
                   'h-full w-full p-3',
                   currentEspressoRecipe() ? '' : 'opacity-50',
@@ -357,7 +359,7 @@ export const EditBeansPage: Component = () => {
           <div class="flex h-12 border-b">
             <div class="flex h-full w-16 items-center justify-center">
               <img
-                src={picturesImport.v60}
+                src={pictures().v60}
                 class={twMerge(
                   'h-full w-full p-3',
                   currentV60Recipe() ? '' : 'opacity-50',

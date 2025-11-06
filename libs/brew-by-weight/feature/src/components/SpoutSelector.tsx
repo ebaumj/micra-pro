@@ -1,20 +1,21 @@
 import { Component } from 'solid-js';
 import { useSpoutSelectorContext } from './SpoutSelectorContextProvider';
-import { Select } from '@micra-pro/shared/ui';
+import { Select, selectPicturesForMode } from '@micra-pro/shared/ui';
 import { Spout } from '@micra-pro/brew-by-weight/data-access';
 import picturesImport from '../generated/pictures-import';
 
 export const SpoutSelector: Component<{ class?: string }> = (props) => {
   var ctx = useSpoutSelectorContext();
+  const pictures = selectPicturesForMode(picturesImport);
 
   const spoutToImage = (spout: Spout) => {
     switch (spout) {
       case Spout.Double:
-        return picturesImport.spout.double;
+        return pictures().spout.double;
       case Spout.Naked:
-        return picturesImport.spout.naked;
+        return pictures().spout.naked;
       case Spout.Single:
-        return picturesImport.spout.single;
+        return pictures().spout.single;
     }
   };
 
