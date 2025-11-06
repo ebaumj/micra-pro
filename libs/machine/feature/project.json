@@ -1,0 +1,47 @@
+{
+  "name": "machine-feature",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/machine/feature/src",
+  "projectType": "library",
+  "tags": ["type:feature"],
+  "targets": {
+    "build": {
+      "outputs": ["{workspaceRoot}/dist/libs/machine/feature"],
+      "options": {
+        "outDir": "../../../dist/libs/machine/feature"
+      }
+    },
+    "codegen": {
+      "dependsOn": ["codegen-translations", "codegen-recursive-import"]
+    },
+    "codegen-recursive-import": {
+      "executor": "@micra-pro/workspace-extensions:recursive-import",
+      "options": {
+        "importDir": "libs/machine/feature/src/assets/pictures",
+        "outputFile": "libs/machine/feature/src/generated/pictures-import.ts"
+      },
+      "outputs": ["{projectRoot}/src/generated/pictures-import.ts"],
+      "dependsOn": ["workspace-extensions:build"]
+    },
+    "codegen-translations": {
+      "executor": "@micra-pro/workspace-extensions:icu-to-typescript",
+      "options": {
+        "inputFile": "libs/machine/feature/src/locales/en.json",
+        "outputFile": "libs/machine/feature/src/generated/language-types.tsx",
+        "namespace": "machine",
+        "localesFolderRelativeToOutputFile": "../locales/"
+      }
+    },
+    "import-translations": {
+      "executor": "@micra-pro/workspace-extensions:import-translations",
+      "options": {
+        "outputFolder": "libs/machine/feature/src/locales/",
+        "namespace": "machine"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "dependsOn": ["codegen"]
+    }
+  }
+}

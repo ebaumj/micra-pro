@@ -3,6 +3,9 @@ using MicraPro.AssetManagement.DataProviderGraphQl;
 using MicraPro.BeanManagement.DataProviderGraphQl;
 using MicraPro.BrewByWeight.DataProviderGraphQl;
 using MicraPro.Cleaning.DataProviderGraphQl;
+using MicraPro.Machine.DataDefinition;
+using MicraPro.Machine.DataProviderGraphQl;
+using MicraPro.Machine.DataProviderGraphQl.Types;
 using MicraPro.ScaleManagement.DataProviderGraphQl;
 using MicraPro.Shared.DataProviderGraphQl;
 
@@ -35,7 +38,8 @@ internal static class ConfigureGraphQlExtensions
             .AddBeanManagementDataProviderGraphQlTypes()
             .AddAssetManagementDataProviderGraphQlTypes()
             .AddBrewByWeightDataProviderGraphQlTypes()
-            .AddCleaningDataProviderGraphQlTypes();
+            .AddCleaningDataProviderGraphQlTypes()
+            .AddMachineDataProviderGraphQlTypes();
     }
 
     // ReSharper disable once ClassNeverInstantiated.Global
@@ -47,6 +51,14 @@ internal static class ConfigureGraphQlExtensions
                 logger.LogInformation(
                     "Read not existing config {configKey}",
                     configDoesNotExistException.Key
+                );
+            else if (error.Exception is MachineNotFoundException machineNotFoundException)
+                logger.LogWarning(machineNotFoundException.Message);
+            else if (error.Exception is MachineAccessException machineAccessException)
+                logger.LogError(
+                    "{m}: {e}",
+                    machineAccessException.Message,
+                    machineAccessException.ExceptionDetails
                 );
             else if (error.Exception is not null)
                 logger.LogError("Uncaught server exception: {exception}", error.Exception);

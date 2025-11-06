@@ -1,0 +1,141 @@
+query Boilers {
+  boilers {
+    coffeeBoiler {
+      isEnabled
+      targetTemperature
+      temperature
+    }
+    steamBoiler {
+      isEnabled
+      targetLevel
+      temperature
+    }
+  }
+}
+
+query SmartStandby {
+  smartStandby {
+    time
+    mode
+  }
+}
+
+query StatePoll {
+  machineState
+}
+
+subscription State {
+  machineState
+}
+
+query ScanResultsPoll {
+  scanResults {
+    name
+    id
+  }
+}
+
+subscription ScanResults {
+  scanResults {
+    name
+    id
+  }
+}
+
+query IsScanningPoll {
+  isScanning
+}
+
+subscription IsScanning {
+  isScanning
+}
+
+mutation ScanDevices {
+  scanDevices {
+    boolean
+  }
+}
+
+mutation StopScanning {
+  stopScanning {
+    boolean
+  }
+}
+
+mutation ConnectMachine($deviceId: String!) {
+  connectMachine(input: { deviceId: $deviceId }) {
+    boolean
+  }
+}
+
+mutation DisconnectMachine {
+  disconnectMachine {
+    boolean
+  }
+}
+
+mutation SetStandby($standby: Boolean!) {
+  setStandby(input: { standby: $standby }) {
+    boolean
+  }
+}
+
+mutation SetSmartStandby($standby: SmartStandbyInput!) {
+  setSmartStandby(input: { standby: $standby }) {
+    smartStandby {
+      time
+      mode
+    }
+  }
+}
+
+mutation SetCoffeeTemperature($temperature: Int!) {
+  setCoffeeTemperature(input: { temperature: $temperature }) {
+    boilers {
+      coffeeBoiler {
+        isEnabled
+        targetTemperature
+        temperature
+      }
+      steamBoiler {
+        isEnabled
+        targetLevel
+        temperature
+      }
+    }
+  }
+}
+
+mutation SetSteamLevel($level: Int!) {
+  setSteamLevel(input: { level: $level }) {
+    boilers {
+      coffeeBoiler {
+        isEnabled
+        targetTemperature
+        temperature
+      }
+      steamBoiler {
+        isEnabled
+        targetLevel
+        temperature
+      }
+    }
+  }
+}
+
+mutation SetSteamEnabled($enabled: Boolean!) {
+  setSteamEnabled(input: { enabled: $enabled }) {
+    boilers {
+      coffeeBoiler {
+        isEnabled
+        targetTemperature
+        temperature
+      }
+      steamBoiler {
+        isEnabled
+        targetLevel
+        temperature
+      }
+    }
+  }
+}

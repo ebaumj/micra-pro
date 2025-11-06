@@ -1,0 +1,18 @@
+{
+  "machine.wake-up": "Wake Up",
+  "machine.connect": "Connect",
+  "machine.disconnect": "Disconnect",
+  "machine.coffee-boiler": "Coffee Boiler",
+  "machine.target-temperature": "Target Temperature",
+  "machine.steam-boiler": "Steam Boiler",
+  "machine.target-power": "Target Power",
+  "machine.smart-standby": "Smart Standby",
+  "machine.smart-standby-mode": "Mode",
+  "machine.smart-standby-time": "Time",
+  "machine.last-brew": "Last Shot",
+  "machine.power-up": "Power Up",
+  "machine.error": "Error",
+  "machine.connection-failed": "Failed to connect to {machine}",
+  "machine.disconnect-failed": "Failed to disconnect from machine",
+  "machine.standby-failed": "Failed to set Standby"
+}

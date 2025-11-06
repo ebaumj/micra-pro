@@ -15,6 +15,7 @@ import {
   BrewByWeightPannelStyleProvider,
 } from '@micra-pro/brew-by-weight/feature';
 import { CleaningContextProvider } from '@micra-pro/cleaning/feature';
+import { MachineContextProvider } from '@micra-pro/machine/feature';
 
 const AppLayout: ParentComponent = (props) => {
   const keyboardInfo = useKeyboardInfo();
@@ -61,12 +62,14 @@ const AppLayout: ParentComponent = (props) => {
               </Show>
               <CleaningContextProvider>
                 <SpoutSelectorContextProvider>
-                  <BrewByWeightPannelStyleProvider>
-                    {props.children}
-                  </BrewByWeightPannelStyleProvider>
-                  <ToastRegion>
-                    <ToastList />
-                  </ToastRegion>
+                  <MachineContextProvider>
+                    <BrewByWeightPannelStyleProvider>
+                      {props.children}
+                    </BrewByWeightPannelStyleProvider>
+                    <ToastRegion>
+                      <ToastList />
+                    </ToastRegion>
+                  </MachineContextProvider>
                 </SpoutSelectorContextProvider>
               </CleaningContextProvider>
             </DialogContextProvider>

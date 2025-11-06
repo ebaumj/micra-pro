@@ -1,0 +1,32 @@
+{
+  "name": "machine-data-access",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/machine/data-access/src/",
+  "projectType": "library",
+  "implicitDependencies": ["machine-data-definition-graphql"],
+  "tags": ["type:data"],
+  "targets": {
+    "build": {
+      "outputs": ["{workspaceRoot}/dist/libs/machine/data-access"],
+      "options": {
+        "outDir": "../../../dist/libs/machine/data-access"
+      }
+    },
+    "codegen": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/libs/machine/data-access/src/generated"],
+      "inputs": [
+        { "dependentTasksOutputFiles": "**/*.graphqls" },
+        "{workspaceRoot}/libs/machine/data-access/src/**/*.graphql"
+      ],
+      "options": {
+        "command": "graphql-codegen --config codegen.ts",
+        "cwd": "{workspaceRoot}/libs/machine/data-access"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "dependsOn": ["codegen"]
+    }
+  }
+}

@@ -40,6 +40,9 @@
     <ProjectReference Include="..\..\libs\cleaning\data-provider-graphql\MicraPro.Cleaning.DataProviderGraphQl.csproj" />
     <ProjectReference Include="..\..\libs\cleaning\domain\MicraPro.Cleaning.Domain.csproj" />
     <ProjectReference Include="..\..\libs\cleaning\infrastructure\MicraPro.Cleaning.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\libs\machine\data-provider-graphql\MicraPro.Machine.DataProviderGraphQl.csproj" />
+    <ProjectReference Include="..\..\libs\machine\domain\MicraPro.Machine.Domain.csproj" />
+    <ProjectReference Include="..\..\libs\machine\infrastructure\MicraPro.Machine.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\" />
