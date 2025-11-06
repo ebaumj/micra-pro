@@ -18,6 +18,7 @@ import { createConfigAccessor } from '@micra-pro/shared/utils-ts';
 import { SettingsButton } from '../components/SettingsButton';
 import { CleaningRemnder } from '@micra-pro/cleaning/feature';
 import { ScaleSelector } from '@micra-pro/scale-management/feature';
+import { StandbyButton } from '@micra-pro/machine/feature';
 
 const BeanButtons: Component<{
   beans: Bean[];
@@ -150,6 +151,7 @@ const Layout: ParentComponent<{ refetch?: () => void }> = (props) => {
           >
             <Icon iconName="refresh" />
           </Button>
+          <StandbyButton class="w-24 min-w-24" />
           <SettingsButton
             class="w-16 min-w-16"
             onSettingChanged={props.refetch}

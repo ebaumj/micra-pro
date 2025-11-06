@@ -37,6 +37,10 @@
         "libs/cleaning/data-access/src/index.ts"
       ],
       "@micra-pro/cleaning/feature": ["libs/cleaning/feature/src/index.ts"],
+      "@micra-pro/machine/data-access": [
+        "libs/machine/data-access/src/index.ts"
+      ],
+      "@micra-pro/machine/feature": ["libs/machine/feature/src/index.ts"],
       "@micra-pro/recipe-hub/client": ["libs/recipe-hub/client/src/index.ts"],
       "@micra-pro/recipe-hub/data-access": [
         "libs/recipe-hub/data-access/src/index.ts"
