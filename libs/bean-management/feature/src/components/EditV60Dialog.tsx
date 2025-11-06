@@ -57,7 +57,7 @@ export const EditV60Dialog: Component<{
             <div class="flex h-full w-1/2 items-center text-sm font-semibold">
               <T key="coffee-quantity" />:
             </div>
-            <div class="w-1/2 bg-white">
+            <div class="bg-background w-1/2">
               <NumberField
                 onFocusIn={(e) => e.preventDefault()}
                 onRawValueChange={(v) =>
@@ -81,7 +81,7 @@ export const EditV60Dialog: Component<{
             <div class="flex h-full w-1/2 items-center text-sm font-semibold">
               <T key="grind-setting" />:
             </div>
-            <div class="w-1/2 bg-white">
+            <div class="bg-background w-1/2">
               <NumberField
                 onFocusIn={(e) => e.preventDefault()}
                 onRawValueChange={(v) =>
@@ -105,7 +105,7 @@ export const EditV60Dialog: Component<{
             <div class="flex h-full w-1/2 items-center text-sm font-semibold">
               <T key="water-quantity" />:
             </div>
-            <div class="w-1/2 bg-white">
+            <div class="bg-background w-1/2">
               <NumberField
                 onFocusIn={(e) => e.preventDefault()}
                 onRawValueChange={(v) =>
@@ -129,7 +129,7 @@ export const EditV60Dialog: Component<{
             <div class="flex h-full w-1/2 items-center text-sm font-semibold">
               <T key="brew-temperature" />:
             </div>
-            <div class="w-1/2 bg-white">
+            <div class="bg-background w-1/2">
               <NumberField
                 onFocusIn={(e) => e.preventDefault()}
                 onRawValueChange={(v) =>

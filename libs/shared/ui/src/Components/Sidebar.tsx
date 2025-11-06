@@ -11,7 +11,11 @@ const SidebarItem: ParentComponent<{
   return (
     <A
       class="active:bg-secondary flex items-center rounded-lg px-2 py-1"
-      activeClass={props.highlightActive ? 'bg-secondary' : ''}
+      activeClass={
+        props.highlightActive
+          ? 'bg-secondary inset-shadow-sm text-secondary-foreground'
+          : ''
+      }
       href={props.link}
     >
       <Icon

@@ -32,8 +32,10 @@ export const BeanSelectorDialog: Component<{
                 {(r, i) => (
                   <div
                     class={twMerge(
-                      'flex h-10 border-b active:bg-slate-100',
-                      selectedRoastery() === i() ? 'bg-slate-50' : '',
+                      'flex h-10 border-b',
+                      selectedRoastery() === i()
+                        ? 'bg-secondary inset-shadow-sm'
+                        : '',
                     )}
                     onClick={() => selectRoastery(i())}
                   >
@@ -43,7 +45,7 @@ export const BeanSelectorDialog: Component<{
                       </div>
                     </div>
                     <div class="w-full gap-0 py-1">
-                      <div class="flex h-full items-center overflow-hidden whitespace-nowrap text-sm font-bold">
+                      <div class="flex h-full items-center overflow-hidden text-sm font-bold whitespace-nowrap">
                         {r.properties.name}
                       </div>
                     </div>
@@ -64,7 +66,7 @@ export const BeanSelectorDialog: Component<{
             <For each={beans()}>
               {(b) => (
                 <div
-                  class="flex border-b active:bg-slate-100"
+                  class="flex border-b"
                   onClick={() => props.onBeanSelected(b.id)}
                 >
                   <div class="flex h-10 w-12 items-center justify-center">
@@ -76,7 +78,7 @@ export const BeanSelectorDialog: Component<{
                     </div>
                   </div>
                   <div class="w-full gap-0 py-1">
-                    <div class="flex h-full items-center overflow-hidden whitespace-nowrap text-sm font-bold">
+                    <div class="flex h-full items-center overflow-hidden text-sm font-bold whitespace-nowrap">
                       {b.properties.name}
                     </div>
                   </div>

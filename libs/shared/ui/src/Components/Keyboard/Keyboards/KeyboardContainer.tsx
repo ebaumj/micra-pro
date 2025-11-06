@@ -8,8 +8,7 @@ export const KeyboardContainer: ParentComponent<
       {...props}
       classList={{
         ...props.classList,
-        'pointer-events-auto flex flex-col gap-1 bg-slate-50 dark:bg-gray-900 p-3 z-60':
-          true,
+        'pointer-events-auto flex flex-col gap-1 bg-background p-3 z-60 border-t shadow-xl': true,
       }}
       onMouseDown={(e) => e.preventDefault()}
     >

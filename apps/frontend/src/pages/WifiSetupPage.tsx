@@ -75,7 +75,7 @@ export const WifiSetupPage: Component<{}> = () => {
   };
   return (
     <div class="flex h-full flex-col">
-      <div class="flex min-h-14 w-full items-center gap-4 rounded-md bg-slate-100 px-2 shadow-md">
+      <div class="bg-secondary flex min-h-14 w-full items-center gap-4 rounded-md px-2 shadow-md">
         <Show when={wifiAccessor.current() !== undefined}>
           <>
             <div class="flex gap-4 whitespace-nowrap">

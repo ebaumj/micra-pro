@@ -156,7 +156,7 @@ export const ToastContent = (props: ComponentProps<'div'>) => {
 
 export const ToastProgress: VoidComponent = () => {
   return (
-    <ToastPrimitive.ProgressTrack class="bg-primary/20 group-[.destructive]:bg-background/20 h-1 w-full overflow-hidden rounded-xl">
+    <ToastPrimitive.ProgressTrack class="bg-secondary group-[.destructive]:bg-background/20 h-1 w-full overflow-hidden rounded-xl">
       <ToastPrimitive.ProgressFill class="bg-primary group-[.destructive]:bg-destructive-foreground h-full w-(--kb-toast-progress-fill-width) transition-all duration-150 ease-linear" />
     </ToastPrimitive.ProgressTrack>
   );

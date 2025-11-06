@@ -5,6 +5,7 @@ import {
   DialogContent,
   Icon,
   LineChart,
+  twColor,
 } from '@micra-pro/shared/ui';
 import moment from 'moment';
 import { Component, Show } from 'solid-js';
@@ -56,11 +57,11 @@ export const HistoryEntryDetailDialog: Component<{
       >
         <div class="flex flex-col gap-2 px-6">
           <div class="flex h-8 w-full items-center justify-start gap-8">
-            <div class="rounded-lg px-2 py-1 shadow-inner">
+            <div class="rounded-lg px-2 py-1 inset-shadow-sm">
               <Icon iconName={iconName()} />
             </div>
             <div class="flex w-full justify-end pr-8">
-              <div class="rounded-lg px-2 py-1 shadow-inner">
+              <div class="rounded-lg px-2 py-1 inset-shadow-sm">
                 <div class="flex items-center gap-4">
                   <Icon iconName="access_time" />
                   <span>{totalTime().toFixed(1)} s</span>
@@ -73,7 +74,7 @@ export const HistoryEntryDetailDialog: Component<{
           <Show when={props.entry?.runtimeData}>
             {(data) => (
               <Show when={data().length > 2}>
-                <div class="h-full w-full -translate-x-4 gap-2 rounded-md bg-slate-600 p-4 pb-10 shadow-xl">
+                <div class="bg-primary text-primary-foreground h-full w-full -translate-x-4 gap-2 rounded-md p-4 pb-10 shadow-xl">
                   <LineChart
                     data={{
                       labels: data().map((d) =>
@@ -85,14 +86,14 @@ export const HistoryEntryDetailDialog: Component<{
                           label: t('flow'),
                           pointStyle: false,
                           animation: false,
-                          borderColor: '#FFFFFF',
+                          borderColor: twColor('accent'),
                         },
                         {
                           data: data().map((d) => d.totalQuantity),
                           label: t('liquid'),
                           pointStyle: false,
                           animation: false,
-                          borderColor: '#00FFFF',
+                          borderColor: twColor('accent-variant'),
                           yAxisID: 'y2',
                         },
                       ],
@@ -109,7 +110,7 @@ export const HistoryEntryDetailDialog: Component<{
                         y: {
                           display: true,
                           ticks: {
-                            color: '#FFFFFF',
+                            color: twColor('accent'),
                           },
                           min: 0,
                           max: Math.max(...data().map((d) => d.flow)) * 1.1,
@@ -121,7 +122,7 @@ export const HistoryEntryDetailDialog: Component<{
                           axis: 'y',
                           display: true,
                           ticks: {
-                            color: '#00FFFF',
+                            color: twColor('accent-variant'),
                           },
                           position: 'right',
                           min: 0,
@@ -149,10 +150,10 @@ export const HistoryEntryDetailDialog: Component<{
                     }}
                   />
                   <div class="flex h-10 items-center justify-center gap-8">
-                    <div class="text-[#FFFFFF]">
+                    <div class="text-accent">
                       <T key="flow" />
                     </div>
-                    <div class="text-[#00FFFF]">
+                    <div class="text-accent-variant">
                       <T key="liquid" />
                     </div>
                   </div>

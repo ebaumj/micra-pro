@@ -8,6 +8,7 @@ import type {
 import type { ParentProps, ValidComponent } from 'solid-js';
 import { Show, splitProps } from 'solid-js';
 import { Select as SelectPrimitive } from '@kobalte/core/select';
+import { Spinner } from './Spinner';
 export { Select as SelectPrimitive } from '@kobalte/core/select';
 
 export const SelectValue = SelectPrimitive.Value;
@@ -33,7 +34,7 @@ export const SelectTrigger = <T extends ValidComponent = 'button'>(
   return (
     <SelectPrimitive.Trigger
       class={cn(
-        'border-input ring-offset-background placeholder:text-muted-foreground flex h-9 w-full items-center justify-between rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs transition-shadow focus:outline-hidden focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50',
+        'border-border ring-offset-background placeholder:text-muted-foreground flex h-9 w-full items-center justify-between rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs transition-shadow focus:outline-hidden focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50',
         local.class,
       )}
       {...rest}
@@ -106,14 +107,14 @@ export const SelectItem = <T extends ValidComponent = 'li'>(
   return (
     <SelectPrimitive.Item
       class={cn(
-        'focus:bg-accent focus:text-accent-foreground relative flex w-full cursor-default items-center rounded-xs py-1.5 pr-8 pl-2 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50',
+        'focus:bg-secondary focus:text-secondary-foreground relative flex w-full cursor-default items-center rounded-xs py-1.5 pr-8 pl-2 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50',
         local.class,
       )}
       {...rest}
     >
       <SelectPrimitive.ItemIndicator class="absolute right-2 flex h-4 w-4 items-center justify-center">
         <Show when={local.loading}>
-          <div class="h-4 w-4 animate-spin rounded-full border-2 border-gray-600 border-t-gray-300" />
+          <Spinner class="h-12 w-12" />
         </Show>
         <Show when={!local.loading && local.isSelected}>
           <svg

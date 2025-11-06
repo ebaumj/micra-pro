@@ -153,8 +153,10 @@ export const EditBeansPage: Component = () => {
               {(r) => (
                 <LongPressDiv
                   class={twMerge(
-                    'flex border-b active:bg-slate-100',
-                    selectedRoastery() === r.id ? 'bg-slate-50' : '',
+                    'flex border-b py-2',
+                    selectedRoastery() === r.id
+                      ? 'bg-secondary inset-shadow-sm'
+                      : '',
                   )}
                   onClick={() => selectRoastery(r.id)}
                   onLongPress={() =>
@@ -218,8 +220,8 @@ export const EditBeansPage: Component = () => {
             {(b) => (
               <LongPressDiv
                 class={twMerge(
-                  'flex border-b active:bg-slate-100',
-                  selectedBean() === b.id ? 'bg-slate-50' : '',
+                  'flex border-b',
+                  selectedBean() === b.id ? 'bg-secondary inset-shadow-sm' : '',
                 )}
                 onClick={() => selectBean(b.id)}
                 onLongPress={() =>

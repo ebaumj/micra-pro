@@ -16,7 +16,8 @@ const CreateActiveKey: (activeType: ActiveKeysType) => ParentComponent<
   ]);
   const merged = mergeProps(
     {
-      activeClass: 'bg-gray-600 text-gray-100 active:bg-gray-500',
+      activeClass:
+        'bg-primary text-primary-foreground active:bg-primary-active',
     },
     local,
   );
@@ -33,7 +34,7 @@ const CreateActiveKey: (activeType: ActiveKeysType) => ParentComponent<
         merged.class,
         keyboardContext.activeKeys()[activeType] ? merged.activeClass : '',
         !keyboardContext.canToggleActive(activeType)
-          ? 'pointer-events-none bg-gray-300 text-gray-200 active:bg-gray-300'
+          ? 'bg-muted text-muted-foreground pointer-events-none'
           : '',
       )}
     />

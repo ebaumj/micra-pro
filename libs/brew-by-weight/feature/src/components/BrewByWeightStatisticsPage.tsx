@@ -88,7 +88,7 @@ export const BrewByWeightStatisticsPage: Component = () => {
       </AlertDialog>
       <div class="flex h-12 w-full items-center justify-center">
         <div class="flex w-96 justify-end">
-          <div class="flex h-8 w-96 rounded-lg border shadow-inner">
+          <div class="flex h-8 w-96 rounded-lg border inset-shadow-sm">
             <div
               class="z-10 flex w-1/4 items-center justify-center"
               onClick={() => setSelectedDataTable('Roasteries')}
@@ -117,7 +117,7 @@ export const BrewByWeightStatisticsPage: Component = () => {
           <div class="fixed flex h-8 w-96">
             <div
               class={twMerge(
-                'w-1/4 rounded-lg bg-slate-200 transition-transform duration-300',
+                'bg-secondary w-1/4 rounded-lg inset-shadow-sm transition-transform duration-300',
                 selectedDataTable() === 'Roasteries'
                   ? 'translate-x-0'
                   : selectedDataTable() === 'Beans'
@@ -157,7 +157,7 @@ export const BrewByWeightStatisticsPage: Component = () => {
         </div>
       </div>
       <div class="flex w-full items-center justify-center">
-        <div class="rounded-xl border px-4 py-1 shadow-inner">
+        <div class="rounded-xl border px-4 py-1 inset-shadow-sm">
           <T key="total" />: {total()}
         </div>
       </div>

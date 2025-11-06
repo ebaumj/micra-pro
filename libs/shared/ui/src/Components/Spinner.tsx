@@ -7,7 +7,7 @@ export const Spinner: Component<{ class?: string }> = (props) => {
       aria-hidden="true"
       class={cn(
         props.class,
-        'inline animate-spin rounded-full fill-gray-600 text-gray-200 dark:fill-gray-300 dark:text-gray-600',
+        'fill-primary-shadow text-border inline animate-spin rounded-full',
       )}
       viewBox="0 0 100 101"
       fill="none"

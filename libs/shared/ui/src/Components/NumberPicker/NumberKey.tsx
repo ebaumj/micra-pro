@@ -26,7 +26,7 @@ export const NumberKey: Component<
   return (
     <button
       class={cn(
-        'grow basis-4 rounded-md border border-input bg-white active:bg-gray-200',
+        'border-border bg-background active:bg-secondary grow basis-4 rounded-md border',
         local.class,
       )}
       onClick={InsertChar}

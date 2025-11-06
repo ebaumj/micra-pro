@@ -6,10 +6,7 @@ export const MicraProLogo: Component<JSX.HTMLAttributes<HTMLOrSVGElement>> = (
   props,
 ) => {
   return (
-    <img
-      class={twMerge('text-primary-on-container size-12', props.class)}
-      src={picturesImport.logo}
-    />
+    <img class={twMerge('size-12', props.class)} src={picturesImport.logo} />
   );
 };
 

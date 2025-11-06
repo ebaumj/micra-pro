@@ -38,7 +38,7 @@ export const FinishedDataTable: Component<{
   onEntrySelect: (id: string) => void;
 }> = (props) => {
   return (
-    <div class="no-scrollbar flex h-full flex-col overflow-x-scroll rounded-md border text-sm shadow-inner">
+    <div class="no-scrollbar flex h-full flex-col overflow-x-scroll rounded-md border text-sm inset-shadow-sm">
       <div class="block h-full w-[200%] overflow-hidden">
         <div class="flex h-8 w-full border-b font-bold">
           <div class="flex min-w-32 items-center border-r px-2">
@@ -129,7 +129,7 @@ export const CancelledDataTable: Component<{
   onEntrySelect: (id: string) => void;
 }> = (props) => {
   return (
-    <div class="no-scrollbar flex h-full flex-col overflow-x-scroll rounded-md border text-sm shadow-inner">
+    <div class="no-scrollbar flex h-full flex-col overflow-x-scroll rounded-md border text-sm inset-shadow-sm">
       <div class="block h-full w-[200%] overflow-hidden">
         <div class="flex h-8 w-full border-b font-bold">
           <div class="flex min-w-32 items-center border-r px-2">
@@ -220,7 +220,7 @@ export const FailedDataTable: Component<{
   onEntrySelect: (id: string) => void;
 }> = (props) => {
   return (
-    <div class="no-scrollbar flex h-full flex-col overflow-x-scroll rounded-md border text-sm shadow-inner">
+    <div class="no-scrollbar flex h-full flex-col overflow-x-scroll rounded-md border text-sm inset-shadow-sm">
       <div class="block h-full w-[200%] overflow-hidden">
         <div class="flex h-8 w-full border-b font-bold">
           <div class="flex min-w-32 items-center border-r px-2">
