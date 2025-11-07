@@ -26,13 +26,13 @@
       "options": {
         "configuration": "Debug",
         "noDependencies": true,
-        "runtime": "linux-arm64",
-        "verbosity": "normal",
-        "extraParameters": "-p:SelfContained=false"
+        "verbosity": "normal"
       },
       "configurations": {
         "production": {
-          "configuration": "Release"
+          "configuration": "Release",
+          "runtime": "linux-arm64",
+          "extraParameters": "-p:PublishSingleFile=true -p:SelfContained=true"
         }
       }
     },
