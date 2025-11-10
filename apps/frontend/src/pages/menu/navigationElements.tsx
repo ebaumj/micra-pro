@@ -2,10 +2,7 @@ import { Component } from 'solid-js';
 import { T } from '../../generated/language-types';
 import { EditBeansPage } from '@micra-pro/bean-management/feature';
 import { MainscreenConfigPage } from '../MainscreenConfigPage';
-import {
-  BrewByWeightHistoryPage,
-  BrewByWeightStatisticsPage,
-} from '@micra-pro/brew-by-weight/feature';
+import { BrewByWeightHistoryPage } from '@micra-pro/brew-by-weight/feature';
 import { RecipeHubProfilePage } from '@micra-pro/recipe-hub/feature';
 import { WifiSetupPage } from '../WifiSetupPage';
 
@@ -26,12 +23,6 @@ export const navigationElements: {
     link: 'beans',
     icon: 'local_cafe',
     component: EditBeansPage,
-  },
-  {
-    name: () => <T key={'menu-sidebar-statistics'} />,
-    link: 'statistics',
-    icon: 'bar_chart',
-    component: BrewByWeightStatisticsPage,
   },
   {
     name: () => <T key={'menu-sidebar-history'} />,
