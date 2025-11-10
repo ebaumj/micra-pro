@@ -1,6 +1,5 @@
 {
   "root.menu-sidebar-dummy": "Dummy En",
-  "root.menu-sidebar-scales": "Scales",
   "root.menu-sidebar-beans": "Beans",
   "root.menu-sidebar-exit": "Exit",
   "root.menu-sidebar-mainscreen-config": "Main Screen",
@@ -8,6 +7,7 @@
   "root.menu-sidebar-history": "History",
   "root.menu-sidebar-profile": "Profile",
   "root.menu-sidebar-wifi": "Wifi",
+  "root.scale": "Scale",
   "root.wifi-connect": "Connect",
   "root.wifi-password": "Password",
   "root.wifi-failed-title": "Connection failed",

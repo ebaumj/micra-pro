@@ -19,7 +19,6 @@ public static class ConfigureExtensions
                 configurationManager.GetSection(ScaleManagementInfrastructureOptions.SectionName)
             )
             .AddBluetoothService()
-            .AddDbContextAndMigrationService<ScaleManagementDbContext>()
-            .AddScoped<IScaleRespository, ScaleRepository>();
+            .AddScoped<IScaleRepository, ScaleRepository>();
     }
 }

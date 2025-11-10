@@ -49,7 +49,6 @@ public class BrewByWeightService(
 
     public IBrewProcess RunBrewByWeight(
         Guid beanId,
-        Guid scaleId,
         double inCupQuantity,
         double grindSetting,
         double coffeeQuantity,
@@ -69,7 +68,6 @@ public class BrewByWeightService(
                 {
                     var extractionTime = await RunBrewByWeightAsync(
                         beanId,
-                        scaleId,
                         inCupQuantity,
                         grindSetting,
                         coffeeQuantity,
@@ -127,7 +125,6 @@ public class BrewByWeightService(
                     await paddleAccess.SetBrewPaddleOnAsync(false, CancellationToken.None);
                     await BrewByWeightDbService.StoreProcessAsync(
                         beanId,
-                        scaleId,
                         inCupQuantity,
                         grindSetting,
                         coffeeQuantity,
@@ -152,7 +149,6 @@ public class BrewByWeightService(
 
     private async Task<TimeSpan> RunBrewByWeightAsync(
         Guid beanId,
-        Guid scaleId,
         double inCupQuantity,
         double grindSetting,
         double coffeeQuantity,
@@ -183,7 +179,7 @@ public class BrewByWeightService(
         var stopwatch = new Stopwatch();
         try
         {
-            connection = await scaleAccess.ConnectScaleAsync(scaleId, ct);
+            connection = await scaleAccess.ConnectScaleAsync(ct);
         }
         catch
         {

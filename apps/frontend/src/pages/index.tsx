@@ -1,4 +1,3 @@
-import { ScaleSelector } from '@micra-pro/scale-management/feature';
 import { Button, CountryFlag, Icon } from '@micra-pro/shared/ui';
 import { A } from '@solidjs/router';
 import { Component, createSignal, For, ParentComponent, Show } from 'solid-js';
@@ -15,7 +14,6 @@ import {
   BrewByWeightPannel,
   SpoutSelector,
 } from '@micra-pro/brew-by-weight/feature';
-import { useSelectedScaleContext } from '@micra-pro/scale-management/feature';
 import { createConfigAccessor } from '@micra-pro/shared/utils-ts';
 import { SettingsButton } from '../components/SettingsButton';
 
@@ -79,23 +77,19 @@ function MainScreen() {
   const beans = fetchBeansLevel();
   const configAccessor =
     createConfigAccessor<MainScreenConfig>('MainScreenConfig');
-  const scales = useSelectedScaleContext();
 
   const isLoading = () => beans.isLoading() || !configAccessor.config();
 
   const [selectedBean, setSelectedBean] = createSignal<string | null>(null);
 
   const startEspressoBrewing = (beanId: string, recipe: EspressoProperties) => {
-    const scale = scales.selectedScale();
-    if (scale)
-      setRecipe({
-        beanId: beanId,
-        coffeeQuantity: recipe.coffeeQuantity,
-        grindSetting: recipe.grindSetting,
-        inCupQuantity: recipe.inCupQuantity,
-        scaleId: scale,
-        targetExtractionTime: recipe.targetExtractionTime,
-      });
+    setRecipe({
+      beanId: beanId,
+      coffeeQuantity: recipe.coffeeQuantity,
+      grindSetting: recipe.grindSetting,
+      inCupQuantity: recipe.inCupQuantity,
+      targetExtractionTime: recipe.targetExtractionTime,
+    });
     setSelectedBean(null);
   };
 
@@ -104,7 +98,6 @@ function MainScreen() {
     coffeeQuantity: number;
     grindSetting: number;
     inCupQuantity: number;
-    scaleId: string;
     targetExtractionTime: string;
   } | null>(null);
 
@@ -117,7 +110,6 @@ function MainScreen() {
             onClose={() => setSelectedBean(null)}
             beanId={selectedBean()}
             startEspressoBrewing={startEspressoBrewing}
-            scale={scales.selectedScale()}
           />
           <BrewByWeightPannel
             recipe={recipe()}
@@ -146,7 +138,6 @@ const Layout: ParentComponent<{ refetch?: () => void }> = (props) => {
         <div class="flex h-16 w-full items-center gap-2 pr-2 pl-20 shadow-md">
           <div class="w-full" />
           <SpoutSelector class="w-36 min-w-36" />
-          <ScaleSelector class="w-36 min-w-36" />
           <LanguageSelector class="w-40" />
           <Button
             variant="outline"

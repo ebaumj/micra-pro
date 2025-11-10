@@ -8,7 +8,6 @@ public interface IBrewByWeightDbService
 {
     Task StoreProcessAsync(
         Guid beanId,
-        Guid scaleId,
         double inCupQuantity,
         double grindSetting,
         double coffeeQuantity,

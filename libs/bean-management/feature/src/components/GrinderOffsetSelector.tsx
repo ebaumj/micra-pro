@@ -30,7 +30,7 @@ export const GrinderOffsetSelector: Component<{
       >
         <NumberFieldGroup class="flex items-center justify-center">
           <NumberFieldDecrementTrigger aria-label="Decrement" />
-          <NumberFieldInput />
+          <NumberFieldInput class="w-28" />
           <NumberFieldIncrementTrigger aria-label="Increment" />
         </NumberFieldGroup>
       </NumberField>

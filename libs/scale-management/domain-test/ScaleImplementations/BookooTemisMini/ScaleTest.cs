@@ -8,11 +8,7 @@ namespace MicraPro.ScaleManagement.Domain.Test.ScaleImplementations.BookooTemisM
 
 public class ScaleTest
 {
-    private static readonly ScaleDb TestScaleDb = new(
-        "ScaleIdentifier",
-        "ScaleName",
-        "ScaleImplementation"
-    );
+    private static readonly ScaleDb TestScaleDb = new("ScaleIdentifier", "ScaleImplementation");
     private static readonly string BookooBleServiceId = "00000FFE-0000-1000-8000-00805F9B34FB";
 
     private static readonly string BookooBleCommandCharacteristicId =
@@ -24,8 +20,7 @@ public class ScaleTest
     [Fact]
     public void CreateScaleTest()
     {
-        var scale = new Scale(TestScaleDb, Mock.Of<IBluetoothService>());
-        Assert.Equal("ScaleName", scale.Name);
+        _ = new Scale(TestScaleDb, Mock.Of<IBluetoothService>());
     }
 
     [Fact]

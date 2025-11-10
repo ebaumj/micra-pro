@@ -1,34 +1,28 @@
 using MicraPro.ScaleManagement.DataDefinition;
-using MicraPro.ScaleManagement.DataProviderGraphQl.Types;
 
 namespace MicraPro.ScaleManagement.DataProviderGraphQl;
 
 [MutationType]
 public static class ScaleManagementMutations
 {
-    public static async Task<ScaleApi> AddScale(
+    public static async Task<bool> AddOrUpdateScale(
         [Service] IScaleService scaleService,
         string scaleIdentifier,
-        string name,
-        CancellationToken ct
-    ) => new(await scaleService.AddScaleAsync(name, scaleIdentifier, ct));
-
-    public static async Task<Guid> RemoveScale(
-        [Service] IScaleService scaleService,
-        Guid scaleId,
         CancellationToken ct
     )
     {
-        await scaleService.RemoveScaleAsync(scaleId, ct);
-        return scaleId;
+        await scaleService.AddOrUpdateScaleAsync(scaleIdentifier, ct);
+        return true;
     }
 
-    public static async Task<ScaleApi> RenameScale(
+    public static async Task<bool> RemoveScale(
         [Service] IScaleService scaleService,
-        Guid scaleId,
-        string name,
         CancellationToken ct
-    ) => new(await scaleService.RenameScaleAsync(scaleId, name, ct));
+    )
+    {
+        await scaleService.RemoveScaleAsync(ct);
+        return true;
+    }
 
     public static async Task<bool> ScanForScales(
         [Service] IScaleService scaleService,

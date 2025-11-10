@@ -1,7 +1,7 @@
 {
   "scale-management.scale": "Waage",
-  "scale-management.scales-menu": "Einrichten...",
   "scale-management.error": "Fehler",
   "scale-management.failed-to-scan": "Bluetooth Scan fehlgeschlagen",
+  "scale-management.pair-scale": "Waage Koppeln",
   "scale-management.unknown-error": "Unbekannter Fehler"
 }

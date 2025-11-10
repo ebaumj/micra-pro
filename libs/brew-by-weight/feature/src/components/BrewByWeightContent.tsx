@@ -18,7 +18,6 @@ export const BrewByWeightContent: Component<{
     coffeeQuantity: number;
     grindSetting: number;
     inCupQuantity: number;
-    scaleId: string;
     targetExtractionTime: string;
     spout: Spout;
   };

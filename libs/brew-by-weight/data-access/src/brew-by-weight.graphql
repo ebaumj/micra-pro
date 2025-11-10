@@ -36,7 +36,6 @@ mutation StartBrewProcess(
   $coffeeQuantity: Float!
   $grindSetting: Float!
   $inCupQuantity: Float!
-  $scaleId: UUID!
   $spout: Spout!
   $targetExtractionTime: TimeSpan!
 ) {
@@ -46,7 +45,6 @@ mutation StartBrewProcess(
       coffeeQuantity: $coffeeQuantity
       grindSetting: $grindSetting
       inCupQuantity: $inCupQuantity
-      scaleId: $scaleId
       spout: $spout
       targetExtractionTime: $targetExtractionTime
     }

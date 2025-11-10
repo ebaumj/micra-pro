@@ -13,7 +13,6 @@ public class BrewByWeightHistoryService(
 {
     private record ProcessInputs(
         Guid BeanId,
-        Guid ScaleId,
         double InCupQuantity,
         double GrindSetting,
         double CoffeeQuantity,
@@ -24,7 +23,6 @@ public class BrewByWeightHistoryService(
         public ProcessInputs(ProcessDb db)
             : this(
                 db.BeanId,
-                db.ScaleId,
                 db.InCupQuantity,
                 db.GrindSetting,
                 db.CoffeeQuantity,

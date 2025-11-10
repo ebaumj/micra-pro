@@ -27,7 +27,6 @@ public class BrewByWeightServiceTest
         mock.Setup(m =>
                 m.StoreProcessAsync(
                     It.IsAny<Guid>(),
-                    It.IsAny<Guid>(),
                     It.IsAny<double>(),
                     It.IsAny<double>(),
                     It.IsAny<double>(),
@@ -76,11 +75,11 @@ public class BrewByWeightServiceTest
         var scaleAccessMock = new Mock<IScaleAccess>();
         if (scaleThrowException)
             scaleAccessMock
-                .Setup(m => m.ConnectScaleAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+                .Setup(m => m.ConnectScaleAsync(It.IsAny<CancellationToken>()))
                 .Throws(new Exception());
         else
             scaleAccessMock
-                .Setup(m => m.ConnectScaleAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+                .Setup(m => m.ConnectScaleAsync(It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(scaleConnection));
         var serviceProviderMock = new Mock<IServiceProvider>();
         serviceProviderMock
@@ -118,15 +117,7 @@ public class BrewByWeightServiceTest
         );
         service.State.Subscribe(stateObserverMock.Object);
         stateObserverMock.Verify(m => m.OnNext(It.IsAny<BrewByWeightState.Idle>()), Times.Once);
-        var process = service.RunBrewByWeight(
-            Guid.NewGuid(),
-            Guid.NewGuid(),
-            40,
-            1,
-            1,
-            TimeSpan.Zero,
-            spout
-        );
+        var process = service.RunBrewByWeight(Guid.NewGuid(), 40, 1, 1, TimeSpan.Zero, spout);
         stateObserverMock.Verify(
             m => m.OnNext(new BrewByWeightState.Running(process.ProcessId)),
             Times.Once
@@ -211,8 +202,7 @@ public class BrewByWeightServiceTest
         service.State.Subscribe(stateObserverMock.Object);
         stateObserverMock.Verify(m => m.OnNext(It.IsAny<BrewByWeightState.Idle>()), Times.Once);
         var beanId = Guid.NewGuid();
-        var scaleId = Guid.NewGuid();
-        var process = service.RunBrewByWeight(beanId, scaleId, 40, 1, 1, TimeSpan.Zero, spout);
+        var process = service.RunBrewByWeight(beanId, 40, 1, 1, TimeSpan.Zero, spout);
         stateObserverMock.Verify(
             m => m.OnNext(new BrewByWeightState.Running(process.ProcessId)),
             Times.Once
@@ -263,7 +253,6 @@ public class BrewByWeightServiceTest
         dbServiceMock.Verify(m =>
             m.StoreProcessAsync(
                 beanId,
-                scaleId,
                 40,
                 1,
                 1,
@@ -310,10 +299,8 @@ public class BrewByWeightServiceTest
         service.State.Subscribe(stateObserverMock.Object);
         stateObserverMock.Verify(m => m.OnNext(It.IsAny<BrewByWeightState.Idle>()), Times.Once);
         var beanId = Guid.NewGuid();
-        var scaleId = Guid.NewGuid();
         var process = service.RunBrewByWeight(
             beanId,
-            scaleId,
             40,
             1,
             1,
@@ -358,7 +345,6 @@ public class BrewByWeightServiceTest
         dbServiceMock.Verify(m =>
             m.StoreProcessAsync(
                 beanId,
-                scaleId,
                 40,
                 1,
                 1,
@@ -389,10 +375,8 @@ public class BrewByWeightServiceTest
         service.State.Subscribe(stateObserverMock.Object);
         stateObserverMock.Verify(m => m.OnNext(It.IsAny<BrewByWeightState.Idle>()), Times.Once);
         var beanId = Guid.NewGuid();
-        var scaleId = Guid.NewGuid();
         var process = service.RunBrewByWeight(
             beanId,
-            scaleId,
             40,
             1,
             1,
@@ -421,7 +405,6 @@ public class BrewByWeightServiceTest
         dbServiceMock.Verify(m =>
             m.StoreProcessAsync(
                 beanId,
-                scaleId,
                 40,
                 1,
                 1,
@@ -451,7 +434,6 @@ public class BrewByWeightServiceTest
         service.State.Subscribe(stateObserverMock.Object);
         stateObserverMock.Verify(m => m.OnNext(It.IsAny<BrewByWeightState.Idle>()), Times.Once);
         var process = service.RunBrewByWeight(
-            Guid.NewGuid(),
             Guid.NewGuid(),
             40,
             1,

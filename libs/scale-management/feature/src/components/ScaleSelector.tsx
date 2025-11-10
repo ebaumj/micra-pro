@@ -1,42 +1,90 @@
-import { Component, Show } from 'solid-js';
-import { useScaleSelectorContext } from './ScaleSelectorContextProvider';
-import { Button, Icon, Select } from '@micra-pro/shared/ui';
-import { createScalesAccessor } from '@micra-pro/scale-management/data-access';
+import { Component, createEffect, createSignal, Show } from 'solid-js';
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  Icon,
+  LongPressDiv,
+  Spinner,
+} from '@micra-pro/shared/ui';
+import {
+  createScalesAccessor,
+  createScanAccessor,
+} from '@micra-pro/scale-management/data-access';
 import { twMerge } from 'tailwind-merge';
-import { useNavigate } from '@solidjs/router';
+import { ScanScalesDialog } from './ScanScalesDialog';
 import { T } from '../generated/language-types';
 
 export const ScaleSelector: Component<{ class?: string }> = (props) => {
-  var ctx = useScaleSelectorContext();
-  var scalesAccessor = createScalesAccessor();
-  var navigate = useNavigate();
-
-  const setupScales = () => {
-    navigate('/menu/scales', { replace: true });
-  };
+  const scalesAccessor = createScalesAccessor();
+  const scanAccessor = createScanAccessor();
+  const [scanDialog, setScanDialog] = createSignal(false);
+  const [scaleDeleting, setScaleDeleting] = createSignal(false);
+  createEffect(
+    () =>
+      !scanDialog() && scanAccessor.isScanning() && scanAccessor.stopScanning(),
+  );
+  const addDevice = (identifier: string) =>
+    scalesAccessor.add(identifier, () => setScanDialog(false));
 
   return (
     <>
-      <Show when={scalesAccessor.scales().length > 0}>
-        <Select
-          options={scalesAccessor.scales().map((s) => s.id)}
-          displayElement={(id) => (
-            <div class="flex items-center px-1">
-              <Icon iconName="scale" class="mr-2" />
-              {scalesAccessor.scales().find((s) => s.id === id)?.name}
-            </div>
-          )}
-          onChange={(val) => ctx.setSelectedScale(val)}
-          value={ctx.selectedScale()}
-          class={props.class}
-        />
-      </Show>
-      <Show when={scalesAccessor.scales().length === 0}>
-        <div
-          class={twMerge(props.class, 'flex items-center justify-center p-2')}
+      <Dialog open={scanDialog()} onOpenChange={(o) => setScanDialog(o)}>
+        <DialogContent
+          onOpenAutoFocus={(e) => e.preventDefault()}
+          onInteractOutside={(e) => e.preventDefault()}
         >
-          <Button variant="outline" class="w-full" onClick={setupScales}>
-            <T key="scales-menu" />
+          <ScanScalesDialog
+            isOpen={scanDialog()}
+            close={() => setScanDialog(false)}
+            addDevice={addDevice}
+            isScanning={scanAccessor.isScanning()}
+          />
+        </DialogContent>
+      </Dialog>
+      <Show when={scalesAccessor.scale()}>
+        {(scale) => (
+          <LongPressDiv
+            class={twMerge(props.class, 'flex items-center justify-center')}
+            onLongPress={() => {
+              scale().remove();
+              setScaleDeleting(false);
+            }}
+            onPressStart={() => setScaleDeleting(true)}
+            onPressEnd={() => setScaleDeleting(false)}
+            delayTimeMs={1000}
+            maxShortPressTimeMs={300}
+          >
+            <Button
+              variant="outline"
+              class="w-full"
+              disabled={scale().isDeleting()}
+            >
+              <Show when={!scale().isDeleting() && !scaleDeleting()}>
+                <Icon iconName="scale" class="mx-2" />
+              </Show>
+              <Show when={scale().isDeleting()}>
+                <Spinner class="h-full" />
+              </Show>
+              <Show when={!scale().isDeleting() && scaleDeleting()}>
+                <div class="flex">
+                  <Icon iconName="delete" class="text-destructive" />
+                  <div class="animate-spin-loader-1s bg-destructive h-6 w-6 rotate-45 rounded-full" />
+                </div>
+              </Show>
+            </Button>
+          </LongPressDiv>
+        )}
+      </Show>
+      <Show when={!scalesAccessor.scale()}>
+        <div class={twMerge(props.class, 'flex items-center justify-center')}>
+          <Button
+            variant="default"
+            class="w-full"
+            onClick={() => setScanDialog(true)}
+          >
+            <Icon iconName="bluetooth" class="mx-2" />
+            <T key="pair-scale" />
           </Button>
         </div>
       </Show>

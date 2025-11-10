@@ -10,7 +10,6 @@ import { MainMenu } from './pages/menu/MainMenu';
 import { Navigate, Route, Router } from '@solidjs/router';
 import MainScreen from './pages';
 import { ToastRegion, ToastList } from '@micra-pro/shared/ui';
-import { ScaleSelectorContextProvider } from '@micra-pro/scale-management/feature';
 import { SpoutSelectorContextProvider } from '@micra-pro/brew-by-weight/feature';
 
 const AppLayout: ParentComponent = (props) => {
@@ -56,14 +55,12 @@ const AppLayout: ParentComponent = (props) => {
               <Show when={config.useLostBackendConnectionModal}>
                 <BackendConnectionTracker />
               </Show>
-              <ScaleSelectorContextProvider>
-                <SpoutSelectorContextProvider>
-                  {props.children}
-                  <ToastRegion>
-                    <ToastList />
-                  </ToastRegion>
-                </SpoutSelectorContextProvider>
-              </ScaleSelectorContextProvider>
+              <SpoutSelectorContextProvider>
+                {props.children}
+                <ToastRegion>
+                  <ToastList />
+                </ToastRegion>
+              </SpoutSelectorContextProvider>
             </DialogContextProvider>
           </div>
           <Keyboard

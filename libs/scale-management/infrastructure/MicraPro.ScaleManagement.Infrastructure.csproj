@@ -24,5 +24,6 @@
   <ItemGroup>
     <ProjectReference Include="..\domain\MicraPro.ScaleManagement.Domain.csproj" />
     <ProjectReference Include="..\..\shared\utils-dotnet\MicraPro.Shared.UtilsDotnet.csproj" />
+    <ProjectReference Include="..\..\shared\domain\MicraPro.Shared.Domain.csproj" />
   </ItemGroup>
 </Project>

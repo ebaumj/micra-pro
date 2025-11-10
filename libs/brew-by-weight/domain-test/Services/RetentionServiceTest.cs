@@ -16,7 +16,6 @@ public class RetentionServiceTest
 
         public Task StoreProcessAsync(
             Guid beanId,
-            Guid scaleId,
             double inCupQuantity,
             double grindSetting,
             double coffeeQuantity,
@@ -112,7 +111,6 @@ public class RetentionServiceTest
     {
         var process = new FinishedProcessDb(
             beanId,
-            Guid.NewGuid(),
             inCupQuantity,
             grindSetting,
             coffeeQuantity,
