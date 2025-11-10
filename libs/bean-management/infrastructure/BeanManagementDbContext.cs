@@ -10,7 +10,6 @@ public class BeanManagementDbContext(IConfiguration? configuration = null) : DbC
     public DbSet<RoasteryDb> RoasteryEntries { get; set; }
     public DbSet<BeanDb> BeanEntries { get; set; }
     public DbSet<RecipeDb> RecipeEntries { get; set; }
-    public DbSet<KeyValueEntry> KeyValueEntries { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -52,6 +51,5 @@ public class BeanManagementDbContext(IConfiguration? configuration = null) : DbC
         recipeV60Entity.Property(e => e.InCupQuantity).IsRequired();
         recipeV60Entity.Property(e => e.BrewTemperature).IsRequired();
         recipeV60Entity.HasBaseType<RecipeDb>();
-        modelBuilder.Entity<KeyValueEntry>().HasKey(e => e.Key);
     }
 }
