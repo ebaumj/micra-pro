@@ -1,5 +1,7 @@
 using System.Runtime.InteropServices;
 using MicraPro.Shared.Domain;
+using MicraPro.Shared.Domain.KeyValueStore;
+using MicraPro.Shared.Infrastructure.KeyValueStore;
 using MicraPro.Shared.UtilsDotnet;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +24,8 @@ public static class ConfigureExtensions
                 configurationManager.GetSection(SharedInfrastructureOptions.SectionName)
             )
             .AddDbContextAndMigrationService<SharedDbContext>()
-            .AddScoped<IConfigurationRepository, ConfigurationRepository>();
+            .AddScoped<IConfigurationRepository, ConfigurationRepository>()
+            .AddScoped<IKeyValueStoreProvider, KeyValueStoreProvider>()
+            .AddScoped<KeyValueStoreBase>();
     }
 }
