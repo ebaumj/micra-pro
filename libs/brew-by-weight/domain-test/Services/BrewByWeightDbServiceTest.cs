@@ -142,7 +142,6 @@ public class BrewByWeightDbServiceTest
         ];
         await service.StoreProcessAsync(
             Guid.NewGuid(),
-            Guid.NewGuid(),
             42,
             15,
             18,
@@ -183,7 +182,6 @@ public class BrewByWeightDbServiceTest
                     [
                         new FailedProcessDb(
                             Guid.NewGuid(),
-                            Guid.NewGuid(),
                             0,
                             0,
                             0,
@@ -196,7 +194,6 @@ public class BrewByWeightDbServiceTest
                         ),
                         new CancelledProcessDb(
                             Guid.NewGuid(),
-                            Guid.NewGuid(),
                             0,
                             0,
                             0,
@@ -207,7 +204,6 @@ public class BrewByWeightDbServiceTest
                             TimeSpan.Zero
                         ),
                         new FinishedProcessDb(
-                            Guid.NewGuid(),
                             Guid.NewGuid(),
                             0,
                             0,

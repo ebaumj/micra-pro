@@ -20,7 +20,6 @@ public class BrewByWeightDbContext(IConfiguration? configuration = null) : DbCon
         processEntity.HasKey(e => e.Id);
         processEntity.Property(e => e.Timestamp).IsRequired();
         processEntity.Property(e => e.BeanId).IsRequired();
-        processEntity.Property(e => e.ScaleId).IsRequired();
         processEntity.Property(e => e.InCupQuantity).IsRequired();
         processEntity.Property(e => e.GrindSetting).IsRequired();
         processEntity.Property(e => e.CoffeeQuantity).IsRequired();

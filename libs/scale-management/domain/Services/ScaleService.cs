@@ -1,4 +1,5 @@
 using System.Reactive.Linq;
+using System.Text.Json;
 using MicraPro.ScaleManagement.DataDefinition;
 using MicraPro.ScaleManagement.DataDefinition.ValueObjects;
 using MicraPro.ScaleManagement.Domain.BluetoothAccess;
@@ -9,14 +10,14 @@ namespace MicraPro.ScaleManagement.Domain.Services;
 
 public class ScaleService(
     IBluetoothService bluetoothService,
-    IScaleRespository scaleRepository,
+    IScaleRepository scaleRepository,
     IScaleImplementationCollectionService scaleImplementationCollectionService,
     ScaleImplementationMemoryService scaleImplementationMemoryService
 ) : IScaleService
 {
     public IObservable<BluetoothScale> DetectedScales =>
         Observable
-            .FromAsync(async ct => await scaleRepository.GetAllAsync(ct))
+            .FromAsync(scaleRepository.GetScaleAsync)
             .SelectMany(known =>
                 bluetoothService
                     .DetectedDevices.Where(d =>
@@ -32,7 +33,7 @@ public class ScaleService(
                             return true;
                         })
                     )
-                    .Where(d => known.FirstOrDefault(k => k.Identifier == d.Id) == null)
+                    .Where(d => d.Id != known?.Identifier)
                     .Select(d => new BluetoothScale(d.Name, d.Id))
             );
 
@@ -41,37 +42,21 @@ public class ScaleService(
 
     public IObservable<bool> IsScanning => bluetoothService.IsScanning;
 
-    public async Task<IScale> AddScaleAsync(string name, string identifier, CancellationToken ct)
+    public async Task<IScale> AddOrUpdateScaleAsync(string identifier, CancellationToken ct)
     {
         var valueObject = new ScaleDb(
             identifier,
-            name,
             scaleImplementationMemoryService.GetImplementation(identifier)
         );
-        await scaleRepository.AddAsync(valueObject, ct);
-        await scaleRepository.SaveAsync(ct);
+        await scaleRepository.AddOrUpdateScaleAsync(valueObject, ct);
         return scaleImplementationCollectionService.CreateScale(valueObject);
     }
 
-    public async Task<Guid> RemoveScaleAsync(Guid scaleId, CancellationToken ct)
+    public Task RemoveScaleAsync(CancellationToken ct) => scaleRepository.DeleteScaleAsync(ct);
+
+    public async Task<IScale?> GetScaleAsync(CancellationToken ct)
     {
-        await scaleRepository.DeleteAsync(scaleId, ct);
-        await scaleRepository.SaveAsync(ct);
-        return scaleId;
+        var value = await scaleRepository.GetScaleAsync(ct);
+        return value == null ? null : scaleImplementationCollectionService.CreateScale(value);
     }
-
-    public async Task<IEnumerable<IScale>> GetScalesAsync(CancellationToken ct) =>
-        (await scaleRepository.GetAllAsync(ct)).Select(
-            scaleImplementationCollectionService.CreateScale
-        );
-
-    public async Task<IScale> GetScaleAsync(Guid scaleId, CancellationToken ct) =>
-        scaleImplementationCollectionService.CreateScale(
-            await scaleRepository.GetByIdAsync(scaleId, ct)
-        );
-
-    public async Task<IScale> RenameScaleAsync(Guid scaleId, string name, CancellationToken ct) =>
-        scaleImplementationCollectionService.CreateScale(
-            await scaleRepository.UpdateNameAsync(scaleId, name, ct)
-        );
 }

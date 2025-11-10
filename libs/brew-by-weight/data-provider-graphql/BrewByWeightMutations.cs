@@ -9,7 +9,6 @@ public static class BrewByWeightMutations
         [Service] IBrewByWeightService brewByWeightService,
         [Service] BrewProcessContainerService containerService,
         Guid beanId,
-        Guid scaleId,
         double inCupQuantity,
         double grindSetting,
         double coffeeQuantity,
@@ -20,7 +19,6 @@ public static class BrewByWeightMutations
     {
         var process = brewByWeightService.RunBrewByWeight(
             beanId,
-            scaleId,
             inCupQuantity,
             grindSetting,
             coffeeQuantity,

@@ -12,7 +12,6 @@ public class BrewByWeightDbService(
 {
     public async Task StoreProcessAsync(
         Guid beanId,
-        Guid scaleId,
         double inCupQuantity,
         double grindSetting,
         double coffeeQuantity,
@@ -26,7 +25,6 @@ public class BrewByWeightDbService(
         {
             BrewByWeightTracking.Finished t => new FinishedProcessDb(
                 beanId,
-                scaleId,
                 inCupQuantity,
                 grindSetting,
                 coffeeQuantity,
@@ -38,7 +36,6 @@ public class BrewByWeightDbService(
             ),
             BrewByWeightTracking.Cancelled t => new CancelledProcessDb(
                 beanId,
-                scaleId,
                 inCupQuantity,
                 grindSetting,
                 coffeeQuantity,
@@ -50,7 +47,6 @@ public class BrewByWeightDbService(
             ),
             BrewByWeightTracking.Failed t => new FailedProcessDb(
                 beanId,
-                scaleId,
                 inCupQuantity,
                 grindSetting,
                 coffeeQuantity,
@@ -63,7 +59,6 @@ public class BrewByWeightDbService(
             ),
             _ => new FailedProcessDb(
                 beanId,
-                scaleId,
                 inCupQuantity,
                 grindSetting,
                 coffeeQuantity,

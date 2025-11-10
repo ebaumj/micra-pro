@@ -3,7 +3,6 @@ import { twMerge } from 'tailwind-merge';
 import { T, useTranslationContext } from '../generated/language-types';
 import { fetchRoasteriesLevel } from '@micra-pro/bean-management/data-access';
 import { createHistoryAccessor } from '@micra-pro/brew-by-weight/data-access';
-import { createScalesAccessor } from '@micra-pro/scale-management/data-access';
 import {
   AlertDialog,
   AlertDialogContent,
@@ -15,21 +14,16 @@ export const BrewByWeightStatisticsPage: Component = () => {
   const { t } = useTranslationContext();
   const roasteries = fetchRoasteriesLevel();
   const historyAccessor = createHistoryAccessor();
-  const scalesAccessor = createScalesAccessor();
   const isLoading = () =>
-    roasteries.isLoading() ||
-    historyAccessor.initalLoad() ||
-    scalesAccessor.isLoading();
+    roasteries.isLoading() || historyAccessor.initalLoad();
   const [selectedDataTable, setSelectedDataTable] = createSignal<
-    'Roasteries' | 'Beans' | 'Scales' | 'Result'
+    'Roasteries' | 'Beans' | 'Result'
   >('Roasteries');
 
   const total = (): number => {
     switch (selectedDataTable()) {
       case 'Roasteries':
       case 'Beans':
-      case 'Scales':
-        return historyAccessor.finished().length;
       case 'Result':
         return (
           historyAccessor.finished().length +
@@ -61,15 +55,6 @@ export const BrewByWeightStatisticsPage: Component = () => {
               .length,
           }))
           .filter((d) => d.value !== 0);
-      case 'Scales':
-        return scalesAccessor
-          .scales()
-          .map((s) => ({
-            label: s.name,
-            value: historyAccessor.finished().filter((e) => e.scaleId === s.id)
-              .length,
-          }))
-          .filter((d) => d.value !== 0);
       case 'Result':
         return [
           { label: t('finished'), value: historyAccessor.finished().length },
@@ -90,25 +75,19 @@ export const BrewByWeightStatisticsPage: Component = () => {
         <div class="flex w-96 justify-end">
           <div class="flex h-8 w-96 rounded-lg border inset-shadow-sm">
             <div
-              class="z-10 flex w-1/4 items-center justify-center"
+              class="z-10 flex w-1/3 items-center justify-center"
               onClick={() => setSelectedDataTable('Roasteries')}
             >
               <T key="roasteries" />
             </div>
             <div
-              class="z-10 flex w-1/4 items-center justify-center"
+              class="z-10 flex w-1/3 items-center justify-center"
               onClick={() => setSelectedDataTable('Beans')}
             >
               <T key="beans" />
             </div>
             <div
-              class="z-10 flex w-1/4 items-center justify-center"
-              onClick={() => setSelectedDataTable('Scales')}
-            >
-              <T key="scales" />
-            </div>
-            <div
-              class="z-10 flex w-1/4 items-center justify-center"
+              class="z-10 flex w-1/3 items-center justify-center"
               onClick={() => setSelectedDataTable('Result')}
             >
               <T key="result" />
@@ -117,14 +96,12 @@ export const BrewByWeightStatisticsPage: Component = () => {
           <div class="fixed flex h-8 w-96">
             <div
               class={twMerge(
-                'bg-secondary w-1/4 rounded-lg inset-shadow-sm transition-transform duration-300',
+                'bg-secondary w-1/3 rounded-lg inset-shadow-sm transition-transform duration-300',
                 selectedDataTable() === 'Roasteries'
                   ? 'translate-x-0'
                   : selectedDataTable() === 'Beans'
                     ? 'translate-x-full'
-                    : selectedDataTable() === 'Scales'
-                      ? 'translate-x-[200%]'
-                      : 'translate-x-[300%]',
+                    : 'translate-x-[200%]',
               )}
             />
           </div>

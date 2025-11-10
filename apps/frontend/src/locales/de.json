@@ -1,11 +1,11 @@
 {
   "root.menu-sidebar-dummy": "Dummy De",
-  "root.menu-sidebar-scales": "Waagen",
   "root.menu-sidebar-beans": "Bohnen",
   "root.menu-sidebar-exit": "Schliessen",
   "root.menu-sidebar-mainscreen-config": "Hauptansicht",
   "root.menu-sidebar-statistics": "Statistik",
   "root.menu-sidebar-history": "Verlauf",
+  "root.scale": "Waag",
   "root.reboot": "Neu starten",
   "root.shutdown": "Herunterfahren",
   "root.reboot-failed": "Neustart fehlgeschlagen",

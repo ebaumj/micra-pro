@@ -2,6 +2,6 @@
   "scale-management.scale": "Scale",
   "scale-management.error": "Error",
   "scale-management.unknown-error": "Unknown Error",
-  "scale-management.failed-to-scan": "Failed to Scan for devices",
-  "scale-management.scales-menu": "Setup..."
+  "scale-management.pair-scale": "Pair Scale",
+  "scale-management.failed-to-scan": "Failed to Scan for devices"
 }

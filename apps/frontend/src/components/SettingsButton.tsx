@@ -12,6 +12,7 @@ import { createSystemAccessor } from '@micra-pro/shared/utils-ts';
 import { T, useTranslationContext } from '../generated/language-types';
 import { GrinderOffsetSelector } from '@micra-pro/bean-management/feature';
 import { twMerge } from 'tailwind-merge';
+import { ScaleSelector } from '@micra-pro/scale-management/feature';
 
 export const SettingsButton: Component<{
   class?: string;
@@ -82,11 +83,13 @@ export const SettingsButton: Component<{
             />
           </div>
         </div>
-        <T key="grinder-offset" />
-        <GrinderOffsetSelector
-          class="-mt-2 w-full"
-          onChanged={props.onSettingChanged}
-        />
+        <div class="flex w-full items-center whitespace-nowrap">
+          <T key="grinder-offset" />
+          <div class="flex w-full justify-end">
+            <GrinderOffsetSelector onChanged={props.onSettingChanged} />
+          </div>
+        </div>
+        <ScaleSelector class="w-full" />
         <Show when={!shutdown() && !reboot()}>
           <div class="flex h-full w-full flex-col items-end justify-end gap-4">
             <Button

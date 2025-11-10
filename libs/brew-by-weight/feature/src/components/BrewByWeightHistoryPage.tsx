@@ -15,7 +15,6 @@ import {
 import { HistoryEntryDetailDialog } from './HistoryEntryDetailDialog';
 import { twMerge } from 'tailwind-merge';
 import { Dynamic } from 'solid-js/web';
-import { createScalesAccessor } from '@micra-pro/scale-management/data-access';
 import {
   CancelledDataTable,
   FailedDataTable,
@@ -25,11 +24,8 @@ import {
 export const BrewByWeightHistoryPage: Component = () => {
   const roasteries = fetchRoasteriesLevel();
   const historyAccessor = createHistoryAccessor();
-  const scalesAccessor = createScalesAccessor();
   const isLoading = () =>
-    roasteries.isLoading() ||
-    historyAccessor.initalLoad() ||
-    scalesAccessor.isLoading();
+    roasteries.isLoading() || historyAccessor.initalLoad();
   const [deatilEntry, setDetailEntry] =
     createSignal<BrewByWeightHistoryEntry | null>(null);
   const [selectedBean, setSelectedBean] = createSignal({ id: '', name: '' });
@@ -66,7 +62,6 @@ export const BrewByWeightHistoryPage: Component = () => {
           <FinishedDataTable
             selectedBean={selectedBean().id}
             tableEntries={historyAccessor.finished().sort(dateSort)}
-            scales={scalesAccessor.scales()}
             onEntrySelect={(id: string) =>
               setDetailEntry(
                 historyAccessor.finished().find((e) => e.id === id) ?? null,
@@ -79,7 +74,6 @@ export const BrewByWeightHistoryPage: Component = () => {
           <CancelledDataTable
             selectedBean={selectedBean().id}
             tableEntries={historyAccessor.cancelled().sort(dateSort)}
-            scales={scalesAccessor.scales()}
             onEntrySelect={(id: string) =>
               setDetailEntry(
                 historyAccessor.cancelled().find((e) => e.id === id) ?? null,
@@ -92,7 +86,6 @@ export const BrewByWeightHistoryPage: Component = () => {
           <FailedDataTable
             selectedBean={selectedBean().id}
             tableEntries={historyAccessor.failed().sort(dateSort)}
-            scales={scalesAccessor.scales()}
             onEntrySelect={(id: string) =>
               setDetailEntry(
                 historyAccessor.failed().find((e) => e.id === id) ?? null,

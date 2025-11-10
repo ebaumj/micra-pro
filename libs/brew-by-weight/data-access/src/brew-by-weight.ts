@@ -25,7 +25,6 @@ export const StartCoffee = (params: {
   coffeeQuantity: number;
   grindSetting: number;
   inCupQuantity: number;
-  scaleId: string;
   spout: Spout;
   targetExtractionTime: string;
 }) => {

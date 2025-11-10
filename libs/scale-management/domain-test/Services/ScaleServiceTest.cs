@@ -12,7 +12,7 @@ namespace MicraPro.ScaleManagement.Domain.Test.Services;
 
 public class ScaleServiceTest
 {
-    private record Scale(Guid Id, string Name) : IScale
+    private record Scale : IScale
     {
         public Task<IScaleConnection> ConnectAsync(CancellationToken ct)
         {
@@ -29,7 +29,7 @@ public class ScaleServiceTest
             .Returns(Task.CompletedTask);
         var service = new ScaleService(
             bluetoothServiceMock.Object,
-            Mock.Of<IScaleRespository>(),
+            Mock.Of<IScaleRepository>(),
             Mock.Of<IScaleImplementationCollectionService>(),
             new ScaleImplementationMemoryService()
         );
@@ -50,7 +50,7 @@ public class ScaleServiceTest
         bluetoothServiceMock.Setup(m => m.IsScanning).Returns(isScanningSubject);
         var service = new ScaleService(
             bluetoothServiceMock.Object,
-            Mock.Of<IScaleRespository>(),
+            Mock.Of<IScaleRepository>(),
             Mock.Of<IScaleImplementationCollectionService>(),
             new ScaleImplementationMemoryService()
         );
@@ -79,12 +79,10 @@ public class ScaleServiceTest
         var bluetoothServiceMock = new Mock<IBluetoothService>();
         bluetoothServiceMock.Setup(m => m.DetectedDevices).Returns(devices.ToObservable());
         var bluetoothDeviceObserverMock = new Mock<IObserver<BluetoothScale>>();
-        var scaleRepositoryMock = new Mock<IScaleRespository>();
+        var scaleRepositoryMock = new Mock<IScaleRepository>();
         scaleRepositoryMock
-            .Setup(m => m.GetAllAsync(It.IsAny<CancellationToken>()))
-            .Returns(() =>
-                Task.FromResult<IReadOnlyCollection<ScaleDb>>([new ScaleDb("Id1", "", "")])
-            );
+            .Setup(m => m.GetScaleAsync(It.IsAny<CancellationToken>()))
+            .Returns(() => Task.FromResult<ScaleDb?>(new ScaleDb("Id1", "")));
         var scaleImplementationCollectionServiceMock =
             new Mock<IScaleImplementationCollectionService>();
         scaleImplementationCollectionServiceMock
@@ -112,18 +110,15 @@ public class ScaleServiceTest
     [Fact]
     public async Task AddScaleAsyncTest()
     {
-        var scaleRepositoryMock = new Mock<IScaleRespository>();
+        var scaleRepositoryMock = new Mock<IScaleRepository>();
         scaleRepositoryMock
-            .Setup(m => m.AddAsync(It.IsAny<ScaleDb>(), It.IsAny<CancellationToken>()))
-            .Returns(Task.CompletedTask);
-        scaleRepositoryMock
-            .Setup(m => m.SaveAsync(It.IsAny<CancellationToken>()))
+            .Setup(m => m.AddOrUpdateScaleAsync(It.IsAny<ScaleDb>(), It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
         var scaleImplementationCollectionServiceMock =
             new Mock<IScaleImplementationCollectionService>();
         scaleImplementationCollectionServiceMock
             .Setup(m => m.CreateScale(It.IsAny<ScaleDb>()))
-            .Returns((ScaleDb s) => new Scale(s.Id, s.Name));
+            .Returns((ScaleDb _) => new Scale());
         var memory = new ScaleImplementationMemoryService();
         var service = new ScaleService(
             Mock.Of<IBluetoothService>(),
@@ -132,15 +127,13 @@ public class ScaleServiceTest
             memory
         );
         memory.SetImplementation("Id", "Implementation");
-        var scale = await service.AddScaleAsync("MyScale", "Id", CancellationToken.None);
-        Assert.Equal("MyScale", scale.Name);
+        _ = await service.AddOrUpdateScaleAsync("Id", CancellationToken.None);
         scaleImplementationCollectionServiceMock.Verify(
             m => m.CreateScale(It.IsAny<ScaleDb>()),
             Times.Once
         );
-        scaleRepositoryMock.Verify(m => m.SaveAsync(It.IsAny<CancellationToken>()), Times.Once);
         scaleRepositoryMock.Verify(
-            m => m.AddAsync(It.IsAny<ScaleDb>(), It.IsAny<CancellationToken>()),
+            m => m.AddOrUpdateScaleAsync(It.IsAny<ScaleDb>(), It.IsAny<CancellationToken>()),
             Times.Once
         );
         scaleImplementationCollectionServiceMock.VerifyNoOtherCalls();
@@ -150,12 +143,9 @@ public class ScaleServiceTest
     [Fact]
     public async Task RemoveScaleAsyncTest()
     {
-        var scaleRepositoryMock = new Mock<IScaleRespository>();
+        var scaleRepositoryMock = new Mock<IScaleRepository>();
         scaleRepositoryMock
-            .Setup(m => m.DeleteAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
-            .Returns(Task.CompletedTask);
-        scaleRepositoryMock
-            .Setup(m => m.SaveAsync(It.IsAny<CancellationToken>()))
+            .Setup(m => m.DeleteScaleAsync(It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
         var service = new ScaleService(
             Mock.Of<IBluetoothService>(),
@@ -163,61 +153,27 @@ public class ScaleServiceTest
             Mock.Of<IScaleImplementationCollectionService>(),
             new ScaleImplementationMemoryService()
         );
-        var id = Guid.NewGuid();
-        var result = await service.RemoveScaleAsync(id, CancellationToken.None);
-        Assert.Equal(result, id);
+        await service.RemoveScaleAsync(CancellationToken.None);
         scaleRepositoryMock.Verify(
-            m => m.DeleteAsync(id, It.IsAny<CancellationToken>()),
+            m => m.DeleteScaleAsync(It.IsAny<CancellationToken>()),
             Times.Once
         );
-        scaleRepositoryMock.Verify(m => m.SaveAsync(It.IsAny<CancellationToken>()), Times.Once);
         scaleRepositoryMock.VerifyNoOtherCalls();
-    }
-
-    [Fact]
-    public async Task GetScalesAsyncTest()
-    {
-        var scale1 = new ScaleDb("Id1", "Name1", "Implementation");
-        var scale2 = new ScaleDb("Id2", "Name2", "Implementation");
-        var scaleRepositoryMock = new Mock<IScaleRespository>();
-        scaleRepositoryMock
-            .Setup(m => m.GetAllAsync(It.IsAny<CancellationToken>()))
-            .Returns(Task.FromResult<IReadOnlyCollection<ScaleDb>>([scale1, scale2]));
-        var scaleImplementationCollectionServiceMock =
-            new Mock<IScaleImplementationCollectionService>();
-        scaleImplementationCollectionServiceMock
-            .Setup(m => m.CreateScale(It.IsAny<ScaleDb>()))
-            .Returns((ScaleDb s) => new Scale(s.Id, s.Name));
-        var memory = new ScaleImplementationMemoryService();
-        var service = new ScaleService(
-            Mock.Of<IBluetoothService>(),
-            scaleRepositoryMock.Object,
-            scaleImplementationCollectionServiceMock.Object,
-            memory
-        );
-        var result = (await service.GetScalesAsync(CancellationToken.None)).ToArray();
-        Assert.Equal("Name1", result.FirstOrDefault(s => s.Id == scale1.Id)?.Name);
-        Assert.Equal("Name2", result.FirstOrDefault(s => s.Id == scale2.Id)?.Name);
-        scaleRepositoryMock.Verify(m => m.GetAllAsync(It.IsAny<CancellationToken>()), Times.Once);
-        scaleImplementationCollectionServiceMock.Verify(m => m.CreateScale(scale1), Times.Once);
-        scaleImplementationCollectionServiceMock.Verify(m => m.CreateScale(scale2), Times.Once);
-        scaleRepositoryMock.VerifyNoOtherCalls();
-        scaleImplementationCollectionServiceMock.VerifyNoOtherCalls();
     }
 
     [Fact]
     public async Task GetScaleAsyncTest()
     {
-        var scale = new ScaleDb("Id1", "Name", "Implementation");
-        var scaleRepositoryMock = new Mock<IScaleRespository>();
+        var scale1 = new ScaleDb("Id1", "Implementation");
+        var scaleRepositoryMock = new Mock<IScaleRepository>();
         scaleRepositoryMock
-            .Setup(m => m.GetByIdAsync(scale.Id, It.IsAny<CancellationToken>()))
-            .Returns(Task.FromResult(scale));
+            .Setup(m => m.GetScaleAsync(It.IsAny<CancellationToken>()))
+            .Returns(Task.FromResult<ScaleDb?>(scale1));
         var scaleImplementationCollectionServiceMock =
             new Mock<IScaleImplementationCollectionService>();
         scaleImplementationCollectionServiceMock
-            .Setup(m => m.CreateScale(scale))
-            .Returns(new Scale(scale.Id, scale.Name));
+            .Setup(m => m.CreateScale(It.IsAny<ScaleDb>()))
+            .Returns((ScaleDb _) => new Scale());
         var memory = new ScaleImplementationMemoryService();
         var service = new ScaleService(
             Mock.Of<IBluetoothService>(),
@@ -225,50 +181,10 @@ public class ScaleServiceTest
             scaleImplementationCollectionServiceMock.Object,
             memory
         );
-        var result = await service.GetScaleAsync(scale.Id, CancellationToken.None);
-        Assert.Equal("Name", result.Name);
-        Assert.Equal(scale.Id, result.Id);
-        scaleRepositoryMock.Verify(
-            m => m.GetByIdAsync(scale.Id, It.IsAny<CancellationToken>()),
-            Times.Once
-        );
-        scaleImplementationCollectionServiceMock.Verify(m => m.CreateScale(scale), Times.Once);
-        scaleRepositoryMock.VerifyNoOtherCalls();
-        scaleImplementationCollectionServiceMock.VerifyNoOtherCalls();
-    }
-
-    [Fact]
-    public async Task RenameScaleAsyncTest()
-    {
-        var scale = new ScaleDb("Id1", "NewName", "Implementation");
-        var scaleRepositoryMock = new Mock<IScaleRespository>();
-        scaleRepositoryMock
-            .Setup(m => m.UpdateNameAsync(scale.Id, "NewName", It.IsAny<CancellationToken>()))
-            .Returns(Task.FromResult(scale));
-        var scaleImplementationCollectionServiceMock =
-            new Mock<IScaleImplementationCollectionService>();
-        scaleImplementationCollectionServiceMock
-            .Setup(m => m.CreateScale(scale))
-            .Returns(new Scale(scale.Id, scale.Name));
-        var memory = new ScaleImplementationMemoryService();
-        var service = new ScaleService(
-            Mock.Of<IBluetoothService>(),
-            scaleRepositoryMock.Object,
-            scaleImplementationCollectionServiceMock.Object,
-            memory
-        );
-        var renamedScale = await service.RenameScaleAsync(
-            scale.Id,
-            "NewName",
-            CancellationToken.None
-        );
-        Assert.Equal("NewName", renamedScale.Name);
-        Assert.Equal(scale.Id, renamedScale.Id);
-        scaleRepositoryMock.Verify(
-            m => m.UpdateNameAsync(scale.Id, "NewName", It.IsAny<CancellationToken>()),
-            Times.Once
-        );
-        scaleImplementationCollectionServiceMock.Verify(m => m.CreateScale(scale), Times.Once);
+        var result = await service.GetScaleAsync(CancellationToken.None);
+        Assert.NotNull(result);
+        scaleRepositoryMock.Verify(m => m.GetScaleAsync(It.IsAny<CancellationToken>()), Times.Once);
+        scaleImplementationCollectionServiceMock.Verify(m => m.CreateScale(scale1), Times.Once);
         scaleRepositoryMock.VerifyNoOtherCalls();
         scaleImplementationCollectionServiceMock.VerifyNoOtherCalls();
     }

@@ -7,7 +7,6 @@ public abstract class ProcessDb(
     Guid id,
     DateTime timestamp,
     Guid beanId,
-    Guid scaleId,
     double inCupQuantity,
     double grindSetting,
     double coffeeQuantity,
@@ -18,7 +17,6 @@ public abstract class ProcessDb(
     public Guid Id { get; } = id;
     public DateTime Timestamp { get; } = timestamp;
     public Guid BeanId { get; } = beanId;
-    public Guid ScaleId { get; } = scaleId;
     public double InCupQuantity { get; } = inCupQuantity;
     public double GrindSetting { get; } = grindSetting;
     public double CoffeeQuantity { get; } = coffeeQuantity;
@@ -38,7 +36,6 @@ public class FinishedProcessDb : ProcessDb
         Guid id,
         DateTime timestamp,
         Guid beanId,
-        Guid scaleId,
         double inCupQuantity,
         double grindSetting,
         double coffeeQuantity,
@@ -52,7 +49,6 @@ public class FinishedProcessDb : ProcessDb
             id,
             timestamp,
             beanId,
-            scaleId,
             inCupQuantity,
             grindSetting,
             coffeeQuantity,
@@ -67,7 +63,6 @@ public class FinishedProcessDb : ProcessDb
 
     public FinishedProcessDb(
         Guid beanId,
-        Guid scaleId,
         double inCupQuantity,
         double grindSetting,
         double coffeeQuantity,
@@ -81,7 +76,6 @@ public class FinishedProcessDb : ProcessDb
             Guid.NewGuid(),
             DateTime.Now,
             beanId,
-            scaleId,
             inCupQuantity,
             grindSetting,
             coffeeQuantity,
@@ -103,7 +97,6 @@ public class CancelledProcessDb : ProcessDb
         Guid id,
         DateTime timestamp,
         Guid beanId,
-        Guid scaleId,
         double inCupQuantity,
         double grindSetting,
         double coffeeQuantity,
@@ -117,7 +110,6 @@ public class CancelledProcessDb : ProcessDb
             id,
             timestamp,
             beanId,
-            scaleId,
             inCupQuantity,
             grindSetting,
             coffeeQuantity,
@@ -132,7 +124,6 @@ public class CancelledProcessDb : ProcessDb
 
     public CancelledProcessDb(
         Guid beanId,
-        Guid scaleId,
         double inCupQuantity,
         double grindSetting,
         double coffeeQuantity,
@@ -146,7 +137,6 @@ public class CancelledProcessDb : ProcessDb
             Guid.NewGuid(),
             DateTime.Now,
             beanId,
-            scaleId,
             inCupQuantity,
             grindSetting,
             coffeeQuantity,
@@ -169,7 +159,6 @@ public class FailedProcessDb : ProcessDb
         Guid id,
         DateTime timestamp,
         Guid beanId,
-        Guid scaleId,
         double inCupQuantity,
         double grindSetting,
         double coffeeQuantity,
@@ -184,7 +173,6 @@ public class FailedProcessDb : ProcessDb
             id,
             timestamp,
             beanId,
-            scaleId,
             inCupQuantity,
             grindSetting,
             coffeeQuantity,
@@ -200,7 +188,6 @@ public class FailedProcessDb : ProcessDb
 
     public FailedProcessDb(
         Guid beanId,
-        Guid scaleId,
         double inCupQuantity,
         double grindSetting,
         double coffeeQuantity,
@@ -215,7 +202,6 @@ public class FailedProcessDb : ProcessDb
             Guid.NewGuid(),
             DateTime.Now,
             beanId,
-            scaleId,
             inCupQuantity,
             grindSetting,
             coffeeQuantity,

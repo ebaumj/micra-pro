@@ -1,25 +1,39 @@
+using System.Text.Json;
 using MicraPro.ScaleManagement.Domain.StorageAccess;
-using MicraPro.Shared.UtilsDotnet;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+using MicraPro.Shared.Domain.KeyValueStore;
 
 namespace MicraPro.ScaleManagement.Infrastructure.StorageAccess;
 
-internal class ScaleRepository(MigratedContextProvider<ScaleManagementDbContext> contextProvider)
-    : BaseSqliteRepository<ScaleDb>,
-        IScaleRespository
+public class ScaleRepository(IKeyValueStoreProvider keyValueStoreProvider) : IScaleRepository
 {
-    protected override async Task<DbSet<ScaleDb>> GetEntitiesAsync(CancellationToken ct) =>
-        (await contextProvider.GetContextAsync(ct)).ScaleEntries;
+    private static readonly string Namespace =
+        $"{typeof(ScaleRepository).Namespace!}.{nameof(ScaleRepository)}";
+    private readonly IKeyValueStore _store = keyValueStoreProvider.GetKeyValueStore(Namespace);
+    private const string ScaleKey = "Scale";
 
-    protected override async Task<DbContext> GetContextAsync(CancellationToken ct) =>
-        await contextProvider.GetContextAsync(ct);
-
-    public async Task<ScaleDb> UpdateNameAsync(Guid scaleId, string name, CancellationToken ct)
+    public async Task<ScaleDb?> GetScaleAsync(CancellationToken ct)
     {
-        var entity = await GetByIdAsync(scaleId, ct);
-        entity.Name = name;
-        await SaveAsync(ct);
-        return entity;
+        var value = await _store.TryGetAsync(ScaleKey, ct);
+        return value != null ? Deserialize(value) : null;
+    }
+
+    public Task AddOrUpdateScaleAsync(ScaleDb scale, CancellationToken ct) =>
+        _store.AddOrUpdateAsync(ScaleKey, Serialize(scale), ct);
+
+    public Task DeleteScaleAsync(CancellationToken ct) => _store.DeleteAsync(ScaleKey, ct);
+
+    private string Serialize(ScaleDb scale) => JsonSerializer.Serialize(scale);
+
+    private ScaleDb? Deserialize(string value)
+    {
+        try
+        {
+            return JsonSerializer.Deserialize<ScaleDb>(value);
+        }
+        catch (Exception e)
+        {
+            // Log Exception
+            return null;
+        }
     }
 }

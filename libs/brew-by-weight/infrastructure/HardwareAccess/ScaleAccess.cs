@@ -1,5 +1,6 @@
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using MicraPro.BrewByWeight.DataDefinition.ValueObjects;
 using MicraPro.BrewByWeight.Domain.HardwareAccess;
 using MicraPro.ScaleManagement.DataDefinition;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,12 +10,14 @@ namespace MicraPro.BrewByWeight.Infrastructure.HardwareAccess;
 
 public class ScaleAccess(IServiceScopeFactory serviceScopeFactory) : IScaleAccess
 {
-    public async Task<IScaleConnection> ConnectScaleAsync(Guid scaleId, CancellationToken ct)
+    public async Task<IScaleConnection> ConnectScaleAsync(CancellationToken ct)
     {
         var scale = await serviceScopeFactory
             .CreateScope()
             .ServiceProvider.GetRequiredService<IScaleService>()
-            .GetScaleAsync(scaleId, ct);
+            .GetScaleAsync(ct);
+        if (scale == null)
+            throw new BrewByWeightException.ScaleConnectionFailed();
         return new ScaleConnection(await scale.ConnectAsync(ct));
     }
 

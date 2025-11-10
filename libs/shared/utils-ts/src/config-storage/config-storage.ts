@@ -15,7 +15,6 @@ import { Accessor, createEffect, createSignal } from 'solid-js';
 
 export type ConfigKey =
   | 'MainScreenConfig'
-  | 'SelectedScale'
   | 'Language'
   | 'RecipeHub'
   | 'SelectedSpout';

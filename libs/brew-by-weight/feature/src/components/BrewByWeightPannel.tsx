@@ -10,7 +10,6 @@ export const BrewByWeightPannel: Component<{
     coffeeQuantity: number;
     grindSetting: number;
     inCupQuantity: number;
-    scaleId: string;
     targetExtractionTime: string;
   } | null;
   onClose: () => void;
@@ -21,7 +20,6 @@ export const BrewByWeightPannel: Component<{
         coffeeQuantity: number;
         grindSetting: number;
         inCupQuantity: number;
-        scaleId: string;
         targetExtractionTime: string;
         spout: Spout;
       }

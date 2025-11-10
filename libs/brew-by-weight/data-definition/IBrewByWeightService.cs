@@ -15,7 +15,6 @@ public interface IBrewByWeightService
 
     IBrewProcess RunBrewByWeight(
         Guid beanId,
-        Guid scaleId,
         double inCupQuantity,
         double grindSetting,
         double coffeeQuantity,

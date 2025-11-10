@@ -1,17 +1,16 @@
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using MicraPro.ScaleManagement.DataDefinition;
-using MicraPro.ScaleManagement.DataProviderGraphQl.Types;
 
 namespace MicraPro.ScaleManagement.DataProviderGraphQl;
 
 [QueryType]
 public static class ScaleManagementQueries
 {
-    public static async Task<ScaleApi[]> GetScales(
+    public static async Task<bool> GetScale(
         [Service] IScaleService scaleService,
         CancellationToken ct
-    ) => (await scaleService.GetScalesAsync(ct)).Select(s => new ScaleApi(s)).ToArray();
+    ) => await scaleService.GetScaleAsync(ct) != null;
 
     public static Task<bool> GetScanResultsAvailable(CancellationToken _) => Task.FromResult(true);
 

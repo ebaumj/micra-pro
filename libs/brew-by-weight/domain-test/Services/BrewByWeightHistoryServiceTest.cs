@@ -9,8 +9,6 @@ namespace MicraPro.BrewByWeight.Domain.Test.Services;
 
 public class BrewByWeightHistoryServiceTest
 {
-    private static readonly Guid ScaleId = Guid.NewGuid();
-
     private static (
         ProcessDb DbProcess,
         ProcessRuntimeDataDb[] DbRuntime,
@@ -26,7 +24,6 @@ public class BrewByWeightHistoryServiceTest
     {
         var p = new FinishedProcessDb(
             beanId,
-            ScaleId,
             inCupQuantity,
             grindSetting,
             coffeeQuantity,
@@ -81,7 +78,6 @@ public class BrewByWeightHistoryServiceTest
             p.Id,
             p.Timestamp,
             p.BeanId,
-            p.ScaleId,
             p.InCupQuantity,
             p.GrindSetting,
             p.CoffeeQuantity,
@@ -110,7 +106,6 @@ public class BrewByWeightHistoryServiceTest
     {
         var p = new CancelledProcessDb(
             beanId,
-            ScaleId,
             inCupQuantity,
             grindSetting,
             coffeeQuantity,
@@ -165,7 +160,6 @@ public class BrewByWeightHistoryServiceTest
             p.Id,
             p.Timestamp,
             p.BeanId,
-            p.ScaleId,
             p.InCupQuantity,
             p.GrindSetting,
             p.CoffeeQuantity,
@@ -195,7 +189,6 @@ public class BrewByWeightHistoryServiceTest
     {
         var p = new FailedProcessDb(
             beanId,
-            ScaleId,
             inCupQuantity,
             grindSetting,
             coffeeQuantity,
@@ -251,7 +244,6 @@ public class BrewByWeightHistoryServiceTest
             p.Id,
             p.Timestamp,
             p.BeanId,
-            p.ScaleId,
             p.InCupQuantity,
             p.GrindSetting,
             p.CoffeeQuantity,

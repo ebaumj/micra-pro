@@ -7,9 +7,7 @@ public interface IScaleService
     IObservable<bool> IsScanning { get; }
     IObservable<BluetoothScale> DetectedScales { get; }
     Task ScanAsync(TimeSpan scanTime, CancellationToken ct);
-    Task<IScale> AddScaleAsync(string name, string identifier, CancellationToken ct);
-    Task<Guid> RemoveScaleAsync(Guid scaleId, CancellationToken ct);
-    Task<IEnumerable<IScale>> GetScalesAsync(CancellationToken ct);
-    Task<IScale> GetScaleAsync(Guid scaleId, CancellationToken ct);
-    Task<IScale> RenameScaleAsync(Guid scaleId, string name, CancellationToken ct);
+    Task<IScale> AddOrUpdateScaleAsync(string identifier, CancellationToken ct);
+    Task RemoveScaleAsync(CancellationToken ct);
+    Task<IScale?> GetScaleAsync(CancellationToken ct);
 }

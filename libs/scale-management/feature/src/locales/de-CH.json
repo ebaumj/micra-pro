@@ -2,6 +2,6 @@
   "scale-management.scale": "Waag",
   "scale-management.error": "Fähler",
   "scale-management.unknown-error": "Unbekannte Fähler",
-  "scale-management.failed-to-scan": "Bluetooth het nid klappt",
-  "scale-management.scales-menu": "Iirichte..."
+  "scale-management.pair-scale": "Waag Kopple",
+  "scale-management.failed-to-scan": "Bluetooth het nid klappt"
 }

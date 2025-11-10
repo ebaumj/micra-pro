@@ -1,11 +1,11 @@
 {
   "root.menu-sidebar-dummy": "Dummy De-CH",
-  "root.menu-sidebar-scales": "Waage",
   "root.menu-sidebar-beans": "Kafibohne",
   "root.menu-sidebar-exit": "Mach das zue",
   "root.menu-sidebar-mainscreen-config": "Houpt-Aasicht",
   "root.menu-sidebar-statistics": "Statistik",
   "root.menu-sidebar-history": "Verlouf",
+  "root.scale": "Waag",
   "root.reboot": "Neu starte",
   "root.shutdown": "Abefahre",
   "root.reboot-failed": "Neu starte het nid funktioniert",

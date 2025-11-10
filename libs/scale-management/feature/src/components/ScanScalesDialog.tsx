@@ -3,20 +3,15 @@ import {
   BluetoothScale,
   scanForScales,
 } from '@micra-pro/scale-management/data-access';
-import {
-  Icon,
-  Spinner,
-  SpinnerButton,
-  TextFieldRoot,
-  TextField,
-} from '@micra-pro/shared/ui';
+import { Spinner } from '@micra-pro/shared/ui';
 import moment from 'moment';
 import { createStore } from 'solid-js/store';
+import { twMerge } from 'tailwind-merge';
 
 export const ScanScalesDialog: Component<{
   isOpen: boolean;
   close: () => void;
-  addDevice: (identifier: string, name: string) => void;
+  addDevice: (identifier: string) => void;
   isScanning: boolean;
 }> = (props) => {
   let content!: HTMLDivElement;
@@ -34,32 +29,24 @@ export const ScanScalesDialog: Component<{
     <div class="flex h-64 flex-col" ref={content}>
       <div class="no-scrollbar flex h-full w-full flex-col gap-2 overflow-scroll px-6">
         <For each={scales.scales}>
-          {(device, index) => (
-            <div class="flex w-full gap-4 rounded-lg border p-2 shadow-xs">
-              <div class="flex h-full w-full items-center">
-                <TextFieldRoot
-                  onChange={(name) =>
-                    setScales('scales', index(), 'name', name)
-                  }
-                  class="w-full"
-                >
-                  <TextField value={device.name} />
-                </TextFieldRoot>
+          {(device) => (
+            <div
+              class={twMerge(
+                'flex w-full gap-4 rounded-lg border p-2 shadow-xs',
+                adding() === '' ? 'active:bg-secondary' : 'opacity-50',
+              )}
+              onClick={() => {
+                setAdding(device.id);
+                props.addDevice(device.id);
+              }}
+            >
+              <div class="flex h-full w-full items-center px-2 text-base">
+                {device.name}
               </div>
-              <div class="flex h-full items-center">
-                <SpinnerButton
-                  class="h-10 w-10 p-0"
-                  spinnerClass="p-2"
-                  variant="outline"
-                  onClick={() => {
-                    setAdding(device.id);
-                    props.addDevice(device.id, device.name);
-                  }}
-                  disabled={adding() !== ''}
-                  loading={adding() === device.id}
-                >
-                  <Icon iconName="add" />
-                </SpinnerButton>
+              <div class="flex items-center">
+                <Show when={adding() === device.id}>
+                  <Spinner class="h-full" />
+                </Show>
               </div>
             </div>
           )}
