@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices;
 using MicraPro.BrewByWeight.Domain.HardwareAccess;
 using MicraPro.BrewByWeight.Domain.StorageAccess;
 using MicraPro.BrewByWeight.Infrastructure.HardwareAccess;
@@ -16,17 +15,8 @@ public static class ConfigureExtensions
         IConfiguration configurationManager
     )
     {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            services
-                .AddSingleton<PaddleAccess>()
-                .AddSingleton<IPaddleAccess>(sp => sp.GetRequiredService<PaddleAccess>())
-                .AddHostedService(sp => sp.GetRequiredService<PaddleAccess>());
-        else
-            services.AddTransient<IPaddleAccess, PaddleAccessDummy>();
         return services
-            .Configure<BrewByWeightInfrastructureOptions>(
-                configurationManager.GetSection(BrewByWeightInfrastructureOptions.SectionName)
-            )
+            .AddTransient<IPaddleAccess, PaddleAccess>()
             .AddTransient<IScaleAccess, ScaleAccess>()
             .AddScoped<IProcessRepository, ProcessRepository>()
             .AddScoped<IProcessRuntimeDataRepository, ProcessRuntimeDataRepository>()

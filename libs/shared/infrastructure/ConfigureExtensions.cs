@@ -1,7 +1,9 @@
 using System.Runtime.InteropServices;
 using MicraPro.Shared.Domain;
 using MicraPro.Shared.Domain.KeyValueStore;
+using MicraPro.Shared.Domain.WiredConnections;
 using MicraPro.Shared.Infrastructure.KeyValueStore;
+using MicraPro.Shared.Infrastructure.WiredConnections;
 using MicraPro.Shared.UtilsDotnet;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,9 +18,15 @@ public static class ConfigureExtensions
     )
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            services.AddSingleton<ISystemService, SystemService>();
+            services
+                .AddSingleton<ISystemService, SystemService>()
+                .AddSingleton<BrewPaddleAccess>()
+                .AddSingleton<IBrewPaddleAccess>(sp => sp.GetRequiredService<BrewPaddleAccess>())
+                .AddHostedService(sp => sp.GetRequiredService<BrewPaddleAccess>());
         else
-            services.AddSingleton<ISystemService, SystemServiceDummy>();
+            services
+                .AddSingleton<ISystemService, SystemServiceDummy>()
+                .AddTransient<IBrewPaddleAccess, BrewPaddleAccessDummy>();
         return services
             .Configure<SharedInfrastructureOptions>(
                 configurationManager.GetSection(SharedInfrastructureOptions.SectionName)
