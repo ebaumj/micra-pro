@@ -14,11 +14,6 @@ public static class ConfigureExtensions
         IConfiguration configurationManager
     )
     {
-        return services
-            .Configure<ScaleManagementInfrastructureOptions>(
-                configurationManager.GetSection(ScaleManagementInfrastructureOptions.SectionName)
-            )
-            .AddBluetoothService()
-            .AddScoped<IScaleRepository, ScaleRepository>();
+        return services.AddBluetoothService().AddScoped<IScaleRepository, ScaleRepository>();
     }
 }

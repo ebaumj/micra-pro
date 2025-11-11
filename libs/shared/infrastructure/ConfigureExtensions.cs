@@ -1,7 +1,9 @@
 using System.Runtime.InteropServices;
 using MicraPro.Shared.Domain;
+using MicraPro.Shared.Domain.BluetoothAccess;
 using MicraPro.Shared.Domain.KeyValueStore;
 using MicraPro.Shared.Domain.WiredConnections;
+using MicraPro.Shared.Infrastructure.BluetoothAccess;
 using MicraPro.Shared.Infrastructure.KeyValueStore;
 using MicraPro.Shared.Infrastructure.WiredConnections;
 using MicraPro.Shared.UtilsDotnet;
@@ -22,11 +24,17 @@ public static class ConfigureExtensions
                 .AddSingleton<ISystemService, SystemService>()
                 .AddSingleton<BrewPaddleAccess>()
                 .AddSingleton<IBrewPaddleAccess>(sp => sp.GetRequiredService<BrewPaddleAccess>())
-                .AddHostedService(sp => sp.GetRequiredService<BrewPaddleAccess>());
+                .AddHostedService(sp => sp.GetRequiredService<BrewPaddleAccess>())
+                .AddSingleton<BluetoothService>()
+                .AddHostedService(p => p.GetRequiredService<BluetoothService>())
+                .AddSingleton<IBluetoothService>(provider =>
+                    provider.GetRequiredService<BluetoothService>()
+                );
         else
             services
                 .AddSingleton<ISystemService, SystemServiceDummy>()
-                .AddTransient<IBrewPaddleAccess, BrewPaddleAccessDummy>();
+                .AddTransient<IBrewPaddleAccess, BrewPaddleAccessDummy>()
+                .AddTransient<IBluetoothService, DummyBluetoothService>();
         return services
             .Configure<SharedInfrastructureOptions>(
                 configurationManager.GetSection(SharedInfrastructureOptions.SectionName)
