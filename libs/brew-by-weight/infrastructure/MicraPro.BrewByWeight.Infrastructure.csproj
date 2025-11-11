@@ -19,11 +19,11 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.3" />
-    <PackageReference Include="System.Device.Gpio" Version="4.0.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\domain\MicraPro.BrewByWeight.Domain.csproj" />
     <ProjectReference Include="..\..\shared\utils-dotnet\MicraPro.Shared.UtilsDotnet.csproj" />
+    <ProjectReference Include="..\..\shared\domain\MicraPro.Shared.Domain.csproj" />
     <ProjectReference Include="..\..\scale-management\data-definition\MicraPro.ScaleManagement.DataDefinition.csproj" />
   </ItemGroup>
 </Project>
