@@ -3,6 +3,7 @@ using System;
 using MicraPro.BrewByWeight.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MicraPro.BrewByWeight.Infrastructure.Migrations
 {
     [DbContext(typeof(BrewByWeightDbContext))]
-    partial class BrewByWeightDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251114123029_RemoveScaleFromHistory")]
+    partial class RemoveScaleFromHistory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.3");
