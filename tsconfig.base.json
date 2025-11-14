@@ -33,6 +33,10 @@
       "@micra-pro/brew-by-weight/feature": [
         "libs/brew-by-weight/feature/src/index.ts"
       ],
+      "@micra-pro/cleaning/data-access": [
+        "libs/cleaning/data-access/src/index.ts"
+      ],
+      "@micra-pro/cleaning/feature": ["libs/cleaning/feature/src/index.ts"],
       "@micra-pro/recipe-hub/client": ["libs/recipe-hub/client/src/index.ts"],
       "@micra-pro/recipe-hub/data-access": [
         "libs/recipe-hub/data-access/src/index.ts"

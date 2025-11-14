@@ -1,0 +1,97 @@
+fragment CleaningStateFields on CleaningState {
+  ... on CleaningStateStarted {
+    __typename
+  }
+  ... on CleaningStateRunning {
+    __typename
+    totalTime
+    cycleNumber
+    cycleTime
+  }
+  ... on CleaningStateFinished {
+    __typename
+    totalTime
+    totalCycles
+  }
+  ... on CleaningStateCancelled {
+    __typename
+    totalTime
+    totalCycles
+  }
+  ... on CleaningStateFailed {
+    __typename
+    totalTime
+    totalCycles
+  }
+}
+
+query CleaningSequence {
+  cleaningSequence {
+    paddleOnTime
+    paddleOffTime
+  }
+}
+
+query CleaningInterval {
+  cleaningInterval
+}
+
+query LastCleaningTime {
+  lastCleaningTime
+}
+
+query IsCleaningActivePoll {
+  isCleaningActive
+}
+
+subscription IsCleaningActive {
+  isCleaningActive
+}
+
+query CleaningStatePoll {
+  cleaningState {
+    ...CleaningStateFields
+  }
+}
+
+subscription CleaningState {
+  cleaningState {
+    ...CleaningStateFields
+  }
+}
+
+mutation StartCleaning {
+  startCleaning {
+    boolean
+  }
+}
+
+mutation StopCleaning {
+  stopCleaning {
+    boolean
+  }
+}
+
+mutation SetCleaningSequence($sequence: [CleaningCycleInput!]!) {
+  setCleaningSequence(input: { sequence: $sequence }) {
+    cleaningCycle {
+      paddleOnTime
+      paddleOffTime
+    }
+  }
+}
+
+mutation ResetCleaningSequence {
+  resetCleaningSequence {
+    cleaningCycle {
+      paddleOnTime
+      paddleOffTime
+    }
+  }
+}
+
+mutation SetCleaningInterval($interval: TimeSpan!) {
+  setCleaningInterval(input: { interval: $interval }) {
+    timeSpan
+  }
+}

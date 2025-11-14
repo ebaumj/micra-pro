@@ -16,6 +16,7 @@ import {
 } from '@micra-pro/brew-by-weight/feature';
 import { createConfigAccessor } from '@micra-pro/shared/utils-ts';
 import { SettingsButton } from '../components/SettingsButton';
+import { CleaningRemnder } from '@micra-pro/cleaning/feature';
 
 const BeanButtons: Component<{
   beans: Bean[];
@@ -137,16 +138,20 @@ const Layout: ParentComponent<{ refetch?: () => void }> = (props) => {
       <div class="absolute flex h-full w-full flex-col">
         <div class="flex h-16 w-full items-center gap-2 pr-2 pl-20 shadow-md">
           <div class="w-full" />
+          <CleaningRemnder class="w-16 min-w-16" />
           <SpoutSelector class="w-36 min-w-36" />
           <LanguageSelector class="w-40" />
           <Button
             variant="outline"
-            class="w-24"
+            class="w-16 min-w-16"
             onClick={() => location.reload()}
           >
             <Icon iconName="refresh" />
           </Button>
-          <SettingsButton class="w-24" onSettingChanged={props.refetch} />
+          <SettingsButton
+            class="w-16 min-w-16"
+            onSettingChanged={props.refetch}
+          />
         </div>
         <div class="h-full w-full">{props.children}</div>
       </div>

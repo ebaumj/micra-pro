@@ -17,7 +17,8 @@ export type ConfigKey =
   | 'MainScreenConfig'
   | 'Language'
   | 'RecipeHub'
-  | 'SelectedSpout';
+  | 'SelectedSpout'
+  | 'CleaningReminder';
 
 export const createConfigAccessor = <T>(
   key: ConfigKey,

@@ -1,0 +1,47 @@
+{
+  "name": "cleaning-feature",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/cleaning/feature/src",
+  "projectType": "library",
+  "tags": ["type:feature"],
+  "targets": {
+    "build": {
+      "outputs": ["{workspaceRoot}/dist/libs/cleaning/feature"],
+      "options": {
+        "outDir": "../../../dist/libs/cleaning/feature"
+      }
+    },
+    "codegen": {
+      "dependsOn": ["codegen-translations", "codegen-recursive-import"]
+    },
+    "codegen-recursive-import": {
+      "executor": "@micra-pro/workspace-extensions:recursive-import",
+      "options": {
+        "importDir": "libs/cleaning/feature/src/assets/pictures",
+        "outputFile": "libs/cleaning/feature/src/generated/pictures-import.ts"
+      },
+      "outputs": ["{projectRoot}/src/generated/pictures-import.ts"],
+      "dependsOn": ["workspace-extensions:build"]
+    },
+    "codegen-translations": {
+      "executor": "@micra-pro/workspace-extensions:icu-to-typescript",
+      "options": {
+        "inputFile": "libs/cleaning/feature/src/locales/en.json",
+        "outputFile": "libs/cleaning/feature/src/generated/language-types.tsx",
+        "namespace": "cleaning",
+        "localesFolderRelativeToOutputFile": "../locales/"
+      }
+    },
+    "import-translations": {
+      "executor": "@micra-pro/workspace-extensions:import-translations",
+      "options": {
+        "outputFolder": "libs/cleaning/feature/src/locales/",
+        "namespace": "cleaning"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "dependsOn": ["codegen"]
+    }
+  }
+}

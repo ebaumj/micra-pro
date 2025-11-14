@@ -11,6 +11,7 @@ import { Navigate, Route, Router } from '@solidjs/router';
 import MainScreen from './pages';
 import { ToastRegion, ToastList } from '@micra-pro/shared/ui';
 import { SpoutSelectorContextProvider } from '@micra-pro/brew-by-weight/feature';
+import { CleaningContextProvider } from '@micra-pro/cleaning/feature';
 
 const AppLayout: ParentComponent = (props) => {
   const keyboardInfo = useKeyboardInfo();
@@ -55,12 +56,14 @@ const AppLayout: ParentComponent = (props) => {
               <Show when={config.useLostBackendConnectionModal}>
                 <BackendConnectionTracker />
               </Show>
-              <SpoutSelectorContextProvider>
-                {props.children}
-                <ToastRegion>
-                  <ToastList />
-                </ToastRegion>
-              </SpoutSelectorContextProvider>
+              <CleaningContextProvider>
+                <SpoutSelectorContextProvider>
+                  {props.children}
+                  <ToastRegion>
+                    <ToastList />
+                  </ToastRegion>
+                </SpoutSelectorContextProvider>
+              </CleaningContextProvider>
             </DialogContextProvider>
           </div>
           <Keyboard
