@@ -18,7 +18,7 @@ public class ScaleImplementationCollectionService(IBluetoothService bluetoothSer
     [
         new(
             typeof(BookooThemisMini.Scale).FullName!,
-            s => new BookooThemisMini.Scale(s, bluetoothService),
+            s => new BookooThemisMini.Scale(s.Identifier, bluetoothService),
             BookooThemisMini.Scale.RequiredServiceIds
         ),
     ];

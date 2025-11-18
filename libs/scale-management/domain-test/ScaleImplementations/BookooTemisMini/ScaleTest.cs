@@ -1,14 +1,13 @@
 using System.Reactive.Linq;
 using MicraPro.ScaleManagement.Domain.BluetoothAccess;
 using MicraPro.ScaleManagement.Domain.ScaleImplementations.BookooThemisMini;
-using MicraPro.ScaleManagement.Domain.StorageAccess;
 using Moq;
 
 namespace MicraPro.ScaleManagement.Domain.Test.ScaleImplementations.BookooTemisMini;
 
 public class ScaleTest
 {
-    private static readonly ScaleDb TestScaleDb = new("ScaleIdentifier", "ScaleImplementation");
+    private const string TestScaleIdentifier = "ScaleIdentifier";
     private static readonly string BookooBleServiceId = "00000FFE-0000-1000-8000-00805F9B34FB";
 
     private static readonly string BookooBleCommandCharacteristicId =
@@ -20,7 +19,7 @@ public class ScaleTest
     [Fact]
     public void CreateScaleTest()
     {
-        _ = new Scale(TestScaleDb, Mock.Of<IBluetoothService>());
+        _ = new Scale(TestScaleIdentifier, Mock.Of<IBluetoothService>());
     }
 
     [Fact]
@@ -38,7 +37,7 @@ public class ScaleTest
         var bleServiceMock = new Mock<IBleService>();
         var bleWeightDataCharacteristicMock = new Mock<IBleCharacteristic>();
         bluetoothServiceMock
-            .Setup(m => m.ConnectDeviceAsync(TestScaleDb.Identifier, It.IsAny<CancellationToken>()))
+            .Setup(m => m.ConnectDeviceAsync(TestScaleIdentifier, It.IsAny<CancellationToken>()))
             .Returns(Task.FromResult(bleConnectionMock.Object));
         bleConnectionMock
             .Setup(m => m.GetServiceAsync(BookooBleServiceId, It.IsAny<CancellationToken>()))
@@ -62,10 +61,10 @@ public class ScaleTest
         bleWeightDataCharacteristicMock
             .Setup(m => m.GetValueObservableAsync(It.IsAny<CancellationToken>()))
             .Returns(Task.FromResult(Observable.Empty<byte[]>()));
-        var scale = new Scale(TestScaleDb, bluetoothServiceMock.Object);
+        var scale = new Scale(TestScaleIdentifier, bluetoothServiceMock.Object);
         await scale.ConnectAsync(CancellationToken.None);
         bluetoothServiceMock.Verify(m =>
-            m.ConnectDeviceAsync(TestScaleDb.Identifier, It.IsAny<CancellationToken>())
+            m.ConnectDeviceAsync(TestScaleIdentifier, It.IsAny<CancellationToken>())
         );
         bleConnectionMock.Verify(m =>
             m.GetServiceAsync(BookooBleServiceId, It.IsAny<CancellationToken>())
