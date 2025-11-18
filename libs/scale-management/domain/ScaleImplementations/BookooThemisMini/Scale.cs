@@ -4,7 +4,7 @@ using MicraPro.ScaleManagement.Domain.StorageAccess;
 
 namespace MicraPro.ScaleManagement.Domain.ScaleImplementations.BookooThemisMini;
 
-public class Scale(ScaleDb scaleDb, IBluetoothService bluetoothService) : IScale
+public class Scale(string identifier, IBluetoothService bluetoothService) : IScale
 {
     public static string[] RequiredServiceIds => [ServiceId];
 
@@ -15,9 +15,8 @@ public class Scale(ScaleDb scaleDb, IBluetoothService bluetoothService) : IScale
 
     public async Task<IScaleConnection> ConnectAsync(CancellationToken ct)
     {
-        var bleConnection = await bluetoothService.ConnectDeviceAsync(scaleDb.Identifier, ct);
+        var bleConnection = await bluetoothService.ConnectDeviceAsync(identifier, ct);
         var bleService = await bleConnection.GetServiceAsync(ServiceId, ct);
-        var c1 = await bleService.GetCharacteristicAsync(CommandCharacteristicId, ct);
         return new ScaleConnection(
             await bleService.GetCharacteristicAsync(CommandCharacteristicId, ct),
             await (
