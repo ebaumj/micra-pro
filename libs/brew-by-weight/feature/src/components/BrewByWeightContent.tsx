@@ -288,8 +288,7 @@ export const BrewByWeightContent: Component<{
       <Show when={!canClose()}>
         <SpinnerButton
           variant="outline"
-          class="border-destructive w-36 p-6 text-lg shadow-xl"
-          spinnerClass="h-6"
+          class="border-destructive h-12 w-36 text-lg shadow-xl"
           onClick={() => {
             accessor.cancel();
             setIsStopping(true);
@@ -302,7 +301,7 @@ export const BrewByWeightContent: Component<{
       <Show when={canClose()}>
         <Button
           variant="outline"
-          class="border-primary w-36 p-6 text-lg shadow-xl"
+          class="border-primary h-12 w-36 text-lg shadow-xl"
           onClick={() => props.onClose()}
         >
           <T key="close" />

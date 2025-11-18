@@ -9,7 +9,6 @@ type spinnerButtonProps<T extends ValidComponent = 'button'> =
   ButtonRootProps<T> &
     VariantProps<typeof buttonVariants> & {
       class?: string;
-      spinnerClass?: string;
       loading?: boolean;
       children?: JSXElement;
     };
@@ -23,7 +22,6 @@ export const SpinnerButton = <T extends ValidComponent = 'button'>(
     'size',
     'loading',
     'children',
-    'spinnerClass',
   ]);
 
   return (
@@ -34,7 +32,7 @@ export const SpinnerButton = <T extends ValidComponent = 'button'>(
       {...rest}
     >
       <Show when={local.loading}>
-        <Spinner class={local.spinnerClass} />
+        <Spinner class="h-full" />
       </Show>
       <Show when={!local.loading}>{local.children}</Show>
     </Button>

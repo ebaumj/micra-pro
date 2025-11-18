@@ -18,6 +18,7 @@ import {
   NumberPickerContextProvider,
   useNumberPickerContext,
 } from './NumberPicker/NumberPicker';
+import { useFormControlContext } from '@kobalte/core';
 
 export const NumberFieldHiddenInput = NumberFieldPrimitive.HiddenInput;
 
@@ -114,12 +115,14 @@ export const NumberField = <T extends ValidComponent = 'div'>(
 export const NumberFieldGroup = (props: ComponentProps<'div'>) => {
   const [local, rest] = splitProps(props, ['class', 'children']);
   let element!: HTMLDivElement;
-
+  const formControlContext = useFormControlContext();
   const numberPickerContext = useNumberPickerContext();
 
   const openNumberPad = () => {
-    element.focus();
-    numberPickerContext.setOpen(true);
+    if (formControlContext.dataset()['data-disabled'] === undefined) {
+      element.focus();
+      numberPickerContext.setOpen(true);
+    }
   };
 
   return (

@@ -111,7 +111,6 @@ const MfaHandler: Component<{
               <SpinnerButton
                 class="w-1/2"
                 variant="outline"
-                spinnerClass="w-full h-full"
                 loading={loading()}
                 onClick={changeMfa}
               >
@@ -273,7 +272,6 @@ export const UserPage: Component<{
           <div class="flex w-full justify-center">
             <SpinnerButton
               onClick={changePassword}
-              spinnerClass="w-full h-full"
               loading={pwChange()}
               class="w-1/2"
               disabled={!passwordValid()}
@@ -293,7 +291,6 @@ export const UserPage: Component<{
       <div class="flex h-full w-full items-center justify-center">
         <SpinnerButton
           onClick={deleteAccount}
-          spinnerClass="w-full h-full"
           loading={delAccount()}
           variant="destructive"
           class="w-1/3"

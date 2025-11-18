@@ -6,8 +6,8 @@ export const Spinner: Component<{ class?: string }> = (props) => {
     <svg
       aria-hidden="true"
       class={cn(
-        props.class,
         'fill-primary-shadow text-border inline animate-spin rounded-full',
+        props.class,
       )}
       viewBox="0 0 100 101"
       fill="none"

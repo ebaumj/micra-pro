@@ -116,12 +116,7 @@ export const RecipeHubProfilePage: Component = () => {
           <TextFieldRoot onChange={setPassword} value={password()}>
             <TextField placeholder={t('password')} type="password" />
           </TextFieldRoot>
-          <SpinnerButton
-            class="mt-3 w-44"
-            spinnerClass="w-full h-full"
-            loading={loading()}
-            onClick={login}
-          >
+          <SpinnerButton class="mt-3 w-44" loading={loading()} onClick={login}>
             <T key="login" />
           </SpinnerButton>
           <Button
