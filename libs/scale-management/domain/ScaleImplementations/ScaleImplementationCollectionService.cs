@@ -1,6 +1,7 @@
 using System.Collections.Immutable;
 using MicraPro.ScaleManagement.DataDefinition;
 using MicraPro.ScaleManagement.Domain.BluetoothAccess;
+using MicraPro.ScaleManagement.Domain.ScaleImplementations.AcaiaLunar;
 using MicraPro.ScaleManagement.Domain.StorageAccess;
 
 namespace MicraPro.ScaleManagement.Domain.ScaleImplementations;
@@ -22,6 +23,14 @@ public class ScaleImplementationCollectionService(IBluetoothService bluetoothSer
             dev =>
                 BookooThemisMini
                     .Scale.RequiredServiceIds.Select(s => s.ToLower())
+                    .All(s => dev.ServiceIds.Select(id => id.ToLower()).Contains(s))
+        ),
+        new(
+            typeof(Scale).FullName!,
+            s => new Scale(s.Identifier, bluetoothService),
+            dev =>
+                Scale
+                    .RequiredServiceIds.Select(s => s.ToLower())
                     .All(s => dev.ServiceIds.Select(id => id.ToLower()).Contains(s))
         ),
     ];

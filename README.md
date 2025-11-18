@@ -7,6 +7,7 @@ brew by weight, recipe management, statistics and recipe sharing for la marzocco
 - BLE Access on Linux (Tested on Raspberry Pi 3+ and Raspberry Pi 5)
 - Brew Paddle Access via GPIO on Raspberry Pi
 - Bookoo Themis Mini Scale API
+- Acaia Lunar Scale Api (Acaia Lunar 2021 is not tested)
 - Bean Management on SQLite
 - History Management on SQLite
 - Asset Management with Local Asset Server (setup do be easily implemented remotely)
@@ -99,7 +100,7 @@ To Enable the Brew Paddle, just connect the two pins shown on the picture to you
 5. Create a static route in your router for the raspberry pi or add hostname
 6. Configure backend to use the static route for the assets
 
-## Implement different Scale (for example acaia lunar)
+## Implement different Scale
 
 - add your implementation to libs/scale-management/domain/ScaleImplementations/
 - add Class that implements the _IScaleConnection_-Interface
