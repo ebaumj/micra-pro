@@ -6,5 +6,4 @@ export * from './localization/TranslationProvider';
 export * from './localization/useNamespaceTranslationContext';
 export * from './config-storage/config-storage';
 export * from './connection-test/connection-test';
-export * from './duration/timeSpan';
 export * from './system-access/system-access';
