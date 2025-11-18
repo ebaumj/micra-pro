@@ -51,7 +51,6 @@ const Network: Component<{
       </div>
       <div class="flex w-40 items-center">
         <SpinnerButton
-          spinnerClass="h-full"
           class="flex w-full items-center justify-center"
           onClick={connect}
           loading={connecting()}
@@ -89,7 +88,6 @@ export const WifiSetupPage: Component<{}> = () => {
               <Show when={wifiAccessor.current()}>
                 {(ssid) => (
                   <SpinnerButton
-                    spinnerClass="h-full"
                     variant="outline"
                     class="flex items-center justify-center px-8"
                     onClick={() => disconnect(ssid())}

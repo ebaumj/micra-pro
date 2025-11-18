@@ -31,3 +31,5 @@ export * from './Components/Chart';
 export * from './Components/OTPField';
 export * from './utils/cssvar';
 export * from './Components/DarkModeProvider';
+export * from './Components/Switch';
+export * from './Components/Collapsible';

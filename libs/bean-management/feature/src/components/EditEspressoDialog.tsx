@@ -195,7 +195,6 @@ export const EditEspressoDialog: Component<{
             </Show>
             <SpinnerButton
               class="h-10 w-28"
-              spinnerClass="p-2 h-8 w-8"
               variant="default"
               onClick={() => props.content?.onSave(store.properties)}
               loading={props.content?.isSaving?.() ?? false}

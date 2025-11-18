@@ -94,7 +94,6 @@ export const EditBeanDialog: Component<{
             </Show>
             <SpinnerButton
               class="h-10 w-36"
-              spinnerClass="p-2 h-8 w-8"
               variant="default"
               onClick={() => props.content?.onSave(store.properties)}
               loading={props.content?.isSaving?.()}

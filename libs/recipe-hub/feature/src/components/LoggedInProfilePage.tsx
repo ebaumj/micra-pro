@@ -246,7 +246,6 @@ export const RecipesTable: Component<{
                 <div class="flex h-full w-1/6 items-center justify-center px-2 py-1">
                   <SpinnerButton
                     class="h-full w-full"
-                    spinnerClass="w-full h-full"
                     loading={deleting().includes(r.recipe.id)}
                     onClick={() => remove(r.delete, r.recipe.id)}
                     variant="outline"
