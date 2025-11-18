@@ -87,7 +87,16 @@ public class ScaleServiceTest
             new Mock<IScaleImplementationCollectionService>();
         scaleImplementationCollectionServiceMock
             .Setup(m => m.Implementations)
-            .Returns([("Implementation", ["service-id-1", "service-id-2"])]);
+            .Returns(
+                [
+                    (
+                        "Implementation",
+                        dev =>
+                            dev.ServiceIds.Contains("service-id-1")
+                            && dev.ServiceIds.Contains("service-id-2")
+                    ),
+                ]
+            );
         var memory = new ScaleImplementationMemoryService();
         var service = new ScaleService(
             bluetoothServiceMock.Object,
