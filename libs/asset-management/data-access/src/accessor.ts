@@ -1,8 +1,4 @@
-import {
-  createMutation,
-  createQuery,
-  Duration,
-} from '@micra-pro/shared/utils-ts';
+import { createMutation, createQuery } from '@micra-pro/shared/utils-ts';
 import {
   AvailableAssetsDocument,
   AvailableAssetsPollDocument,
@@ -30,6 +26,7 @@ import {
   UnfinishedAssetsSubscriptionVariables,
 } from './generated/graphql';
 import { Accessor, createMemo } from 'solid-js';
+import moment from 'moment';
 
 export type AssetsAccessor = {
   pollAsset: (id: string) => void;
@@ -44,7 +41,9 @@ export type AssetsAccessor = {
   isPolling: (id: string) => Accessor<boolean>;
 };
 
-export const createAssetAccessor = (pollTime: Duration): AssetsAccessor => {
+export const createAssetAccessor = (
+  pollTime: moment.Duration,
+): AssetsAccessor => {
   const query = createQuery<
     AvailableAssetsPollQuery,
     AvailableAssetsPollQueryVariables

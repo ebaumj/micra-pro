@@ -1,9 +1,5 @@
 import { Accessor } from 'solid-js';
-import {
-  createMutation,
-  createQuery,
-  type Duration,
-} from '@micra-pro/shared/utils-ts';
+import { createMutation, createQuery } from '@micra-pro/shared/utils-ts';
 import {
   BluetoothScale,
   IsScannungDocument,
@@ -23,6 +19,7 @@ import {
   StopScanningMutationVariables,
 } from './generated/graphql';
 export { type BluetoothScale } from './generated/graphql';
+import moment from 'moment';
 
 export const createScanAccessor = (): {
   isScanning: Accessor<boolean>;
@@ -51,7 +48,7 @@ export const createScanAccessor = (): {
 };
 
 export const scanForScales = (
-  maxTime: Duration,
+  maxTime: moment.Duration,
   onScaleDiscovered: (scale: BluetoothScale) => void,
 ) => {
   createQuery<IsScannungPollQuery, IsScannungPollQueryVariables>(
