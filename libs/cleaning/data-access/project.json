@@ -1,0 +1,32 @@
+{
+  "name": "cleaning-data-access",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/cleaning/data-access/src/",
+  "projectType": "library",
+  "implicitDependencies": ["cleaning-data-definition-graphql"],
+  "tags": ["type:data"],
+  "targets": {
+    "build": {
+      "outputs": ["{workspaceRoot}/dist/libs/cleaning/data-access"],
+      "options": {
+        "outDir": "../../../dist/libs/cleaning/data-access"
+      }
+    },
+    "codegen": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/libs/cleaning/data-access/src/generated"],
+      "inputs": [
+        { "dependentTasksOutputFiles": "**/*.graphqls" },
+        "{workspaceRoot}/libs/cleaning/data-access/src/**/*.graphql"
+      ],
+      "options": {
+        "command": "graphql-codegen --config codegen.ts",
+        "cwd": "{workspaceRoot}/libs/cleaning/data-access"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "dependsOn": ["codegen"]
+    }
+  }
+}

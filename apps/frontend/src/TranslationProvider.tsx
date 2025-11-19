@@ -5,6 +5,7 @@ import { GetScaleManagementTranslationConfig } from '@micra-pro/scale-management
 import { GetBeanManagementTranslationConfig } from '@micra-pro/bean-management/feature';
 import { GetBrewByWeightTranslationConfig } from '@micra-pro/brew-by-weight/feature';
 import { GetRecipeHubTranslationConfig } from '@micra-pro/recipe-hub/feature';
+import { GetCleaningTranslationConfig } from '@micra-pro/cleaning/feature';
 
 export const TranslationProvider: ParentComponent = (props) => {
   const resources = [
@@ -13,6 +14,7 @@ export const TranslationProvider: ParentComponent = (props) => {
     GetBeanManagementTranslationConfig(),
     GetBrewByWeightTranslationConfig(),
     GetRecipeHubTranslationConfig(),
+    GetCleaningTranslationConfig(),
   ];
 
   return (

@@ -37,6 +37,9 @@
     <ProjectReference Include="..\..\libs\brew-by-weight\data-provider-graphql\MicraPro.BrewByWeight.DataProviderGraphQl.csproj" />
     <ProjectReference Include="..\..\libs\brew-by-weight\domain\MicraPro.BrewByWeight.Domain.csproj" />
     <ProjectReference Include="..\..\libs\brew-by-weight\infrastructure\MicraPro.BrewByWeight.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\libs\cleaning\data-provider-graphql\MicraPro.Cleaning.DataProviderGraphQl.csproj" />
+    <ProjectReference Include="..\..\libs\cleaning\domain\MicraPro.Cleaning.Domain.csproj" />
+    <ProjectReference Include="..\..\libs\cleaning\infrastructure\MicraPro.Cleaning.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\" />

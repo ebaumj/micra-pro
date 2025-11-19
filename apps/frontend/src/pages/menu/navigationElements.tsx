@@ -4,6 +4,7 @@ import { EditBeansPage } from '@micra-pro/bean-management/feature';
 import { MainscreenConfigPage } from '../MainscreenConfigPage';
 import { BrewByWeightHistoryPage } from '@micra-pro/brew-by-weight/feature';
 import { RecipeHubProfilePage } from '@micra-pro/recipe-hub/feature';
+import { CleaningPage } from '@micra-pro/cleaning/feature';
 import { WifiSetupPage } from '../WifiSetupPage';
 
 export const navigationElements: {
@@ -35,6 +36,12 @@ export const navigationElements: {
     link: 'profile',
     icon: 'account_circle',
     component: RecipeHubProfilePage,
+  },
+  {
+    name: () => <T key={'menu-sidebar-cleaning'} />,
+    link: 'cleaning',
+    icon: 'cleaning_services',
+    component: CleaningPage,
   },
   {
     name: () => <T key={'menu-sidebar-wifi'} />,

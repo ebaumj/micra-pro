@@ -16,5 +16,6 @@
   "root.wifi-failed": "Cha nid mit {network} verbinde",
   "root.wifi-failed-title": "Het nid verbunde",
   "root.wifi-password": "Passwort",
-  "root.grinder-offset": "Offset Mühli"
+  "root.grinder-offset": "Offset Mühli",
+  "root.menu-sidebar-cleaning": "Putze"
 }
