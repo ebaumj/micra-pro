@@ -43,12 +43,15 @@ public class BluetoothService(IOptions<SharedInfrastructureOptions> configuratio
 
     private async Task StopDiscoveryAsync()
     {
-        await BleAdapter.StopDiscoveryAsync();
+        if (_isScanning.Value)
+            await BleAdapter.StopDiscoveryAsync();
         _isScanning.OnNext(false);
     }
 
     public async Task DiscoverAsync(TimeSpan discoveryTime, CancellationToken ct)
     {
+        if (_isScanning.Value)
+            return;
         await BleAdapter.StartDiscoveryAsync();
         _isScanning.OnNext(true);
         var subscription = Observable
@@ -68,14 +71,18 @@ public class BluetoothService(IOptions<SharedInfrastructureOptions> configuratio
         CancellationToken ct
     )
     {
-        await BleAdapter.StartDiscoveryAsync();
+        if (!_isScanning.Value)
+        {
+            await BleAdapter.StartDiscoveryAsync();
+            _isScanning.OnNext(true);
+        }
         Device? device;
         do
         {
             device = (Device?)
                 await BleAdapter.GetDeviceAsync(deviceId).WaitAsync(DeviceSearchTimeout, ct);
         } while (device == null);
-        await BleAdapter.StopDiscoveryAsync();
+        await StopDiscoveryAsync();
         await device.ConnectAsync();
         return new BleDeviceConnection(device);
     }
