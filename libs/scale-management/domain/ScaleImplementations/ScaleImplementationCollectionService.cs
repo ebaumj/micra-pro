@@ -11,7 +11,7 @@ public class ScaleImplementationCollectionService(IBluetoothService bluetoothSer
     private record ScaleImplementation(
         string Name,
         Func<ScaleDb, IScale> CreateScale,
-        string[] RequiredServices
+        Func<BluetoothScanResult, bool> Filter
     );
 
     private readonly IImmutableList<ScaleImplementation> _scaleImplementations =
@@ -19,7 +19,10 @@ public class ScaleImplementationCollectionService(IBluetoothService bluetoothSer
         new(
             typeof(BookooThemisMini.Scale).FullName!,
             s => new BookooThemisMini.Scale(s.Identifier, bluetoothService),
-            BookooThemisMini.Scale.RequiredServiceIds
+            dev =>
+                BookooThemisMini
+                    .Scale.RequiredServiceIds.Select(s => s.ToLower())
+                    .All(s => dev.ServiceIds.Select(id => id.ToLower()).Contains(s))
         ),
     ];
 
@@ -28,6 +31,6 @@ public class ScaleImplementationCollectionService(IBluetoothService bluetoothSer
             .FirstOrDefault(i => i.Name == scaleDb.ImplementationType)
             ?.CreateScale(scaleDb) ?? throw new Exception("Scale implementation not found!");
 
-    public (string Name, string[] RequiredServices)[] Implementations =>
-        _scaleImplementations.Select(i => (i.Name, i.RequiredServices)).ToArray();
+    public (string Name, Func<BluetoothScanResult, bool> Filter)[] Implementations =>
+        _scaleImplementations.Select(i => (i.Name, i.Filter)).ToArray();
 }

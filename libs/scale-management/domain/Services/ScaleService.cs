@@ -23,11 +23,7 @@ public class ScaleService(
                     .DetectedDevices.Where(d =>
                         scaleImplementationCollectionService.Implementations.Any(i =>
                         {
-                            if (
-                                !i
-                                    .RequiredServices.Select(s => s.ToLower())
-                                    .All(s => d.ServiceIds.Select(id => id.ToLower()).Contains(s))
-                            )
+                            if (!i.Filter(d))
                                 return false;
                             scaleImplementationMemoryService.SetImplementation(d.Id, i.Name);
                             return true;
