@@ -19,7 +19,7 @@ type Scale = {
 
 type ScalesAccessor = {
   scale: Accessor<Scale | undefined>;
-  add: (identifier: string, callback?: () => void) => void;
+  add: (identifier: string, callback?: () => void, error?: () => void) => void;
   isLoading: Accessor<boolean>;
 };
 
@@ -46,12 +46,17 @@ export const createScalesAccessor = (): ScalesAccessor => {
       })
       .finally(() => setDeleting(false));
   };
-  const add = (identifier: string, callback?: () => void) => {
+  const add = (
+    identifier: string,
+    callback?: () => void,
+    error?: () => void,
+  ) => {
     addMutation({ scaleIdentifier: identifier })
       .then((result) => {
         if (!result.addOrUpdateScale.boolean) return;
         query.setDataStore('scale', result.addOrUpdateScale.boolean);
       })
+      .catch(() => error?.())
       .finally(() => {
         if (callback) callback();
       });

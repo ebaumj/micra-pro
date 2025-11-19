@@ -44,8 +44,10 @@ public class ScaleService(
             identifier,
             scaleImplementationMemoryService.GetImplementation(identifier)
         );
+        var scale = scaleImplementationCollectionService.CreateScale(valueObject);
+        await (await scale.ConnectAsync(ct)).DisconnectAsync(ct);
         await scaleRepository.AddOrUpdateScaleAsync(valueObject, ct);
-        return scaleImplementationCollectionService.CreateScale(valueObject);
+        return scale;
     }
 
     public Task RemoveScaleAsync(CancellationToken ct) => scaleRepository.DeleteScaleAsync(ct);
