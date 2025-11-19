@@ -6,6 +6,7 @@ import {
   Icon,
   LongPressDiv,
   Spinner,
+  handleError,
 } from '@micra-pro/shared/ui';
 import {
   createScalesAccessor,
@@ -13,9 +14,10 @@ import {
 } from '@micra-pro/scale-management/data-access';
 import { twMerge } from 'tailwind-merge';
 import { ScanScalesDialog } from './ScanScalesDialog';
-import { T } from '../generated/language-types';
+import { T, useTranslationContext } from '../generated/language-types';
 
 export const ScaleSelector: Component<{ class?: string }> = (props) => {
+  const { t } = useTranslationContext();
   const scalesAccessor = createScalesAccessor();
   const scanAccessor = createScanAccessor();
   const [scanDialog, setScanDialog] = createSignal(false);
@@ -25,7 +27,11 @@ export const ScaleSelector: Component<{ class?: string }> = (props) => {
       !scanDialog() && scanAccessor.isScanning() && scanAccessor.stopScanning(),
   );
   const addDevice = (identifier: string) =>
-    scalesAccessor.add(identifier, () => setScanDialog(false));
+    scalesAccessor.add(
+      identifier,
+      () => setScanDialog(false),
+      () => handleError({ title: t('error'), message: t('unknown-error') }),
+    );
 
   return (
     <>
