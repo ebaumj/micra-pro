@@ -7,7 +7,7 @@ brew by weight, recipe management, statistics and recipe sharing for la marzocco
 - BLE Access on Linux (Tested on Raspberry Pi 3+ and Raspberry Pi 5)
 - Brew Paddle Access via GPIO on Raspberry Pi
 - Bookoo Themis Mini Scale API
-- Acaia Lunar Scale Api (Acaia Lunar 2021 is not tested)
+- Acaia Scales API (Tested with Acaia Lunar pre 2021 and Acaia Pearl)
 - Bean Management on SQLite
 - History Management on SQLite
 - Asset Management with Local Asset Server (setup do be easily implemented remotely)
