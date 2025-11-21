@@ -29,7 +29,7 @@ jobs:
       - uses: actions/cache@v4
         with:
           key: 'nx-cache-main'
-          path: ~/.nx/cache
+          path: .nx
 
       - run: npm ci --legacy-peer-deps
       - uses: nrwl/nx-set-shas@v4
