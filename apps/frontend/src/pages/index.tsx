@@ -17,6 +17,7 @@ import {
 import { createConfigAccessor } from '@micra-pro/shared/utils-ts';
 import { SettingsButton } from '../components/SettingsButton';
 import { CleaningRemnder } from '@micra-pro/cleaning/feature';
+import { ScaleSelector } from '@micra-pro/scale-management/feature';
 
 const BeanButtons: Component<{
   beans: Bean[];
@@ -140,7 +141,8 @@ const Layout: ParentComponent<{ refetch?: () => void }> = (props) => {
           <div class="w-full" />
           <CleaningRemnder class="w-16 min-w-16" />
           <SpoutSelector class="w-36 min-w-36" />
-          <LanguageSelector class="w-40" />
+          <ScaleSelector class="w-36 min-w-36" />
+          <LanguageSelector class="w-20 min-w-20" />
           <Button
             variant="outline"
             class="w-16 min-w-16"

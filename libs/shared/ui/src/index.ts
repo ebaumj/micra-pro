@@ -33,3 +33,4 @@ export * from './utils/cssvar';
 export * from './Components/DarkModeProvider';
 export * from './Components/Switch';
 export * from './Components/Collapsible';
+export * from './Components/Gauge';

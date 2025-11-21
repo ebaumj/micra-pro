@@ -8,3 +8,4 @@ export * from './config-storage/config-storage';
 export * from './connection-test/connection-test';
 export * from './system-access/system-access';
 export * from './date-time/dateString';
+export * from './typescript/typescript-extensions';
