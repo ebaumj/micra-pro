@@ -10,7 +10,10 @@ import { MainMenu } from './pages/menu/MainMenu';
 import { Navigate, Route, Router } from '@solidjs/router';
 import MainScreen from './pages';
 import { ToastRegion, ToastList } from '@micra-pro/shared/ui';
-import { SpoutSelectorContextProvider } from '@micra-pro/brew-by-weight/feature';
+import {
+  SpoutSelectorContextProvider,
+  BrewByWeightPannelStyleProvider,
+} from '@micra-pro/brew-by-weight/feature';
 import { CleaningContextProvider } from '@micra-pro/cleaning/feature';
 
 const AppLayout: ParentComponent = (props) => {
@@ -58,7 +61,9 @@ const AppLayout: ParentComponent = (props) => {
               </Show>
               <CleaningContextProvider>
                 <SpoutSelectorContextProvider>
-                  {props.children}
+                  <BrewByWeightPannelStyleProvider>
+                    {props.children}
+                  </BrewByWeightPannelStyleProvider>
                   <ToastRegion>
                     <ToastList />
                   </ToastRegion>

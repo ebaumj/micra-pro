@@ -18,7 +18,8 @@ export type ConfigKey =
   | 'Language'
   | 'RecipeHub'
   | 'SelectedSpout'
-  | 'CleaningReminder';
+  | 'CleaningReminder'
+  | 'BrewByWeightPannel';
 
 export const createConfigAccessor = <T>(
   key: ConfigKey,

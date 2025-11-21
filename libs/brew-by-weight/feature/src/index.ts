@@ -6,3 +6,5 @@ export {
   useSelectedSpoutContext,
 } from './components/SpoutSelectorContextProvider';
 export { SpoutSelector } from './components/SpoutSelector';
+export { BrewByWeightPannelStyleProvider } from './components/PannelStyleProvider';
+export { BrewByWeightPannelStyleSelector } from './components/PannelStyleSelector';

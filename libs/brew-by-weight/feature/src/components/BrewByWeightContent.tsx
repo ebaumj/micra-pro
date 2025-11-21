@@ -1,16 +1,12 @@
 import { Component, createEffect, createSignal, Show } from 'solid-js';
-import {
-  Button,
-  handleError,
-  LineChart,
-  Spinner,
-  SpinnerButton,
-  twColor,
-} from '@micra-pro/shared/ui';
+import { Button, handleError, SpinnerButton } from '@micra-pro/shared/ui';
 import { Spout, StartCoffee } from '@micra-pro/brew-by-weight/data-access';
 import { T, useTranslationContext } from '../generated/language-types';
 import moment from 'moment';
 import { twMerge } from 'tailwind-merge';
+import { PannelGraph } from './PannelGraph';
+import { PannelGauge } from './PannelGauge';
+import { usePannelStyle } from './PannelStyleProvider';
 
 export const BrewByWeightContent: Component<{
   recipe: {
@@ -25,6 +21,7 @@ export const BrewByWeightContent: Component<{
 }> = (props) => {
   const { t } = useTranslationContext();
   const [isStopping, setIsStopping] = createSignal(false);
+  const pannelStyle = usePannelStyle().pannelStyle;
   // eslint-disable-next-line solid/reactivity
   const accessor = StartCoffee(props.recipe);
   const isStarting = () => {
@@ -153,137 +150,31 @@ export const BrewByWeightContent: Component<{
               : 'shadow-primary-shadow',
         )}
       >
-        <div class="flex h-[35%] py-4">
-          <div class="flex h-full w-1/2 flex-col gap-0 border-r pt-8 pl-8">
-            <div class="flex h-full w-full items-center justify-center text-2xl font-bold">
-              {flow().toFixed(1)}
-            </div>
-            <div class="flex h-6 w-full items-center justify-center text-sm">
-              <T key="flow" /> [ml/s]
-            </div>
-          </div>
-          <div class="flex h-full w-1/2 flex-col gap-0 border-r pt-8 pr-8">
-            <div class="flex h-full w-full items-center justify-center text-2xl font-bold">
-              {quantity().toFixed(1)}
-            </div>
-            <div class="flex h-6 w-full items-center justify-center text-sm">
-              <T key="liquid" /> [ml]
-            </div>
-          </div>
-        </div>
-        <div class="h-[30%] px-10 py-0">
-          <div class="flex h-full w-full items-center justify-center">
-            <Show when={!isStarting()}>
-              <LineChart
-                data={{
-                  labels: accessor.dataStore.brewData.map((d) =>
-                    moment.duration(d.totalTime).asSeconds(),
-                  ),
-                  datasets: [
-                    {
-                      data: accessor.dataStore.brewData.map((d) => d.flow),
-                      label: t('flow'),
-                      pointStyle: false,
-                      animation: false,
-                      borderColor: twColor('accent'),
-                    },
-                    {
-                      data: accessor.dataStore.brewData.map(
-                        (d) => d.totalQuantity,
-                      ),
-                      label: t('liquid'),
-                      pointStyle: false,
-                      animation: false,
-                      borderColor: twColor('accent-variant'),
-                      yAxisID: 'y2',
-                    },
-                  ],
-                }}
-                options={{
-                  maintainAspectRatio: false,
-                  scales: {
-                    x: {
-                      display: false,
-                      grid: {
-                        display: false,
-                      },
-                    },
-                    y: {
-                      display: true,
-                      ticks: {
-                        color: twColor('accent'),
-                      },
-                      min: 0,
-                      max:
-                        Math.max(
-                          ...accessor.dataStore.brewData.map((d) => d.flow),
-                        ) * 1.1,
-                      grid: {
-                        display: false,
-                      },
-                    },
-                    y2: {
-                      axis: 'y',
-                      display: true,
-                      ticks: {
-                        color: twColor('accent-variant'),
-                      },
-                      position: 'right',
-                      min: 0,
-                      max:
-                        Math.max(
-                          ...accessor.dataStore.brewData.map(
-                            (d) => d.totalQuantity,
-                          ),
-                          props.recipe.inCupQuantity,
-                        ) * 1.1,
-                      grid: {
-                        display: false,
-                      },
-                    },
-                  },
-                  plugins: {
-                    tooltip: {
-                      enabled: false,
-                    },
-                    legend: {
-                      display: false,
-                    },
-                  },
-                  elements: {
-                    line: {
-                      borderWidth: 1,
-                    },
-                  },
-                }}
-              />
-            </Show>
-            <Show when={isStarting()}>
-              <Spinner class="h-12 w-12" />
-            </Show>
-          </div>
-        </div>
-        <div class="flex h-[35%] py-4">
-          <div class="flex h-full w-1/2 flex-col gap-0 border-r pb-8 pl-8">
-            <div class="flex h-6 w-full items-center justify-center text-sm">
-              <T key="time" /> [s]
-            </div>
-            <div class="flex h-full w-full items-center justify-center text-2xl font-bold">
-              {timeSeconds().toFixed(1)}
-            </div>
-          </div>
-          <div class="flex h-full w-1/2 flex-col gap-0 border-r pr-8 pb-8">
-            <div class="flex h-6 w-full items-center justify-center text-sm">
-              <T key="target-time" /> [s]
-            </div>
-            <div class="flex h-full w-full items-center justify-center text-2xl font-bold">
-              {moment
-                .duration(props.recipe.targetExtractionTime)
-                .asSeconds()
-                .toFixed(1)}
-            </div>
-          </div>
-        </div>
+        <Show when={pannelStyle() === 'Graph'}>
+          <PannelGraph
+            brewData={accessor.dataStore.brewData}
+            flow={flow()}
+            isStarting={isStarting()}
+            quantity={quantity()}
+            targetTime={moment
+              .duration(props.recipe.targetExtractionTime)
+              .asSeconds()}
+            targetQuantity={props.recipe.inCupQuantity}
+            time={timeSeconds()}
+          />
+        </Show>
+        <Show when={pannelStyle() === 'Gauge'}>
+          <PannelGauge
+            flow={flow()}
+            isStarting={isStarting()}
+            quantity={quantity()}
+            targetTime={moment
+              .duration(props.recipe.targetExtractionTime)
+              .asSeconds()}
+            targetQuantity={props.recipe.inCupQuantity}
+            time={timeSeconds()}
+          />
+        </Show>
       </div>
       <Show when={!canClose()}>
         <SpinnerButton
