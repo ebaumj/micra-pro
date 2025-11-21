@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 jobs:
-  main:
+  ci:
     runs-on: ubuntu-latest
     environment: preview
     steps:
@@ -22,6 +22,12 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
+
+      # Cache .nx/cache
+      - uses: actions/cache@v4
+        with:
+          key: 'nx-cache-ci'
+          path: ~/.nx/cache
 
       - run: npm ci --legacy-peer-deps
       - uses: nrwl/nx-set-shas@v4

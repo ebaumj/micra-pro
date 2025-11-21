@@ -1,4 +1,4 @@
-name: CI
+name: Main
 
 on:
   push:
@@ -24,6 +24,12 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
+
+      # Cache .nx/cache
+      - uses: actions/cache@v4
+        with:
+          key: 'nx-cache-main'
+          path: ~/.nx/cache
 
       - run: npm ci --legacy-peer-deps
       - uses: nrwl/nx-set-shas@v4
