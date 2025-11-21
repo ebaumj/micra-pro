@@ -28,7 +28,7 @@ jobs:
       # Cache .nx/cache
       - uses: actions/cache@v4
         with:
-          key: 'nx-cache-main'
+          key: 'nx-cache'
           path: .nx
 
       - run: npm ci --legacy-peer-deps
