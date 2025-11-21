@@ -1,7 +1,7 @@
 using MicraPro.ScaleManagement.DataDefinition;
 using MicraPro.ScaleManagement.Domain.BluetoothAccess;
 
-namespace MicraPro.ScaleManagement.Domain.ScaleImplementations.AcaiaLunar;
+namespace MicraPro.ScaleManagement.Domain.ScaleImplementations.Acaia.OldStyle;
 
 public class Scale(string identifier, IBluetoothService bluetoothService) : IScale
 {
@@ -13,15 +13,14 @@ public class Scale(string identifier, IBluetoothService bluetoothService) : ISca
     public async Task<IScaleConnection> ConnectAsync(CancellationToken ct)
     {
         var bleConnection = await bluetoothService.ConnectDeviceAsync(identifier, ct);
-        var bleService = await bleConnection.GetServiceAsync(ServiceId, ct);
-        var characteristic = await bleService.GetCharacteristicAsync(CharacteristicId, ct);
         var connection = new ScaleConnection(
-            characteristic,
-            await characteristic.GetValueObservableAsync(ct),
-            bleConnection,
-            new ConnectionLifetimeData()
+            await (await bleConnection.GetServiceAsync(ServiceId, ct)).GetCharacteristicAsync(
+                CharacteristicId,
+                ct
+            ),
+            bleConnection
         );
-        await connection.IdendifyAsync(ct);
+        await connection.SetupAsync(ct);
         return connection;
     }
 }
