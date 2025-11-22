@@ -4,7 +4,7 @@ import { T } from '../generated/language-types';
 
 const WeightTolerance = 1;
 const WeightOverhead = 4 * WeightTolerance;
-const MaxFlow = 3;
+const MaxFlow = 5;
 
 export const PannelGauge: Component<{
   flow: number;
