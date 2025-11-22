@@ -63,8 +63,8 @@ export const CleaningRemnder: Component<{ class?: string }> = (props) => {
       </Dialog>
       <Show when={isCleaningDue() && !ignore()}>
         <Button
-          class={twMerge('text-destructive text-lg', props.class)}
-          variant="outline"
+          class={twMerge('text-lg', props.class)}
+          variant="destructive"
           onClick={() => setDialog(true)}
         >
           <Icon class="animate-pulse" iconName="warning" />

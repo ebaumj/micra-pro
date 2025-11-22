@@ -139,9 +139,9 @@ const Layout: ParentComponent<{ refetch?: () => void }> = (props) => {
       <div class="absolute flex h-full w-full flex-col">
         <div class="flex h-16 w-full items-center gap-2 pr-2 pl-20 shadow-md">
           <div class="w-full" />
-          <CleaningRemnder class="w-16 min-w-16" />
+          <CleaningRemnder class="w-20 min-w-20" />
           <SpoutSelector class="w-36 min-w-36" />
-          <ScaleSelector class="w-36 min-w-36" />
+          <ScaleSelector class="w-48 min-w-48" />
           <LanguageSelector class="w-20 min-w-20" />
           <Button
             variant="outline"
