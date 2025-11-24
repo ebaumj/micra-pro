@@ -377,7 +377,9 @@ const getUserByUsername = async (
   const dbObject = await db
     .selectFrom('user')
     .selectAll()
-    .where('username', '=', username)
+    .where((exp) =>
+      exp('username', '=', username).or(exp('email', '=', username)),
+    )
     .executeTakeFirst();
   if (!dbObject) throw new Error();
   return dbObject;

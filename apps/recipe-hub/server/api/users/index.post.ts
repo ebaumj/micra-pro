@@ -34,6 +34,7 @@ export default defineEventHandler(async (event) => {
     allUsers.find((u) => u.email === body.email || u.username === body.username)
   )
     throwInternalServerError();
+  if (body.username.includes('@')) throwInternalServerError();
   const newUser = {
     username: body.username,
     password: await bcrypt.hash(body.password, await bcrypt.genSalt()),
