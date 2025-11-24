@@ -69,35 +69,49 @@ export const createRecipesAccessor = (userId: Accessor<string>) => {
       return false;
     }
   };
-  const addEspresso = async (
-    recipe: Omit<EspressoRecipe, 'id' | 'userId'>,
+  const espressoAction = async (
+    recipe: Omit<EspressoRecipe, 'userId'>,
+    action: 'add' | 'update',
   ): Promise<boolean> => {
     try {
       const result = (await (
         await client.apiCall(
-          `api/recipes/espresso`,
-          'POST',
+          action === 'add'
+            ? `api/recipes/espresso`
+            : `api/recipes/espresso/${recipe.id}`,
+          action === 'add' ? 'POST' : 'PUT',
           JSON.stringify({ ...recipe, userId: userId() }),
         )
       ).json()) as EspressoRecipe;
-      espressoActions.mutate((r) => r?.concat(result));
+      espressoActions.mutate((r) => {
+        if (!r) return undefined;
+        if (action === 'add') return r.concat(result);
+        r[r.findIndex((r) => r.id === result.id)] = result;
+        return r;
+      });
       return true;
     } catch {
       return false;
     }
   };
-  const addV60 = async (
-    recipe: Omit<V60Recipe, 'id' | 'userId'>,
+  const v60Action = async (
+    recipe: Omit<V60Recipe, 'userId'>,
+    action: 'add' | 'update',
   ): Promise<boolean> => {
     try {
       const result = (await (
         await client.apiCall(
-          `api/recipes/v60`,
-          'POST',
+          action === 'add' ? `api/recipes/v60` : `api/recipes/v60/${recipe.id}`,
+          action === 'add' ? 'POST' : 'PUT',
           JSON.stringify({ ...recipe, userId: userId() }),
         )
       ).json()) as V60Recipe;
-      v60Actions.mutate((r) => r?.concat(result));
+      v60Actions.mutate((r) => {
+        if (!r) return undefined;
+        if (action === 'add') return r.concat(result);
+        r[r.findIndex((r) => r.id === result.id)] = result;
+        return r;
+      });
       return true;
     } catch {
       return false;
@@ -107,14 +121,22 @@ export const createRecipesAccessor = (userId: Accessor<string>) => {
     espresso: () =>
       espressoResource.latest
         ?.filter((r) => r.userId === userId())
-        .map((r) => ({ recipe: r, delete: () => removeEspresso(r.id) })) ?? [],
+        .map((r) => ({
+          recipe: r,
+          delete: () => removeEspresso(r.id),
+          update: () => espressoAction(r, 'update'),
+        })) ?? [],
     v60: () =>
       v60Resource.latest
         ?.filter((r) => r.userId === userId())
-        .map((r) => ({ recipe: r, delete: () => removeV60(r.id) })) ?? [],
-    addEspresso: (recipe: Omit<EspressoRecipe, 'id' | 'userId'>) =>
-      addEspresso(recipe),
-    addV60: (recipe: Omit<V60Recipe, 'id' | 'userId'>) => addV60(recipe),
+        .map((r) => ({
+          recipe: r,
+          delete: () => removeV60(r.id),
+          update: () => v60Action(r, 'update'),
+        })) ?? [],
+    addEspresso: (recipe: Omit<EspressoRecipe, 'userId'>) =>
+      espressoAction(recipe, 'add'),
+    addV60: (recipe: Omit<V60Recipe, 'userId'>) => v60Action(recipe, 'add'),
     loading: () =>
       espressoResource.state === 'pending' || v60Resource.state === 'pending',
   };

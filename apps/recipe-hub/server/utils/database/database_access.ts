@@ -10,8 +10,10 @@ type Entity = {
   id: string;
 };
 
+type Optional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+
 type Repository<T extends Entity> = {
-  add: (value: Omit<T, 'id'>) => Promise<T>;
+  add: (value: Optional<T, 'id'>) => Promise<T>;
   update: (value: T) => Promise<T>;
   remove: (id: string) => Promise<string>;
   getAll: () => Promise<T[]>;
@@ -21,7 +23,7 @@ type Repository<T extends Entity> = {
 export const getEspressoRecipeRepository: (
   connection: string,
 ) => Repository<EspressoRecipe> = (connection: string) => ({
-  add: (value: Omit<EspressoRecipe, 'id'>) =>
+  add: (value: Optional<EspressoRecipe, 'id'>) =>
     addEspressoRecipe(connection, value),
   update: (value: EspressoRecipe) => updateEspressoRecipe(connection, value),
   remove: (id: string) => removeEspressoRecipe(connection, id),
@@ -32,7 +34,7 @@ export const getEspressoRecipeRepository: (
 export const getV60RecipeRepository: (
   connection: string,
 ) => Repository<V60Recipe> = (connection: string) => ({
-  add: (value: Omit<V60Recipe, 'id'>) => addV60Recipe(connection, value),
+  add: (value: Optional<V60Recipe, 'id'>) => addV60Recipe(connection, value),
   update: (value: V60Recipe) => updateV60Recipe(connection, value),
   remove: (id: string) => removeV60Recipe(connection, id),
   getAll: () => getAllV60Recipes(connection),
@@ -59,13 +61,25 @@ export const getImages = async (connection: string): Promise<Image[]> => {
 
 const addEspressoRecipe = async (
   connection: string,
-  value: Omit<EspressoRecipe, 'id'>,
+  value: Optional<EspressoRecipe, 'id'>,
 ): Promise<EspressoRecipe> => {
   const db = await migratedDb(connection);
+  if (
+    value.id &&
+    (
+      await db
+        .selectFrom('espressoRecipe')
+        .where('id', '=', value.id)
+        .selectAll()
+        .execute()
+    ).length > 0
+  )
+    throw new Error();
+  const id = value.id ?? uuid();
   const dbObject = await db
     .insertInto('espressoRecipe')
     .values({
-      id: uuid(),
+      id,
       userId: value.userId,
       roastery: value.roastery,
       beanName: value.beanName,
@@ -184,13 +198,25 @@ const getEspressoRecipe = async (
 
 const addV60Recipe = async (
   connection: string,
-  value: Omit<V60Recipe, 'id'>,
+  value: Optional<V60Recipe, 'id'>,
 ): Promise<V60Recipe> => {
   const db = await migratedDb(connection);
+  if (
+    value.id &&
+    (
+      await db
+        .selectFrom('espressoRecipe')
+        .where('id', '=', value.id)
+        .selectAll()
+        .execute()
+    ).length > 0
+  )
+    throw new Error();
+  const id = value.id ?? uuid();
   const dbObject = await db
     .insertInto('v60Recipe')
     .values({
-      id: uuid(),
+      id,
       userId: value.userId,
       roastery: value.roastery,
       beanName: value.beanName,
