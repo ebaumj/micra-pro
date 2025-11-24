@@ -6,7 +6,7 @@ import {
   Spinner,
   SpinnerButton,
 } from '@micra-pro/shared/ui';
-import { Component, createSignal, For, Show } from 'solid-js';
+import { Component, createSignal, For, Setter, Show } from 'solid-js';
 import {
   createRecipesAccessor,
   createUserAccessor,
@@ -35,20 +35,47 @@ export const LoggedInProfilePage: Component<{
     () => userAccessor.user()?.id ?? '',
   );
   const localRoasteries = fetchRoasteriesLevel();
-  const [page, setPage] = createSignal<Tabs>('user');
+  const [page, setPage] = createSignal<Tabs>('espresso');
   const [beanSelector, setBeanSelector] = createSignal(false);
   const [isAdding, setIsAdding] = createSignal(false);
   const roasteries = () =>
-    localRoasteries.roasteries().filter((r) => {
-      r.beans = r.beans.filter((b) =>
-        b.recipes.find(
-          (r) =>
-            r.__typename ===
-            (page() === 'espresso' ? 'EspressoProperties' : 'V60Properties'),
-        ),
-      );
-      return r.beans.length > 0;
-    });
+    localRoasteries
+      .roasteries()
+      .map((r) => ({
+        ...r,
+        beans: r.beans
+          .filter((b) =>
+            b.recipes.find(
+              (r) =>
+                r.__typename ===
+                (page() === 'espresso'
+                  ? 'EspressoProperties'
+                  : 'V60Properties'),
+            ),
+          )
+          .filter(
+            (b) =>
+              !(
+                page() === 'espresso' &&
+                recipeAccessor.espresso().find((r) => r.recipe.id === b.id)
+              ) &&
+              !(
+                page() === 'v60' &&
+                recipeAccessor.v60().find((r) => r.recipe.id === b.id)
+              ),
+          ),
+      }))
+      .filter((r) => r.beans.length > 0);
+  const localRecipes = () =>
+    localRoasteries
+      .roasteries()
+      .flatMap((r) => r.beans)
+      .filter((b) =>
+        page() === 'espresso'
+          ? b.recipes.find((r) => r.__typename === 'EspressoProperties')
+          : b.recipes.find((r) => r.__typename === 'V60Properties'),
+      )
+      .map((b) => b.id);
   const onBeanSelected = (id: string) => {
     setBeanSelector(false);
     const selectedPage = page();
@@ -69,6 +96,7 @@ export const LoggedInProfilePage: Component<{
       const recipeProperties = recipe.properties as EspressoProperties;
       recipeAccessor
         .addEspresso({
+          id: bean.id,
           beanName: bean.properties.name,
           roastery: roastery.properties.name,
           brewTemperature: recipeProperties.brewTemperature,
@@ -87,6 +115,7 @@ export const LoggedInProfilePage: Component<{
       const recipeProperties = recipe.properties as V60Properties;
       recipeAccessor
         .addV60({
+          id: bean.id,
           beanName: bean.properties.name,
           roastery: roastery.properties.name,
           brewTemperature: recipeProperties.brewTemperature,
@@ -144,12 +173,20 @@ export const LoggedInProfilePage: Component<{
             page() === 'espresso' && !isAdding() && !recipeAccessor.loading()
           }
         >
-          <RecipesTable recipes={recipeAccessor.espresso()} add={add} />
+          <RecipesTable
+            recipes={recipeAccessor.espresso()}
+            add={add}
+            localRecipes={localRecipes()}
+          />
         </Show>
         <Show
           when={page() === 'v60' && !isAdding() && !recipeAccessor.loading()}
         >
-          <RecipesTable recipes={recipeAccessor.v60()} add={add} />
+          <RecipesTable
+            recipes={recipeAccessor.v60()}
+            add={add}
+            localRecipes={localRecipes()}
+          />
         </Show>
         <Show
           when={
@@ -200,24 +237,31 @@ export const RecipesTable: Component<{
       id: string;
     };
     delete: () => Promise<boolean>;
+    update: () => Promise<boolean>;
   }[];
+  localRecipes: string[];
   add: () => void;
 }> = (props) => {
   const [deleting, setDeleting] = createSignal<string[]>([]);
+  const [updating, setUpdating] = createSignal<string[]>([]);
   const { t } = useTranslationContext();
-  const remove = (func: () => Promise<boolean>, id: string) => {
-    setDeleting((d) => d.concat(id));
+  const action = (
+    func: () => Promise<boolean>,
+    id: string,
+    setState: Setter<string[]>,
+  ) => {
+    setState((d) => d.concat(id));
     func()
       .then((s) => {
         if (!s) handleError({ title: t('failed'), message: '' });
       })
-      .finally(() => setDeleting((d) => d.filter((i) => i !== id)));
+      .finally(() => setState((d) => d.filter((i) => i !== id)));
   };
   return (
     <div class="no-scrollbar flex h-full flex-col rounded-b-md border-r border-b border-l text-base inset-shadow-sm">
       <div class="flex h-full w-full flex-col">
         <div class="flex h-12 w-full border-b font-bold shadow-xs">
-          <div class="flex w-full">
+          <div class="flex w-full text-sm">
             <div class="flex w-1/2 items-center border-r px-2">
               <T key="roastery" />
             </div>
@@ -225,7 +269,7 @@ export const RecipesTable: Component<{
               <T key="bean" />
             </div>
           </div>
-          <div class="flex h-full w-1/6 items-center justify-center px-2 py-2">
+          <div class="flex h-full w-1/4 items-center justify-center px-2 py-2">
             <Button class="h-full w-full" onClick={props.add}>
               <Icon iconName="add" />
             </Button>
@@ -234,8 +278,8 @@ export const RecipesTable: Component<{
         <div class="no-scrollbar h-full w-full overflow-x-hidden overflow-y-scroll">
           <For each={props.recipes}>
             {(r) => (
-              <div class="flex min-h-10 border-b">
-                <div class="flex w-full">
+              <div class="flex h-10 min-h-10 border-b">
+                <div class="flex w-full text-sm">
                   <div class="flex w-1/2 items-center border-r px-2">
                     {r.recipe.roastery}
                   </div>
@@ -243,12 +287,29 @@ export const RecipesTable: Component<{
                     {r.recipe.beanName}
                   </div>
                 </div>
-                <div class="flex h-full w-1/6 items-center justify-center px-2 py-1">
+                <div class="flex h-full w-1/4 items-center justify-center gap-2 px-2 py-1">
                   <SpinnerButton
-                    class="h-full w-full"
-                    loading={deleting().includes(r.recipe.id)}
-                    onClick={() => remove(r.delete, r.recipe.id)}
+                    class="h-full w-10 px-0"
+                    loading={updating().includes(r.recipe.id)}
+                    onClick={() => action(r.update, r.recipe.id, setUpdating)}
                     variant="outline"
+                    disabled={
+                      !props.localRecipes.includes(r.recipe.id) ||
+                      updating().includes(r.recipe.id) ||
+                      deleting().includes(r.recipe.id)
+                    }
+                  >
+                    <Icon iconName="upload" />
+                  </SpinnerButton>
+                  <SpinnerButton
+                    class="h-full w-10 px-0"
+                    loading={deleting().includes(r.recipe.id)}
+                    onClick={() => action(r.delete, r.recipe.id, setDeleting)}
+                    variant="outline"
+                    disabled={
+                      updating().includes(r.recipe.id) ||
+                      deleting().includes(r.recipe.id)
+                    }
                   >
                     <Icon iconName="delete" />
                   </SpinnerButton>
