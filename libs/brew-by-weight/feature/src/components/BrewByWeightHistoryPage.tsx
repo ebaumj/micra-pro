@@ -1,17 +1,11 @@
-import { Component, createSignal, ValidComponent } from 'solid-js';
+import { Component, createSignal, Show, ValidComponent } from 'solid-js';
 import { fetchRoasteriesLevel } from '@micra-pro/bean-management/data-access';
 import { BeanSelectorDialog } from '@micra-pro/bean-management/feature';
 import {
   BrewByWeightHistoryEntry,
   createHistoryAccessor,
 } from '@micra-pro/brew-by-weight/data-access';
-import {
-  AlertDialog,
-  AlertDialogContent,
-  Button,
-  Icon,
-  Spinner,
-} from '@micra-pro/shared/ui';
+import { Button, Icon, Spinner } from '@micra-pro/shared/ui';
 import { HistoryEntryDetailDialog } from './HistoryEntryDetailDialog';
 import { twMerge } from 'tailwind-merge';
 import { Dynamic } from 'solid-js/web';
@@ -98,11 +92,11 @@ export const BrewByWeightHistoryPage: Component = () => {
 
   return (
     <div class="no-scrollbar h-full w-full overflow-hidden">
-      <AlertDialog open={isLoading()}>
-        <AlertDialogContent class="flex items-center justify-center p-8">
+      <Show when={isLoading()}>
+        <div class="flex h-full w-full items-center justify-center">
           <Spinner class="h-20 w-20" />
-        </AlertDialogContent>
-      </AlertDialog>
+        </div>
+      </Show>
       <BeanSelectorDialog
         isOpen={beanSelectorOpen()}
         onClose={() => setBeanSelectorOpen(false)}
@@ -114,63 +108,65 @@ export const BrewByWeightHistoryPage: Component = () => {
         onClose={() => setDetailEntry(null)}
         onRemove={() => removeEntry(deatilEntry()?.id)}
       />
-      <div class="flex h-full flex-col">
-        <div class="flex h-10 w-full items-center">
-          <Button
-            variant="outline"
-            class="h-8 w-56 inset-shadow-sm"
-            onClick={() => setBeanSelectorOpen(true)}
-          >
-            {selectedBean().name}
-          </Button>
-          <div class="flex w-full justify-end">
-            <div class="flex h-8 w-72 rounded-lg border inset-shadow-sm">
-              <div
-                class="z-10 flex w-1/3 items-center justify-center"
-                onClick={() => setSelectedDataTable('Finished')}
-              >
-                <Icon iconName="done_all" />
+      <Show when={!isLoading()}>
+        <div class="flex h-full flex-col">
+          <div class="flex h-10 w-full items-center">
+            <Button
+              variant="outline"
+              class="h-8 w-56 inset-shadow-sm"
+              onClick={() => setBeanSelectorOpen(true)}
+            >
+              {selectedBean().name}
+            </Button>
+            <div class="flex w-full justify-end">
+              <div class="flex h-8 w-72 rounded-lg border inset-shadow-sm">
+                <div
+                  class="z-10 flex w-1/3 items-center justify-center"
+                  onClick={() => setSelectedDataTable('Finished')}
+                >
+                  <Icon iconName="done_all" />
+                </div>
+                <div
+                  class="z-10 flex w-1/3 items-center justify-center"
+                  onClick={() => setSelectedDataTable('Cancelled')}
+                >
+                  <Icon iconName="clear" />
+                </div>
+                <div
+                  class="z-10 flex w-1/3 items-center justify-center"
+                  onClick={() => setSelectedDataTable('Failed')}
+                >
+                  <Icon iconName="error_outline" />
+                </div>
               </div>
-              <div
-                class="z-10 flex w-1/3 items-center justify-center"
-                onClick={() => setSelectedDataTable('Cancelled')}
-              >
-                <Icon iconName="clear" />
+              <div class="fixed flex h-8 w-72">
+                <div
+                  class={twMerge(
+                    'bg-secondary w-1/3 rounded-lg inset-shadow-sm transition-transform duration-300',
+                    selectedDataTable() === 'Finished'
+                      ? 'translate-x-0'
+                      : selectedDataTable() === 'Cancelled'
+                        ? 'translate-x-full'
+                        : 'translate-x-[200%]',
+                  )}
+                />
               </div>
-              <div
-                class="z-10 flex w-1/3 items-center justify-center"
-                onClick={() => setSelectedDataTable('Failed')}
-              >
-                <Icon iconName="error_outline" />
-              </div>
-            </div>
-            <div class="fixed flex h-8 w-72">
-              <div
-                class={twMerge(
-                  'bg-secondary w-1/3 rounded-lg inset-shadow-sm transition-transform duration-300',
-                  selectedDataTable() === 'Finished'
-                    ? 'translate-x-0'
-                    : selectedDataTable() === 'Cancelled'
-                      ? 'translate-x-full'
-                      : 'translate-x-[200%]',
-                )}
-              />
             </div>
           </div>
+          <div class="flex h-88 w-full flex-col py-4">
+            <Dynamic component={selectTable()} />
+          </div>
+          <div class="flex h-10 w-full items-center justify-end">
+            <Button
+              class="px-8 shadow-xs"
+              variant="outline"
+              onClick={() => historyAccessor.cleanup()}
+            >
+              <Icon iconName="cleaning_services" />
+            </Button>
+          </div>
         </div>
-        <div class="flex h-88 w-full flex-col py-4">
-          <Dynamic component={selectTable()} />
-        </div>
-        <div class="flex h-10 w-full items-center justify-end">
-          <Button
-            class="px-8 shadow-xs"
-            variant="outline"
-            onClick={() => historyAccessor.cleanup()}
-          >
-            <Icon iconName="cleaning_services" />
-          </Button>
-        </div>
-      </div>
+      </Show>
     </div>
   );
 };
