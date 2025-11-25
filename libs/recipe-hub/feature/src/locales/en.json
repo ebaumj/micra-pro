@@ -2,6 +2,7 @@
   "recipe-hub.login": "Login",
   "recipe-hub.logout": "Logout",
   "recipe-hub.username": "Username",
+  "recipe-hub.username-or-email": "Username or Email",
   "recipe-hub.password": "Password",
   "recipe-hub.change-password": "Change Password",
   "recipe-hub.change-password-success": "Password Changed",

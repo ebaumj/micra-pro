@@ -110,10 +110,10 @@ export const RecipeHubProfilePage: Component = () => {
     <Switch>
       <Match when={state().type === 'username'}>
         <div class="flex h-full w-full flex-col items-center justify-center gap-1">
-          <TextFieldRoot onChange={setUser} value={user()}>
-            <TextField placeholder={t('username')} />
+          <TextFieldRoot onChange={setUser} value={user()} class="w-80">
+            <TextField placeholder={t('username-or-email')} />
           </TextFieldRoot>
-          <TextFieldRoot onChange={setPassword} value={password()}>
+          <TextFieldRoot onChange={setPassword} value={password()} class="w-80">
             <TextField placeholder={t('password')} type="password" />
           </TextFieldRoot>
           <SpinnerButton class="mt-3 w-44" loading={loading()} onClick={login}>

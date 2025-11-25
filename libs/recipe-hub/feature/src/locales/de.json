@@ -27,5 +27,6 @@
   "recipe-hub.user-does-not-extist": "Benutzername existiert nicht",
   "recipe-hub.username": "Benutzername",
   "recipe-hub.username-email-taken": "Benutzername oder Email existiert bereits",
-  "recipe-hub.verify-email": "Bestätigungslink wurde versendet!"
+  "recipe-hub.verify-email": "Bestätigungslink wurde versendet!",
+  "recipe-hub.username-or-email": "Benutzername oder Email"
 }
