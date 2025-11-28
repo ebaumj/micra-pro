@@ -103,6 +103,7 @@ To Enable the Brew Paddle, just connect the two pins shown on the picture to you
 ## Implement different Scale
 
 - add your implementation to libs/scale-management/domain/ScaleImplementations/
-- add Class that implements the _IScaleConnection_-Interface
-- add Class that implements the _IScale_-Interface
-- add a new _ScaleImplementation_-object to the _\_scaleImplementations_-List in the Class _ScaleImplementationCollectionService_
+- create Class that implements the _IScaleConnection_-Interface
+- create Class that implements the _IScale_-Interface
+- create Class that implements the _IScaleImplementationFactory_-Interface
+- add the _ScaleImplementationFactory_-Attribute to your Factory-Class to register it
