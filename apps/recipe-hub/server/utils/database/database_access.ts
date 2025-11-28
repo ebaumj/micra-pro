@@ -205,7 +205,7 @@ const addV60Recipe = async (
     value.id &&
     (
       await db
-        .selectFrom('espressoRecipe')
+        .selectFrom('v60Recipe')
         .where('id', '=', value.id)
         .selectAll()
         .execute()
