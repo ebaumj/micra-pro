@@ -35,7 +35,7 @@ export const LoggedInProfilePage: Component<{
     () => userAccessor.user()?.id ?? '',
   );
   const localRoasteries = fetchRoasteriesLevel();
-  const [page, setPage] = createSignal<Tabs>('espresso');
+  const [page, setPage] = createSignal<Tabs>('user');
   const [beanSelector, setBeanSelector] = createSignal(false);
   const [isAdding, setIsAdding] = createSignal(false);
   const roasteries = () =>
