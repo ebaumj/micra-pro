@@ -8,6 +8,8 @@ namespace MicraPro.ScaleManagement.Domain.ScaleImplementations.Acaia;
 
 public abstract class ScaleConnectionBase(IBleDeviceConnection connection) : IScaleConnection
 {
+    private const double FlowThreshold = 10;
+
     protected abstract byte[] Id { get; }
     protected abstract TimeSpan HeartbeatInterval { get; }
     protected abstract Task HeartbeatAsync(CancellationToken ct);
@@ -135,7 +137,9 @@ public abstract class ScaleConnectionBase(IBleDeviceConnection connection) : ISc
         _lastWeight = weight;
         if (diffTime is > 2 or <= 0)
             return 0;
-        _flowAverage = _flowAverage.Skip(1).Append(diffWeight / diffTime).ToArray();
+        var flow = diffWeight / diffTime;
+        if (flow < FlowThreshold)
+            _flowAverage = _flowAverage.Skip(1).Append(diffWeight / diffTime).ToArray();
         return _flowAverage.Sum() / _flowAverage.Length;
     }
 
