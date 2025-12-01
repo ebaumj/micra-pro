@@ -14,7 +14,7 @@ const authorize = (header: string | null, assetId?: string) => {
   if (!token) return fail();
   const runtimeConfig = useRuntimeConfig();
   try {
-    jwt.verify(token, runtimeConfig.secrets.privateKey, {
+    jwt.verify(token, process.env.REMOTE_ASSET_SERVER_PRIVATE_KEY ?? '', {
       audience: runtimeConfig.authorization.jwtAudience,
       issuer: [
         runtimeConfig.authorization.jwtValidIssuers[0]!,
