@@ -1,4 +1,4 @@
-import { Component, createSignal, For, Show } from 'solid-js';
+import { Component, createSignal, For, ParentComponent, Show } from 'solid-js';
 import {
   BeanProperties,
   createBeansAccessor,
@@ -152,15 +152,15 @@ export const EditBeansPage: Component = () => {
               <div class="w-full border-b" />
               <For each={roasteriesAccessor.roasteries()}>
                 {(r) => (
-                  <LongPressDiv
+                  <EditDiv
                     class={twMerge(
-                      'flex border-b py-2',
+                      'flex h-12 items-center border-b',
                       selectedRoastery() === r.id
                         ? 'bg-secondary inset-shadow-sm'
                         : '',
                     )}
                     onClick={() => selectRoastery(r.id)}
-                    onLongPress={() =>
+                    onEdit={() =>
                       setEditRoasteryDialog({
                         properties: r.properties,
                         onSave: (props: RoasteryProperties) =>
@@ -194,7 +194,7 @@ export const EditBeansPage: Component = () => {
                         </div>
                       </Show>
                     </div>
-                  </LongPressDiv>
+                  </EditDiv>
                 )}
               </For>
               <div class="flex w-full items-center justify-center p-2">
@@ -221,15 +221,15 @@ export const EditBeansPage: Component = () => {
                 .filter((b) => b.roasteryId === selectedRoastery())}
             >
               {(b) => (
-                <LongPressDiv
+                <EditDiv
                   class={twMerge(
-                    'flex border-b',
+                    'flex h-12 items-center border-b',
                     selectedBean() === b.id
                       ? 'bg-secondary inset-shadow-sm'
                       : '',
                   )}
                   onClick={() => selectBean(b.id)}
-                  onLongPress={() =>
+                  onEdit={() =>
                     setEditBeanDialog({
                       properties: b.properties,
                       onSave: (props: BeanProperties) =>
@@ -259,7 +259,7 @@ export const EditBeansPage: Component = () => {
                       </div>
                     </Show>
                   </div>
-                </LongPressDiv>
+                </EditDiv>
               )}
             </For>
             <Show when={selectedRoastery() !== ''}>
@@ -449,5 +449,37 @@ export const EditBeansPage: Component = () => {
         </div>
       </Show>
     </div>
+  );
+};
+
+const EditDiv: ParentComponent<{
+  class?: string;
+  onClick: () => void;
+  onEdit: () => void;
+}> = (props) => {
+  const [press, setPress] = createSignal(false);
+  const longPress = () => {
+    setPress(false);
+    props.onEdit();
+  };
+
+  return (
+    <LongPressDiv
+      class={props.class}
+      onClick={props.onClick}
+      onLongPress={longPress}
+      onPressStart={() => setPress(true)}
+      onPressEnd={() => setPress(false)}
+      delayTimeMs={1000}
+      maxShortPressTimeMs={300}
+    >
+      <Show when={press()}>
+        <div class="flex h-full w-full items-center justify-center gap-2">
+          <Icon iconName="edit" />
+          <div class="animate-spin-loader-1s bg-foreground h-6 w-6 rotate-45 rounded-full" />
+        </div>
+      </Show>
+      <Show when={!press()}>{props.children}</Show>
+    </LongPressDiv>
   );
 };
