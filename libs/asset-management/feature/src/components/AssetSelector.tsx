@@ -12,6 +12,7 @@ import { AssetCreator } from './AssetCreator';
 import { useAssetAccessor } from './AssetContextProvider';
 import { twMerge } from 'tailwind-merge';
 import {
+  Icon,
   LongPressDiv,
   selectPicturesForMode,
   Spinner,
@@ -30,6 +31,7 @@ export const AssetSelector: Component<AssetSelectorProps> = (props) => {
   const [createOpen, setCreateOpen] = createSignal(false);
   const [unfinished, setUnfinished] = createSignal<string | undefined>();
   const [isPolling, setIsPolling] = createSignal(false);
+  const [isDeleting, setIsDeleting] = createSignal(false);
   createEffect(() => {
     const path = accessor
       .unfinished()
@@ -57,14 +59,29 @@ export const AssetSelector: Component<AssetSelectorProps> = (props) => {
       <Show when={props.assetId}>
         <LongPressDiv
           onClick={changeAsset}
-          onLongPress={() => props.onRemove?.()}
+          onLongPress={() => {
+            setIsDeleting(false);
+            props.onRemove?.();
+          }}
+          onPressStart={() => setIsDeleting(true)}
+          onPressEnd={() => setIsDeleting(false)}
+          delayTimeMs={1000}
+          maxShortPressTimeMs={300}
         >
-          <Show when={!isPolling()}>
+          <Show when={!isPolling() && !isDeleting()}>
             <Asset assetId={props.assetId!} {...rest} class={local.class} />
           </Show>
-          <Show when={isPolling()}>
+          <Show when={isPolling() && !isDeleting()}>
             <div class={local.class}>
               <Spinner class="h-full w-full p-4" />
+            </div>
+          </Show>
+          <Show when={isDeleting()}>
+            <div class={local.class}>
+              <div class="flex h-full w-full items-center justify-center gap-2">
+                <Icon iconName="delete" class="text-destructive" />
+                <div class="animate-spin-loader-1s bg-destructive h-6 w-6 rotate-45 rounded-full" />
+              </div>
             </div>
           </Show>
         </LongPressDiv>

@@ -164,7 +164,7 @@ export const MainscreenConfigPage: Component<{}> = () => {
                           )}
                           onClick={() => setCurrentPosition({ x, y })}
                           onLongPress={() => tileLongPress(x, y)}
-                          onPressStart={() => setDeleting(true)}
+                          onPressStart={() => beanId(x, y) && setDeleting(true)}
                           onPressEnd={() => setDeleting(false)}
                           delayTimeMs={1000}
                           maxShortPressTimeMs={300}
