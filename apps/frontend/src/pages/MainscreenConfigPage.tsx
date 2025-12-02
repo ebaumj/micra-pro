@@ -58,7 +58,7 @@ const BeanPreview: Component<{
           <Show when={!beanInfo()!.assetId}>
             <CountryFlag countryCode={beanInfo()!.country} class="px-6" />
           </Show>
-          <div class="pt-2 font-bold">{beanInfo()!.name}</div>
+          <div class="pt-2 font-bold whitespace-nowrap">{beanInfo()!.name}</div>
           <div class="">{beanInfo()!.roastery}</div>
         </div>
       </Show>
@@ -154,7 +154,7 @@ export const MainscreenConfigPage: Component<{}> = () => {
                         'grid-column-start': x + 1,
                       }}
                     >
-                      <div class="col-start-1 col-end-2 row-start-1 row-end-2 h-full">
+                      <div class="col-start-1 col-end-2 row-start-1 row-end-2 h-full overflow-hidden">
                         <LongPressDiv
                           class={twMerge(
                             'flex h-full w-full items-center justify-center rounded-lg border',

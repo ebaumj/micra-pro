@@ -17,6 +17,7 @@ const defaults = (): BeanProperties =>
     JSON.stringify({
       countryCode: '',
       name: '',
+      assetId: null,
     }),
   );
 
