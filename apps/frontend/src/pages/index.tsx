@@ -50,7 +50,7 @@ const BeanButtons: Component<{
             }}
             onClick={() => props.onButtonClick(btn.bean)}
           >
-            <div class="col-start-1 col-end-2 row-start-1 row-end-2 h-full">
+            <div class="col-start-1 col-end-2 row-start-1 row-end-2 h-full overflow-hidden">
               <div class="bg-card text-card-foreground flex h-full w-full flex-col items-center justify-center rounded-lg border text-sm shadow-md">
                 <Show when={btn.bean.properties.assetId}>
                   <Asset
@@ -64,7 +64,9 @@ const BeanButtons: Component<{
                     class="px-6"
                   />
                 </Show>
-                <div class="pt-2 font-bold">{btn.bean.properties.name}</div>
+                <div class="pt-2 font-bold whitespace-nowrap">
+                  {btn.bean.properties.name}
+                </div>
                 <div class="">{btn.bean.roastery.name}</div>
               </div>
             </div>
