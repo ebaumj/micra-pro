@@ -16,6 +16,7 @@ type LongPressDivProps = Omit<
 
 export const LongPressDiv: ParentComponent<LongPressDivProps> = (props) => {
   const [local, rest] = splitProps(props, [
+    'class',
     'onClick',
     'onLongPress',
     'onPressStart',
@@ -56,6 +57,7 @@ export const LongPressDiv: ParentComponent<LongPressDivProps> = (props) => {
       onPointerUp={keyUp}
       onPointerLeave={cleanup}
       onPointerCancel={cleanup}
+      class={local.class}
       {...rest}
     >
       {props.children}
