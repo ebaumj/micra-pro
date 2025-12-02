@@ -47,6 +47,11 @@ export const LongPressDiv: ParentComponent<LongPressDivProps> = (props) => {
     cleanup();
   };
 
+  const cancel = () => {
+    local.onPressEnd?.();
+    cleanup();
+  };
+
   const cleanup = () => timer !== null && clearTimeout(timer);
 
   onCleanup(cleanup);
@@ -55,8 +60,8 @@ export const LongPressDiv: ParentComponent<LongPressDivProps> = (props) => {
     <div
       onPointerDown={keyDown}
       onPointerUp={keyUp}
-      onPointerLeave={cleanup}
-      onPointerCancel={cleanup}
+      onPointerLeave={cancel}
+      onPointerCancel={cancel}
       class={local.class}
       {...rest}
     >
