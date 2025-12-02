@@ -154,7 +154,7 @@ export const EditBeansPage: Component = () => {
                 {(r) => (
                   <EditDiv
                     class={twMerge(
-                      'flex h-12 items-center border-b',
+                      'flex h-12 min-h-12 items-center border-b',
                       selectedRoastery() === r.id
                         ? 'bg-secondary inset-shadow-sm'
                         : '',
@@ -174,7 +174,7 @@ export const EditBeansPage: Component = () => {
                       })
                     }
                   >
-                    <div class="flex h-full w-16 items-center justify-center">
+                    <div class="flex w-16 items-center justify-center">
                       <div class="pb-0.5">
                         <Icon class="text-3xl" iconName="folder" />
                       </div>
@@ -187,7 +187,7 @@ export const EditBeansPage: Component = () => {
                         {r.properties.location}
                       </div>
                     </div>
-                    <div class="flex h-full w-14 items-center justify-center">
+                    <div class="flex w-14 items-center justify-center">
                       <Show when={selectedRoastery() === r.id}>
                         <div class="pb-0.5">
                           <Icon class="text-3xl" iconName="navigate_next" />
@@ -223,7 +223,7 @@ export const EditBeansPage: Component = () => {
               {(b) => (
                 <EditDiv
                   class={twMerge(
-                    'flex h-12 items-center border-b',
+                    'flex h-12 min-h-12 items-center border-b',
                     selectedBean() === b.id
                       ? 'bg-secondary inset-shadow-sm'
                       : '',
