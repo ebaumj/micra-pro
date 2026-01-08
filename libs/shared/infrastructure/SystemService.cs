@@ -8,7 +8,7 @@ namespace MicraPro.Shared.Infrastructure;
 public class SystemService(
     IOptions<SharedInfrastructureOptions> options,
     ILogger<SystemService> logger
-) : ISystemService
+) : ISystemService, IWifiEnableService
 {
     private async Task<string> Bash(string file, string cmd)
     {
@@ -106,6 +106,22 @@ public class SystemService(
             if (response.StartsWith("Error"))
                 throw new Exception($"Failed to connect network: {response}");
             await Task.Delay(TimeSpan.FromMilliseconds(500), ct);
+            return true;
+        }
+        catch (Exception e)
+        {
+            logger.LogWarning(e.Message);
+            return false;
+        }
+    }
+
+    public async Task<bool> EnableWifi(CancellationToken ct)
+    {
+        try
+        {
+            var response = await Bash("/usr/bin/nmcli", "radio wifi on");
+            if (response.StartsWith("Error"))
+                throw new Exception($"Failed to set Wifi on: {response}");
             return true;
         }
         catch (Exception e)
