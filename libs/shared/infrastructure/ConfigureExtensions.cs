@@ -21,7 +21,10 @@ public static class ConfigureExtensions
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             services
-                .AddSingleton<ISystemService, SystemService>()
+                .AddSingleton<SystemService>()
+                .AddSingleton<ISystemService>(sp => sp.GetRequiredService<SystemService>())
+                .AddSingleton<IWifiEnableService>(sp => sp.GetRequiredService<SystemService>())
+                .AddHostedService<WifiEnableHostService>()
                 .AddSingleton<BrewPaddleAccess>()
                 .AddSingleton<IBrewPaddleAccess>(sp => sp.GetRequiredService<BrewPaddleAccess>())
                 .AddHostedService(sp => sp.GetRequiredService<BrewPaddleAccess>())
