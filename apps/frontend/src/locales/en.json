@@ -8,6 +8,7 @@
   "root.menu-sidebar-profile": "Profile",
   "root.menu-sidebar-wifi": "Wifi",
   "root.menu-sidebar-cleaning": "Cleaning",
+  "root.menu-sidebar-updates": "Updates",
   "root.scale": "Scale",
   "root.wifi-connect": "Connect",
   "root.wifi-password": "Password",
@@ -17,5 +18,11 @@
   "root.shutdown": "Shutdown",
   "root.reboot-failed": "Reboot failed",
   "root.shutdown-failed": "Shutdown failed",
-  "root.grinder-offset": "Grinder Offset"
+  "root.grinder-offset": "Grinder Offset",
+  "root.current-version": "Current Version",
+  "root.install": "Install",
+  "root.installing-update": "Installing Update",
+  "root.installing-update-deatils": "Update is in progress. The System will reboot to apply Update.",
+  "root.update-failed-title": "Update Failed",
+  "root.update-failed-messsage": "Failed to install Update"
 }

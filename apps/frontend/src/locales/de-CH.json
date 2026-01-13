@@ -17,5 +17,12 @@
   "root.wifi-failed-title": "Het nid verbunde",
   "root.wifi-password": "Passwort",
   "root.grinder-offset": "Offset Mühli",
-  "root.menu-sidebar-cleaning": "Putze"
+  "root.menu-sidebar-cleaning": "Putze",
+  "root.current-version": "Aktuelli Version",
+  "root.install": "Installiere",
+  "root.installing-update": "I bi am installiere",
+  "root.installing-update-deatils": "Z Update wird verarbeitet. Z System startet de neu zum abschliesse.",
+  "root.menu-sidebar-updates": "Updates",
+  "root.update-failed-messsage": "Ha z Update nid chönne installiere.",
+  "root.update-failed-title": "Update het nid funktioniert"
 }

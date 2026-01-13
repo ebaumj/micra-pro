@@ -5,20 +5,6 @@
   "projectType": "application",
   "tags": ["type:app"],
   "targets": {
-    "deploy": {
-      "executor": "@micra-pro/workspace-extensions:deploy",
-      "options": {
-        "sshTarget": {
-          "target": "micra",
-          "user": "micra"
-        },
-        "paths": {
-          "origin": "dist/apps/frontend/*",
-          "destination": "/usr/lib/micra-pro/frontend/"
-        },
-        "affectedServices": ["backend.service"]
-      }
-    },
     "build": {},
     "serve": {},
     "codegen": {

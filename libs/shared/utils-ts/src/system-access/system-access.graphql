@@ -32,3 +32,13 @@ query ScanWifi {
     passwordRequired
   }
 }
+
+query SystemVersion {
+  systemVersion
+}
+
+mutation InstallUpdate($link: String!, $signature: String!) {
+  installUpdate(input: { link: $link, signature: $signature }) {
+    boolean
+  }
+}

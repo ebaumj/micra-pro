@@ -6,6 +6,7 @@ export interface Database {
   user: UserTable;
   migration: MigrationTable;
   image: ImageTable;
+  update: UpdateTable;
 }
 
 export interface MigrationTable {
@@ -69,3 +70,12 @@ export interface ImageTable {
 export type Image = Selectable<ImageTable>;
 export type NewImage = Insertable<ImageTable>;
 export type UpdateImage = Updateable<ImageTable>;
+
+export interface UpdateTable {
+  version: string;
+  link: string;
+  signature: string;
+  created_at: Date;
+}
+
+export type Update = Selectable<UpdateTable>;

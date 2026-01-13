@@ -5,20 +5,6 @@
   "sourceRoot": "apps/backend",
   "tags": ["type:app"],
   "targets": {
-    "deploy": {
-      "executor": "@micra-pro/workspace-extensions:deploy",
-      "options": {
-        "sshTarget": {
-          "target": "micra",
-          "user": "micra"
-        },
-        "paths": {
-          "origin": "apps/backend/bin/Release/net8.0/linux-arm64/publish/*",
-          "destination": "/usr/lib/micra-pro/backend/"
-        },
-        "affectedServices": ["backend.service"]
-      }
-    },
     "build": {
       "executor": "@nx-dotnet/core:publish",
       "outputs": ["{projectRoot}/bin", "{projectRoot}/obj"],
@@ -33,6 +19,17 @@
           "runtime": "linux-arm64",
           "extraParameters": "-p:PublishSingleFile=true -p:SelfContained=true"
         }
+      }
+    },
+    "build-production": {
+      "executor": "@nx-dotnet/core:publish",
+      "outputs": ["{projectRoot}/bin", "{projectRoot}/obj"],
+      "dependsOn": ["^build", "codegen", "^codegen"],
+      "options": {
+        "configuration": "Release",
+        "runtime": "linux-arm64",
+        "extraParameters": "-p:PublishSingleFile=true -p:SelfContained=true",
+        "noDependencies": true
       }
     },
     "serve": {

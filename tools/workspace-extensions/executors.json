@@ -25,10 +25,15 @@
       "schema": "./src/executors/clear-translations/schema.json",
       "description": "clear-translations executor"
     },
-    "deploy": {
-      "implementation": "./src/executors/deploy/executor",
-      "schema": "./src/executors/deploy/schema.json",
-      "description": "deploy executor"
+    "create-update-file": {
+      "implementation": "./src/executors/create-update-file/executor",
+      "schema": "./src/executors/create-update-file/schema.json",
+      "description": "create-update-file executor"
+    },
+    "deploy-update": {
+      "implementation": "./src/executors/deploy-update/executor",
+      "schema": "./src/executors/deploy-update/schema.json",
+      "description": "deploy-update executor"
     }
   }
 }

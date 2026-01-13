@@ -5,20 +5,6 @@
   "projectType": "application",
   "tags": ["type:app"],
   "targets": {
-    "deploy": {
-      "executor": "@micra-pro/workspace-extensions:deploy",
-      "options": {
-        "sshTarget": {
-          "target": "micra",
-          "user": "micra"
-        },
-        "paths": {
-          "origin": "apps/asset-server/.output/*",
-          "destination": "/usr/lib/micra-pro/asset-server/"
-        },
-        "affectedServices": ["remote-asset-server.service"]
-      }
-    },
     "build": {
       "executor": "nx:run-commands",
       "options": {

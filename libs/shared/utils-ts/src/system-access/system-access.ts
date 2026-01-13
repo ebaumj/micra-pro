@@ -1,3 +1,4 @@
+import { Accessor } from 'solid-js';
 import {
   ConnectedWifiDocument,
   ConnectedWifiQuery,
@@ -8,6 +9,9 @@ import {
   DisconnectWifiDocument,
   DisconnectWifiMutation,
   DisconnectWifiMutationVariables,
+  InstallUpdateDocument,
+  InstallUpdateMutation,
+  InstallUpdateMutationVariables,
   RebootDocument,
   RebootMutation,
   RebootMutationVariables,
@@ -17,6 +21,9 @@ import {
   ShutdownDocument,
   ShutdownMutation,
   ShutdownMutationVariables,
+  SystemVersionDocument,
+  SystemVersionQuery,
+  SystemVersionQueryVariables,
   Wifi,
 } from '../generated/graphql';
 import { createMutation } from '../graphql-client/createMutation';
@@ -91,6 +98,29 @@ export const wifiAccess = (): {
       await disconnectMutation({ ssid });
       const current = await currentNetworkQuery.resourceActions.refetch();
       if (current) currentNetworkQuery.resourceActions.mutate(current);
+    },
+  };
+};
+
+export const updateAccess = (): {
+  currentVersion: Accessor<string>;
+  loading: Accessor<boolean>;
+  installUpdate: (link: string, signature: string) => Promise<void>;
+} => {
+  const query = createQuery<SystemVersionQuery, SystemVersionQueryVariables>(
+    SystemVersionDocument,
+    () => ({}),
+  );
+  const mutation = createMutation<
+    InstallUpdateMutation,
+    InstallUpdateMutationVariables
+  >(InstallUpdateDocument);
+  return {
+    currentVersion: () => query.resource.latest?.systemVersion ?? '',
+    loading: () => query.resource.state === 'pending',
+    installUpdate: async (link: string, signature: string): Promise<void> => {
+      const result = await mutation({ link: link, signature: signature });
+      if (result.installUpdate.boolean !== true) throw new Error();
     },
   };
 };

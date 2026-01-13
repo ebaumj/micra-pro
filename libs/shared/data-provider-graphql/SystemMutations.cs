@@ -23,4 +23,11 @@ public static class SystemMutations
         string ssid,
         CancellationToken ct
     ) => service.DisconnectWifiAsync(ssid, ct);
+
+    public static Task<bool> InstallUpdate(
+        [Service] ISystemService service,
+        string link,
+        string signature,
+        CancellationToken ct
+    ) => service.InstallUpdateAsync(link, signature, ct);
 }

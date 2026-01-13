@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "version": 2,
+  "title": "Create Update File executor",
+  "description": "Creates Update Zip File",
+  "type": "object",
+  "properties": {
+    "updateFile": {
+      "type": "string",
+      "description": "App file to upload"
+    },
+    "signatureFile": {
+      "type": "string",
+      "description": "File with the signature of the app"
+    },
+    "appSettingsFile": {
+      "type": "string",
+      "description": "AppSettings of backend to retrieve version"
+    }
+  },
+  "required": []
+}

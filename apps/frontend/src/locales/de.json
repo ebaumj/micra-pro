@@ -17,5 +17,12 @@
   "root.wifi-failed-title": "Verbindung fehlgeschlagen",
   "root.wifi-password": "Passwort",
   "root.grinder-offset": "Offset Mühle",
-  "root.menu-sidebar-cleaning": "Reinigung"
+  "root.menu-sidebar-cleaning": "Reinigung",
+  "root.current-version": "Aktuelle Version",
+  "root.install": "Installieren",
+  "root.installing-update": "Update wird installiert",
+  "root.installing-update-deatils": "Update wird verarbeitet. Das System wird neu starten, um die Installation abzuschliessen.",
+  "root.menu-sidebar-updates": "Updates",
+  "root.update-failed-messsage": "Installieren des Updates ist fehlgeschlagen.",
+  "root.update-failed-title": "Update fehlgeschlagen"
 }

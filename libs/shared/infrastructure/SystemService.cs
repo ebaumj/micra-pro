@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Security.Cryptography;
 using MicraPro.Shared.Domain;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -28,6 +29,8 @@ public class SystemService(
         await process.WaitForExitAsync();
         return result;
     }
+
+    public string SystemVersion => options.Value.SystemVersion;
 
     public async Task<bool> ShutdownAsync(CancellationToken ct) =>
         (await Bash("/sbin/shutdown", "now")).Contains("The system will power off now!");
@@ -113,6 +116,40 @@ public class SystemService(
             logger.LogWarning(e.Message);
             return false;
         }
+    }
+
+    public async Task<bool> InstallUpdateAsync(string link, string signature, CancellationToken ct)
+    {
+        try
+        {
+            using var client = new HttpClient();
+            var fileContent = await (await client.GetAsync(link, ct)).Content.ReadAsStreamAsync(ct);
+            using var sha256 = SHA256.Create();
+            var hash = await sha256.ComputeHashAsync(fileContent, ct);
+            using var rsa = RSA.Create();
+            rsa.ImportFromPem(await File.ReadAllTextAsync(options.Value.UpdatePublicKey, ct));
+            var formatter = new RSAPKCS1SignatureDeformatter(rsa);
+            formatter.SetHashAlgorithm(nameof(SHA256));
+            if (!formatter.VerifySignature(hash, Convert.FromBase64String(signature)))
+                throw new Exception("Invalid signature");
+            if (!Directory.Exists(options.Value.UpdateDestination))
+                Directory.CreateDirectory(options.Value.UpdateDestination);
+            var filePath = Path.Combine(
+                options.Value.UpdateDestination,
+                options.Value.UpdateFileName
+            );
+            if (File.Exists(filePath))
+                File.Delete(filePath);
+            var fs = File.Create(filePath);
+            await fileContent.CopyToAsync(fs, ct);
+            fs.Close();
+        }
+        catch (Exception e)
+        {
+            logger.LogWarning("Failed to install update: {e}", e);
+            return false;
+        }
+        return await RebootAsync(ct);
     }
 
     public async Task<bool> EnableWifi(CancellationToken ct)
