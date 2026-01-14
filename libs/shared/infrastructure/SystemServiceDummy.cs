@@ -1,11 +1,18 @@
+using System.Security.Cryptography;
 using MicraPro.Shared.Domain;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace MicraPro.Shared.Infrastructure;
 
-public class SystemServiceDummy(ILogger<SystemServiceDummy> logger) : ISystemService
+public class SystemServiceDummy(
+    IOptions<SharedInfrastructureOptions> options,
+    ILogger<SystemServiceDummy> logger
+) : ISystemService
 {
     private string? _wifi;
+
+    public string SystemVersion => options.Value.SystemVersion;
 
     public Task<bool> ShutdownAsync(CancellationToken ct)
     {
@@ -53,5 +60,41 @@ public class SystemServiceDummy(ILogger<SystemServiceDummy> logger) : ISystemSer
         if (_wifi == ssid)
             _wifi = null;
         return true;
+    }
+
+    public async Task<bool> InstallUpdateAsync(string link, string signature, CancellationToken ct)
+    {
+        try
+        {
+            using var client = new HttpClient();
+            var fileContent = await (await client.GetAsync(link, ct)).Content.ReadAsStreamAsync(ct);
+            using var sha256 = SHA256.Create();
+            var hash = await sha256.ComputeHashAsync(fileContent, ct);
+            using var rsa = RSA.Create();
+            logger.LogInformation(Directory.GetCurrentDirectory());
+            rsa.ImportFromPem(await File.ReadAllTextAsync(options.Value.UpdatePublicKey, ct));
+            var formatter = new RSAPKCS1SignatureDeformatter(rsa);
+            formatter.SetHashAlgorithm(nameof(SHA256));
+            if (!formatter.VerifySignature(hash, Convert.FromBase64String(signature)))
+                throw new Exception("Invalid signature");
+            if (!Directory.Exists(options.Value.UpdateDestination))
+                Directory.CreateDirectory(options.Value.UpdateDestination);
+            var filePath = Path.Combine(
+                options.Value.UpdateDestination,
+                options.Value.UpdateFileName
+            );
+            if (File.Exists(filePath))
+                File.Delete(filePath);
+            var fs = File.Create(filePath);
+            await fileContent.CopyToAsync(fs, ct);
+            fs.Close();
+            logger.LogInformation("Update Installed");
+            return false;
+        }
+        catch (Exception e)
+        {
+            logger.LogWarning("Failed to install update: {e}", e);
+            return false;
+        }
     }
 }

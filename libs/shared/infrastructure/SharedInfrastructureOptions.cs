@@ -7,4 +7,8 @@ public class SharedInfrastructureOptions
     public string WifiAdapter { get; set; } = string.Empty;
     public string BluetoothAdapter { get; set; } = string.Empty;
     public int BrewPaddleRelaisGpio { get; set; } = 0;
+    public string SystemVersion { get; set; } = string.Empty;
+    public string UpdateDestination { get; set; } = string.Empty;
+    public string UpdateFileName { get; set; } = string.Empty;
+    public string UpdatePublicKey { get; set; } = string.Empty;
 }

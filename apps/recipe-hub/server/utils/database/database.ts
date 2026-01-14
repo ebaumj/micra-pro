@@ -3,6 +3,7 @@ import { Pool } from 'pg';
 import { Kysely, PostgresDialect, sql } from 'kysely';
 import { initialCreateMigration } from './migrations/initial-create';
 import { imageTableMigration } from './migrations/image-table';
+import { updateTableMigration } from './migrations/update-table';
 
 export type MigrationProcess = {
   name: string;
@@ -25,6 +26,7 @@ const getDatabase = (connection: string) =>
 const migrations: MigrationProcess[] = [
   initialCreateMigration,
   imageTableMigration,
+  updateTableMigration,
 ];
 
 export const migratedDb = async (

@@ -39,6 +39,7 @@ testem.log
 .env
 .env.*
 !.env.example
+private-key.pem
 
 # System Files
 .DS_Store

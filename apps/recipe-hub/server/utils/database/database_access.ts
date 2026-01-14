@@ -1,6 +1,7 @@
 import {
   type EspressoRecipe,
   type V60Recipe,
+  type Update,
 } from '@micra-pro/recipe-hub/data-definition';
 import { migratedDb } from './database';
 import { v4 as uuid } from 'uuid';
@@ -18,6 +19,13 @@ type Repository<T extends Entity> = {
   remove: (id: string) => Promise<string>;
   getAll: () => Promise<T[]>;
   getById: (id: string) => Promise<T>;
+};
+
+export const getUpdates = async (connection: string): Promise<Update[]> => {
+  const db = await migratedDb(connection);
+  const dbObject = await db.selectFrom('update').selectAll().execute();
+  if (!dbObject) throw new Error();
+  return dbObject;
 };
 
 export const getEspressoRecipeRepository: (

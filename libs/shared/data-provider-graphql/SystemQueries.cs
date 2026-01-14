@@ -14,4 +14,9 @@ public static class SystemQueries
         [Service] ISystemService service,
         CancellationToken ct
     ) => service.ScanWifiAsync(ct);
+
+    public static Task<string> GetSystemVersion(
+        [Service] ISystemService service,
+        CancellationToken ct
+    ) => Task.FromResult(service.SystemVersion);
 }

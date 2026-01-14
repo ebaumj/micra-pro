@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "version": 2,
+  "title": "Create Update File executor",
+  "description": "Creates Update Zip File",
+  "type": "object",
+  "properties": {
+    "applicationPaths": {
+      "type": "object",
+      "properties": {
+        "backend": {
+          "type": "string",
+          "description": "Backend Application output"
+        },
+        "frontend": {
+          "type": "string",
+          "description": "Frontend Application output"
+        },
+        "asset_server": {
+          "type": "string",
+          "description": "Asset Server Application output"
+        }
+      },
+      "description": "Output Paths of the compiled Applications"
+    },
+    "outputPath": {
+      "type": "string",
+      "description": "Path for the output file"
+    },
+    "signingKey": {
+      "type": "string",
+      "description": "Private Key File to Sign the Update File"
+    }
+  },
+  "required": []
+}

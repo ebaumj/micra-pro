@@ -29,4 +29,9 @@
   <ItemGroup>
     <ProjectReference Include="..\domain\MicraPro.Shared.Domain.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="crypto\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>

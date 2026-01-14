@@ -1,0 +1,32 @@
+{
+  "name": "tools-release",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/tools/release",
+  "projectType": "application",
+  "tags": ["type:app"],
+  "implicitDependencies": ["backend", "frontend", "asset-server"],
+  "targets": {
+    "create-release": {
+      "executor": "@micra-pro/workspace-extensions:deploy-update",
+      "dependsOn": ["create-file"],
+      "options": {
+        "updateFile": "dist/apps/tools/release/mp-apps.zip",
+        "signatureFile": "dist/apps/tools/release/signature.txt",
+        "appSettingsFile": "apps/backend/appsettings.json"
+      }
+    },
+    "create-file": {
+      "executor": "@micra-pro/workspace-extensions:create-update-file",
+      "dependsOn": ["^build", "^build-production"],
+      "options": {
+        "applicationPaths": {
+          "backend": "apps/backend/bin/Release/net8.0/linux-arm64/publish",
+          "frontend": "dist/apps/frontend",
+          "asset_server": "apps/asset-server/.output"
+        },
+        "outputPath": "dist/apps/tools/release/",
+        "signingKey": "{projectRoot}/private-key.pem"
+      }
+    }
+  }
+}

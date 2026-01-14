@@ -1,9 +1,6 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "targetDefaults": {
-    "deploy": {
-      "dependsOn": ["build", "^build"]
-    },
     "build": {
       "dependsOn": ["^build", "codegen", "^codegen", "typecheck"],
       "inputs": ["production", "^production"],
