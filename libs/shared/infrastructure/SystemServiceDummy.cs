@@ -67,11 +67,11 @@ public class SystemServiceDummy(
         try
         {
             using var client = new HttpClient();
-            var fileContent = await (await client.GetAsync(link, ct)).Content.ReadAsStreamAsync(ct);
-            using var sha256 = SHA256.Create();
-            var hash = await sha256.ComputeHashAsync(fileContent, ct);
+            var stream = await (await client.GetAsync(link, ct)).Content.ReadAsStreamAsync(ct);
+            var fileData = new byte[stream.Length];
+            await stream.ReadExactlyAsync(fileData, 0, fileData.Length, ct);
+            var hash = SHA256.HashData(fileData);
             using var rsa = RSA.Create();
-            logger.LogInformation(Directory.GetCurrentDirectory());
             rsa.ImportFromPem(await File.ReadAllTextAsync(options.Value.UpdatePublicKey, ct));
             var formatter = new RSAPKCS1SignatureDeformatter(rsa);
             formatter.SetHashAlgorithm(nameof(SHA256));
@@ -86,7 +86,7 @@ public class SystemServiceDummy(
             if (File.Exists(filePath))
                 File.Delete(filePath);
             var fs = File.Create(filePath);
-            await fileContent.CopyToAsync(fs, ct);
+            await fs.WriteAsync(fileData, ct);
             fs.Close();
             logger.LogInformation("Update Installed");
             return false;
