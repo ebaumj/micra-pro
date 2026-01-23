@@ -1,5 +1,4 @@
-import { Component, createSignal, Show } from 'solid-js';
-
+import { Component, createSignal } from 'solid-js';
 import {
   Button,
   handleError,
@@ -9,14 +8,40 @@ import {
   useDarkModeContext,
 } from '@micra-pro/shared/ui';
 import { createSystemAccessor } from '@micra-pro/shared/utils-ts';
-import { T, useTranslationContext } from '../generated/language-types';
-import { GrinderOffsetSelector } from '@micra-pro/bean-management/feature';
+import { useTranslationContext } from '../generated/language-types';
 import { twMerge } from 'tailwind-merge';
 import { BrewByWeightPannelStyleSelector } from '@micra-pro/brew-by-weight/feature';
+import { WifiButton } from './WifiButton';
+import { ScaleSelector } from '@micra-pro/scale-management/feature';
+import { UpdateButton } from './UpdateButton';
+
+const ActionButton: Component<{
+  class?: string;
+  disabled?: boolean;
+  loading?: boolean;
+  iconName: string;
+  onClick?: () => void;
+}> = (props) => {
+  return (
+    <Button
+      class={twMerge('flex h-full items-center', props.class)}
+      disabled={props.disabled}
+      onClick={props.onClick}
+      variant="outline"
+    >
+      <Icon
+        iconName={props.iconName}
+        class={twMerge(
+          'flex items-center text-2xl',
+          props.loading ? 'animate-spin' : '',
+        )}
+      />
+    </Button>
+  );
+};
 
 export const SettingsButton: Component<{
   class?: string;
-  onSettingChanged?: () => void;
 }> = (props) => {
   const { t } = useTranslationContext();
   const [shutdown, setShutdown] = createSignal(false);
@@ -84,46 +109,35 @@ export const SettingsButton: Component<{
           </div>
         </div>
         <BrewByWeightPannelStyleSelector />
-        <div class="flex w-full items-center whitespace-nowrap">
-          <T key="grinder-offset" />
-          <div class="flex w-full justify-end">
-            <GrinderOffsetSelector onChanged={props.onSettingChanged} />
+        <div class="flex h-full w-full flex-col items-end justify-end gap-2">
+          <div class="flex h-14 w-full gap-2">
+            <WifiButton class="w-1/3" />
+            <ScaleSelector class="h-full w-1/3" />
+            <UpdateButton class="w-1/3" />
+          </div>
+          <div class="flex h-10 w-full gap-2">
+            <ActionButton
+              iconName="restore_page"
+              class="w-1/3"
+              onClick={() => location.reload()}
+              disabled={shutdown() || reboot()}
+            />
+            <ActionButton
+              iconName="replay"
+              class="w-1/3"
+              disabled={shutdown() || reboot()}
+              loading={reboot()}
+              onClick={rebootCommand}
+            />
+            <ActionButton
+              iconName="power_settings_new"
+              class="w-1/3"
+              disabled={shutdown() || reboot()}
+              loading={shutdown()}
+              onClick={shutdownCommand}
+            />
           </div>
         </div>
-        <Show when={!shutdown() && !reboot()}>
-          <div class="flex h-full w-full flex-col items-end justify-end gap-4">
-            <Button
-              variant="default"
-              class="flex w-full gap-2"
-              onClick={shutdownCommand}
-            >
-              <Icon iconName="power_settings_new" />
-              <T key="shutdown" />
-            </Button>
-            <Button
-              variant="default"
-              class="flex w-full gap-2"
-              onClick={rebootCommand}
-            >
-              <Icon iconName="refresh" />
-              <T key="reboot" />
-            </Button>
-          </div>
-        </Show>
-        <Show when={shutdown()}>
-          <div class="flex h-full w-full items-center justify-center">
-            <div class="flex h-16 w-16 animate-spin items-center justify-center text-4xl">
-              <Icon iconName="power_settings_new" />
-            </div>
-          </div>
-        </Show>
-        <Show when={reboot() && !shutdown()}>
-          <div class="flex h-full w-full items-center justify-center">
-            <div class="flex h-16 w-16 animate-spin items-center justify-center text-4xl">
-              <Icon iconName="refresh" />
-            </div>
-          </div>
-        </Show>
       </SheetContent>
     </Sheet>
   );

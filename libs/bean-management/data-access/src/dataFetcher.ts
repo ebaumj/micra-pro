@@ -34,7 +34,6 @@ export type Bean = {
 export const fetchBeansLevel = (): {
   beans: Accessor<Bean[]>;
   isLoading: Accessor<boolean>;
-  refetch: () => void;
 } => {
   const query = fetch();
   return {
@@ -63,11 +62,6 @@ export const fetchBeansLevel = (): {
                 .map((re) => re.properties),
             }))
         : [],
-    refetch: () => {
-      query.roasteries.resourceActions.refetch();
-      query.beans.resourceActions.refetch();
-      query.recipes.resourceActions.refetch();
-    },
   };
 };
 

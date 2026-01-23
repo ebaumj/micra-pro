@@ -11,12 +11,10 @@ import { twMerge } from 'tailwind-merge';
 
 export const GrinderOffsetSelector: Component<{
   class?: string;
-  onChanged?: () => void;
 }> = (props) => {
-  // eslint-disable-next-line solid/reactivity
-  const accessor = getGrinderSettingsAccessor(props.onChanged);
+  const accessor = getGrinderSettingsAccessor();
   return (
-    <div class={twMerge(props.class, 'flex items-center justify-center p-2')}>
+    <div class={twMerge(props.class, 'flex items-center justify-center')}>
       <NumberField
         onFocusIn={(e) => e.preventDefault()}
         onRawValueChange={(v) => {
@@ -30,7 +28,7 @@ export const GrinderOffsetSelector: Component<{
       >
         <NumberFieldGroup class="flex items-center justify-center">
           <NumberFieldDecrementTrigger aria-label="Decrement" />
-          <NumberFieldInput class="w-28" />
+          <NumberFieldInput />
           <NumberFieldIncrementTrigger aria-label="Increment" />
         </NumberFieldGroup>
       </NumberField>

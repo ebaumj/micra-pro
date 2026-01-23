@@ -1,4 +1,4 @@
-import { Button, CountryFlag, Icon } from '@micra-pro/shared/ui';
+import { CountryFlag, Icon } from '@micra-pro/shared/ui';
 import { A } from '@solidjs/router';
 import { Component, createSignal, For, ParentComponent, Show } from 'solid-js';
 import { LanguageSelector } from '@micra-pro/shared/ui';
@@ -17,7 +17,6 @@ import {
 import { createConfigAccessor } from '@micra-pro/shared/utils-ts';
 import { SettingsButton } from '../components/SettingsButton';
 import { CleaningRemnder } from '@micra-pro/cleaning/feature';
-import { ScaleSelector } from '@micra-pro/scale-management/feature';
 
 const BeanButtons: Component<{
   beans: Bean[];
@@ -50,8 +49,8 @@ const BeanButtons: Component<{
             }}
             onClick={() => props.onButtonClick(btn.bean)}
           >
-            <div class="col-start-1 col-end-2 row-start-1 row-end-2 h-full overflow-hidden">
-              <div class="bg-card text-card-foreground flex h-full w-full flex-col items-center justify-center rounded-lg border text-sm shadow-md">
+            <div class="col-start-1 col-end-2 row-start-1 row-end-2 h-full overflow-hidden rounded-lg shadow-md">
+              <div class="bg-card text-card-foreground flex h-full w-full flex-col items-center justify-center rounded-lg border text-sm">
                 <Show when={btn.bean.properties.assetId}>
                   <Asset
                     class="h-24 w-32 object-contain"
@@ -106,7 +105,7 @@ function MainScreen() {
   } | null>(null);
 
   return (
-    <Layout refetch={beans.refetch}>
+    <Layout>
       <div class="flex h-full w-full items-center justify-center">
         <Show when={!isLoading()}>
           <RecipePannel
@@ -132,7 +131,7 @@ function MainScreen() {
   );
 }
 
-const Layout: ParentComponent<{ refetch?: () => void }> = (props) => {
+const Layout: ParentComponent = (props) => {
   return (
     <div class="relative h-full w-full">
       <A href="/menu" class="absolute z-10 mt-1 ml-3 active:opacity-50">
@@ -143,19 +142,8 @@ const Layout: ParentComponent<{ refetch?: () => void }> = (props) => {
           <div class="w-full" />
           <CleaningRemnder class="w-20 min-w-20" />
           <SpoutSelector class="w-36 min-w-36" />
-          <ScaleSelector class="w-48 min-w-48" />
           <LanguageSelector class="w-20 min-w-20" />
-          <Button
-            variant="outline"
-            class="w-16 min-w-16"
-            onClick={() => location.reload()}
-          >
-            <Icon iconName="refresh" />
-          </Button>
-          <SettingsButton
-            class="w-16 min-w-16"
-            onSettingChanged={props.refetch}
-          />
+          <SettingsButton class="w-16 min-w-16" />
         </div>
         <div class="h-full w-full">{props.children}</div>
       </div>

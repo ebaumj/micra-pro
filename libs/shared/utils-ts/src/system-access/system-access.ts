@@ -64,6 +64,7 @@ export const wifiAccess = (): {
   isScanning: () => boolean;
   connect: (ssid: string, password?: string) => Promise<boolean>;
   disconnect: (ssid: string) => Promise<void>;
+  fetchCurrent: () => Promise<void>;
 } => {
   const currentNetworkQuery = createQuery<
     ConnectedWifiQuery,
@@ -96,6 +97,10 @@ export const wifiAccess = (): {
     },
     disconnect: async (ssid: string): Promise<void> => {
       await disconnectMutation({ ssid });
+      const current = await currentNetworkQuery.resourceActions.refetch();
+      if (current) currentNetworkQuery.resourceActions.mutate(current);
+    },
+    fetchCurrent: async (): Promise<void> => {
       const current = await currentNetworkQuery.resourceActions.refetch();
       if (current) currentNetworkQuery.resourceActions.mutate(current);
     },

@@ -14,7 +14,7 @@ import {
 } from '@micra-pro/scale-management/data-access';
 import { twMerge } from 'tailwind-merge';
 import { ScanScalesDialog } from './ScanScalesDialog';
-import { T, useTranslationContext } from '../generated/language-types';
+import { useTranslationContext } from '../generated/language-types';
 
 export const ScaleSelector: Component<{ class?: string }> = (props) => {
   const { t } = useTranslationContext();
@@ -62,8 +62,8 @@ export const ScaleSelector: Component<{ class?: string }> = (props) => {
             maxShortPressTimeMs={300}
           >
             <Button
-              variant="outline"
-              class="w-full"
+              variant="default"
+              class="h-full w-full"
               disabled={scale().isDeleting()}
             >
               <Show when={!scale().isDeleting() && !scaleDeleting()}>
@@ -73,7 +73,7 @@ export const ScaleSelector: Component<{ class?: string }> = (props) => {
                 <Spinner class="h-full" />
               </Show>
               <Show when={!scale().isDeleting() && scaleDeleting()}>
-                <div class="flex">
+                <div class="flex items-center gap-1">
                   <Icon iconName="delete" class="text-destructive" />
                   <div class="animate-spin-loader-1s bg-destructive h-6 w-6 rotate-45 rounded-full" />
                 </div>
@@ -85,12 +85,11 @@ export const ScaleSelector: Component<{ class?: string }> = (props) => {
       <Show when={!scalesAccessor.scale()}>
         <div class={twMerge(props.class, 'flex items-center justify-center')}>
           <Button
-            variant="default"
-            class="w-full"
+            variant="outline"
+            class="h-full w-full"
             onClick={() => setScanDialog(true)}
           >
             <Icon iconName="bluetooth" class="mx-2" />
-            <T key="pair-scale" />
           </Button>
         </div>
       </Show>
