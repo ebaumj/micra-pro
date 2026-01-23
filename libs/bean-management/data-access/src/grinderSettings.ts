@@ -14,9 +14,7 @@ type Setting<T> = {
   setValue: (newValue: T) => void;
 };
 
-export const getGrinderSettingsAccessor = (
-  onChange?: () => void,
-): {
+export const getGrinderSettingsAccessor = (): {
   offset: Setting<number>;
 } => {
   const [value, setValue] = createSignal(0);
@@ -37,10 +35,9 @@ export const getGrinderSettingsAccessor = (
       value: value,
       setValue: (newValue: number) =>
         newValue !== value() &&
-        setOffset({ grinderOffset: newValue }).then((o) => {
-          setValue((v) => o.setGrinderOffset.float ?? v);
-          onChange?.();
-        }),
+        setOffset({ grinderOffset: newValue }).then((o) =>
+          setValue((v) => o.setGrinderOffset.float ?? v),
+        ),
     },
   };
 };

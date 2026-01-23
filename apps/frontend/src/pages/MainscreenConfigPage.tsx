@@ -3,13 +3,17 @@ import {
   fetchRoasteriesLevel,
   Roastery,
 } from '@micra-pro/bean-management/data-access';
-import { BeanSelectorDialog } from '@micra-pro/bean-management/feature';
+import {
+  BeanSelectorDialog,
+  GrinderOffsetSelector,
+} from '@micra-pro/bean-management/feature';
 import { CountryFlag, Icon, LongPressDiv, Spinner } from '@micra-pro/shared/ui';
 import { createConfigAccessor } from '@micra-pro/shared/utils-ts';
 import { trackStore } from '@solid-primitives/deep';
 import { Component, createEffect, createSignal, For, on, Show } from 'solid-js';
 import { createStore } from 'solid-js/store';
 import { twMerge } from 'tailwind-merge';
+import { T } from '../generated/language-types';
 
 export type MainScreenConfig = {
   numberOfButtonsColumns: number;
@@ -135,7 +139,7 @@ export const MainscreenConfigPage: Component<{}> = () => {
         </div>
       </Show>
       <Show when={!isLoading()}>
-        <div class="flex h-full items-center">
+        <div class="flex h-full flex-col items-center justify-center">
           <div
             class="grid w-full gap-2"
             style={{
@@ -154,12 +158,17 @@ export const MainscreenConfigPage: Component<{}> = () => {
                         'grid-column-start': x + 1,
                       }}
                     >
-                      <div class="col-start-1 col-end-2 row-start-1 row-end-2 h-full overflow-hidden">
+                      <div
+                        class={twMerge(
+                          'col-start-1 col-end-2 row-start-1 row-end-2 h-full overflow-hidden rounded-lg',
+                          beanId(x, y) ? 'shadow-sm' : '',
+                        )}
+                      >
                         <LongPressDiv
                           class={twMerge(
                             'flex h-full w-full items-center justify-center rounded-lg border',
                             beanId(x, y)
-                              ? 'bg-card text-card-foreground shadow-sm'
+                              ? 'bg-card text-card-foreground'
                               : 'border-dashed',
                           )}
                           onClick={() => setCurrentPosition({ x, y })}
@@ -184,6 +193,12 @@ export const MainscreenConfigPage: Component<{}> = () => {
                 </For>
               )}
             </For>
+          </div>
+          <div class="flex w-full items-center justify-center gap-4 pt-8 whitespace-nowrap">
+            <T key="grinder-offset" />
+            <div class="flex justify-end">
+              <GrinderOffsetSelector />
+            </div>
           </div>
         </div>
         <div class="flex h-12 w-full items-center justify-end gap-2 px-2">

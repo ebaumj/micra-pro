@@ -8,6 +8,8 @@ import { TranslationProvider } from './TranslationProvider';
 import { DarkModeProvider, KeyboardProvider } from '@micra-pro/shared/ui';
 import { AssetContextProvider } from '@micra-pro/asset-management/feature';
 import { RecipeHubClientProvider } from '@micra-pro/recipe-hub/client';
+import { UpdateContextProvider } from './components/UpdateContextProvider';
+import { WifiContextProvider } from './components/WifiContextProvider';
 
 const root = document.getElementById('root');
 
@@ -25,7 +27,11 @@ render(
             <KeyboardProvider>
               <AssetContextProvider>
                 <DarkModeProvider>
-                  <App />
+                  <WifiContextProvider>
+                    <UpdateContextProvider>
+                      <App />
+                    </UpdateContextProvider>
+                  </WifiContextProvider>
                 </DarkModeProvider>
               </AssetContextProvider>
             </KeyboardProvider>
