@@ -101,13 +101,20 @@ To Enable the Brew Paddle, just connect the two pins shown on the picture to you
 6. Configure backend to use the static route for the assets
 
 ## Update Script
+
 The Update Script (apps/updater/updater.sh) copies the content of a given zip-file into a given directory. in case of a file-collision, it replaces the existing content with the new one from the zip data. it is intended to run before launch of the applications to perform updates on startup.
 
 ## Raspberry Pi Image Builder
+
 Use the MicrPro Builder to create an Image File for the Raspberry Pi with all the Services installed and ready to use: (https://github.com/ebaumj/micra-pro-builder)
 
 ## Pre-Built Raspberry Pi Images
-You can find pre-built raspberry pi images (tested with raspberry pi 5, should work on any 64-bit raspberry pi with version 0.3.0 and above) on (https://micra-pro.vercel.app)
+
+You can find pre-built Raspberry Pi images (tested with Raspberry Pi 5) on (https://micra-pro.vercel.app)
+
+## Dummy UI
+
+Try out the UI (Dummy Application) here: (https://micra-pro.vercel.app/dummy)
 
 ## Implement different Scale
 

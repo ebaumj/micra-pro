@@ -69,6 +69,7 @@
     "@typescript-eslint/typescript-estree": "^8.46.2",
     "@vercel/blob": "^2.0.0",
     "adm-zip": "^0.5.16",
+    "edgeone": "^1.2.27",
     "eslint-plugin-solid": "^0.14.5",
     "lodash": "^4.17.21",
     "nx": "21.4.1",

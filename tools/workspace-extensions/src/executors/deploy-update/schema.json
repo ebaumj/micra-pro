@@ -16,7 +16,11 @@
     "appSettingsFile": {
       "type": "string",
       "description": "AppSettings of backend to retrieve version"
+    },
+    "dummyUiOutput": {
+      "type": "string",
+      "description": "Output of Dummy Ui"
     }
   },
-  "required": []
+  "required": ["updateFile", "signatureFile", "appSettingsFile"]
 }

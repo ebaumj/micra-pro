@@ -5,8 +5,28 @@
   "projectType": "application",
   "tags": ["type:app"],
   "targets": {
-    "build": {},
-    "serve": {},
+    "build": {
+      "configurations": {
+        "dummy": {
+          "mode": "dummy"
+        }
+      }
+    },
+    "serve": {
+      "configurations": {
+        "dummy": {
+          "mode": "dummy"
+        }
+      }
+    },
+    "build-dummy": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "mode": "dummy",
+        "outputPath": "dist/apps/frontend-dummy"
+      }
+    },
     "codegen": {
       "dependsOn": ["codegen-translations", "codegen-recursive-import"]
     },
