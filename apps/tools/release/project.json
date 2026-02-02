@@ -8,11 +8,12 @@
   "targets": {
     "create-release": {
       "executor": "@micra-pro/workspace-extensions:deploy-update",
-      "dependsOn": ["create-file"],
+      "dependsOn": ["create-file", "^build-dummy"],
       "options": {
         "updateFile": "dist/apps/tools/release/mp-apps.zip",
         "signatureFile": "dist/apps/tools/release/signature.txt",
-        "appSettingsFile": "apps/backend/appsettings.json"
+        "appSettingsFile": "apps/backend/appsettings.json",
+        "dummyUiOutput": "dist/apps/frontend-dummy"
       }
     },
     "create-file": {

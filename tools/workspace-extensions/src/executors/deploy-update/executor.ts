@@ -4,6 +4,13 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { Pool } from 'pg';
 import { put } from '@vercel/blob';
+import { promisify } from 'util';
+import { exec } from 'child_process';
+
+const uploadDummyPage = async (folder: string) =>
+  await promisify(exec)(
+    `edgeone pages deploy ${folder} -n ${process.env.EDGEONE_PROJECT_NAME} -t ${process.env.EDGEONE_API_TOKEN}`,
+  );
 
 const uploadToDatabase = async (
   version: string,
@@ -60,6 +67,8 @@ export default async function runExecutor(
     path.join(context.root, options.updateFile),
   );
   await uploadToDatabase(version, link, signature);
+  if (options.dummyUiOutput)
+    await uploadDummyPage(path.join(context.root, options.dummyUiOutput));
   return {
     success: true,
   };

@@ -43,6 +43,7 @@ export default defineNuxtConfig({
       jwtValidIssuers: ['MicraProRecipeHub'],
     },
     serviceName: 'Micra Pro Recipe Hub',
+    dummyFrontendPage: 'https://mp-dummy.edgeone.app/',
   },
   $production: {
     runtimeConfig: {

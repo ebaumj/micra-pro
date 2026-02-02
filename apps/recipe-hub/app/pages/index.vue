@@ -6,15 +6,30 @@
       src="~/assets/images/machine.jpeg"
       class="h-full max-h-60 w-full max-w-60 rounded-2xl object-contain shadow-xl"
     />
-    <a
-      class="mt-6 flex items-center justify-center rounded-lg bg-slate-200 px-4 py-2 text-slate-800 shadow-md"
-      href="https://github.com/ebaumj/micra-pro"
-      >Build yours now...</a
-    >
+    <div class="flex gap-4">
+      <a
+        class="mt-6 flex items-center justify-center rounded-lg bg-slate-200 px-4 py-2 text-slate-800 shadow-md"
+        href="/dummy"
+        >Dummy UI</a
+      >
+      <a
+        class="mt-6 flex items-center justify-center rounded-lg bg-slate-200 px-4 py-2 text-slate-800 shadow-md"
+        href="https://github.com/ebaumj/micra-pro"
+        >Application Repository</a
+      >
+      <a
+        class="mt-6 flex items-center justify-center rounded-lg bg-slate-200 px-4 py-2 text-slate-800 shadow-md"
+        href="https://github.com/ebaumj/micra-pro-builder"
+        >Image Builder Repository</a
+      >
+    </div>
     <div
       v-if="images.length > 0"
       class="mt-6 flex flex-col gap-2 rounded-md border bg-slate-800 p-4 text-slate-200 shadow-inner"
     >
+      <p class="border-b pb-2 text-xl font-bold">
+        Prebuild Images (Raspberry Pi 5)
+      </p>
       <a
         v-for="image in images"
         class="cursor-pointer hover:underline"
