@@ -1,4 +1,4 @@
-import { Component, createSignal } from 'solid-js';
+import { Component, createSignal, For, JSX } from 'solid-js';
 import {
   Button,
   handleError,
@@ -14,6 +14,7 @@ import { BrewByWeightPannelStyleSelector } from '@micra-pro/brew-by-weight/featu
 import { WifiButton } from './WifiButton';
 import { ScaleSelector } from '@micra-pro/scale-management/feature';
 import { UpdateButton } from './UpdateButton';
+import { useNumberPickerStyle } from './NumberPickerStyleProvider';
 
 const ActionButton: Component<{
   class?: string;
@@ -40,6 +41,52 @@ const ActionButton: Component<{
   );
 };
 
+const Selector: Component<{
+  options: {
+    element: JSX.Element;
+    onSelect: () => void;
+  }[];
+  selected: number;
+  class?: string;
+}> = (props) => {
+  return (
+    <div class="flex w-full justify-center">
+      <div class={twMerge('relative', props.class)}>
+        <div class="absolute flex h-full w-full">
+          <For each={props.options}>
+            {(option) => (
+              <div
+                class="z-10 flex items-center justify-center"
+                style={{ width: `${100 / props.options.length}%` }}
+                onClick={option.onSelect}
+              >
+                {option.element}
+              </div>
+            )}
+          </For>
+        </div>
+        <div class="absolute flex h-full w-full rounded-md border inset-shadow-sm">
+          <div
+            style={{
+              width: `${100 / props.options.length}%`,
+              transform: `translateX(${props.selected * 100}%)`,
+            }}
+            class="bg-secondary rounded inset-shadow-sm transition-transform duration-300"
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const IconBox: Component<{ name: string }> = (props) => (
+  <div class="h-full p-2">
+    <div class="flex aspect-square h-full items-center justify-center rounded-sm border shadow-sm">
+      <Icon iconName={props.name} />
+    </div>
+  </div>
+);
+
 export const SettingsButton: Component<{
   class?: string;
 }> = (props) => {
@@ -49,6 +96,7 @@ export const SettingsButton: Component<{
   const [menuOpen, setMenuOpen] = createSignal(false);
   const system = createSystemAccessor();
   const darkMode = useDarkModeContext();
+  const numberPicker = useNumberPickerStyle();
   const shutdownCommand = () => {
     setShutdown(true);
     system.shutdown().catch((e) => {
@@ -84,30 +132,34 @@ export const SettingsButton: Component<{
             <Icon iconName="close" />
           </Button>
         </div>
-        <div class="flex w-full justify-center">
-          <div class="flex h-10 w-56">
-            <div
-              class="z-10 flex w-1/2 items-center justify-center"
-              onClick={() => darkMode.setDarkMode(false)}
-            >
-              <Icon iconName="light_mode" />
-            </div>
-            <div
-              class="z-10 flex w-1/2 items-center justify-center"
-              onClick={() => darkMode.setDarkMode(true)}
-            >
-              <Icon iconName="dark_mode" />
-            </div>
-          </div>
-          <div class="fixed flex h-10 w-56 rounded-md border inset-shadow-sm">
-            <div
-              class={twMerge(
-                'bg-secondary w-1/2 rounded inset-shadow-sm transition-transform duration-300',
-                darkMode.darkMode() ? 'translate-x-full' : 'translate-x-0',
-              )}
-            />
-          </div>
-        </div>
+        <Selector
+          selected={darkMode.darkMode() ? 1 : 0}
+          options={[
+            {
+              onSelect: () => darkMode.setDarkMode(false),
+              element: <Icon iconName={'light_mode'} />,
+            },
+            {
+              onSelect: () => darkMode.setDarkMode(true),
+              element: <Icon iconName={'dark_mode'} />,
+            },
+          ]}
+          class="h-10 w-56"
+        />
+        <Selector
+          selected={numberPicker.style() === 'NumberWheel' ? 1 : 0}
+          options={[
+            {
+              onSelect: () => numberPicker.setStyle('NumberPad'),
+              element: <IconBox name="grid_view" />,
+            },
+            {
+              onSelect: () => numberPicker.setStyle('NumberWheel'),
+              element: <IconBox name="view_column" />,
+            },
+          ]}
+          class="h-14 w-56"
+        />
         <BrewByWeightPannelStyleSelector />
         <div class="flex h-full w-full flex-col items-end justify-end gap-2">
           <div class="flex h-14 w-full gap-2">

@@ -95,6 +95,9 @@ export const NumberField = <T extends ValidComponent = 'div'>(
     'class',
     'rawValue',
     'onRawValueChange',
+    'minValue',
+    'maxValue',
+    'step',
   ]);
   return (
     <NumberPickerContextProvider>
@@ -102,11 +105,17 @@ export const NumberField = <T extends ValidComponent = 'div'>(
         class={cn('grid gap-1.5', local.class)}
         {...rest}
         rawValue={local.rawValue}
+        minValue={local.minValue}
+        maxValue={local.maxValue}
+        step={local.step}
         onRawValueChange={local.onRawValueChange}
       />
       <NumberPicker
         value={local.rawValue ?? 0}
         onSetValue={(v) => local.onRawValueChange?.(v)}
+        min={local.minValue}
+        max={local.maxValue}
+        step={local.step}
       />
     </NumberPickerContextProvider>
   );
