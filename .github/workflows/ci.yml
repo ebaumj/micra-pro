@@ -33,4 +33,4 @@ jobs:
       - uses: nrwl/nx-set-shas@v4
 
       - run: npx nx run-many -t format --configuration=check --parallel=1
-      - run: npx nx affected -t lint test build
+      - run: npx nx affected -t lint test build build-dummy
