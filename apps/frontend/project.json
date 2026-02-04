@@ -5,13 +5,7 @@
   "projectType": "application",
   "tags": ["type:app"],
   "targets": {
-    "build": {
-      "configurations": {
-        "dummy": {
-          "mode": "dummy"
-        }
-      }
-    },
+    "build": {},
     "serve": {
       "configurations": {
         "dummy": {
