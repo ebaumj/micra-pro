@@ -6,15 +6,16 @@ export type ConfigKey =
   | 'RecipeHub'
   | 'SelectedSpout'
   | 'CleaningReminder'
-  | 'BrewByWeightPannel';
+  | 'BrewByWeightPannel'
+  | 'NumberPickerStyle';
 
 export const createConfigAccessor = <T>(
   key: ConfigKey,
 ): {
   loading: Accessor<boolean>;
   config: Accessor<T | undefined>;
-  writeConfig: (config: T) => void;
-  removeConfig: () => void;
+  writeConfig: (config: T) => Promise<any>;
+  removeConfig: () => Promise<any>;
 } => {
   const [config, setConfig] = createSignal<T | undefined>();
   const [loading, setLoading] = createSignal(true);

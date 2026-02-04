@@ -19,15 +19,16 @@ export type ConfigKey =
   | 'RecipeHub'
   | 'SelectedSpout'
   | 'CleaningReminder'
-  | 'BrewByWeightPannel';
+  | 'BrewByWeightPannel'
+  | 'NumberPickerStyle';
 
 export const createConfigAccessor = <T>(
   key: ConfigKey,
 ): {
   loading: Accessor<boolean>;
   config: Accessor<T | undefined>;
-  writeConfig: (config: T) => void;
-  removeConfig: () => void;
+  writeConfig: (config: T) => Promise<any>;
+  removeConfig: () => Promise<any>;
 } => {
   const [loading, setLoading] = createSignal(true);
   const [config, setConfig] = createSignal<T | undefined>();
@@ -50,18 +51,16 @@ export const createConfigAccessor = <T>(
     }
     if (query.resource.state !== 'pending') setLoading(false);
   });
-  const writeConfig = (config: T) => {
+  const writeConfig = (config: T) =>
     writeMutation({ key: key, value: JSON.stringify(config) }).then((c) => {
       const result = c.writeConfiguration.string;
       if (result) setConfig((_) => JSON.parse(result) as T);
     });
-  };
-  const removeConfig = () => {
+  const removeConfig = () =>
     removeMutation({ key: key }).then((c) => {
       const result = c.deleteConfiguration.string;
       if (result === key) setConfig(undefined);
     });
-  };
   return {
     loading,
     config,

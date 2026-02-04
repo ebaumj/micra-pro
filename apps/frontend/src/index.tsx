@@ -10,6 +10,7 @@ import { AssetContextProvider } from '@micra-pro/asset-management/feature';
 import { RecipeHubClientProvider } from '@micra-pro/recipe-hub/client';
 import { UpdateContextProvider } from './components/UpdateContextProvider';
 import { WifiContextProvider } from './components/WifiContextProvider';
+import { NumberPickerStyleProvider } from './components/NumberPickerStyleProvider';
 
 const root = document.getElementById('root');
 
@@ -25,15 +26,17 @@ render(
         <RecipeHubClientProvider url={config.recipeHub.uri}>
           <TranslationProvider>
             <KeyboardProvider>
-              <AssetContextProvider>
-                <DarkModeProvider>
-                  <WifiContextProvider>
-                    <UpdateContextProvider>
-                      <App />
-                    </UpdateContextProvider>
-                  </WifiContextProvider>
-                </DarkModeProvider>
-              </AssetContextProvider>
+              <NumberPickerStyleProvider>
+                <AssetContextProvider>
+                  <DarkModeProvider>
+                    <WifiContextProvider>
+                      <UpdateContextProvider>
+                        <App />
+                      </UpdateContextProvider>
+                    </WifiContextProvider>
+                  </DarkModeProvider>
+                </AssetContextProvider>
+              </NumberPickerStyleProvider>
             </KeyboardProvider>
           </TranslationProvider>
         </RecipeHubClientProvider>

@@ -34,3 +34,4 @@ export * from './Components/DarkModeProvider';
 export * from './Components/Switch';
 export * from './Components/Collapsible';
 export * from './Components/Gauge';
+export * from './Components/NumberPicker/NumberPickerStyleProvider';
