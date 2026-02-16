@@ -109,6 +109,7 @@ export const wifiAccess = (): {
 
 export const updateAccess = (): {
   currentVersion: Accessor<string>;
+  allowUpdates: Accessor<boolean>;
   loading: Accessor<boolean>;
   installUpdate: (link: string, signature: string) => Promise<void>;
 } => {
@@ -121,7 +122,9 @@ export const updateAccess = (): {
     InstallUpdateMutationVariables
   >(InstallUpdateDocument);
   return {
-    currentVersion: () => query.resource.latest?.systemVersion ?? '',
+    currentVersion: () => query.resource.latest?.systemVersion.version ?? '',
+    allowUpdates: () =>
+      query.resource.latest?.systemVersion.allowUpdates ?? false,
     loading: () => query.resource.state === 'pending',
     installUpdate: async (link: string, signature: string): Promise<void> => {
       const result = await mutation({ link: link, signature: signature });

@@ -5,6 +5,7 @@ public interface ISystemService
     public record Wifi(string Ssid, bool PasswordRequired);
 
     public string SystemVersion { get; }
+    public bool AllowUpdates { get; }
 
     Task<bool> ShutdownAsync(CancellationToken ct);
     Task<bool> RebootAsync(CancellationToken ct);

@@ -52,11 +52,13 @@ export const wifiAccess = (): {
 
 export const updateAccess = (): {
   currentVersion: Accessor<string>;
+  allowUpdates: Accessor<boolean>;
   loading: Accessor<boolean>;
   installUpdate: (link: string, signature: string) => Promise<void>;
 } => {
   return {
     currentVersion: () => '0.0.0',
+    allowUpdates: () => false,
     loading: () => false,
     installUpdate: (_: string, _1: string) => Promise.reject(),
   };

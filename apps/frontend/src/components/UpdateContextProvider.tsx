@@ -37,6 +37,10 @@ export const UpdateContextProvider: ParentComponent<{}> = (props) => {
   const poll = () => {
     fetchUpdates()
       .then((updates) => {
+        if (!accessor.allowUpdates()) {
+          setNewVersion(undefined);
+          return;
+        }
         const sorted = updates
           .filter((u) => parseVersion(u.version))
           .sort((a, b) => (newerVersion(b.version, a.version) ? -1 : 1));
