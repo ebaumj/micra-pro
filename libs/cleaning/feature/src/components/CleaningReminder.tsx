@@ -30,9 +30,12 @@ export const CleaningRemnder: Component<{ class?: string }> = (props) => {
   const [dialog, setDialog] = createSignal(false);
   const checkCleaning = () => {
     if (ctx.reminder()) {
+      const interval = ctx.interval();
+      const lastDate = ctx.lastDate();
+      const now = new Date();
       if (
-        ctx.interval().add(ctx.lastDate().valueOf(), 'milliseconds') <
-        moment.duration(new Date().valueOf(), 'milliseconds')
+        interval.add(lastDate.valueOf(), 'milliseconds') <
+        moment.duration(now.valueOf(), 'milliseconds')
       )
         setIsCleaningDue(true);
     }
