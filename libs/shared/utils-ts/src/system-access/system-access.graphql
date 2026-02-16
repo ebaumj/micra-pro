@@ -34,7 +34,10 @@ query ScanWifi {
 }
 
 query SystemVersion {
-  systemVersion
+  systemVersion {
+    version
+    allowUpdates
+  }
 }
 
 mutation InstallUpdate($link: String!, $signature: String!) {

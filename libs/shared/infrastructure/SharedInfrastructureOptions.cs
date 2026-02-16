@@ -11,4 +11,5 @@ public class SharedInfrastructureOptions
     public string UpdateDestination { get; set; } = string.Empty;
     public string UpdateFileName { get; set; } = string.Empty;
     public string UpdatePublicKey { get; set; } = string.Empty;
+    public bool AllowUpdates { get; set; } = false;
 }

@@ -31,6 +31,7 @@ public class SystemService(
     }
 
     public string SystemVersion => options.Value.SystemVersion;
+    public bool AllowUpdates => options.Value.AllowUpdates;
 
     public async Task<bool> ShutdownAsync(CancellationToken ct) =>
         (await Bash("/sbin/shutdown", "now")).Contains("The system will power off now!");
@@ -122,6 +123,8 @@ public class SystemService(
     {
         try
         {
+            if (!AllowUpdates)
+                throw new Exception("Installing Updates not allowed!");
             using var client = new HttpClient();
             var stream = await (await client.GetAsync(link, ct)).Content.ReadAsStreamAsync(ct);
             var fileData = new byte[stream.Length];

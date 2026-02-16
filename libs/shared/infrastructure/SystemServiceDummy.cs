@@ -13,6 +13,7 @@ public class SystemServiceDummy(
     private string? _wifi;
 
     public string SystemVersion => options.Value.SystemVersion;
+    public bool AllowUpdates => options.Value.AllowUpdates;
 
     public Task<bool> ShutdownAsync(CancellationToken ct)
     {
