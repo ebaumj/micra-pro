@@ -1,5 +1,6 @@
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using MicraPro.ScaleManagement.DataDefinition;
 using MicraPro.ScaleManagement.DataDefinition.ValueObjects;
 using MicraPro.ScaleManagement.Domain.BluetoothAccess;
@@ -19,15 +20,17 @@ public abstract class ScaleConnectionBase(IBleDeviceConnection connection) : ISc
     private record DataFrame(int Command, byte[] Payload, byte Cs1, byte Cs2);
 
     private IDisposable _heartbeatSubscription = Disposable.Empty;
+    private IDisposable _valueSubscription = Disposable.Empty;
+    private readonly Subject<ScaleDataPoint?> _dataSubject = new();
     private byte[] _dataBuffer = [];
     private DateTime _lastWeightTimestamp = DateTime.MinValue;
     private double _lastWeight;
     private double[] _flowAverage = [0, 0, 0, 0];
-    private IObservable<byte[]> _weightObservable = Observable.Empty<byte[]>();
 
     public Task DisconnectAsync(CancellationToken ct)
     {
         _heartbeatSubscription.Dispose();
+        _valueSubscription.Dispose();
         return connection.Disconnect(ct);
     }
 
@@ -75,12 +78,14 @@ public abstract class ScaleConnectionBase(IBleDeviceConnection connection) : ISc
         return skip.HasValue ? DecodeWeightData(data.Payload.Skip(skip.Value).ToArray()) : null;
     }
 
-    public IObservable<ScaleDataPoint> Data =>
-        _weightObservable.Select(OnDataReceived).Where(v => v != null)!;
+    public IObservable<ScaleDataPoint> Data => _dataSubject.Where(v => v != null)!;
 
     public async Task SetupAsync(CancellationToken ct)
     {
-        _weightObservable = await WeightCharacteristic.GetValueObservableAsync(ct);
+        _valueSubscription.Dispose();
+        _valueSubscription = (await WeightCharacteristic.GetValueObservableAsync(ct))
+            .Select(OnDataReceived)
+            .Subscribe(_dataSubject);
         await CommandCharacteristic.SendCommandAsync(Encode(Const.MessageTypeIdentify, Id), ct);
         await CommandCharacteristic.SendCommandAsync(
             Encode(
