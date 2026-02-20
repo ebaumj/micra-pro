@@ -26,7 +26,7 @@ brew by weight, recipe management, statistics and recipe sharing for la marzocco
 ### Pre Requisites
 
 - .Net 8.0 SDK installed on Build Machine
-- Node.js (Version >= 20) installed on Build Machine
+- Node.js (Version >= 22) installed on Build Machine
 
 ### Needed Environment Variables
 
@@ -42,10 +42,8 @@ brew by weight, recipe management, statistics and recipe sharing for la marzocco
 
 #### Build Backend
 
-- `npx nx run backend:build` for a local build
-  - Output in apps/backend/bin/Debug/net8.0/
-- `npx nx run backend:build:production` for production build
-  - Output in apps/backend/bin/Release/net8.0/linux-arm64/publish/
+- `npx nx run backend:build`
+  - Output in apps/backend/bin/Debug/net8.0/linux-arm64/publish/
 
 #### Build Frontend
 

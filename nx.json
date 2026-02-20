@@ -2,7 +2,7 @@
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "targetDefaults": {
     "build": {
-      "dependsOn": ["^build", "codegen", "^codegen", "typecheck"],
+      "dependsOn": ["^build", "codegen", "^codegen", "typecheck", "restore"],
       "inputs": ["production", "^production"],
       "cache": true
     },
@@ -41,22 +41,27 @@
   "workspaceLayout": { "appsDir": "apps", "libsDir": "libs" },
   "plugins": [
     {
-      "plugin": "@nx-dotnet/core",
+      "plugin": "@nx/dotnet",
       "options": {
-        "solutionFile": "{npmScope}.nx-dotnet.sln",
-        "inferProjects": false,
-        "nugetPackages": {},
-        "tags": ["nx-dotnet"]
+        "build": {
+          "targetName": "build"
+        },
+        "test": {
+          "targetName": "test"
+        },
+        "watch": {
+          "targetName": "serve",
+          "args": ["run"]
+        },
+        "solutionFile": "{npmScope}.nx-dotnet.sln"
       }
     },
     {
       "plugin": "@nx/vite/plugin",
       "options": {
         "buildTargetName": "build",
-        "serveTargetName": "serve",
-        "previewTargetName": "preview",
+        "previewTargetName": "serve",
         "testTargetName": "test",
-        "serveStaticTargetName": "serve-static",
         "typecheckTargetName": "typecheck"
       }
     }

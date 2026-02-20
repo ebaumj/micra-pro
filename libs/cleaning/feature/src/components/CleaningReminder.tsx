@@ -23,7 +23,7 @@ const cleaningCheckIntervalMs = 1000;
 
 export const CleaningRemnder: Component<{ class?: string }> = (props) => {
   const navigate = useNavigate();
-  let timer: NodeJS.Timeout | null;
+  let timer: ReturnType<typeof setTimeout> | null;
   const ctx = useCleaningContext();
   const [isCleaningDue, setIsCleaningDue] = createSignal(false);
   const [ignore, setIgnore] = createSignal(false);

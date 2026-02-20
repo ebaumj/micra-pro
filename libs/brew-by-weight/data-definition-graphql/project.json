@@ -4,12 +4,11 @@
   "projectType": "library",
   "sourceRoot": "libs/brew-by-weight/data-definition-graphql",
   "targets": {
-    "build": {
-      "executor": "@nx-dotnet/core:build",
-      "dependsOn": ["^build"]
-    },
     "codegen": {
-      "executor": "@nx-dotnet/core:test",
+      "command": "dotnet test",
+      "options": {
+        "cwd": "{projectRoot}"
+      },
       "outputs": [
         "{workspaceRoot}/libs/brew-by-weight/data-definition-graphql/src/generated"
       ]

@@ -2,7 +2,7 @@ import { throwInternalServerError } from '../../utils/errors';
 import { getUserRepository } from '@micra-pro/recipe-hub/database';
 import { confirmIssuer } from './index.post';
 import jwt from 'jsonwebtoken';
-import { authenticator } from 'otplib';
+import { generateSecret } from 'otplib';
 
 export default defineEventHandler(async (event) => {
   const runtimeConfig = useRuntimeConfig();
@@ -32,7 +32,7 @@ export default defineEventHandler(async (event) => {
       username: newUser.username,
       password: newUser.password,
       enabled2fa: false,
-      secret2fa: authenticator.generateSecret(),
+      secret2fa: generateSecret(),
     });
   } catch {
     throwInternalServerError();

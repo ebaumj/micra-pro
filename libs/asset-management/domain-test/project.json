@@ -4,11 +4,10 @@
   "projectType": "library",
   "sourceRoot": "libs/asset-management/domain-test",
   "targets": {
-    "build": {
-      "executor": "@nx-dotnet/core:build"
-    },
     "test": {
-      "executor": "@nx-dotnet/core:test"
+      "options": {
+        "cwd": "{projectRoot}"
+      }
     },
     "format": {
       "executor": "@micra-pro/workspace-extensions:csharpier"

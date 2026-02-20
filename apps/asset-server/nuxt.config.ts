@@ -4,9 +4,9 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineNuxtConfig({
   compatibilityDate: '2025-10-28',
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss() as any],
   },
-  css: ['./app/assets/css/main.css'],
+  css: ['assets/css/main.css'],
   runtimeConfig: {
     authorization: {
       jwtAudience: 'MicraProAssetServer',

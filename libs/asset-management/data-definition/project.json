@@ -4,15 +4,6 @@
   "projectType": "library",
   "sourceRoot": "libs/asset-management/data-definition",
   "targets": {
-    "build": {
-      "executor": "@nx-dotnet/core:build",
-      "configurations": {
-        "production": {
-          "configuration": "Release",
-          "extraParameters": "-p:SelfContained=true"
-        }
-      }
-    },
     "format": {
       "executor": "@micra-pro/workspace-extensions:csharpier"
     }

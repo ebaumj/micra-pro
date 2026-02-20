@@ -4,7 +4,7 @@ import {
 } from '../../../utils/errors';
 import authorize from '../../../utils/authorize';
 import { getUserRepository } from '@micra-pro/recipe-hub/database';
-import { authenticator } from 'otplib';
+import { verify } from 'otplib';
 
 type ChangeMfaRequestBodyType = {
   code: string;
@@ -21,7 +21,8 @@ export default defineEventHandler(async (event) => {
     runtimeConfig.secrets.databaseConnectionString,
   );
   const user = await repository.getById(userId);
-  if (!authenticator.check(body.code, user.secret2fa)) throwUnauthorizedError();
+  if (!verify({ token: body.code, secret: user.secret2fa }))
+    throwUnauthorizedError();
   try {
     await repository.update({
       ...user,
