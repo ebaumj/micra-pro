@@ -5,9 +5,9 @@ import { fileURLToPath } from 'node:url';
 export default defineNuxtConfig({
   compatibilityDate: '2025-10-28',
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss() as any],
   },
-  css: ['./app/assets/css/main.css'],
+  css: ['assets/css/main.css'],
   alias: {
     '@micra-pro/recipe-hub/data-definition': fileURLToPath(
       new URL(

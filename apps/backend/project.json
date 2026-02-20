@@ -6,41 +6,19 @@
   "tags": ["type:app"],
   "targets": {
     "build": {
-      "executor": "@nx-dotnet/core:publish",
+      "command": "dotnet publish",
       "outputs": ["{projectRoot}/bin", "{projectRoot}/obj"],
-      "dependsOn": ["^build", "codegen", "^codegen"],
       "options": {
-        "configuration": "Debug",
-        "noDependencies": true
-      },
-      "configurations": {
-        "production": {
-          "configuration": "Release",
-          "runtime": "linux-arm64",
-          "extraParameters": "-p:PublishSingleFile=true -p:SelfContained=true"
-        }
-      }
-    },
-    "build-production": {
-      "executor": "@nx-dotnet/core:publish",
-      "outputs": ["{projectRoot}/bin", "{projectRoot}/obj"],
-      "dependsOn": ["^build", "codegen", "^codegen"],
-      "options": {
-        "configuration": "Release",
-        "runtime": "linux-arm64",
-        "extraParameters": "-p:PublishSingleFile=true -p:SelfContained=true",
-        "noDependencies": true
+        "args": [
+          "-c=Release --no-dependencies -p:PublishSingleFile=true --sc -r=linux-arm64 -p:PublishReadyToRun=true"
+        ],
+        "cwd": "{projectRoot}"
       }
     },
     "serve": {
-      "executor": "@nx-dotnet/core:serve",
+      "command": "dotnet watch run",
       "options": {
-        "configuration": "Debug"
-      },
-      "configurations": {
-        "production": {
-          "configuration": "Release"
-        }
+        "cwd": "{projectRoot}"
       }
     },
     "format": {

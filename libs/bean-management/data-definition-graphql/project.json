@@ -4,12 +4,11 @@
   "projectType": "library",
   "sourceRoot": "libs/bean-management/data-definition-graphql",
   "targets": {
-    "build": {
-      "executor": "@nx-dotnet/core:build",
-      "dependsOn": ["^build"]
-    },
     "codegen": {
-      "executor": "@nx-dotnet/core:test",
+      "command": "dotnet test",
+      "options": {
+        "cwd": "{projectRoot}"
+      },
       "outputs": [
         "{workspaceRoot}/libs/bean-management/data-definition-graphql/src/generated"
       ]

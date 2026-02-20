@@ -6,7 +6,7 @@ import {
   invalidRequest,
   mfaIssuer,
 } from './index.post';
-import { authenticator } from 'otplib';
+import { verify } from 'otplib';
 
 type RequestBodyType = {
   code: string;
@@ -25,7 +25,8 @@ export default defineEventHandler(async (event) => {
     );
     const user = await repository.getById(tokenDecoded.userId);
     if (tokenDecoded.clientId !== user.clientId) throw new Error();
-    if (!authenticator.check(body.code, user.secret2fa)) throw new Error();
+    if (!verify({ token: body.code, secret: user.secret2fa }))
+      throw new Error();
     return createResponse(
       runtimeConfig,
       tokenDecoded.userId,
