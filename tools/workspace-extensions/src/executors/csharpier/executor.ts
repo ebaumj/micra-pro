@@ -8,8 +8,6 @@ export default async function runExecutor(
   options: CsharpierExecutorSchema,
   context: ExecutorContext,
 ) {
-  console.log('Executor ran for Csharpier', options);
-
   const projectRoot = path.join(
     context.root,
     context.projectsConfigurations.projects[context.projectName].root,
