@@ -21,9 +21,4 @@ public static class SystemQueries
         [Service] ISystemService service,
         CancellationToken ct
     ) => Task.FromResult(new SystemVersion(service.SystemVersion, service.AllowUpdates));
-
-    public static Task<bool> GetAllowUpdates(
-        [Service] ISystemService service,
-        CancellationToken ct
-    ) => Task.FromResult(service.AllowUpdates);
 }
