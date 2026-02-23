@@ -26,8 +26,10 @@ jobs:
       # Cache .nx/cache
       - uses: actions/cache@v4
         with:
-          key: 'nx-cache'
           path: .nx
+          key: nx-cache-${{ github.run_id }}
+          restore-keys: |
+            nx-cache-
 
       - run: npm ci --legacy-peer-deps
       - uses: nrwl/nx-set-shas@v4

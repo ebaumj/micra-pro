@@ -10,14 +10,27 @@
       "options": {
         "command": "nuxt build",
         "cwd": "{workspaceRoot}/apps/asset-server"
-      }
+      },
+      "inputs": [
+        "{projectRoot}/app/*",
+        "{projectRoot}/public/*",
+        "{projectRoot}/server/*",
+        "{projectRoot}/nuxt.config.ts"
+      ],
+      "outputs": ["{projectRoot}/.output"]
     },
     "typecheck": {
       "executor": "nx:run-commands",
       "options": {
         "command": "nuxt typecheck",
         "cwd": "{workspaceRoot}/apps/asset-server"
-      }
+      },
+      "inputs": [
+        "{projectRoot}/app/*",
+        "{projectRoot}/public/*",
+        "{projectRoot}/server/*",
+        "{projectRoot}/nuxt.config.ts"
+      ]
     },
     "serve": {
       "executor": "nx:run-commands",

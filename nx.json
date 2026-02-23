@@ -3,30 +3,43 @@
   "targetDefaults": {
     "build": {
       "dependsOn": ["^build", "codegen", "^codegen", "typecheck", "restore"],
-      "inputs": ["production", "^production"],
       "cache": true
     },
     "typecheck": {
       "dependsOn": ["^build", "codegen", "^codegen"],
-      "inputs": ["production", "^production"],
       "cache": true
     },
     "test": {
       "dependsOn": ["build", "^build"],
-      "inputs": ["default", "^production"],
       "cache": true
     },
     "codegen": { "dependsOn": ["^codegen", "^build"], "cache": true },
-    "publish": { "dependsOn": ["build"], "cache": false },
     "serve": { "dependsOn": ["^codegen"] },
-    "@nx-dotnet/core:test": {
-      "options": { "noBuild": true, "verbosity": "quiet" },
-      "dependsOn": ["build"]
+    "@nx/dotnet:build": {
+      "inputs": ["{projectRoot}/**/*.csproj", "{projectRoot}/**/*.cs"],
+      "outputs": ["{projectRoot}/bin", "{projectRoot}/obj"]
     },
-    "@nx-dotnet/core:build": {
-      "outputs": ["{projectRoot}/bin", "{projectRoot}/obj"],
-      "dependsOn": ["^build", "codegen", "^codegen"],
-      "options": { "verbosity": "quiet" }
+    "@nx/dotnet:codegen": {
+      "inputs": ["{projectRoot}/**/*.csproj", "{projectRoot}/**/*.cs"],
+      "outputs": [
+        "{projectRoot}/bin",
+        "{projectRoot}/obj",
+        "{projectRoot}/**/genrated/**/*.graphqls"
+      ]
+    },
+    "@nx/dotnet:test": {
+      "inputs": ["{projectRoot}/**/*.csproj", "{projectRoot}/**/*.cs"]
+    },
+    "@nx/vite/plugin:build": {
+      "inputs": ["{projectRoot}/**/*.ts", "{projectRoot}/**/*.tsx"]
+    },
+    "@nx/vite/plugin:codegen": {
+      "inputs": [
+        "{projectRoot}/**/*.graphql",
+        "{projectRoot}/**/assets/**",
+        "{projectRoot}/**/locales/**/*.json"
+      ],
+      "outputs": ["{projectRoot}/**/generated/**/*.ts"]
     },
     "@nx/eslint:lint": {
       "cache": true,
@@ -35,7 +48,6 @@
   },
   "namedInputs": {
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
-    "production": ["default"],
     "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
   },
   "workspaceLayout": { "appsDir": "apps", "libsDir": "libs" },
