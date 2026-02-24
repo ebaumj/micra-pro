@@ -14,7 +14,7 @@
       "cache": true
     },
     "codegen": { "dependsOn": ["^codegen", "^build"], "cache": true },
-    "serve": { "dependsOn": ["^codegen"] },
+    "serve": { "dependsOn": ["^build, codegen"] },
     "@nx/dotnet:build": {
       "inputs": ["{projectRoot}/**/*.csproj", "{projectRoot}/**/*.cs"],
       "outputs": ["{projectRoot}/bin", "{projectRoot}/obj"]

@@ -7,6 +7,9 @@
   "targets": {
     "build": {},
     "serve": {
+      "options": {
+        "port": 3000
+      },
       "configurations": {
         "dummy": {
           "mode": "dummy"

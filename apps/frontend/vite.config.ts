@@ -8,7 +8,6 @@ export default defineConfig((conf) => ({
   plugins: [solidPlugin(), tailwindcss(), nxViteTsPaths()],
   server: {
     host: true,
-    port: 3000,
     fs: {
       allow: ['../../'],
     },
