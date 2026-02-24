@@ -1,7 +1,7 @@
 /* @refresh reload */
 import { render } from 'solid-js/web';
 import './index.css';
-import config from './config';
+import config, { fetchConfig } from './config';
 import { GraphQlProvider } from '@micra-pro/shared/utils-ts';
 import App from './App';
 import { TranslationProvider } from './TranslationProvider';
@@ -13,17 +13,17 @@ import { WifiContextProvider } from './components/WifiContextProvider';
 import { NumberPickerStyleProvider } from './components/NumberPickerStyleProvider';
 
 const root = document.getElementById('root');
-
 if (!root) throw new Error('Root element not found');
+await fetchConfig();
 
 render(
   () => (
     <>
       <GraphQlProvider
-        url={config.graphql.httpUri}
-        wsUrl={config.graphql.wsUri}
+        url={config().graphql.httpUri}
+        wsUrl={config().graphql.wsUri}
       >
-        <RecipeHubClientProvider url={config.recipeHub.uri}>
+        <RecipeHubClientProvider url={config().recipeHub.uri}>
           <TranslationProvider>
             <KeyboardProvider>
               <NumberPickerStyleProvider>

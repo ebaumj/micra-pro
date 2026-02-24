@@ -27,9 +27,23 @@
       "type": "string",
       "description": "Path for the output file"
     },
-    "appSettingsFile": {
-      "type": "string",
-      "description": "Name of the new backend appsettings for migration"
+    "appSettingsFiles": {
+      "type": "object",
+      "properties": {
+        "backend": {
+          "type": "string",
+          "description": "Backend Application settings"
+        },
+        "frontend": {
+          "type": "string",
+          "description": "Frontend Application settings"
+        },
+        "asset_server": {
+          "type": "string",
+          "description": "Asset Server Application settings"
+        }
+      },
+      "description": "Output Paths of the compiled Applications"
     },
     "signingKey": {
       "type": "string",

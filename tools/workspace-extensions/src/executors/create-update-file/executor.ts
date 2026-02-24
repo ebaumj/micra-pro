@@ -6,6 +6,7 @@ import * as crypto from 'crypto';
 const AdmZip = require('adm-zip');
 
 const BackendAppsettingsFile = 'appsettings.json';
+const FrontendAppsettingsFile = 'appconfig.json';
 
 const AddFiles = (
   source: string,
@@ -35,15 +36,25 @@ export default async function runExecutor(
     options.applicationPaths.asset_server,
   );
   const output = path.join(context.root, options.outputPath);
-  const appSettingsOrigin = path.join(backend, BackendAppsettingsFile);
-  const appSettingsTarget = path.join(
+  const backendAppSettingsOrigin = path.join(backend, BackendAppsettingsFile);
+  const backendAppSettingsTarget = path.join(
     backend,
-    options.appSettingsFile ?? BackendAppsettingsFile,
+    options.appSettingsFiles.backend ?? BackendAppsettingsFile,
   );
-  if (appSettingsOrigin !== appSettingsTarget)
-    fs.copyFileSync(appSettingsOrigin, appSettingsTarget);
-  AddFiles(backend, backend, 'backend', zip, [appSettingsOrigin]);
-  AddFiles(frontend, frontend, 'frontend', zip);
+  if (backendAppSettingsOrigin !== backendAppSettingsTarget)
+    fs.copyFileSync(backendAppSettingsOrigin, backendAppSettingsTarget);
+  AddFiles(backend, backend, 'backend', zip, [backendAppSettingsOrigin]);
+  const frontendAppSettingsOrigin = path.join(
+    frontend,
+    FrontendAppsettingsFile,
+  );
+  const frontendAppSettingsTarget = path.join(
+    frontend,
+    options.appSettingsFiles.frontend ?? FrontendAppsettingsFile,
+  );
+  if (frontendAppSettingsOrigin !== frontendAppSettingsTarget)
+    fs.copyFileSync(frontendAppSettingsOrigin, frontendAppSettingsTarget);
+  AddFiles(frontend, frontend, 'frontend', zip, [frontendAppSettingsOrigin]);
   AddFiles(asset_server, asset_server, 'asset-server', zip);
   if (!fs.existsSync(output)) fs.mkdirSync(output, { recursive: true });
   const file = path.join(output, 'mp-apps.zip');

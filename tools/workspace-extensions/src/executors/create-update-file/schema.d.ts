@@ -4,7 +4,11 @@ export interface CreateUpdateFileExecutorSchema {
     frontend: string;
     asset_server: string;
   };
-  appSettingsFile: string;
+  appSettingsFiles: {
+    backend: string;
+    frontend: string;
+    asset_server: string;
+  };
   outputPath: string;
   signingKey: string;
 }

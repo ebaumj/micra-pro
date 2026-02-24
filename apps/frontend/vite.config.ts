@@ -2,10 +2,11 @@ import { defineConfig } from 'vite';
 import solidPlugin from 'vite-plugin-solid';
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import tailwindcss from '@tailwindcss/vite';
+import { appconfigPlugin } from './plugins/appconfig.check';
 
 export default defineConfig((conf) => ({
   root: __dirname,
-  plugins: [solidPlugin(), tailwindcss(), nxViteTsPaths()],
+  plugins: [solidPlugin(), tailwindcss(), nxViteTsPaths(), appconfigPlugin()],
   server: {
     host: true,
     fs: {
