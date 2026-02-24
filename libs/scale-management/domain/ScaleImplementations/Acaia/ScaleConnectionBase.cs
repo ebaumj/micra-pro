@@ -4,13 +4,12 @@ using System.Reactive.Subjects;
 using MicraPro.ScaleManagement.DataDefinition;
 using MicraPro.ScaleManagement.DataDefinition.ValueObjects;
 using MicraPro.ScaleManagement.Domain.BluetoothAccess;
+using MicraPro.ScaleManagement.Domain.ScaleImplementations.Shared;
 
 namespace MicraPro.ScaleManagement.Domain.ScaleImplementations.Acaia;
 
 public abstract class ScaleConnectionBase(IBleDeviceConnection connection) : IScaleConnection
 {
-    private const double FlowThreshold = 10;
-
     protected abstract byte[] Id { get; }
     protected abstract TimeSpan HeartbeatInterval { get; }
     protected abstract Task HeartbeatAsync(CancellationToken ct);
@@ -23,9 +22,7 @@ public abstract class ScaleConnectionBase(IBleDeviceConnection connection) : ISc
     private IDisposable _valueSubscription = Disposable.Empty;
     private readonly Subject<ScaleDataPoint?> _dataSubject = new();
     private byte[] _dataBuffer = [];
-    private DateTime _lastWeightTimestamp = DateTime.MinValue;
-    private double _lastWeight;
-    private double[] _flowAverage = [0, 0, 0, 0];
+    private FlowCalculator _flowCalculator = new();
 
     public Task DisconnectAsync(CancellationToken ct)
     {
@@ -57,7 +54,11 @@ public abstract class ScaleConnectionBase(IBleDeviceConnection connection) : ISc
         };
         return !weightFloat.HasValue
             ? null
-            : new ScaleDataPoint(DateTime.Now, CalculateFlow(weightFloat.Value), weightFloat.Value);
+            : new ScaleDataPoint(
+                DateTime.Now,
+                _flowCalculator.CalculateFlow(weightFloat.Value),
+                weightFloat.Value
+            );
     }
 
     private ScaleDataPoint? OnDataReceived(byte[] bytes)
@@ -131,21 +132,6 @@ public abstract class ScaleConnectionBase(IBleDeviceConnection connection) : ISc
             _dataBuffer = _dataBuffer.Skip(6 + length).ToArray();
             return value;
         }
-    }
-
-    private double CalculateFlow(double weight)
-    {
-        var now = DateTime.Now;
-        var diffTime = now.Subtract(_lastWeightTimestamp).TotalSeconds;
-        var diffWeight = weight - _lastWeight;
-        _lastWeightTimestamp = now;
-        _lastWeight = weight;
-        if (diffTime is > 2 or <= 0)
-            return 0;
-        var flow = diffWeight / diffTime;
-        if (flow < FlowThreshold)
-            _flowAverage = _flowAverage.Skip(1).Append(diffWeight / diffTime).ToArray();
-        return _flowAverage.Sum() / _flowAverage.Length;
     }
 
     protected static byte[] Encode(byte messageType, byte[] payload)
