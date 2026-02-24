@@ -27,6 +27,10 @@
       "type": "string",
       "description": "Path for the output file"
     },
+    "appSettingsFile": {
+      "type": "string",
+      "description": "Name of the new backend appsettings for migration"
+    },
     "signingKey": {
       "type": "string",
       "description": "Private Key File to Sign the Update File"

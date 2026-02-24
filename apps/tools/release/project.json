@@ -25,6 +25,7 @@
           "frontend": "dist/apps/frontend",
           "asset_server": "apps/asset-server/.output"
         },
+        "appSettingsFile": "appsettings.Migration.json",
         "outputPath": "dist/apps/tools/release/",
         "signingKey": "{projectRoot}/private-key.pem"
       }

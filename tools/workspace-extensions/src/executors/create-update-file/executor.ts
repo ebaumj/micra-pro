@@ -5,18 +5,21 @@ import * as fs from 'fs';
 import * as crypto from 'crypto';
 const AdmZip = require('adm-zip');
 
+const BackendAppsettingsFile = 'appsettings.json';
+
 const AddFiles = (
   source: string,
   root: string,
   folder: string,
   zip: typeof AdmZip,
+  ignoreFiles: string[] = [],
 ) => {
   fs.readdirSync(source).forEach((e) => {
     const p = path.join(source, e);
-    if (fs.statSync(p).isFile())
+    if (fs.statSync(p).isFile() && !ignoreFiles.includes(p))
       zip.addFile(path.join(folder, e), fs.readFileSync(p));
     if (fs.statSync(p).isDirectory())
-      AddFiles(p, root, path.join(folder, e), zip);
+      AddFiles(p, root, path.join(folder, e), zip, ignoreFiles);
   });
 };
 
@@ -32,7 +35,14 @@ export default async function runExecutor(
     options.applicationPaths.asset_server,
   );
   const output = path.join(context.root, options.outputPath);
-  AddFiles(backend, backend, 'backend', zip);
+  const appSettingsOrigin = path.join(backend, BackendAppsettingsFile);
+  const appSettingsTarget = path.join(
+    backend,
+    options.appSettingsFile ?? BackendAppsettingsFile,
+  );
+  if (appSettingsOrigin !== appSettingsTarget)
+    fs.copyFileSync(appSettingsOrigin, appSettingsTarget);
+  AddFiles(backend, backend, 'backend', zip, [appSettingsOrigin]);
   AddFiles(frontend, frontend, 'frontend', zip);
   AddFiles(asset_server, asset_server, 'asset-server', zip);
   if (!fs.existsSync(output)) fs.mkdirSync(output, { recursive: true });
