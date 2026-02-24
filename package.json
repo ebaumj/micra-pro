@@ -6,7 +6,7 @@
   "scripts": {
     "format": "nx format:write && nx run-many --target=format --configuration=write --write=true",
     "import-translations": "tolgee pull && nx run-many -t import-translations && nx format:write && nx run tools-translation-cleanup:cleanup",
-    "serve": "nx run-many -t serve -p backend frontend asset-server recipe-hub"
+    "serve": "nx run-many -t serve -p backend frontend asset-server recipe-hub --outputStyle=stream"
   },
   "dependencies": {
     "@corvu/otp-field": "0.1.4",
