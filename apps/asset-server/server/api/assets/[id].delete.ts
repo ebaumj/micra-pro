@@ -2,9 +2,10 @@ import { throwInternalServerError } from '../../utils/errors';
 import authorize from '../../utils/authorize';
 import * as fs from 'fs';
 import { promises as FileStream } from 'fs';
+import useAppconfig from '../../utils/appconfig';
 
 export default defineEventHandler(async (event) => {
-  const runtimeConfig = useRuntimeConfig();
+  const runtimeConfig = useAppconfig();
   const id = getRouterParam(event, 'id');
   if (!id) return throwInternalServerError();
   authorize(event.headers.get('authorization'), id);

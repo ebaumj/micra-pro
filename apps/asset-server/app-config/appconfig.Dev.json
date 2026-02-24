@@ -1,0 +1,5 @@
+{
+  "blobStorage": {
+    "folder": "../../tmp/blob-storage"
+  }
+}

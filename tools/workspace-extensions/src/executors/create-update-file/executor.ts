@@ -7,6 +7,7 @@ const AdmZip = require('adm-zip');
 
 const BackendAppsettingsFile = 'appsettings.json';
 const FrontendAppsettingsFile = 'appconfig.json';
+const AssetServerAppsettingsFile = 'appconfig.json';
 
 const AddFiles = (
   source: string,
@@ -24,6 +25,32 @@ const AddFiles = (
   });
 };
 
+const CreateMigration = (
+  folder: string,
+  origin: string,
+  target?: string,
+): string => {
+  const orig = path.join(folder, origin);
+  const tar = path.join(folder, target ?? origin);
+  if (orig !== tar) fs.copyFileSync(orig, tar);
+  return orig;
+};
+
+const AddFilesWithSettingsMigration = (
+  source: string,
+  folder: string,
+  zip: typeof AdmZip,
+  appSettingsOrigin: string,
+  appSettingsTarget?: string,
+) => {
+  const ignoreFile = CreateMigration(
+    source,
+    appSettingsOrigin,
+    appSettingsTarget,
+  );
+  AddFiles(source, source, folder, zip, [ignoreFile]);
+};
+
 export default async function runExecutor(
   options: CreateUpdateFileExecutorSchema,
   context: ExecutorContext,
@@ -36,26 +63,27 @@ export default async function runExecutor(
     options.applicationPaths.asset_server,
   );
   const output = path.join(context.root, options.outputPath);
-  const backendAppSettingsOrigin = path.join(backend, BackendAppsettingsFile);
-  const backendAppSettingsTarget = path.join(
+  AddFilesWithSettingsMigration(
     backend,
-    options.appSettingsFiles.backend ?? BackendAppsettingsFile,
+    'backend',
+    zip,
+    BackendAppsettingsFile,
+    options.appSettingsFiles.backend,
   );
-  if (backendAppSettingsOrigin !== backendAppSettingsTarget)
-    fs.copyFileSync(backendAppSettingsOrigin, backendAppSettingsTarget);
-  AddFiles(backend, backend, 'backend', zip, [backendAppSettingsOrigin]);
-  const frontendAppSettingsOrigin = path.join(
+  AddFilesWithSettingsMigration(
     frontend,
+    'frontend',
+    zip,
     FrontendAppsettingsFile,
+    options.appSettingsFiles.frontend,
   );
-  const frontendAppSettingsTarget = path.join(
-    frontend,
-    options.appSettingsFiles.frontend ?? FrontendAppsettingsFile,
+  AddFilesWithSettingsMigration(
+    asset_server,
+    'asset-server',
+    zip,
+    AssetServerAppsettingsFile,
+    options.appSettingsFiles.asset_server,
   );
-  if (frontendAppSettingsOrigin !== frontendAppSettingsTarget)
-    fs.copyFileSync(frontendAppSettingsOrigin, frontendAppSettingsTarget);
-  AddFiles(frontend, frontend, 'frontend', zip, [frontendAppSettingsOrigin]);
-  AddFiles(asset_server, asset_server, 'asset-server', zip);
   if (!fs.existsSync(output)) fs.mkdirSync(output, { recursive: true });
   const file = path.join(output, 'mp-apps.zip');
   zip.writeZip(file);

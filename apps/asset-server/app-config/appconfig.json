@@ -1,0 +1,9 @@
+{
+  "authorization": {
+    "jwtAudience": "MicraProAssetServer",
+    "jwtValidIssuers": ["MicraPro"]
+  },
+  "blobStorage": {
+    "folder": "/mnt/localdata/micra-pro/blob-storage"
+  }
+}
