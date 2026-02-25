@@ -38,6 +38,20 @@ brew by weight, recipe management, statistics and recipe sharing for la marzocco
 
 - REMOTE_ASSET_SERVER_PRIVATE_KEY: same Private Key as in Backend
 
+### App Settings
+
+#### Backend
+- apps/backend/appsettings.json => Production
+- apps/backend/appsettings.Development.json => Development
+
+#### Frontend
+- apps/frontend/public/appconfig.json => Production
+- apps/frontend/src/config.local.ts => Development
+
+#### Asset Server
+- apps/asset-server/app-config/appconfig.json => Production
+- apps/asset-server/app-config/appconfig.Dev.json => Development
+
 ### CLI Commands
 
 #### Build Backend
