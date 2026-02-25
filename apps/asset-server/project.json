@@ -12,9 +12,10 @@
         "cwd": "{workspaceRoot}/apps/asset-server"
       },
       "inputs": [
-        "{projectRoot}/app/*",
-        "{projectRoot}/public/*",
-        "{projectRoot}/server/*",
+        "{projectRoot}/app/**",
+        "{projectRoot}/app-config/*",
+        "{projectRoot}/public/**",
+        "{projectRoot}/server/**",
         "{projectRoot}/nuxt.config.ts"
       ],
       "outputs": ["{projectRoot}/.output"]

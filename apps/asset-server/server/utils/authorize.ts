@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import useAppconfig from './appconfig';
 
 const fail = () => {
   throw createError({
@@ -12,7 +13,7 @@ const authorize = (header: string | null, assetId?: string) => {
   const [prefix, token] = header.split(' ');
   if (prefix !== 'Bearer') return fail();
   if (!token) return fail();
-  const runtimeConfig = useRuntimeConfig();
+  const runtimeConfig = useAppconfig();
   try {
     jwt.verify(token, process.env.REMOTE_ASSET_SERVER_PRIVATE_KEY ?? '', {
       audience: runtimeConfig.authorization.jwtAudience,
