@@ -7,6 +7,7 @@
   "targets": {
     "build": {},
     "serve": {
+      "dependsOn": ["build"],
       "options": {
         "port": 3000
       },

@@ -1,21 +1,11 @@
 import merge from 'lodash/merge';
+import { type AppConfig } from './config.type';
 
-const config = {
-  graphql: {
-    wsUri: 'ws://localhost:5232/graphql',
-    httpUri: 'http://localhost:5232/graphql',
-  },
-  recipeHub: {
-    uri: 'https://micra-pro.vercel.app',
-  },
-  useLostBackendConnectionModal: true,
-  display: {
-    resolution: {
-      width: 800,
-      height: 480,
-    },
-  },
-};
+declare global {
+  interface Window {
+    __APPCONFIG__: AppConfig;
+  }
+}
 
 const getLocalDevConfig = () => {
   if (import.meta.env.MODE !== 'development') return undefined;
@@ -37,6 +27,14 @@ const getLocalDevConfig = () => {
   return undefined;
 };
 
-const merged = merge(config, getLocalDevConfig());
+const merged = () => {
+  const baseConfig: AppConfig = window.__APPCONFIG__ || {};
+  return merge(baseConfig, getLocalDevConfig());
+};
+
+export const fetchConfig = async (): Promise<void> => {
+  const cfg = await (await fetch('/appconfig.json')).json();
+  window.__APPCONFIG__ = merge(cfg as AppConfig, getLocalDevConfig());
+};
 
 export default merged;

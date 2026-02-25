@@ -1,0 +1,16 @@
+{
+  "graphql": {
+    "wsUri": "ws://localhost:5232/graphql",
+    "httpUri": "http://localhost:5232/graphql"
+  },
+  "recipeHub": {
+    "uri": "https://micra-pro.vercel.app"
+  },
+  "useLostBackendConnectionModal": true,
+  "display": {
+    "resolution": {
+      "width": 800,
+      "height": 480
+    }
+  }
+}

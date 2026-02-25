@@ -27,7 +27,7 @@ const AppLayout: ParentComponent = (props) => {
 
     const bottomInput = inputPosition.bottom - main.getBoundingClientRect().top;
     const topKeyboard =
-      config.display.resolution.height -
+      config().display.resolution.height -
       keyboardElement.getBoundingClientRect().height;
 
     const overlap = 20 + bottomInput - topKeyboard;
@@ -44,8 +44,8 @@ const AppLayout: ParentComponent = (props) => {
         <div
           class="bg-background text-foreground relative max-h-screen max-w-screen overflow-hidden text-lg shadow-2xl shadow-gray-500"
           style={{
-            width: `${config.display.resolution.width}px`,
-            height: `${config.display.resolution.height}px`,
+            width: `${config().display.resolution.width}px`,
+            height: `${config().display.resolution.height}px`,
           }}
         >
           <div
@@ -56,7 +56,7 @@ const AppLayout: ParentComponent = (props) => {
             }}
           >
             <DialogContextProvider>
-              <Show when={config.useLostBackendConnectionModal}>
+              <Show when={config().useLostBackendConnectionModal}>
                 <BackendConnectionTracker />
               </Show>
               <CleaningContextProvider>
