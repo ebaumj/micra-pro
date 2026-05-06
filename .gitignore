@@ -62,3 +62,7 @@ logs
 *.log
 
 nupkg/
+
+.claude/worktrees
+.nx/polygraph
+.nx/self-healing
