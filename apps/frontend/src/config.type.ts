@@ -13,6 +13,10 @@ export type AppConfig = {
       height: number;
     };
   };
+  extractionTimeThreshold: {
+    good: number;
+    bad: number;
+  };
 };
 
 export const verifyConfig = (config: unknown): AppConfig => {
@@ -27,6 +31,9 @@ export const verifyConfig = (config: unknown): AppConfig => {
   if (!IsObject(config.display.resolution)) throw new Error();
   if (!IsNumber(config.display.resolution.width)) throw new Error();
   if (!IsNumber(config.display.resolution.height)) throw new Error();
+  if (!IsObject(config.extractionTimeThreshold)) throw new Error();
+  if (!IsNumber(config.extractionTimeThreshold.good)) throw new Error();
+  if (!IsNumber(config.extractionTimeThreshold.good)) throw new Error();
   return config as AppConfig;
 };
 

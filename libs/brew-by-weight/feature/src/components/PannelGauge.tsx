@@ -1,6 +1,8 @@
 import { Gauge, Spinner, twColor } from '@micra-pro/shared/ui';
 import { Component, Show } from 'solid-js';
 import { T } from '../generated/language-types';
+import { ExtractionTimeResult } from '../utils/extraction-time-result';
+import { twMerge } from 'tailwind-merge';
 
 const WeightTolerance = 1;
 const WeightOverhead = 4 * WeightTolerance;
@@ -13,6 +15,7 @@ export const PannelGauge: Component<{
   time: number;
   targetTime: number;
   targetQuantity: number;
+  extractionTimeResult: ExtractionTimeResult;
 }> = (props) => {
   return (
     <div class="relative flex h-full w-full flex-col items-center justify-center">
@@ -51,7 +54,18 @@ export const PannelGauge: Component<{
         </div>
         <div class="flex w-1/3 flex-col items-center justify-center px-2">
           <Show when={!props.isStarting}>
-            <div class="inset-shadow-primary-shadow w-full rounded-lg inset-shadow-sm">
+            <div
+              class={twMerge(
+                'w-full rounded-lg inset-shadow-sm',
+                props.extractionTimeResult === 'Bad'
+                  ? 'inset-shadow-bad'
+                  : props.extractionTimeResult === 'Ok'
+                    ? 'inset-shadow-neutral'
+                    : props.extractionTimeResult === 'Good'
+                      ? 'inset-shadow-good'
+                      : 'inset-shadow-primary-shadow',
+              )}
+            >
               <div class="flex w-full items-center justify-center text-2xl font-bold">
                 {props.time.toFixed(1)}
               </div>

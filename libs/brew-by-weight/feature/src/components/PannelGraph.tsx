@@ -2,6 +2,8 @@ import { LineChart, Spinner, twColor } from '@micra-pro/shared/ui';
 import { Component, Show } from 'solid-js';
 import { T, useTranslationContext } from '../generated/language-types';
 import moment from 'moment';
+import { ExtractionTimeResult } from '../utils/extraction-time-result';
+import { twMerge } from 'tailwind-merge';
 
 export const PannelGraph: Component<{
   flow: number;
@@ -15,6 +17,7 @@ export const PannelGraph: Component<{
     flow: number;
     totalQuantity: number;
   }[];
+  extractionTimeResult: ExtractionTimeResult;
 }> = (props) => {
   const { t } = useTranslationContext();
   return (
@@ -127,7 +130,18 @@ export const PannelGraph: Component<{
           <div class="flex h-6 w-full items-center justify-center text-sm">
             <T key="time" /> [s]
           </div>
-          <div class="flex h-full w-full items-center justify-center text-2xl font-bold">
+          <div
+            class={twMerge(
+              'flex h-full w-full items-center justify-center text-2xl font-bold',
+              props.extractionTimeResult === 'Bad'
+                ? 'text-bad'
+                : props.extractionTimeResult === 'Ok'
+                  ? 'text-neutral'
+                  : props.extractionTimeResult === 'Good'
+                    ? 'text-good'
+                    : '',
+            )}
+          >
             {props.time.toFixed(1)}
           </div>
         </div>

@@ -53,6 +53,10 @@
   --color-positive: hsl(120, 61%, 45%);
   --color-positive-foreground: hsl(0, 0%, 0%);
 
+  --color-good: hsl(120, 100%, 28%);
+  --color-neutral: hsl(54, 100%, 28%);
+  --color-bad: hsl(0, 100%, 38%);
+
   --color-muted: hsl(0 0% 96.1%);
   --color-muted-foreground: hsl(0 0% 45.1%);
 
