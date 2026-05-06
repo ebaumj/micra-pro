@@ -7,6 +7,8 @@ import { twMerge } from 'tailwind-merge';
 import { PannelGraph } from './PannelGraph';
 import { PannelGauge } from './PannelGauge';
 import { usePannelStyle } from './PannelStyleProvider';
+import { calculateExtractionTimeResult } from '../utils/extraction-time-result';
+import { useExtractionTimeThreshold } from './ExtractionTimeThresholdProvider';
 
 export const BrewByWeightContent: Component<{
   recipe: {
@@ -24,6 +26,7 @@ export const BrewByWeightContent: Component<{
   const pannelStyle = usePannelStyle().pannelStyle;
   // eslint-disable-next-line solid/reactivity
   const accessor = StartCoffee(props.recipe);
+  const extractionTimeThreshold = useExtractionTimeThreshold();
   const isStarting = () => {
     switch (accessor.dataStore.state.__typename) {
       case 'Created':
@@ -107,6 +110,19 @@ export const BrewByWeightContent: Component<{
         return true;
     }
   };
+  const extractionTimeResultValid = (): boolean => {
+    switch (accessor.dataStore.state.__typename) {
+      case 'Created':
+      case 'BrewProcessRunning':
+      case 'BrewProcessStarted':
+      case 'NotStarted':
+      case 'BrewProcessCancelled':
+      case 'BrewProcessFailed':
+        return false;
+      case 'BrewProcessFinished':
+        return true;
+    }
+  };
   createEffect(() => {
     switch (accessor.dataStore.state.__typename) {
       case 'Created':
@@ -138,6 +154,8 @@ export const BrewByWeightContent: Component<{
         }
     }
   });
+  const targetTimeSeconds = () =>
+    moment.duration(props.recipe.targetExtractionTime).asSeconds();
   return (
     <div class="flex w-full flex-col items-center justify-center gap-6">
       <div
@@ -156,11 +174,15 @@ export const BrewByWeightContent: Component<{
             flow={flow()}
             isStarting={isStarting()}
             quantity={quantity()}
-            targetTime={moment
-              .duration(props.recipe.targetExtractionTime)
-              .asSeconds()}
+            targetTime={targetTimeSeconds()}
             targetQuantity={props.recipe.inCupQuantity}
             time={timeSeconds()}
+            extractionTimeResult={calculateExtractionTimeResult(
+              extractionTimeResultValid(),
+              extractionTimeThreshold,
+              timeSeconds(),
+              targetTimeSeconds(),
+            )}
           />
         </Show>
         <Show when={pannelStyle() === 'Gauge'}>
@@ -168,11 +190,15 @@ export const BrewByWeightContent: Component<{
             flow={flow()}
             isStarting={isStarting()}
             quantity={quantity()}
-            targetTime={moment
-              .duration(props.recipe.targetExtractionTime)
-              .asSeconds()}
+            targetTime={targetTimeSeconds()}
             targetQuantity={props.recipe.inCupQuantity}
             time={timeSeconds()}
+            extractionTimeResult={calculateExtractionTimeResult(
+              extractionTimeResultValid(),
+              extractionTimeThreshold,
+              timeSeconds(),
+              targetTimeSeconds(),
+            )}
           />
         </Show>
       </div>

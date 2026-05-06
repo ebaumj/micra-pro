@@ -12,5 +12,9 @@
       "width": 800,
       "height": 480
     }
+  },
+  "extractionTimeThreshold": {
+    "good": 1,
+    "bad": 3
   }
 }

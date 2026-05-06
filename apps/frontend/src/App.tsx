@@ -13,6 +13,7 @@ import { ToastRegion, ToastList } from '@micra-pro/shared/ui';
 import {
   SpoutSelectorContextProvider,
   BrewByWeightPannelStyleProvider,
+  ExtractionTimeThresholdContextProvider,
 } from '@micra-pro/brew-by-weight/feature';
 import { CleaningContextProvider } from '@micra-pro/cleaning/feature';
 
@@ -55,21 +56,25 @@ const AppLayout: ParentComponent = (props) => {
               transform: `translateY(${mainContentTranslate()}px)`,
             }}
           >
-            <DialogContextProvider>
-              <Show when={config().useLostBackendConnectionModal}>
-                <BackendConnectionTracker />
-              </Show>
-              <CleaningContextProvider>
-                <SpoutSelectorContextProvider>
-                  <BrewByWeightPannelStyleProvider>
-                    {props.children}
-                  </BrewByWeightPannelStyleProvider>
-                  <ToastRegion>
-                    <ToastList />
-                  </ToastRegion>
-                </SpoutSelectorContextProvider>
-              </CleaningContextProvider>
-            </DialogContextProvider>
+            <ExtractionTimeThresholdContextProvider
+              threshold={config().extractionTimeThreshold}
+            >
+              <DialogContextProvider>
+                <Show when={config().useLostBackendConnectionModal}>
+                  <BackendConnectionTracker />
+                </Show>
+                <CleaningContextProvider>
+                  <SpoutSelectorContextProvider>
+                    <BrewByWeightPannelStyleProvider>
+                      {props.children}
+                    </BrewByWeightPannelStyleProvider>
+                    <ToastRegion>
+                      <ToastList />
+                    </ToastRegion>
+                  </SpoutSelectorContextProvider>
+                </CleaningContextProvider>
+              </DialogContextProvider>
+            </ExtractionTimeThresholdContextProvider>
           </div>
           <Keyboard
             ref={keyboardElement}

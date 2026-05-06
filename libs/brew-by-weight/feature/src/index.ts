@@ -8,3 +8,4 @@ export {
 export { SpoutSelector } from './components/SpoutSelector';
 export { BrewByWeightPannelStyleProvider } from './components/PannelStyleProvider';
 export { BrewByWeightPannelStyleSelector } from './components/PannelStyleSelector';
+export { ExtractionTimeThresholdContextProvider } from './components/ExtractionTimeThresholdProvider';
