@@ -13,8 +13,13 @@
       "dependsOn": ["build", "^build"],
       "cache": true
     },
-    "codegen": { "dependsOn": ["^codegen", "^build"], "cache": true },
-    "serve": { "dependsOn": ["^build, codegen"] },
+    "codegen": {
+      "dependsOn": ["^codegen", "^build"],
+      "cache": true
+    },
+    "serve": {
+      "dependsOn": ["^build, codegen"]
+    },
     "@nx/dotnet:build": {
       "inputs": ["{projectRoot}/**/*.csproj", "{projectRoot}/**/*.cs"],
       "outputs": ["{projectRoot}/bin", "{projectRoot}/obj"]
@@ -50,7 +55,10 @@
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
   },
-  "workspaceLayout": { "appsDir": "apps", "libsDir": "libs" },
+  "workspaceLayout": {
+    "appsDir": "apps",
+    "libsDir": "libs"
+  },
   "plugins": [
     {
       "plugin": "@nx/dotnet",
@@ -77,5 +85,6 @@
         "typecheckTargetName": "typecheck"
       }
     }
-  ]
+  ],
+  "analytics": true
 }
