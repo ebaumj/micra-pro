@@ -22,6 +22,7 @@ import { T } from '../generated/language-types';
 import { JSX } from 'solid-js/jsx-runtime';
 import moment from 'moment';
 import picturesImport from '../generated/pictures-import';
+import { useNavigate } from '@solidjs/router';
 
 const NumberField: Component<{
   value: number;
@@ -166,6 +167,14 @@ export const RecipePannel: Component<{
     if (props.beanId && rec?.type === 'Espresso')
       props.startEspressoBrewing(props.beanId, rec);
   };
+  const navigate = useNavigate();
+  const edit = () => {
+    const bean = selectedBean();
+    navigate(
+      `menu/beans?beanId=${bean?.id}&${recipe()?.type === 'V60' ? 'showV60=true' : 'showEspresso=true'}`,
+    );
+  };
+
   return (
     <>
       <Sheet
@@ -237,18 +246,29 @@ export const RecipePannel: Component<{
               </div>
             </div>
             <Dynamic component={selectParams()} class="w-full px-6" />
-            <Show when={recipe()?.type === 'Espresso'}>
-              <div class="flex w-full justify-center py-2">
+            <div class="relative flex h-16 justify-end">
+              <Show when={recipe()?.type === 'Espresso'}>
+                <div class="absolute flex w-full justify-center py-2">
+                  <Button
+                    variant="default"
+                    class="flex h-12 w-48 items-center justify-center gap-2 rounded-xl shadow-lg"
+                    onClick={start}
+                  >
+                    <Icon iconName="play_arrow" />
+                    <T key="start-espresso" />
+                  </Button>
+                </div>
+              </Show>
+              <div class="absolute flex w-fit justify-end px-6 py-2">
                 <Button
-                  variant="default"
-                  class="flex h-12 w-48 items-center justify-center gap-2 rounded-xl shadow-lg"
-                  onClick={start}
+                  variant="outline"
+                  class="flex h-12 w-16 items-center justify-center gap-2 rounded-xl shadow-lg"
+                  onClick={edit}
                 >
-                  <Icon iconName="play_arrow" />
-                  <T key="start-espresso" />
+                  <Icon iconName="edit" />
                 </Button>
               </div>
-            </Show>
+            </div>
           </div>
         </DialogContent>
       </Dialog>

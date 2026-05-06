@@ -1,5 +1,5 @@
 import { Component, createEffect, createSignal, Show } from 'solid-js';
-import { Button, handleError, SpinnerButton } from '@micra-pro/shared/ui';
+import { Button, handleError, Icon, SpinnerButton } from '@micra-pro/shared/ui';
 import { Spout, StartCoffee } from '@micra-pro/brew-by-weight/data-access';
 import { T, useTranslationContext } from '../generated/language-types';
 import moment from 'moment';
@@ -9,6 +9,7 @@ import { PannelGauge } from './PannelGauge';
 import { usePannelStyle } from './PannelStyleProvider';
 import { calculateExtractionTimeResult } from '../utils/extraction-time-result';
 import { useExtractionTimeThreshold } from './ExtractionTimeThresholdProvider';
+import { useNavigate } from '@solidjs/router';
 
 export const BrewByWeightContent: Component<{
   recipe: {
@@ -156,50 +157,76 @@ export const BrewByWeightContent: Component<{
   });
   const targetTimeSeconds = () =>
     moment.duration(props.recipe.targetExtractionTime).asSeconds();
+
+  const navigate = useNavigate();
+  const edit = () => {
+    navigate(`menu/beans?beanId=${props.recipe.beanId}&showEspresso=true`);
+  };
+  /*
+
+        <Button
+          variant="outline"
+          class="border-primary h-12 w-16 text-lg shadow-xl"
+          onClick={edit}
+        >
+          <Icon iconName='edit' />
+        </Button>
+  */
   return (
     <div class="flex w-full flex-col items-center justify-center gap-6">
-      <div
-        class={twMerge(
-          'bg-primary text-primary-foreground flex h-80 w-80 flex-col overflow-hidden rounded-full shadow-lg',
-          successClass() === true
-            ? 'shadow-positive'
-            : successClass() === false
-              ? 'shadow-destructive'
-              : 'shadow-primary-shadow',
-        )}
-      >
-        <Show when={pannelStyle() === 'Graph'}>
-          <PannelGraph
-            brewData={accessor.dataStore.brewData}
-            flow={flow()}
-            isStarting={isStarting()}
-            quantity={quantity()}
-            targetTime={targetTimeSeconds()}
-            targetQuantity={props.recipe.inCupQuantity}
-            time={timeSeconds()}
-            extractionTimeResult={calculateExtractionTimeResult(
-              extractionTimeResultValid(),
-              extractionTimeThreshold,
-              timeSeconds(),
-              targetTimeSeconds(),
-            )}
-          />
-        </Show>
-        <Show when={pannelStyle() === 'Gauge'}>
-          <PannelGauge
-            flow={flow()}
-            isStarting={isStarting()}
-            quantity={quantity()}
-            targetTime={targetTimeSeconds()}
-            targetQuantity={props.recipe.inCupQuantity}
-            time={timeSeconds()}
-            extractionTimeResult={calculateExtractionTimeResult(
-              extractionTimeResultValid(),
-              extractionTimeThreshold,
-              timeSeconds(),
-              targetTimeSeconds(),
-            )}
-          />
+      <div class="relative">
+        <div
+          class={twMerge(
+            'bg-primary text-primary-foreground flex h-80 w-80 flex-col overflow-hidden rounded-full shadow-lg',
+            successClass() === true
+              ? 'shadow-positive'
+              : successClass() === false
+                ? 'shadow-destructive'
+                : 'shadow-primary-shadow',
+          )}
+        >
+          <Show when={pannelStyle() === 'Graph'}>
+            <PannelGraph
+              brewData={accessor.dataStore.brewData}
+              flow={flow()}
+              isStarting={isStarting()}
+              quantity={quantity()}
+              targetTime={targetTimeSeconds()}
+              targetQuantity={props.recipe.inCupQuantity}
+              time={timeSeconds()}
+              extractionTimeResult={calculateExtractionTimeResult(
+                extractionTimeResultValid(),
+                extractionTimeThreshold,
+                timeSeconds(),
+                targetTimeSeconds(),
+              )}
+            />
+          </Show>
+          <Show when={pannelStyle() === 'Gauge'}>
+            <PannelGauge
+              flow={flow()}
+              isStarting={isStarting()}
+              quantity={quantity()}
+              targetTime={targetTimeSeconds()}
+              targetQuantity={props.recipe.inCupQuantity}
+              time={timeSeconds()}
+              extractionTimeResult={calculateExtractionTimeResult(
+                extractionTimeResultValid(),
+                extractionTimeThreshold,
+                timeSeconds(),
+                targetTimeSeconds(),
+              )}
+            />
+          </Show>
+        </div>
+        <Show when={canClose()}>
+          <Button
+            variant="outline"
+            class="border-border absolute right-1 bottom-1 flex h-16 w-16 items-center justify-center rounded-full border text-lg shadow-xl"
+            onClick={edit}
+          >
+            <Icon iconName="edit" />
+          </Button>
         </Show>
       </div>
       <Show when={!canClose()}>

@@ -1,4 +1,11 @@
-import { Component, createSignal, For, ParentComponent, Show } from 'solid-js';
+import {
+  Component,
+  createEffect,
+  createSignal,
+  For,
+  ParentComponent,
+  Show,
+} from 'solid-js';
 import {
   BeanProperties,
   createBeansAccessor,
@@ -29,6 +36,7 @@ import {
 import { EditV60Dialog, EditV60DialogContent } from './EditV60Dialog';
 import { useAuthentication } from '@micra-pro/recipe-hub/data-access';
 import { RemoteRecipeSelectorDialog } from './RemoteRecipeSelectorDialog';
+import { useSearchParams } from '@solidjs/router';
 
 export const EditBeansPage: Component = () => {
   const pictures = selectPicturesForMode(picturesImport);
@@ -93,6 +101,59 @@ export const EditBeansPage: Component = () => {
       setIsAddingV60(false);
     });
   };
+
+  const [searchParams, setSearchParams] = useSearchParams<{
+    beanId: string;
+    roasteryId: string;
+    showEspresso: string;
+    showV60: string;
+  }>();
+  createEffect(() => {
+    if (beansAccessor.beans().length === 0) return;
+    if (searchParams.roasteryId && !searchParams.beanId) {
+      setSelectedRoastery(searchParams.roasteryId);
+      return;
+    }
+    const roasteryId = beansAccessor
+      .beans()
+      .find((b) => b.id === searchParams.beanId)?.roasteryId;
+    if (roasteryId && searchParams.beanId) {
+      setSelectedRoastery(roasteryId);
+      setSelectedBean(searchParams.beanId);
+    }
+  });
+  createEffect(() => {
+    const recipe = currentEspressoRecipe();
+    if (searchParams.showEspresso === 'true' && recipe) {
+      setEditEspressoDialog({
+        properties: recipe.properties,
+        onSave: (properties: EspressoProperties) =>
+          recipe.update(properties, () => setEditEspressoDialog(undefined)),
+        onRemove: () => recipe.remove(() => setEditEspressoDialog(undefined)),
+        isSaving: () => recipe.isUpdating() ?? false,
+        isRemoving: () => recipe.isDeleting() ?? false,
+      });
+      setSearchParams({
+        showEspresso: '',
+      });
+    }
+  });
+  createEffect(() => {
+    const recipe = currentV60Recipe();
+    if (searchParams.showV60 === 'true' && recipe) {
+      setEditV60Dialog({
+        properties: recipe.properties,
+        onSave: (properties: V60Properties) =>
+          recipe.update(properties, () => setEditV60Dialog(undefined)),
+        onRemove: () => recipe.remove(() => setEditV60Dialog(undefined)),
+        isSaving: () => recipe.isUpdating() ?? false,
+        isRemoving: () => recipe.isDeleting() ?? false,
+      });
+      setSearchParams({
+        showV60: '',
+      });
+    }
+  });
 
   const isLoading = () =>
     roasteriesAccessor.isLoading() ||
@@ -310,9 +371,9 @@ export const EditBeansPage: Component = () => {
                               setEditEspressoDialog(undefined),
                             ),
                           isSaving: () =>
-                            currentV60Recipe()?.isUpdating() ?? false,
+                            currentEspressoRecipe()?.isUpdating() ?? false,
                           isRemoving: () =>
-                            currentV60Recipe()?.isDeleting() ?? false,
+                            currentEspressoRecipe()?.isDeleting() ?? false,
                         })
                       }
                     >
