@@ -162,16 +162,6 @@ export const BrewByWeightContent: Component<{
   const edit = () => {
     navigate(`menu/beans?beanId=${props.recipe.beanId}&showEspresso=true`);
   };
-  /*
-
-        <Button
-          variant="outline"
-          class="border-primary h-12 w-16 text-lg shadow-xl"
-          onClick={edit}
-        >
-          <Icon iconName='edit' />
-        </Button>
-  */
   return (
     <div class="flex w-full flex-col items-center justify-center gap-6">
       <div class="relative">
