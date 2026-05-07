@@ -71,7 +71,9 @@ export const UpdateButton: Component<{
           onOpenAutoFocus={(e) => e.preventDefault()}
           onInteractOutside={(e) => e.preventDefault()}
         >
-          <DialogTitle>Software Version</DialogTitle>
+          <DialogTitle>
+            <T key="current-version" />
+          </DialogTitle>
           <div class="flex h-full w-full justify-center">
             <div class="flex h-full w-1/3 items-center justify-center rounded-md border shadow-inner">
               {updateContext.currentVersion()}
