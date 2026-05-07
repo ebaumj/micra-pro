@@ -1,0 +1,18 @@
+{
+  "bean-management.bean-name": "Nome del chicco",
+  "bean-management.brew-temperature": "Temperatura di erogazione",
+  "bean-management.coffee-quantity": "Quantità di caffè",
+  "bean-management.country-code": "Paese",
+  "bean-management.grind-setting": "Grado di macinatura",
+  "bean-management.in-cup-quantity": "Quantità in tazza",
+  "bean-management.location": "Posizione",
+  "bean-management.name": "Nome",
+  "bean-management.remove": "Elimina",
+  "bean-management.roastery": "Torrefazione",
+  "bean-management.save": "Salva",
+  "bean-management.select-brew-mehtod": "Seleziona metodo di erogazione",
+  "bean-management.start-espresso": "Erogazione espresso",
+  "bean-management.target-extraction-time": "Tempo di estrazione previsto",
+  "bean-management.username": "Nome utente",
+  "bean-management.water-quantity": "Quantità d'acqua"
+}
