@@ -14,6 +14,7 @@ const LanguageFlag: Component<{ language?: string; class?: string }> = (
   props,
 ) => {
   const countryCode = (language?: string) => {
+    if (language === 'pt') language = 'br';
     const flageName = Object.keys(flags).find(
       (f) => f === language?.toUpperCase(),
     );
