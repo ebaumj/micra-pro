@@ -1,0 +1,18 @@
+{
+  "bean-management.bean-name": "Nombre del café",
+  "bean-management.brew-temperature": "Temperatura de preparación",
+  "bean-management.coffee-quantity": "Cantidad de café",
+  "bean-management.country-code": "País",
+  "bean-management.grind-setting": "Ajuste de molido",
+  "bean-management.in-cup-quantity": "Cantidad en taza",
+  "bean-management.location": "Ubicación",
+  "bean-management.name": "Nombre",
+  "bean-management.remove": "Eliminar",
+  "bean-management.roastery": "Tostador",
+  "bean-management.save": "Guardar",
+  "bean-management.select-brew-mehtod": "Seleccionar método de preparación",
+  "bean-management.start-espresso": "Preparar espresso",
+  "bean-management.target-extraction-time": "Tiempo de extracción deseado",
+  "bean-management.username": "Nombre de usuario",
+  "bean-management.water-quantity": "Cantidad de agua"
+}

@@ -77,6 +77,14 @@ const keyboardSelect = (lang: string): string => {
   switch (lang) {
     case 'de-CH':
       return 'de';
+    case 'es':
+      return 'en';
+    case 'fr':
+      return 'en';
+    case 'it':
+      return 'en';
+    case 'pt':
+      return 'en';
     default:
       return lang;
   }
