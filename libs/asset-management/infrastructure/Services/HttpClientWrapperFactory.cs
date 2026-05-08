@@ -1,3 +1,4 @@
+using System.Net.Http.Json;
 using MicraPro.AssetManagement.Infrastructure.Interfaces;
 
 namespace MicraPro.AssetManagement.Infrastructure.Services;
@@ -16,6 +17,9 @@ public class HttpClientWrapperFactory : IHttpClientWrapperFactory
 
         public Task MakeDeleteRequestAsync(string url, CancellationToken ct) =>
             client.DeleteAsync(url, ct);
+
+        public Task MakePostRequest(string url, object body, CancellationToken ct) =>
+            client.PostAsJsonAsync(url, body, ct);
     }
 
     public IHttpClientWrapper CreateClient(string bearerToken)

@@ -111,6 +111,30 @@ public class AssetService(
     public IObservable<bool> IsAssetPolling(Guid assetId) =>
         pollAssetService.IsPollingAsset(assetId);
 
+    public async Task BackupAssetsAsync(
+        string sftpServer,
+        string directory,
+        string username,
+        string password,
+        CancellationToken ct
+    )
+    {
+        try
+        {
+            await remoteAssetService.BackupAssetsAsync(
+                sftpServer,
+                directory,
+                username,
+                password,
+                ct
+            );
+        }
+        catch (Exception e)
+        {
+            logger.LogError("Failed to backup assets: {e}", e);
+        }
+    }
+
     private async Task FetchAsset(AssetDb asset, CancellationToken ct)
     {
         var remoteAsset = await remoteAssetService.ReadRemoteAssetAsync(asset.Id, ct);
