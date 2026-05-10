@@ -2,7 +2,6 @@ using System.Text.Json;
 using MicraPro.AssetManagement.Domain.AssetAccess;
 using MicraPro.AssetManagement.Infrastructure.Interfaces;
 using MicraPro.AssetManagement.Infrastructure.ValueObjects;
-using Microsoft.Extensions.Options;
 
 namespace MicraPro.AssetManagement.Infrastructure.AssetAccess;
 
@@ -14,6 +13,7 @@ public class RemoteAssetService(
 {
     private const string EndpointAll = "api/assets";
     private const string EndpointUpload = "upload";
+    private const string EndpointBackup = "api/backup";
 
     private string EndpointId(Guid id) => $"{EndpointAll}/{id.ToString()}";
 
@@ -62,4 +62,31 @@ public class RemoteAssetService(
         Task.FromResult(
             $"{domainProvider.AssetServerExternDomain}/{EndpointUpload}/{assetId.ToString()}?token={tokenCreatorService.GenerateUploadAccessToken(assetId)}"
         );
+
+    public async Task BackupAssetsAsync(
+        string sftpServer,
+        string directory,
+        string username,
+        string password,
+        CancellationToken ct
+    )
+    {
+        using var client = clientFactory.CreateClient(tokenCreatorService.GenerateAccessToken());
+        await client.MakePostRequest(
+            $"{domainProvider.AssetServerExternDomain}/{EndpointBackup}",
+            new BackupPayload(sftpServer, directory, username, password),
+            ct
+        );
+    }
+
+    private record BackupPayload(
+        // ReSharper disable once InconsistentNaming
+        string server,
+        // ReSharper disable once InconsistentNaming
+        string directory,
+        // ReSharper disable once InconsistentNaming
+        string username,
+        // ReSharper disable once InconsistentNaming
+        string password
+    );
 }

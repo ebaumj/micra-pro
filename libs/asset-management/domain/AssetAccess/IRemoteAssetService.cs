@@ -7,4 +7,11 @@ public interface IRemoteAssetService
     Task<(byte[] Data, string FileEnding)> ReadRemoteAssetAsync(Guid assetId, CancellationToken ct);
     Task RemoveRemoteAssetAsync(Guid assetId, CancellationToken ct);
     Task<string> CreateAssetUploadPathAsync(Guid assetId, CancellationToken ct);
+    Task BackupAssetsAsync(
+        string sftpServer,
+        string directory,
+        string username,
+        string password,
+        CancellationToken ct
+    );
 }

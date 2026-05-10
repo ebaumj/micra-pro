@@ -18,16 +18,18 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
     <PackageReference
       Include="Microsoft.Extensions.DependencyInjection.Abstractions"
-      Version="8.0.0"
+      Version="8.0.3"
     />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.3" />
     <PackageReference Include="System.Device.Gpio" Version="4.0.1" />
+    <PackageReference Include="SSH.NET" Version="2025.1.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\domain\MicraPro.Shared.Domain.csproj" />
+    <ProjectReference Include="..\..\asset-management\data-definition\MicraPro.AssetManagement.DataDefinition.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="crypto\**">

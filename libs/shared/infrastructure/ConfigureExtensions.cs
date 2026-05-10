@@ -45,6 +45,8 @@ public static class ConfigureExtensions
             .AddDbContextAndMigrationService<SharedDbContext>()
             .AddScoped<IConfigurationRepository, ConfigurationRepository>()
             .AddScoped<IKeyValueStoreProvider, KeyValueStoreProvider>()
-            .AddScoped<KeyValueStoreBase>();
+            .AddScoped<KeyValueStoreBase>()
+            .AddTransient<DatabaseBackupService>()
+            .AddHostedService<DataBackupService>();
     }
 }

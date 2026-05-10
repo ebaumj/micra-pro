@@ -41,16 +41,29 @@ brew by weight, recipe management, statistics and recipe sharing for la marzocco
 ### App Settings
 
 #### Backend
+
 - apps/backend/appsettings.json => Production
 - apps/backend/appsettings.Development.json => Development
 
 #### Frontend
+
 - apps/frontend/public/appconfig.json => Production
 - apps/frontend/src/config.local.ts => Development
 
 #### Asset Server
+
 - apps/asset-server/app-config/appconfig.json => Production
 - apps/asset-server/app-config/appconfig.Dev.json => Development
+
+### Data Backup via SFTP
+
+You can setup a data backup via SFTP by creating a backup config file with the following properties:
+
+- server: string, sftp server
+- directory: directory at the remote server to store the backup
+- username: username with permissions fot the backup directory
+- password
+  The entire backend Database, as well as all the Assets will be stored in a new folder with the backup timestamp at every start of the system
 
 ### CLI Commands
 

@@ -12,4 +12,6 @@ public class SharedInfrastructureOptions
     public string UpdateFileName { get; set; } = string.Empty;
     public string UpdatePublicKey { get; set; } = string.Empty;
     public bool AllowUpdates { get; set; } = false;
+    public bool UseBackups { get; set; } = false;
+    public string BackupConfigFile { get; set; } = string.Empty;
 }
