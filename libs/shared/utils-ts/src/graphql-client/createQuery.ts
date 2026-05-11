@@ -47,16 +47,26 @@ export const createQuery = <TData extends object, TVariables>(
   >(getQueryData, async (data) => {
     unsubscribe?.();
 
-    const response = await fetch(data.url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        query: queryDocument.loc?.source.body,
-        variables: data.queryVariables,
-      }),
-    });
+    let response: Response;
+    try {
+      response = await fetch(data.url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query: queryDocument.loc?.source.body,
+          variables: data.queryVariables,
+        }),
+      });
+    } catch {
+      console.warn('Backend is unreachable. Pausing update...');
+      return dataStore;
+    }
+    if (!response.ok) {
+      console.warn(`HTTP Backend Error: ${response.status}`);
+      return dataStore;
+    }
 
     const result = (await response.json()) as ExecutionResult<TData>;
 

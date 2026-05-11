@@ -14,6 +14,7 @@ public class RemoteAssetService(
     private const string EndpointAll = "api/assets";
     private const string EndpointUpload = "upload";
     private const string EndpointBackup = "api/backup";
+    private const string EndpointRestore = "api/restore";
 
     private string EndpointId(Guid id) => $"{EndpointAll}/{id.ToString()}";
 
@@ -74,6 +75,22 @@ public class RemoteAssetService(
         using var client = clientFactory.CreateClient(tokenCreatorService.GenerateAccessToken());
         await client.MakePostRequest(
             $"{domainProvider.AssetServerExternDomain}/{EndpointBackup}",
+            new BackupPayload(sftpServer, directory, username, password),
+            ct
+        );
+    }
+
+    public async Task RestoreAssetsAsync(
+        string sftpServer,
+        string directory,
+        string username,
+        string password,
+        CancellationToken ct
+    )
+    {
+        using var client = clientFactory.CreateClient(tokenCreatorService.GenerateAccessToken());
+        await client.MakePostRequest(
+            $"{domainProvider.AssetServerExternDomain}/{EndpointRestore}",
             new BackupPayload(sftpServer, directory, username, password),
             ct
         );

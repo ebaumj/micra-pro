@@ -21,4 +21,14 @@ public static class SystemQueries
         [Service] ISystemService service,
         CancellationToken ct
     ) => Task.FromResult(new SystemVersion(service.SystemVersion, service.AllowUpdates));
+
+    public static Task<bool> GetUseBackups(
+        [Service] IBackupService service,
+        CancellationToken ct
+    ) => Task.FromResult(service.UseBackups);
+
+    public static Task<IBackupService.Backup[]> GetBackups(
+        [Service] IBackupService service,
+        CancellationToken ct
+    ) => service.GetBackupsAsync(ct);
 }

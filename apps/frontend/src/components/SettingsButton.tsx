@@ -15,6 +15,8 @@ import { WifiButton } from './WifiButton';
 import { ScaleSelector } from '@micra-pro/scale-management/feature';
 import { UpdateButton } from './UpdateButton';
 import { useNumberPickerStyle } from './NumberPickerStyleProvider';
+import { BackupButton } from './BackupButton';
+import { RestoreButton } from './RestoreButton';
 
 const ActionButton: Component<{
   class?: string;
@@ -163,8 +165,12 @@ export const SettingsButton: Component<{
         <BrewByWeightPannelStyleSelector />
         <div class="flex h-full w-full flex-col items-end justify-end gap-2">
           <div class="flex h-14 w-full gap-2">
-            <WifiButton class="w-1/3" />
-            <ScaleSelector class="h-full w-1/3" />
+            <WifiButton class="w-1/2" />
+            <ScaleSelector class="h-full w-1/2" />
+          </div>
+          <div class="flex h-10 w-full gap-2">
+            <BackupButton class="w-1/3" />
+            <RestoreButton class="h-full w-1/3" />
             <UpdateButton class="w-1/3" />
           </div>
           <div class="flex h-10 w-full gap-2">

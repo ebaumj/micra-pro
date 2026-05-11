@@ -1,11 +1,21 @@
 import { Accessor } from 'solid-js';
 import {
+  Backup,
+  BackupDataDocument,
+  BackupDataMutation,
+  BackupDataMutationVariables,
+  BackupsDocument,
+  BackupsQuery,
+  BackupsQueryVariables,
   ConnectedWifiDocument,
   ConnectedWifiQuery,
   ConnectedWifiQueryVariables,
   ConnectWifiDocument,
   ConnectWifiMutation,
   ConnectWifiMutationVariables,
+  DeleteBackupDocument,
+  DeleteBackupMutation,
+  DeleteBackupMutationVariables,
   DisconnectWifiDocument,
   DisconnectWifiMutation,
   DisconnectWifiMutationVariables,
@@ -15,6 +25,9 @@ import {
   RebootDocument,
   RebootMutation,
   RebootMutationVariables,
+  RestoreDataDocument,
+  RestoreDataMutation,
+  RestoreDataMutationVariables,
   ScanWifiDocument,
   ScanWifiQuery,
   ScanWifiQueryVariables,
@@ -24,6 +37,9 @@ import {
   SystemVersionDocument,
   SystemVersionQuery,
   SystemVersionQueryVariables,
+  UseBackupsDocument,
+  UseBackupsQuery,
+  UseBackupsQueryVariables,
   Wifi,
 } from '../generated/graphql';
 import { createMutation } from '../graphql-client/createMutation';
@@ -130,5 +146,78 @@ export const updateAccess = (): {
       const result = await mutation({ link: link, signature: signature });
       if (result.installUpdate.boolean !== true) throw new Error();
     },
+  };
+};
+
+export const backupAccess = (): {
+  useBackups: Accessor<boolean>;
+  available: Accessor<Backup[]>;
+  backupData: () => Promise<void>;
+  restoreData: (directory: string) => Promise<void>;
+  deleteBackup: (directory: string) => Promise<void>;
+} => {
+  const enabledQuery = createQuery<UseBackupsQuery, UseBackupsQueryVariables>(
+    UseBackupsDocument,
+    () => ({}),
+  );
+  const availableQuery = createQuery<BackupsQuery, BackupsQueryVariables>(
+    BackupsDocument,
+    () => ({}),
+  );
+  const backupMutation = createMutation<
+    BackupDataMutation,
+    BackupDataMutationVariables
+  >(BackupDataDocument);
+  const restoreMutation = createMutation<
+    RestoreDataMutation,
+    RestoreDataMutationVariables
+  >(RestoreDataDocument);
+  const deleteMutation = createMutation<
+    DeleteBackupMutation,
+    DeleteBackupMutationVariables
+  >(DeleteBackupDocument);
+  return {
+    useBackups: () => {
+      if (!enabledQuery.resource.latest?.useBackups) {
+        enabledQuery.resourceActions.refetch();
+        return false;
+      }
+      return enabledQuery.resource.latest.useBackups;
+    },
+    available: () => {
+      if (!availableQuery.resource.latest?.backups) {
+        availableQuery.resourceActions.refetch();
+        return [];
+      }
+      return availableQuery.resource.latest.backups;
+    },
+    backupData: () =>
+      new Promise<void>((resolve, reject) =>
+        backupMutation({})
+          .then((r) => {
+            if (r.backupData.boolean) {
+              availableQuery.resourceActions.refetch();
+              resolve();
+            } else reject();
+          })
+          .catch(reject),
+      ),
+    restoreData: (directory: string) =>
+      new Promise<void>((resolve, reject) =>
+        restoreMutation({ directory })
+          .then((r) => (r.restoreData.boolean ? resolve() : reject()))
+          .catch(reject),
+      ),
+    deleteBackup: (directory: string) =>
+      new Promise<void>((resolve, reject) =>
+        deleteMutation({ directory })
+          .then((r) => {
+            if (r.deleteBackup.boolean) {
+              availableQuery.resourceActions.refetch();
+              resolve();
+            } else reject();
+          })
+          .catch(reject),
+      ),
   };
 };

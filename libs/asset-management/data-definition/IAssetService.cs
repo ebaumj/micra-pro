@@ -14,4 +14,11 @@ public interface IAssetService
         string password,
         CancellationToken ct
     );
+    Task RestoreAssetsAsync(
+        string sftpServer,
+        string directory,
+        string username,
+        string password,
+        CancellationToken ct
+    );
 }

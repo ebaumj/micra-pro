@@ -16,6 +16,7 @@ import {
   ExtractionTimeThresholdContextProvider,
 } from '@micra-pro/brew-by-weight/feature';
 import { CleaningContextProvider } from '@micra-pro/cleaning/feature';
+import { BackupContextProvider } from './components/BackupContextProvider';
 
 const AppLayout: ParentComponent = (props) => {
   const keyboardInfo = useKeyboardInfo();
@@ -63,16 +64,18 @@ const AppLayout: ParentComponent = (props) => {
                 <Show when={config().useLostBackendConnectionModal}>
                   <BackendConnectionTracker />
                 </Show>
-                <CleaningContextProvider>
-                  <SpoutSelectorContextProvider>
-                    <BrewByWeightPannelStyleProvider>
-                      {props.children}
-                    </BrewByWeightPannelStyleProvider>
-                    <ToastRegion>
-                      <ToastList />
-                    </ToastRegion>
-                  </SpoutSelectorContextProvider>
-                </CleaningContextProvider>
+                <BackupContextProvider>
+                  <CleaningContextProvider>
+                    <SpoutSelectorContextProvider>
+                      <BrewByWeightPannelStyleProvider>
+                        {props.children}
+                      </BrewByWeightPannelStyleProvider>
+                      <ToastRegion>
+                        <ToastList />
+                      </ToastRegion>
+                    </SpoutSelectorContextProvider>
+                  </CleaningContextProvider>
+                </BackupContextProvider>
               </DialogContextProvider>
             </ExtractionTimeThresholdContextProvider>
           </div>

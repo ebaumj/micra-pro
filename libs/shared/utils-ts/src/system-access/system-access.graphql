@@ -45,3 +45,32 @@ mutation InstallUpdate($link: String!, $signature: String!) {
     boolean
   }
 }
+
+query UseBackups {
+  useBackups
+}
+
+query Backups {
+  backups {
+    directory
+    timestamp
+  }
+}
+
+mutation BackupData {
+  backupData {
+    boolean
+  }
+}
+
+mutation RestoreData($directory: String!) {
+  restoreData(input: { directory: $directory }) {
+    boolean
+  }
+}
+
+mutation DeleteBackup($directory: String!) {
+  deleteBackup(input: { directory: $directory }) {
+    boolean
+  }
+}

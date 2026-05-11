@@ -24,5 +24,9 @@
   "root.installing-update": "Installing Update",
   "root.installing-update-deatils": "Update is in progress. The System will reboot to apply Update.",
   "root.update-failed-title": "Update Failed",
-  "root.update-failed-messsage": "Failed to install Update"
+  "root.update-failed-messsage": "Failed to install Update",
+  "root.restore-data": "Restoring Data",
+  "root.restore-data-deatils": "Restoring Data is in progress. The System will restart to finish.",
+  "root.backup-failed": "Data Backup Failed!",
+  "root.restore-failed": "Restoring Data failed!"
 }

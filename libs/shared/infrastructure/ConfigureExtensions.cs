@@ -46,7 +46,8 @@ public static class ConfigureExtensions
             .AddScoped<IConfigurationRepository, ConfigurationRepository>()
             .AddScoped<IKeyValueStoreProvider, KeyValueStoreProvider>()
             .AddScoped<KeyValueStoreBase>()
-            .AddTransient<DatabaseBackupService>()
-            .AddHostedService<DataBackupService>();
+            .AddSingleton<IBackupConfig, BackupConfig>()
+            .AddScoped<IRemoteFileService, RemoteFileService>()
+            .AddScoped<IBackupService, BackupService>();
     }
 }
