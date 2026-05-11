@@ -24,5 +24,9 @@
   "root.installing-update-deatils": "Z Update wird verarbeitet. Z System startet de neu zum abschliesse.",
   "root.menu-sidebar-updates": "Updates",
   "root.update-failed-messsage": "Ha z Update nid chönne installiere.",
-  "root.update-failed-title": "Update het nid funktioniert"
+  "root.update-failed-title": "Update het nid funktioniert",
+  "root.backup-failed": "Z Datebackup het nid klappt!",
+  "root.restore-data": "Date zrügg hole",
+  "root.restore-data-deatils": "D Date wärde zrügg gholt. I tue de när hurti neu starte.",
+  "root.restore-failed": "D Widerhärstellig vode Date het nid klappt!"
 }
