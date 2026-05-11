@@ -135,6 +135,30 @@ public class AssetService(
         }
     }
 
+    public async Task RestoreAssetsAsync(
+        string sftpServer,
+        string directory,
+        string username,
+        string password,
+        CancellationToken ct
+    )
+    {
+        try
+        {
+            await remoteAssetService.RestoreAssetsAsync(
+                sftpServer,
+                directory,
+                username,
+                password,
+                ct
+            );
+        }
+        catch (Exception e)
+        {
+            logger.LogError("Failed to restore assets: {e}", e);
+        }
+    }
+
     private async Task FetchAsset(AssetDb asset, CancellationToken ct)
     {
         var remoteAsset = await remoteAssetService.ReadRemoteAssetAsync(asset.Id, ct);

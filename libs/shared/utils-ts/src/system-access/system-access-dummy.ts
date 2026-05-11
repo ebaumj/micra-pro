@@ -1,5 +1,5 @@
 import { Accessor, createEffect, createSignal } from 'solid-js';
-import { Wifi } from '../generated/graphql';
+import { Backup, Wifi } from '../generated/graphql';
 
 export const createSystemAccessor = (): {
   reboot: () => Promise<void>;
@@ -61,5 +61,21 @@ export const updateAccess = (): {
     allowUpdates: () => false,
     loading: () => false,
     installUpdate: (_: string, _1: string) => Promise.reject(),
+  };
+};
+
+export const backupAccess = (): {
+  useBackups: Accessor<boolean>;
+  available: Accessor<Backup[]>;
+  backupData: () => Promise<void>;
+  restoreData: (directory: string) => Promise<void>;
+  deleteBackup: (directory: string) => Promise<void>;
+} => {
+  return {
+    useBackups: () => false,
+    available: () => [],
+    backupData: () => new Promise<void>((_, reject) => reject()),
+    restoreData: (_: string) => new Promise<void>((_, reject) => reject()),
+    deleteBackup: (_: string) => new Promise<void>((_, reject) => reject()),
   };
 };

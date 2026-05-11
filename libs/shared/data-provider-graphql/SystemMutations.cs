@@ -30,4 +30,19 @@ public static class SystemMutations
         string signature,
         CancellationToken ct
     ) => service.InstallUpdateAsync(link, signature, ct);
+
+    public static Task<bool> BackupData([Service] IBackupService service, CancellationToken ct) =>
+        service.BackupDataAsync(ct);
+
+    public static Task<bool> RestoreData(
+        [Service] IBackupService service,
+        string directory,
+        CancellationToken ct
+    ) => service.RestoreDataAsync(directory, ct);
+
+    public static Task<bool> DeleteBackup(
+        [Service] IBackupService service,
+        string directory,
+        CancellationToken ct
+    ) => service.DeleteBackupAsync(directory, ct);
 }

@@ -34,6 +34,7 @@ export const {
   testConnection,
   updateAccess,
   wifiAccess,
+  backupAccess,
 } = exportValue;
 export { type ConfigKey } from './config-storage/config-storage';
 export {} from './connection-test/connection-test';
