@@ -24,5 +24,9 @@
   "root.wifi-connect": "Conectar",
   "root.wifi-failed": "Error al conectarse a {network}",
   "root.wifi-failed-title": "Error de conexión",
-  "root.wifi-password": "Contraseña"
+  "root.wifi-password": "Contraseña",
+  "root.backup-failed": "¡Error en la copia de seguridad de los datos!",
+  "root.restore-data": "Restauración de datos",
+  "root.restore-data-deatils": "La restauración de datos está en curso. El sistema se reiniciará para completar el proceso.",
+  "root.restore-failed": "¡Error en la restauración de datos!"
 }

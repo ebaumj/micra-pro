@@ -24,5 +24,9 @@
   "root.wifi-connect": "Connetti",
   "root.wifi-failed": "Connessione a {network} non riuscita",
   "root.wifi-failed-title": "Connessione non riuscita",
-  "root.wifi-password": "Password"
+  "root.wifi-password": "Password",
+  "root.backup-failed": "Errore durante il backup dei dati!",
+  "root.restore-data": "Ripristino dei dati",
+  "root.restore-data-deatils": "Il ripristino dei dati è in corso. Il sistema si riavvierà per completare l'operazione.",
+  "root.restore-failed": "Errore durante il ripristino dei dati!"
 }

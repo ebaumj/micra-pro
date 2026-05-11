@@ -24,5 +24,9 @@
   "root.installing-update-deatils": "Update wird verarbeitet. Das System wird neu starten, um die Installation abzuschliessen.",
   "root.menu-sidebar-updates": "Updates",
   "root.update-failed-messsage": "Installieren des Updates ist fehlgeschlagen.",
-  "root.update-failed-title": "Update fehlgeschlagen"
+  "root.update-failed-title": "Update fehlgeschlagen",
+  "root.backup-failed": "Datenbackup fehlgeschlagen!",
+  "root.restore-data": "Datenwiderherstellung",
+  "root.restore-data-deatils": "Die Daten werden widerhergestellt. Das System startet sich im Anschluss neu.",
+  "root.restore-failed": "Widerherstellung der Daten fehlgeschlagen!"
 }
