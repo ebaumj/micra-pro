@@ -12,6 +12,7 @@ import { Asset } from '@micra-pro/asset-management/feature';
 import { RecipePannel } from '@micra-pro/bean-management/feature';
 import {
   BrewByWeightPannel,
+  BrewMethod,
   SpoutSelector,
 } from '@micra-pro/brew-by-weight/feature';
 import { createConfigAccessor } from '@micra-pro/shared/utils-ts';
@@ -85,7 +86,12 @@ function MainScreen() {
 
   const [selectedBean, setSelectedBean] = createSignal<string | null>(null);
 
-  const startEspressoBrewing = (beanId: string, recipe: EspressoProperties) => {
+  const startEspressoBrewing = (
+    beanId: string,
+    recipe: EspressoProperties,
+    brewByTime: boolean,
+  ) => {
+    setMethod(undefined);
     setRecipe({
       beanId: beanId,
       coffeeQuantity: recipe.coffeeQuantity,
@@ -93,6 +99,7 @@ function MainScreen() {
       inCupQuantity: recipe.inCupQuantity,
       targetExtractionTime: recipe.targetExtractionTime,
     });
+    setMethod(brewByTime ? 'time' : 'weight');
     setSelectedBean(null);
   };
 
@@ -103,6 +110,8 @@ function MainScreen() {
     inCupQuantity: number;
     targetExtractionTime: string;
   } | null>(null);
+
+  const [method, setMethod] = createSignal<BrewMethod | undefined>();
 
   return (
     <Layout>
@@ -116,6 +125,7 @@ function MainScreen() {
           />
           <BrewByWeightPannel
             recipe={recipe()}
+            method={method()}
             onClose={() => setRecipe(null)}
           />
           <div class="w-full">

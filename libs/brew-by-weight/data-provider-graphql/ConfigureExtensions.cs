@@ -98,6 +98,56 @@ public static class ConfigureExtensions
                 );
         };
 
+    private static Action<IRequestExecutorBuilder> CreateAddBrewByTimeTrackingTypeAction(
+        Type type
+    ) =>
+        builder =>
+        {
+            typeof(SchemaRequestExecutorBuilderExtensions)
+                .GetMethods()
+                .FirstOrDefault(m =>
+                    m.Name == "AddObjectType"
+                    && m.GetParameters().Length == 2
+                    && m is { IsGenericMethod: true, IsStatic: true }
+                )!
+                .MakeGenericMethod(type)
+                .Invoke(
+                    null,
+                    [
+                        builder,
+                        (object descriptor) =>
+                        {
+                            typeof(IObjectTypeDescriptor<>)
+                                .MakeGenericType(type)
+                                .GetMethods()
+                                .FirstOrDefault(m =>
+                                    m.Name == "Implements" && m.GetParameters().Length == 0
+                                )!
+                                .MakeGenericMethod(typeof(InterfaceType<BrewByTimeTracking>))
+                                .Invoke(descriptor, []);
+                            typeof(IObjectTypeDescriptor<>)
+                                .MakeGenericType(type)
+                                .GetMethods()
+                                .FirstOrDefault(m =>
+                                    m.Name == "Name" && m.GetParameters().Length == 1
+                                )!
+                                .Invoke(descriptor, [$"BrewByTimeProcess{type.Name}"]);
+                            var fieldDescriptor = (IObjectFieldDescriptor)
+                                typeof(IObjectTypeDescriptor<>)
+                                    .MakeGenericType(type)
+                                    .GetMethods()
+                                    .FirstOrDefault(m =>
+                                        m.Name == "Field"
+                                        && m.GetParameters().Length == 1
+                                        && m.GetParameters()[0].ParameterType == typeof(MemberInfo)
+                                    )!
+                                    .Invoke(descriptor, [type.GetMember("ToString").First()])!;
+                            fieldDescriptor.Name("_stringValue");
+                        },
+                    ]
+                );
+        };
+
     private static Action<IRequestExecutorBuilder> CreateAddBrewByWeightExceptionTypeAction(
         Type type
     ) =>
@@ -154,6 +204,12 @@ public static class ConfigureExtensions
             .Where(a => a.IsSubclassOf(typeof(BrewByWeightTracking)))
             .Select(CreateAddBrewByWeightTrackingTypeAction);
 
+    private static readonly IEnumerable<Action<IRequestExecutorBuilder>> BrewByTimeTrackingTypes =
+        typeof(BrewByTimeTracking)
+            .Assembly.GetTypes()
+            .Where(a => a.IsSubclassOf(typeof(BrewByTimeTracking)))
+            .Select(CreateAddBrewByTimeTrackingTypeAction);
+
     private static readonly IEnumerable<
         Action<IRequestExecutorBuilder>
     > BrewByWeightExceptionTypes = typeof(BrewByWeightException)
@@ -174,6 +230,18 @@ public static class ConfigureExtensions
             d.BindFieldsExplicitly().Field(t => t.Message)
         );
         foreach (var addTypeAction in BrewByWeightExceptionTypes)
+            addTypeAction(builder);
+        return builder;
+    }
+
+    private static IRequestExecutorBuilder ConfigureBrewByTimeTrackingType(
+        this IRequestExecutorBuilder builder
+    )
+    {
+        builder.AddInterfaceType<BrewByTimeTracking>(d =>
+            d.Field(t => t.ToString()).Name("_stringValue")
+        );
+        foreach (var addTypeAction in BrewByTimeTrackingTypes)
             addTypeAction(builder);
         return builder;
     }
@@ -202,6 +270,7 @@ public static class ConfigureExtensions
         return builder
             .AddDataProviderGraphQlTypes()
             .ConfigureBrewByWeightTrackingType()
+            .ConfigureBrewByTimeTrackingType()
             .ConfigureBrewByWeightHistoryEntryType();
     }
 
@@ -210,6 +279,8 @@ public static class ConfigureExtensions
         IConfiguration configuration
     )
     {
-        return services.AddSingleton<BrewProcessContainerService>();
+        return services
+            .AddSingleton<BrewProcessContainerService>()
+            .AddSingleton<BrewByTimeProcessContainerService>();
     }
 }
