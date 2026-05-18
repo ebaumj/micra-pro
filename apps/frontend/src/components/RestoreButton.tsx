@@ -83,6 +83,7 @@ export const RestoreButton: Component<{
       <Button
         class={twMerge('h-full w-full', props.class)}
         variant="outline"
+        disabled={!context.enabled()}
         onClick={() => setDialogOpen(true)}
       >
         <Icon
