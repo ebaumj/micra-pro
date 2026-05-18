@@ -22,4 +22,20 @@ public static class BrewByWeightQueries
             return null;
         }
     }
+
+    public static async Task<BrewByTimeTracking?> GetBrewByTimeState(
+        [Service] BrewByTimeProcessContainerService containerService,
+        Guid processId,
+        CancellationToken ct
+    )
+    {
+        try
+        {
+            return await containerService.GetTracker(processId).FirstAsync().ToTask(ct);
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
 }

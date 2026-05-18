@@ -1,8 +1,18 @@
-import { Component, createEffect, createSignal, Show } from 'solid-js';
+import {
+  Component,
+  createEffect,
+  createSignal,
+  Match,
+  Show,
+  Switch,
+} from 'solid-js';
 import { AlertDialog, AlertDialogContent } from '@micra-pro/shared/ui';
 import { Spout } from '@micra-pro/brew-by-weight/data-access';
 import { BrewByWeightContent } from './BrewByWeightContent';
 import { useSelectedSpoutContext } from './SpoutSelectorContextProvider';
+import { BrewByTimeContent } from './BrewByTimeContent';
+
+export type BrewMethod = 'time' | 'weight';
 
 export const BrewByWeightPannel: Component<{
   recipe: {
@@ -12,6 +22,7 @@ export const BrewByWeightPannel: Component<{
     inCupQuantity: number;
     targetExtractionTime: string;
   } | null;
+  method: BrewMethod | undefined;
   onClose: () => void;
 }> = (props) => {
   const [recipe, setRecipe] = createSignal<
@@ -41,7 +52,14 @@ export const BrewByWeightPannel: Component<{
         >
           <Show when={recipe()}>
             {(r) => (
-              <BrewByWeightContent recipe={r()} onClose={props.onClose} />
+              <Switch>
+                <Match when={props.method === 'weight'}>
+                  <BrewByWeightContent recipe={r()} onClose={props.onClose} />
+                </Match>
+                <Match when={props.method === 'time'}>
+                  <BrewByTimeContent recipe={r()} onClose={props.onClose} />
+                </Match>
+              </Switch>
             )}
           </Show>
         </AlertDialogContent>

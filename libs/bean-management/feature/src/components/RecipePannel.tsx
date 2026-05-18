@@ -120,7 +120,11 @@ const V60Params: Component<{ recipe: V60Properties; class?: string }> = (
 export const RecipePannel: Component<{
   beans: Bean[];
   beanId: string | null;
-  startEspressoBrewing: (beanId: string, recipe: EspressoProperties) => void;
+  startEspressoBrewing: (
+    beanId: string,
+    recipe: EspressoProperties,
+    brewByTime: boolean,
+  ) => void;
   onClose: () => void;
 }> = (props) => {
   const pictures = selectPicturesForMode(picturesImport);
@@ -162,10 +166,10 @@ export const RecipePannel: Component<{
         return (props) => <div class={props.class} />;
     }
   };
-  const start = () => {
+  const start = (brewByTime: boolean) => {
     const rec = recipe();
     if (props.beanId && rec?.type === 'Espresso')
-      props.startEspressoBrewing(props.beanId, rec);
+      props.startEspressoBrewing(props.beanId, rec, brewByTime);
   };
   const navigate = useNavigate();
   const edit = () => {
@@ -246,20 +250,28 @@ export const RecipePannel: Component<{
               </div>
             </div>
             <Dynamic component={selectParams()} class="w-full px-6" />
-            <div class="relative flex h-16 justify-end">
+            <div class="relative flex h-16">
               <Show when={recipe()?.type === 'Espresso'}>
-                <div class="absolute flex w-full justify-center py-2">
+                <div class="absolute top-2 left-6">
+                  <Button
+                    class="flex h-12 w-16 items-center justify-center gap-2 rounded-xl shadow-lg"
+                    onClick={() => start(true)}
+                  >
+                    <Icon iconName="timer" />
+                  </Button>
+                </div>
+                <div class="absolute top-2 left-1/2 -translate-x-1/2">
                   <Button
                     variant="default"
                     class="flex h-12 w-48 items-center justify-center gap-2 rounded-xl shadow-lg"
-                    onClick={start}
+                    onClick={() => start(false)}
                   >
                     <Icon iconName="play_arrow" />
                     <T key="start-espresso" />
                   </Button>
                 </div>
               </Show>
-              <div class="absolute flex w-fit justify-end px-6 py-2">
+              <div class="absolute top-2 right-6">
                 <Button
                   variant="outline"
                   class="flex h-12 w-16 items-center justify-center gap-2 rounded-xl shadow-lg"

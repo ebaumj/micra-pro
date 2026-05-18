@@ -1,0 +1,46 @@
+fragment BrewByTimeTrackingFields on BrewByTimeTracking {
+  ... on BrewByTimeProcessStarted {
+    __typename
+  }
+  ... on BrewByTimeProcessRunning {
+    __typename
+    targetTime
+    totalTime
+  }
+  ... on BrewByTimeProcessFinished {
+    __typename
+    targetTime
+    extractionTime
+  }
+  ... on BrewByTimeProcessCancelled {
+    __typename
+    targetTime
+    totalTime
+  }
+  ... on BrewByTimeProcessFailed {
+    __typename
+    targetTime
+    totalTime
+    exception {
+      __typename
+    }
+  }
+}
+
+mutation StartBrewByTimeProcess($targetTime: TimeSpan!) {
+  startBrewByTimeProcess(input: { targetTime: $targetTime }) {
+    uuid
+  }
+}
+
+query BrewByTimeStatePoll($processId: UUID!) {
+  brewByTimeState(processId: $processId) {
+    ...BrewByTimeTrackingFields
+  }
+}
+
+subscription BrewByTimeState($processId: UUID!) {
+  brewByTimeState(processId: $processId) {
+    ...BrewByTimeTrackingFields
+  }
+}
