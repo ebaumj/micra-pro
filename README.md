@@ -63,7 +63,8 @@ You can setup a data backup via SFTP by creating a backup config file with the f
 - directory: directory at the remote server to store the backup
 - username: username with permissions fot the backup directory
 - password
-  The entire backend Database, as well as all the Assets will be stored in a new folder with the backup timestamp at every start of the system
+
+The entire backend Database, as well as all the Assets will be stored in a new folder with the backup timestamp at every start of the system
 
 ### CLI Commands
 
