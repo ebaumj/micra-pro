@@ -1,5 +1,6 @@
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
+using MicraPro.BrewByWeight.DataDefinition;
 using MicraPro.BrewByWeight.DataDefinition.ValueObjects;
 
 namespace MicraPro.BrewByWeight.DataProviderGraphQl;
@@ -8,14 +9,17 @@ namespace MicraPro.BrewByWeight.DataProviderGraphQl;
 public static class BrewByWeightQueries
 {
     public static async Task<BrewByWeightTracking?> GetBrewState(
-        [Service] BrewProcessContainerService containerService,
+        [Service] IBrewByWeightService brewByWeightService,
         Guid processId,
         CancellationToken ct
     )
     {
         try
         {
-            return await containerService.GetTracker(processId).FirstAsync().ToTask(ct);
+            var process =
+                brewByWeightService.GetBrewProcess(processId)
+                ?? throw new Exception("No Brew Process Found");
+            return await process.State.FirstAsync().ToTask(ct);
         }
         catch (Exception)
         {
@@ -24,14 +28,17 @@ public static class BrewByWeightQueries
     }
 
     public static async Task<BrewByTimeTracking?> GetBrewByTimeState(
-        [Service] BrewByTimeProcessContainerService containerService,
+        [Service] IBrewByTimeService brewByTimeService,
         Guid processId,
         CancellationToken ct
     )
     {
         try
         {
-            return await containerService.GetTracker(processId).FirstAsync().ToTask(ct);
+            var process =
+                brewByTimeService.GetBrewProcess(processId)
+                ?? throw new Exception("No Brew Process Found");
+            return await process.State.FirstAsync().ToTask(ct);
         }
         catch (Exception)
         {

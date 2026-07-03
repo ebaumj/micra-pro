@@ -6,4 +6,5 @@ public interface IBrewByTimeProcess
 {
     Guid ProcessId { get; }
     IObservable<BrewByTimeTracking> State { get; }
+    TimeSpan ExtractionTime { get; }
 }

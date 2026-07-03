@@ -43,10 +43,14 @@ public class CleaningService(
             throw new Exception("State is already running");
         var subject = new ReplaySubject<CleaningState>();
         subject.OnNext(new CleaningState.Started());
+        stateService.SetCleaningStateObservable(subject);
         stateService.SetIsRunning(true);
         Observable.FromAsync(() => CleaningProcessAsync(subject, ct)).Subscribe();
         return subject.AsObservable();
     }
+
+    public IObservable<CleaningState> GetCleaningStateObservable() =>
+        stateService.CleaningStateObservable;
 
     private async Task CleaningProcessAsync(IObserver<CleaningState> observer, CancellationToken ct)
     {

@@ -22,13 +22,21 @@ public class BrewByWeightService(
     private static readonly TimeSpan MaximumDripTime = TimeSpan.FromSeconds(10);
     private static readonly TimeSpan WaitTimeAfterCupFull = TimeSpan.FromSeconds(3);
 
-    private record ProcessDisposableToken(Guid ProcessId, IDisposable Disposable);
+    private record ProcessHandle(IBrewProcess Process, IDisposable Disposable);
 
-    private record BrewProcess(Guid ProcessId, IObservable<BrewByWeightTracking> State)
-        : IBrewProcess;
+    private record BrewProcess(
+        Guid ProcessId,
+        IObservable<BrewByWeightTracking> State,
+        Guid BeanId,
+        double InCupQuantity,
+        double GrindSetting,
+        double CoffeeQuantity,
+        TimeSpan TargetExtractionTime,
+        IBrewByWeightService.Spout Spout
+    ) : IBrewProcess;
 
     private readonly BehaviorSubject<BrewByWeightState> _state = new(new BrewByWeightState.Idle());
-    private ProcessDisposableToken[] _processDisposables = [];
+    private ProcessHandle[] _processHandles = [];
 
     private IBrewByWeightDbService BrewByWeightDbService =>
         serviceScopeFactory
@@ -73,8 +81,7 @@ public class BrewByWeightService(
                         coffeeQuantity,
                         targetExtractionTime,
                         spout,
-                        state => subject.OnNext(state),
-                        () => _state.OnNext(new BrewByWeightState.Running(processId)),
+                        subject.OnNext,
                         ct
                     );
                     var result = CalculateResultAsync(allDataUpdates);
@@ -137,14 +144,25 @@ public class BrewByWeightService(
             })
             .Subscribe(_ =>
             {
-                _processDisposables = _processDisposables
-                    .Where(t => t.ProcessId != processId)
+                _processHandles = _processHandles
+                    .Where(t => t.Process.ProcessId != processId)
                     .ToArray();
             });
-        _processDisposables = _processDisposables
-            .Append(new ProcessDisposableToken(processId, subscription))
+        var process = new BrewProcess(
+            processId,
+            subject,
+            beanId,
+            inCupQuantity,
+            grindSetting,
+            coffeeQuantity,
+            targetExtractionTime,
+            spout
+        );
+        _processHandles = _processHandles
+            .Append(new ProcessHandle(process, subscription))
             .ToArray();
-        return new BrewProcess(processId, subject);
+        _state.OnNext(new BrewByWeightState.Running(processId));
+        return process;
     }
 
     private async Task<TimeSpan> RunBrewByWeightAsync(
@@ -155,13 +173,11 @@ public class BrewByWeightService(
         TimeSpan targetExtractionTime,
         IBrewByWeightService.Spout spout,
         Action<BrewByWeightTracking> updateState,
-        Action start,
         CancellationToken ct
     )
     {
         if (_state.Value is not BrewByWeightState.Idle)
             throw new BrewByWeightException.BrewServiceNotReady();
-        start();
         var paddleOffWeight =
             inCupQuantity
             - await retentionService.CalculateRetentionWeightAsync(
@@ -221,9 +237,12 @@ public class BrewByWeightService(
         }
     }
 
+    public IBrewProcess? GetBrewProcess(Guid processId) =>
+        _processHandles.FirstOrDefault(t => t.Process.ProcessId == processId)?.Process;
+
     public Task StopBrewProcess(Guid processId)
     {
-        _processDisposables.FirstOrDefault(t => t.ProcessId == processId)?.Disposable.Dispose();
+        _processHandles.FirstOrDefault(t => t.Process.ProcessId == processId)?.Disposable.Dispose();
         return Task.CompletedTask;
     }
 }

@@ -273,14 +273,4 @@ public static class ConfigureExtensions
             .ConfigureBrewByTimeTrackingType()
             .ConfigureBrewByWeightHistoryEntryType();
     }
-
-    public static IServiceCollection AddBrewByWeightDataProviderGraphQlServices(
-        this IServiceCollection services,
-        IConfiguration configuration
-    )
-    {
-        return services
-            .AddSingleton<BrewProcessContainerService>()
-            .AddSingleton<BrewByTimeProcessContainerService>();
-    }
 }

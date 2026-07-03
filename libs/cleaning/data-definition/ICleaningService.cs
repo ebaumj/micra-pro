@@ -12,5 +12,6 @@ public interface ICleaningService
     Task<DateTime> GetLastCleaningTimeAsync(CancellationToken ct);
 
     IObservable<CleaningState> StartCleaning(CancellationToken ct);
+    IObservable<CleaningState> GetCleaningStateObservable();
     IObservable<bool> IsRunning { get; }
 }
