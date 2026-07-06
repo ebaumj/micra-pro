@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@corvu/otp-field": "0.1.4",
+    "@guolao/vue-monaco-editor": "^1.6.0",
     "@kobalte/core": "0.13.11",
     "@solid-primitives/deep": "0.3.3",
     "bcrypt": "6.0.0",

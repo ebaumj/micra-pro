@@ -15,8 +15,10 @@ public static class ConfigureExtensions
     {
         return services
             .AddHostedService<StartupAssetFetcher>()
+            .AddHostedService<WebhookInvokeWorker>()
             .AddSingleton<AssetStateService>()
             .AddSingleton<IPollAssetService, PollAssetService>()
+            .AddTransient<IWebhookService, WebhookService>()
             .AddScoped<AssetService>()
             .AddScoped<IAssetManagementService>(sp => sp.GetRequiredService<AssetService>())
             .AddScoped<IAssetService>(sp => sp.GetRequiredService<AssetService>())
