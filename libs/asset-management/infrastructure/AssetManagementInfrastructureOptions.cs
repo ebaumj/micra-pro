@@ -12,4 +12,6 @@ public class AssetManagementInfrastructureOptions
     public string JwtTokenLifeTimeInMinutes { get; set; } = string.Empty;
     public string JwtUploadTokenLifeTimeInMinutes { get; set; } = string.Empty;
     public string Audience { get; set; } = string.Empty;
+    public bool UseWebhooks { get; set; }
+    public double WebhookPublishIntervalInSeconds { get; set; }
 }

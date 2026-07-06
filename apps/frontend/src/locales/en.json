@@ -9,6 +9,7 @@
   "root.menu-sidebar-wifi": "Wifi",
   "root.menu-sidebar-cleaning": "Cleaning",
   "root.menu-sidebar-updates": "Updates",
+  "root.menu-sidebar-webhooks": "Webhooks",
   "root.scale": "Scale",
   "root.wifi-connect": "Connect",
   "root.wifi-password": "Password",

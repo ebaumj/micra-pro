@@ -11,6 +11,8 @@ public class TokenCreatorService(
     IOptions<AssetManagementInfrastructureRuntimeOptions> runtimeOptions
 ) : ITokenCreatorService
 {
+    private const string RefreshTokenSubject = "__refresh_token__";
+
     private readonly SymmetricSecurityKey _key = new(
         runtimeOptions.Value.RemoteAssetServerPrivateKey
     );
@@ -22,6 +24,8 @@ public class TokenCreatorService(
     private readonly TimeSpan _uploadTokenLifeTime = TimeSpan.FromMinutes(
         double.Parse(options.Value.JwtUploadTokenLifeTimeInMinutes)
     );
+
+    private readonly TimeSpan _webhookLifeTime = TimeSpan.FromMinutes(60);
 
     private string CreateAccessToken(TimeSpan lifetime, IEnumerable<Claim> claims) =>
         new JwtSecurityTokenHandler().WriteToken(
@@ -37,14 +41,20 @@ public class TokenCreatorService(
             )
         );
 
-    private IEnumerable<Claim> CreateClaims(Guid assetId) =>
-        [new(JwtRegisteredClaimNames.Sub, assetId.ToString())];
+    private static IEnumerable<Claim> CreateClaims(string subject) =>
+        [new(JwtRegisteredClaimNames.Sub, subject)];
 
     public string GenerateUploadAccessToken(Guid assetId) =>
-        CreateAccessToken(_uploadTokenLifeTime, CreateClaims(assetId));
+        CreateAccessToken(_uploadTokenLifeTime, CreateClaims(assetId.ToString()));
 
     public string GenerateAccessToken(Guid assetId) =>
-        CreateAccessToken(_tokenLifeTime, CreateClaims(assetId));
+        CreateAccessToken(_tokenLifeTime, CreateClaims(assetId.ToString()));
+
+    public string GenerateWebhookAccessToken(string subject) =>
+        CreateAccessToken(_webhookLifeTime, CreateClaims(subject));
+
+    public string GenerateRefreshToken() =>
+        CreateAccessToken(_webhookLifeTime, CreateClaims(RefreshTokenSubject));
 
     public string GenerateAccessToken() => CreateAccessToken(_tokenLifeTime, []);
 }
