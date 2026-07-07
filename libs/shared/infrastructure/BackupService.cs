@@ -47,7 +47,7 @@ public class BackupService(
 
     public async Task<IBackupService.Backup[]> GetBackupsAsync(CancellationToken ct)
     {
-        if (config.Config == null)
+        if (!UseBackups || config.Config == null)
             return [];
         return (await remoteFileService.ListDirectoryAsync(config.Config.Directory, ct))
             .Where(i => i.IsDirectory)
