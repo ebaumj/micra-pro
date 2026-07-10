@@ -5,6 +5,7 @@ import { MainscreenConfigPage } from '../MainscreenConfigPage';
 import { BrewByWeightHistoryPage } from '@micra-pro/brew-by-weight/feature';
 import { RecipeHubProfilePage } from '@micra-pro/recipe-hub/feature';
 import { CleaningPage } from '@micra-pro/cleaning/feature';
+import { WebhooksPage } from '@micra-pro/asset-management/feature';
 
 export const navigationElements: {
   link: string;
@@ -41,6 +42,12 @@ export const navigationElements: {
     link: 'cleaning',
     icon: 'cleaning_services',
     component: CleaningPage,
+  },
+  {
+    name: () => <T key={'menu-sidebar-webhooks'} />,
+    link: 'webhooks',
+    icon: 'webhook',
+    component: WebhooksPage,
   },
 ];
 

@@ -1,0 +1,10 @@
+query AvailableWebhooks {
+  availableWebhooks {
+    name
+    accessUrl
+  }
+}
+
+query WebhooksAvailable {
+  webhooksAvailable
+}

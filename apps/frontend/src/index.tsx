@@ -6,7 +6,10 @@ import { GraphQlProvider } from '@micra-pro/shared/utils-ts';
 import App from './App';
 import { TranslationProvider } from './TranslationProvider';
 import { DarkModeProvider, KeyboardProvider } from '@micra-pro/shared/ui';
-import { AssetContextProvider } from '@micra-pro/asset-management/feature';
+import {
+  AssetContextProvider,
+  WebhooksContextProvider,
+} from '@micra-pro/asset-management/feature';
 import { RecipeHubClientProvider } from '@micra-pro/recipe-hub/client';
 import { UpdateContextProvider } from './components/UpdateContextProvider';
 import { WifiContextProvider } from './components/WifiContextProvider';
@@ -31,7 +34,9 @@ render(
                   <DarkModeProvider>
                     <WifiContextProvider>
                       <UpdateContextProvider>
-                        <App />
+                        <WebhooksContextProvider>
+                          <App />
+                        </WebhooksContextProvider>
                       </UpdateContextProvider>
                     </WifiContextProvider>
                   </DarkModeProvider>
