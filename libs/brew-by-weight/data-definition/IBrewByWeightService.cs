@@ -12,7 +12,6 @@ public interface IBrewByWeightService
     }
 
     IObservable<BrewByWeightState> State { get; }
-
     IBrewProcess RunBrewByWeight(
         Guid beanId,
         double inCupQuantity,
@@ -21,6 +20,6 @@ public interface IBrewByWeightService
         TimeSpan targetExtractionTime,
         Spout spout
     );
-
+    IBrewProcess? GetBrewProcess(Guid processId);
     Task StopBrewProcess(Guid processId);
 }

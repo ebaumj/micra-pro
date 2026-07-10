@@ -7,7 +7,6 @@ public static class BrewByWeightMutations
 {
     public static Task<Guid> StartBrewProcess(
         [Service] IBrewByWeightService brewByWeightService,
-        [Service] BrewProcessContainerService containerService,
         [Service] IBrewProcessService processService,
         Guid beanId,
         double inCupQuantity,
@@ -28,25 +27,23 @@ public static class BrewByWeightMutations
             targetExtractionTime,
             spout
         );
-        containerService.AddBrewProcess(process);
         return Task.FromResult(process.ProcessId);
     }
 
-    public static Task<Guid> StopBrewProcess(
+    public static async Task<Guid> StopBrewProcess(
         [Service] IBrewByWeightService brewByWeightService,
         [Service] IBrewByTimeService brewByTimeService,
         Guid processId,
         CancellationToken ct
     )
     {
-        brewByWeightService.StopBrewProcess(processId);
-        brewByTimeService.StopBrewProcess(processId);
-        return Task.FromResult(processId);
+        await brewByWeightService.StopBrewProcess(processId);
+        await brewByTimeService.StopBrewProcess(processId);
+        return processId;
     }
 
     public static Task<Guid> StartBrewByTimeProcess(
         [Service] IBrewByTimeService brewByTimeService,
-        [Service] BrewByTimeProcessContainerService containerService,
         [Service] IBrewProcessService processService,
         TimeSpan targetTime,
         CancellationToken ct
@@ -55,7 +52,6 @@ public static class BrewByWeightMutations
         if (processService.IsBrewProcessRunning)
             throw new InvalidOperationException();
         var process = brewByTimeService.RunBrewByTime(targetTime);
-        containerService.AddBrewProcess(process);
         return Task.FromResult(process.ProcessId);
     }
 }

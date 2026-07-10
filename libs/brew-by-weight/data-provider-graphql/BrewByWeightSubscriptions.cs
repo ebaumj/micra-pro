@@ -1,4 +1,5 @@
 using HotChocolate.Execution;
+using MicraPro.BrewByWeight.DataDefinition;
 using MicraPro.BrewByWeight.DataDefinition.ValueObjects;
 using MicraPro.Shared.UtilsDotnet;
 
@@ -12,18 +13,30 @@ public static class BrewByWeightSubscriptions
         state;
 
     public static ValueTask<ISourceStream<BrewByWeightTracking>> SubscribeToBrewState(
-        [Service] BrewProcessContainerService containerService,
+        [Service] IBrewByWeightService brewByWeightService,
         Guid processId,
         CancellationToken _
-    ) => ValueTask.FromResult(containerService.GetTracker(processId).ToSourceStream());
+    )
+    {
+        var process =
+            brewByWeightService.GetBrewProcess(processId)
+            ?? throw new Exception("No Brew Process Found");
+        return ValueTask.FromResult(process.State.ToSourceStream());
+    }
 
     [Subscribe(With = nameof(SubscribeToBrewByTimeState))]
     public static BrewByTimeTracking BrewByTimeState([EventMessage] BrewByTimeTracking state) =>
         state;
 
     public static ValueTask<ISourceStream<BrewByTimeTracking>> SubscribeToBrewByTimeState(
-        [Service] BrewByTimeProcessContainerService containerService,
+        [Service] IBrewByTimeService brewByTimeService,
         Guid processId,
         CancellationToken _
-    ) => ValueTask.FromResult(containerService.GetTracker(processId).ToSourceStream());
+    )
+    {
+        var process =
+            brewByTimeService.GetBrewProcess(processId)
+            ?? throw new Exception("No Brew Process Found");
+        return ValueTask.FromResult(process.State.ToSourceStream());
+    }
 }

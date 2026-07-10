@@ -11,13 +11,16 @@ namespace MicraPro.BrewByWeight.Domain.Services;
 public class BrewByTimeService(IPaddleAccess paddleAccess, ILogger<BrewByTimeService> logger)
     : IBrewByTimeService
 {
-    private record ProcessDisposableToken(Guid ProcessId, IDisposable Disposable);
+    private record ProcessHandle(IBrewByTimeProcess Process, IDisposable Disposable);
 
-    private record BrewProcess(Guid ProcessId, IObservable<BrewByTimeTracking> State)
-        : IBrewByTimeProcess;
+    private record BrewProcess(
+        Guid ProcessId,
+        IObservable<BrewByTimeTracking> State,
+        TimeSpan ExtractionTime
+    ) : IBrewByTimeProcess;
 
     private readonly BehaviorSubject<BrewByTimeState> _state = new(new BrewByTimeState.Idle());
-    private ProcessDisposableToken[] _processDisposables = [];
+    private ProcessHandle[] _processHandles = [];
 
     public IObservable<BrewByTimeState> State => _state.DistinctUntilChanged();
 
@@ -31,6 +34,7 @@ public class BrewByTimeService(IPaddleAccess paddleAccess, ILogger<BrewByTimeSer
         var allDataUpdates = new List<BrewByTimeTracking.Running>();
         subject.OfType<BrewByTimeTracking.Running>().Subscribe(allDataUpdates.Add);
         subject.OnNext(new BrewByTimeTracking.Started());
+        var process = new BrewProcess(processId, subject, targetExtractionTime);
         var subscription = Observable
             .FromAsync(async ct =>
             {
@@ -39,7 +43,6 @@ public class BrewByTimeService(IPaddleAccess paddleAccess, ILogger<BrewByTimeSer
                     var extractionTime = await RunBrewByTimeAsync(
                         targetExtractionTime,
                         subject.OnNext,
-                        () => _state.OnNext(new BrewByTimeState.Running(processId)),
                         ct
                     );
                     subject.OnNext(
@@ -79,26 +82,25 @@ public class BrewByTimeService(IPaddleAccess paddleAccess, ILogger<BrewByTimeSer
             })
             .Subscribe(_ =>
             {
-                _processDisposables = _processDisposables
-                    .Where(t => t.ProcessId != processId)
+                _processHandles = _processHandles
+                    .Where(h => h.Process.ProcessId != processId)
                     .ToArray();
             });
-        _processDisposables = _processDisposables
-            .Append(new ProcessDisposableToken(processId, subscription))
+        _processHandles = _processHandles
+            .Append(new ProcessHandle(process, subscription))
             .ToArray();
-        return new BrewProcess(processId, subject);
+        _state.OnNext(new BrewByTimeState.Running(processId));
+        return process;
     }
 
     private async Task<TimeSpan> RunBrewByTimeAsync(
         TimeSpan targetExtractionTime,
         Action<BrewByTimeTracking> updateState,
-        Action start,
         CancellationToken ct
     )
     {
         if (_state.Value is not BrewByTimeState.Idle)
             throw new BrewByWeightException.BrewServiceNotReady();
-        start();
         var stopwatch = new Stopwatch();
         try
         {
@@ -121,9 +123,12 @@ public class BrewByTimeService(IPaddleAccess paddleAccess, ILogger<BrewByTimeSer
         }
     }
 
+    public IBrewByTimeProcess? GetBrewProcess(Guid processId) =>
+        _processHandles.FirstOrDefault(t => t.Process.ProcessId == processId)?.Process;
+
     public Task StopBrewProcess(Guid processId)
     {
-        _processDisposables.FirstOrDefault(t => t.ProcessId == processId)?.Disposable.Dispose();
+        _processHandles.FirstOrDefault(t => t.Process.ProcessId == processId)?.Disposable.Dispose();
         return Task.CompletedTask;
     }
 }

@@ -398,10 +398,7 @@ public class BrewByWeightServiceTest
             Times.Once
         );
         trackingObserverMock.Verify(m => m.OnCompleted(), Times.Once);
-        stateObserverMock.Verify(
-            m => m.OnNext(It.IsAny<BrewByWeightState.Idle>()),
-            Times.Exactly(2)
-        );
+        stateObserverMock.Verify(m => m.OnNext(It.IsAny<BrewByWeightState.Idle>()), Times.Once);
         dbServiceMock.Verify(m =>
             m.StoreProcessAsync(
                 beanId,
