@@ -1,5 +1,3 @@
-using System.Collections.Concurrent;
-
 namespace MicraPro.Shared.UtilsDotnet;
 
 public class LifecycleAwareObservable<T>(
@@ -8,22 +6,26 @@ public class LifecycleAwareObservable<T>(
     Action onLastDispose
 ) : IObservable<T>
 {
-    private ConcurrentBag<IObserver<T>> _observers = [];
+    private readonly HashSet<IObserver<T>> _observers = [];
+    private readonly object _observersLock = new();
 
     public IDisposable Subscribe(IObserver<T> observer)
     {
-        if (_observers.IsEmpty)
-            onFirstSubscribe();
-        _observers.Add(observer);
+        lock (_observersLock)
+        {
+            if (_observers.Count == 0)
+                onFirstSubscribe();
+            _observers.Add(observer);
+        }
         return new DisposableWithCallback(
             observable.Subscribe(observer),
             () =>
             {
-                _observers = new ConcurrentBag<IObserver<T>>(
-                    _observers.Where(o => !o.Equals(observer))
-                );
-                if (_observers.IsEmpty)
-                    onLastDispose();
+                lock (_observersLock)
+                {
+                    if (_observers.Remove(observer) && _observers.Count == 0)
+                        onLastDispose();
+                }
             }
         );
     }

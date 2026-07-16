@@ -5,7 +5,7 @@ namespace MicraPro.BrewByWeight.DataProviderGraphQl;
 [MutationType]
 public static class BrewByWeightMutations
 {
-    public static Task<Guid> StartBrewProcess(
+    public static async Task<Guid> StartBrewProcess(
         [Service] IBrewByWeightService brewByWeightService,
         [Service] IBrewProcessService processService,
         Guid beanId,
@@ -17,7 +17,7 @@ public static class BrewByWeightMutations
         CancellationToken ct
     )
     {
-        if (processService.IsBrewProcessRunning)
+        if (await processService.IsBrewProcessRunning)
             throw new InvalidOperationException();
         var process = brewByWeightService.RunBrewByWeight(
             beanId,
@@ -27,7 +27,7 @@ public static class BrewByWeightMutations
             targetExtractionTime,
             spout
         );
-        return Task.FromResult(process.ProcessId);
+        return process.ProcessId;
     }
 
     public static async Task<Guid> StopBrewProcess(
@@ -42,16 +42,16 @@ public static class BrewByWeightMutations
         return processId;
     }
 
-    public static Task<Guid> StartBrewByTimeProcess(
+    public static async Task<Guid> StartBrewByTimeProcess(
         [Service] IBrewByTimeService brewByTimeService,
         [Service] IBrewProcessService processService,
         TimeSpan targetTime,
         CancellationToken ct
     )
     {
-        if (processService.IsBrewProcessRunning)
+        if (await processService.IsBrewProcessRunning)
             throw new InvalidOperationException();
         var process = brewByTimeService.RunBrewByTime(targetTime);
-        return Task.FromResult(process.ProcessId);
+        return process.ProcessId;
     }
 }

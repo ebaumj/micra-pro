@@ -1,5 +1,5 @@
+using System.Reactive.Disposables;
 using System.Reactive.Subjects;
-using MicraPro.Cleaning.DataDefinition;
 using MicraPro.Cleaning.DataDefinition.ValueObjects;
 
 namespace MicraPro.Cleaning.DataProviderGraphQl.Services;
@@ -10,6 +10,7 @@ public class CleaningProcessContainerService
         new CleaningState.Finished(TimeSpan.Zero, 0)
     );
     private CancellationTokenSource _tokenSource = new();
+    private readonly CompositeDisposable _subscriptions = new();
 
     public IObservable<CleaningState> State => _stateSubject;
 
@@ -17,11 +18,12 @@ public class CleaningProcessContainerService
     {
         _tokenSource.Cancel();
         _tokenSource = new CancellationTokenSource();
-        startAction(_tokenSource.Token).Subscribe(s => _stateSubject.OnNext(s));
+        _subscriptions.Add(startAction(_tokenSource.Token).Subscribe(s => _stateSubject.OnNext(s)));
     }
 
     public void StopCleaning()
     {
         _tokenSource.Cancel();
+        _subscriptions.Dispose();
     }
 }

@@ -21,12 +21,23 @@ public static class ConfigureExtensions
     )
     {
         DotNetEnv.Env.Load();
-        var runtimeOptions = new AssetManagementInfrastructureRuntimeOptions()
+        var privateKey = Enumerable.Range(0, 32).Select(_ => (byte)0).ToArray();
+        try
         {
-            RemoteAssetServerPrivateKey = Environment
+            privateKey = Environment
                 .GetEnvironmentVariable("REMOTE_ASSET_SERVER_PRIVATE_KEY")!
                 .Select(c => (byte)c)
-                .ToArray(),
+                .ToArray();
+        }
+        catch
+        {
+            Console.Error.WriteLine(
+                "No Asset Server Key is provided, Assets will not be available! Set environment variable REMOTE_ASSET_SERVER_PRIVATE_KEY!"
+            );
+        }
+        var runtimeOptions = new AssetManagementInfrastructureRuntimeOptions()
+        {
+            RemoteAssetServerPrivateKey = privateKey,
         };
         return services
             .Configure<AssetManagementInfrastructureOptions>(
@@ -49,6 +60,7 @@ public static class ConfigureExtensions
             .AddTransient<ICleaningStatePublisher, CleaningStatePublisher>()
             .AddTransient<IWebhookInvokeService, WebhookInvokeService>()
             .AddTransient<IWebhookSchemaService, WebhookSchemaService>()
+            .AddHttpClient()
             .AddDbContextAndMigrationService<AssetManagementDbContext>();
     }
 }

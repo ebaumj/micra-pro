@@ -2,7 +2,6 @@ using MicraPro.AssetManagement.Domain;
 using MicraPro.AssetManagement.Infrastructure;
 using MicraPro.BeanManagement.Domain;
 using MicraPro.BeanManagement.Infrastructure;
-using MicraPro.BrewByWeight.DataProviderGraphQl;
 using MicraPro.BrewByWeight.Domain;
 using MicraPro.BrewByWeight.Infrastructure;
 using MicraPro.Cleaning.DataProviderGraphQl;

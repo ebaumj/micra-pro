@@ -37,6 +37,7 @@ public class BrewByWeightService(
 
     private readonly BehaviorSubject<BrewByWeightState> _state = new(new BrewByWeightState.Idle());
     private ProcessHandle[] _processHandles = [];
+    private readonly object _processHandleLock = new();
 
     private IBrewByWeightDbService BrewByWeightDbService =>
         serviceScopeFactory
@@ -144,9 +145,12 @@ public class BrewByWeightService(
             })
             .Subscribe(_ =>
             {
-                _processHandles = _processHandles
-                    .Where(t => t.Process.ProcessId != processId)
-                    .ToArray();
+                lock (_processHandleLock)
+                {
+                    _processHandles = _processHandles
+                        .Where(t => t.Process.ProcessId != processId)
+                        .ToArray();
+                }
             });
         var process = new BrewProcess(
             processId,
@@ -158,9 +162,12 @@ public class BrewByWeightService(
             targetExtractionTime,
             spout
         );
-        _processHandles = _processHandles
-            .Append(new ProcessHandle(process, subscription))
-            .ToArray();
+        lock (_processHandleLock)
+        {
+            _processHandles = _processHandles
+                .Append(new ProcessHandle(process, subscription))
+                .ToArray();
+        }
         _state.OnNext(new BrewByWeightState.Running(processId));
         return process;
     }

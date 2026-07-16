@@ -6,6 +6,7 @@ using MicraPro.Cleaning.Domain.HardwareAccess;
 using MicraPro.Cleaning.Domain.Interfaces;
 using MicraPro.Cleaning.Domain.StorageAccess;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace MicraPro.Cleaning.Domain.Services;
 
@@ -14,10 +15,12 @@ public class CleaningService(
     IBrewPaddle brewPaddle,
     ICleaningStateService stateService,
     ICleaningDefaultsProvider cleaningDefaultsProvider,
-    IServiceScopeFactory scopeFactory
+    IServiceScopeFactory scopeFactory,
+    ILogger<CleaningService> logger
 ) : ICleaningService
 {
     private static readonly TimeSpan UpdateInterval = TimeSpan.FromMilliseconds(200);
+    private readonly object _isRunningLock = new();
 
     public Task<CleaningCycle[]> GetCleaningSequenceAsync(CancellationToken ct) =>
         repository.GetCleaningSequenceAsync(ct);
@@ -39,12 +42,15 @@ public class CleaningService(
 
     public IObservable<CleaningState> StartCleaning(CancellationToken ct)
     {
-        if (stateService.IsRunning)
-            throw new Exception("State is already running");
         var subject = new ReplaySubject<CleaningState>();
         subject.OnNext(new CleaningState.Started());
-        stateService.SetCleaningStateObservable(subject);
-        stateService.SetIsRunning(true);
+        lock (_isRunningLock)
+        {
+            if (stateService.IsRunning)
+                throw new Exception("Cleaning is already running");
+            stateService.SetCleaningStateObservable(subject);
+            stateService.SetIsRunning(true);
+        }
         Observable.FromAsync(() => CleaningProcessAsync(subject, ct)).Subscribe();
         return subject.AsObservable();
     }
@@ -97,7 +103,7 @@ public class CleaningService(
         catch (Exception e)
         {
             observer.OnNext(new CleaningState.Failed(DateTime.Now - startTime, cycle));
-            Console.WriteLine(e);
+            logger.LogError(e, "Cleaning failed: {e}", e);
         }
         finally
         {
@@ -109,7 +115,7 @@ public class CleaningService(
             }
             catch (Exception e)
             {
-                // log exception
+                logger.LogError(e, "Brew Paddle access failed: {e}", e);
             }
         }
     }

@@ -59,16 +59,26 @@ public class RetentionService(IServiceScopeFactory serviceScopeFactory) : IReten
                 .WhereOrAll(p => p.BeanId == beanId)
                 // Same Target Average Flow
                 .WhereOrAll(p =>
-                    Math.Abs(
-                        p.InCupQuantity / p.TargetExtractionTime.TotalSeconds
-                            - inCupQuantity / targetExtractionTime.TotalSeconds
-                    ) < 0.1
-                )
+                {
+                    if (
+                        p.TargetExtractionTime.TotalSeconds == 0
+                        || targetExtractionTime.TotalSeconds == 0
+                    )
+                        return false;
+                    return Math.Abs(
+                            p.InCupQuantity / p.TargetExtractionTime.TotalSeconds
+                                - inCupQuantity / targetExtractionTime.TotalSeconds
+                        ) < 0.1;
+                })
                 // Same Ratio
                 .WhereOrAll(p =>
-                    Math.Abs(p.CoffeeQuantity / p.InCupQuantity - coffeeQuantity / inCupQuantity)
-                    < 0.01
-                )
+                {
+                    if (p.InCupQuantity == 0 || inCupQuantity == 0)
+                        return false;
+                    return Math.Abs(
+                            p.CoffeeQuantity / p.InCupQuantity - coffeeQuantity / inCupQuantity
+                        ) < 0.01;
+                })
                 .MaxByOrFirst(p => p.Timestamp),
             ct
         );

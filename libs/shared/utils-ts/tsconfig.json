@@ -10,7 +10,8 @@
     "noFallthroughCasesInSwitch": true,
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-    "types": ["vitest"]
+    "types": ["vitest"],
+    "ignoreDeprecations": "6.0"
   },
   "include": ["src"]
 }

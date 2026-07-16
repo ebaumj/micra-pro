@@ -9,7 +9,9 @@ public class BrewProcessService(
     IBrewByTimeService brewByTimeService
 ) : IBrewProcessService
 {
-    public bool IsBrewProcessRunning =>
-        brewByWeightService.State.FirstAsync().Wait() is BrewByWeightState.Running
-        || brewByTimeService.State.FirstAsync().Wait() is BrewByTimeState.Running;
+    public Task<bool> IsBrewProcessRunning => GetIsBrewProcessWaiting();
+
+    private async Task<bool> GetIsBrewProcessWaiting() =>
+        await brewByWeightService.State.FirstAsync() is BrewByWeightState.Running
+        || await brewByTimeService.State.FirstAsync() is BrewByTimeState.Running;
 }

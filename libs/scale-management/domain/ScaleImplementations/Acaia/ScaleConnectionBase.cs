@@ -22,7 +22,8 @@ public abstract class ScaleConnectionBase(IBleDeviceConnection connection) : ISc
     private IDisposable _valueSubscription = Disposable.Empty;
     private readonly Subject<ScaleDataPoint?> _dataSubject = new();
     private byte[] _dataBuffer = [];
-    private FlowCalculator _flowCalculator = new();
+    private readonly object _dataBufferLock = new();
+    private readonly FlowCalculator _flowCalculator = new();
 
     public Task DisconnectAsync(CancellationToken ct)
     {
@@ -105,7 +106,7 @@ public abstract class ScaleConnectionBase(IBleDeviceConnection connection) : ISc
 
     private DataFrame? MergeData(byte[] data)
     {
-        lock (_dataBuffer)
+        lock (_dataBufferLock)
         {
             _dataBuffer = _dataBuffer.Concat(data).ToArray();
             var start = -1;

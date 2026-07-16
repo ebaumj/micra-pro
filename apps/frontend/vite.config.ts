@@ -1,12 +1,14 @@
 import { defineConfig } from 'vite';
 import solidPlugin from 'vite-plugin-solid';
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import tailwindcss from '@tailwindcss/vite';
 import { appconfigPlugin } from './plugins/appconfig.check';
 
 export default defineConfig((conf) => ({
-  root: __dirname,
-  plugins: [solidPlugin(), tailwindcss(), nxViteTsPaths(), appconfigPlugin()],
+  root: import.meta.dirname,
+  plugins: [solidPlugin(), tailwindcss(), appconfigPlugin()],
+  resolve: {
+    tsconfigPaths: true,
+  },
   server: {
     host: true,
     fs: {

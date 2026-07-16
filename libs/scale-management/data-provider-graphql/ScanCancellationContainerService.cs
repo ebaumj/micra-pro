@@ -5,19 +5,35 @@ namespace MicraPro.ScaleManagement.DataProviderGraphQl;
 public class ScanCancellationContainerService
 {
     private CancellationTokenSource[] _tokenSources = [];
+    private readonly object _tokenSourceLock = new();
 
     public void AddCancellationToken(CancellationTokenSource token, TimeSpan timeout)
     {
-        _tokenSources = _tokenSources.Append(token).ToArray();
+        lock (_tokenSourceLock)
+        {
+            _tokenSources = _tokenSources.Append(token).ToArray();
+        }
         Observable
             .Timer(timeout)
-            .Subscribe(_ => _tokenSources = _tokenSources.Where(t => t != token).ToArray());
+            .Subscribe(_ =>
+            {
+                lock (_tokenSourceLock)
+                {
+                    _tokenSources = _tokenSources.Where(t => t != token).ToArray();
+                }
+            });
     }
 
     public void CancelAll()
     {
-        foreach (var tokenSource in _tokenSources)
-            tokenSource.Cancel();
-        _tokenSources = [];
+        lock (_tokenSourceLock)
+        {
+            foreach (var tokenSource in _tokenSources)
+            {
+                tokenSource.Cancel();
+                tokenSource.Dispose();
+            }
+            _tokenSources = [];
+        }
     }
 }
