@@ -3,11 +3,18 @@ import { For, ParentComponent } from 'solid-js';
 import { T } from '../../generated/language-types';
 import { homeUrl, navigationElements } from './navigationElements';
 import { SidebarLayout } from '@micra-pro/shared/ui';
+import { useWebhooksContext } from '@micra-pro/asset-management/feature';
 
 const MenuLayout: ParentComponent = (props) => {
+  const webhooksContext = useWebhooksContext();
+  const navigationElementsFiltered = navigationElements.filter((element) => {
+    if (element.link === 'webhooks' && !webhooksContext.isAvailable)
+      return false;
+    return true;
+  });
   return (
     <SidebarLayout
-      navigationElements={navigationElements}
+      navigationElements={navigationElementsFiltered}
       bottomElement={{
         icon: 'close',
         link: '/',

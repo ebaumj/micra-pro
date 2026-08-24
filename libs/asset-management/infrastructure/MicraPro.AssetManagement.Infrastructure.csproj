@@ -26,5 +26,7 @@
   <ItemGroup>
     <ProjectReference Include="..\domain\MicraPro.AssetManagement.Domain.csproj" />
     <ProjectReference Include="..\..\shared\utils-dotnet\MicraPro.Shared.UtilsDotnet.csproj" />
+    <ProjectReference Include="..\..\brew-by-weight\data-definition\MicraPro.BrewByWeight.DataDefinition.csproj" />
+    <ProjectReference Include="..\..\cleaning\data-definition\MicraPro.Cleaning.DataDefinition.csproj" />
   </ItemGroup>
 </Project>

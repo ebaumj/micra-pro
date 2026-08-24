@@ -1,7 +1,10 @@
 using MicraPro.AssetManagement.Domain.AssetAccess;
+using MicraPro.AssetManagement.Domain.Interfaces;
+using MicraPro.AssetManagement.Domain.MachineAccess;
 using MicraPro.AssetManagement.Domain.StorageAccess;
 using MicraPro.AssetManagement.Infrastructure.AssetAccess;
 using MicraPro.AssetManagement.Infrastructure.Interfaces;
+using MicraPro.AssetManagement.Infrastructure.MachineAccess;
 using MicraPro.AssetManagement.Infrastructure.Services;
 using MicraPro.AssetManagement.Infrastructure.StorageAccess;
 using MicraPro.Shared.UtilsDotnet;
@@ -40,6 +43,12 @@ public static class ConfigureExtensions
             .AddTransient<IFileSystemAccess, FileSystemAccess>()
             .AddTransient<IAssetServerDomainProvider, AssetServerDomainProvider>()
             .AddScoped<IAssetRepository, AssetRepository>()
+            .AddTransient<IBrewStateConverter, BrewStateConverter>()
+            .AddTransient<IBrewStatePublisher, BrewStatePublisher>()
+            .AddTransient<ICleaningStateConverter, CleaningStateConverter>()
+            .AddTransient<ICleaningStatePublisher, CleaningStatePublisher>()
+            .AddTransient<IWebhookInvokeService, WebhookInvokeService>()
+            .AddTransient<IWebhookSchemaService, WebhookSchemaService>()
             .AddDbContextAndMigrationService<AssetManagementDbContext>();
     }
 }

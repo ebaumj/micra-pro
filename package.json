@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@corvu/otp-field": "0.1.4",
+    "@guolao/vue-monaco-editor": "^1.6.0",
     "@kobalte/core": "0.13.11",
     "@solid-primitives/deep": "0.3.3",
     "bcrypt": "6.0.0",
@@ -83,6 +84,7 @@
     "vite": "^7.3.1",
     "vite-plugin-dts": "^4.5.4",
     "vite-plugin-eslint": "^1.8.1",
-    "vite-plugin-solid": "^2.11.10"
+    "vite-plugin-solid": "^2.11.10",
+    "vue-tsc": "^3.3.11"
   }
 }

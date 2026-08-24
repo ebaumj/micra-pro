@@ -12,6 +12,7 @@ export type SelectProps<T> = {
   value: T | undefined;
   displayElement: (value: T | undefined) => JSX.Element;
   class?: string;
+  contentClass?: string;
   onChange: (value: T) => Promise<void> | void;
 };
 
@@ -46,7 +47,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
       <SelectTrigger>
         <SelectValue<string>>{props.displayElement(props.value)}</SelectValue>
       </SelectTrigger>
-      <SelectContent />
+      <SelectContent class={props.contentClass} />
     </SelectPrimitive>
   );
 };
