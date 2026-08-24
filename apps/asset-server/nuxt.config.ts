@@ -15,13 +15,16 @@ export default defineNuxtConfig({
   },
   hooks: {
     close: () => {
-      const source = path.resolve(__dirname, 'app-config');
-      const dest = path.resolve(__dirname, '.output');
+      const source = path.resolve(import.meta.dirname, 'app-config');
+      const dest = path.resolve(import.meta.dirname, '.output');
       if (fs.existsSync(source) && fs.existsSync(dest))
         fs.cpSync(source, dest, { recursive: true });
     },
     'build:before': () => {
-      const source = path.resolve(__dirname, 'app-config/appconfig.json');
+      const source = path.resolve(
+        import.meta.dirname,
+        'app-config/appconfig.json',
+      );
       if (!fs.existsSync(source)) throw new Error('Appconfig not found');
       try {
         verifyAppConfigType(JSON.parse(fs.readFileSync(source, 'utf-8')));

@@ -1,3 +1,4 @@
+using System.Globalization;
 using MicraPro.BeanManagement.DataDefinition;
 using MicraPro.BeanManagement.Domain.StorageAccess;
 
@@ -11,9 +12,23 @@ public class GrinderSettings(IKeyValueStore keyValueStore) : IGrinderSettings
     public async Task<double> GetGrinderOffset(CancellationToken ct)
     {
         var offset = await keyValueStore.TryGetAsync(GrinderOffsetKey, ct);
-        return offset is null ? GrinderOffsetDefault : double.Parse(offset);
+        if (
+            string.IsNullOrWhiteSpace(offset)
+            || !double.TryParse(
+                offset,
+                NumberStyles.Float,
+                CultureInfo.InvariantCulture,
+                out var parsedOffset
+            )
+        )
+            return GrinderOffsetDefault;
+        return parsedOffset;
     }
 
     public Task SetGrinderOffset(double grinderOffset, CancellationToken ct) =>
-        keyValueStore.AddOrUpdateAsync(GrinderOffsetKey, $"{grinderOffset}", ct);
+        keyValueStore.AddOrUpdateAsync(
+            GrinderOffsetKey,
+            grinderOffset.ToString(CultureInfo.InvariantCulture),
+            ct
+        );
 }

@@ -10,6 +10,7 @@ public class SystemServiceDummy(
     ILogger<SystemServiceDummy> logger
 ) : ISystemService
 {
+    private static readonly HttpClient Client = new();
     private string? _wifi;
 
     public string SystemVersion => options.Value.SystemVersion;
@@ -67,28 +68,57 @@ public class SystemServiceDummy(
     {
         try
         {
-            using var client = new HttpClient();
-            var stream = await (await client.GetAsync(link, ct)).Content.ReadAsStreamAsync(ct);
-            var fileData = new byte[stream.Length];
-            await stream.ReadExactlyAsync(fileData, 0, fileData.Length, ct);
-            var hash = SHA256.HashData(fileData);
-            using var rsa = RSA.Create();
-            rsa.ImportFromPem(await File.ReadAllTextAsync(options.Value.UpdatePublicKey, ct));
-            var formatter = new RSAPKCS1SignatureDeformatter(rsa);
-            formatter.SetHashAlgorithm(nameof(SHA256));
-            if (!formatter.VerifySignature(hash, Convert.FromBase64String(signature)))
-                throw new Exception("Invalid signature");
-            if (!Directory.Exists(options.Value.UpdateDestination))
-                Directory.CreateDirectory(options.Value.UpdateDestination);
+            if (!AllowUpdates)
+                throw new Exception("Installing Updates not allowed!");
+
             var filePath = Path.Combine(
                 options.Value.UpdateDestination,
                 options.Value.UpdateFileName
             );
+            var tempFilePath = filePath + ".tmp";
+            if (!Directory.Exists(options.Value.UpdateDestination))
+                Directory.CreateDirectory(options.Value.UpdateDestination);
+
+            using var response = await Client.GetAsync(
+                link,
+                HttpCompletionOption.ResponseHeadersRead,
+                ct
+            );
+            response.EnsureSuccessStatusCode();
+            await using (
+                var fileStream = new FileStream(
+                    tempFilePath,
+                    FileMode.Create,
+                    FileAccess.ReadWrite,
+                    FileShare.None,
+                    81920,
+                    true
+                )
+            )
+            {
+                await using var httpStream = await response.Content.ReadAsStreamAsync(ct);
+                await httpStream.CopyToAsync(fileStream, ct);
+                fileStream.Position = 0;
+                var hash = await SHA256.HashDataAsync(fileStream, ct);
+
+                using var rsa = RSA.Create();
+                rsa.ImportFromPem(await File.ReadAllTextAsync(options.Value.UpdatePublicKey, ct));
+                var formatter = new RSAPKCS1SignatureDeformatter(rsa);
+                formatter.SetHashAlgorithm(nameof(SHA256));
+
+                if (!formatter.VerifySignature(hash, Convert.FromBase64String(signature)))
+                {
+                    fileStream.Close();
+                    File.Delete(tempFilePath);
+                    throw new Exception("Invalid signature");
+                }
+            }
+
             if (File.Exists(filePath))
                 File.Delete(filePath);
-            var fs = File.Create(filePath);
-            await fs.WriteAsync(fileData, ct);
-            fs.Close();
+            File.Move(tempFilePath, filePath);
+            File.Delete(tempFilePath);
+
             logger.LogInformation("Update Installed");
             return false;
         }

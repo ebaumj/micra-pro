@@ -1,10 +1,14 @@
 using System.Text.Json;
 using MicraPro.ScaleManagement.Domain.StorageAccess;
 using MicraPro.Shared.Domain.KeyValueStore;
+using Microsoft.Extensions.Logging;
 
 namespace MicraPro.ScaleManagement.Infrastructure.StorageAccess;
 
-public class ScaleRepository(IKeyValueStoreProvider keyValueStoreProvider) : IScaleRepository
+public class ScaleRepository(
+    IKeyValueStoreProvider keyValueStoreProvider,
+    ILogger<ScaleRepository> logger
+) : IScaleRepository
 {
     private static readonly string Namespace =
         $"{typeof(ScaleRepository).Namespace!}.{nameof(ScaleRepository)}";
@@ -32,7 +36,7 @@ public class ScaleRepository(IKeyValueStoreProvider keyValueStoreProvider) : ISc
         }
         catch (Exception e)
         {
-            // Log Exception
+            logger.LogError(e, "Error deserializing scale {v}: {e}", value, e);
             return null;
         }
     }

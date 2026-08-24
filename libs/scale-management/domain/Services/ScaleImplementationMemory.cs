@@ -5,13 +5,17 @@ public class ScaleImplementationMemoryService
     private record Entry(string Identifier, string Implementation);
 
     private Entry[] _memory = [];
+    private readonly object _memoryLock = new();
 
     public void SetImplementation(string identifier, string implementation)
     {
-        _memory = _memory
-            .Where(d => d.Identifier != identifier)
-            .Append(new Entry(identifier, implementation))
-            .ToArray();
+        lock (_memoryLock)
+        {
+            _memory = _memory
+                .Where(d => d.Identifier != identifier)
+                .Append(new Entry(identifier, implementation))
+                .ToArray();
+        }
     }
 
     public string GetImplementation(string identifier) =>

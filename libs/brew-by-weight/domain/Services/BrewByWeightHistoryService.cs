@@ -41,9 +41,6 @@ public class BrewByWeightHistoryService(
 
     public async Task<Guid> RemoveFromHistoryAsync(Guid id, CancellationToken ct)
     {
-        var allRuntimeData = (await processRuntimeDataRepository.GetAllAsync(ct)).ToArray();
-        foreach (var r in allRuntimeData.Where(r => r.ProcessId == id))
-            await processRuntimeDataRepository.DeleteAsync(r.Id, ct);
         await processRepository.DeleteAsync(id, ct);
         await processRepository.SaveAsync(ct);
         return id;

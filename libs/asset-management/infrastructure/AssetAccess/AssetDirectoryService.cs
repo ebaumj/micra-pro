@@ -12,6 +12,7 @@ public class AssetDirectoryService(
     public string CreateRandomFileNameWithoutExtension() => Path.GetRandomFileName();
 
     private List<string> _files = [];
+    private readonly object _filesLock = new();
 
     public IEnumerable<string> Files => _files;
 
@@ -27,7 +28,10 @@ public class AssetDirectoryService(
             content,
             ct
         );
-        _files = _files.Concat([path]).ToList();
+        lock (_filesLock)
+        {
+            _files = _files.Concat([path]).ToList();
+        }
     }
 
     public Task RemoveFileAsync(string path, CancellationToken ct)
@@ -40,18 +44,25 @@ public class AssetDirectoryService(
         {
             // File is already removed
         }
-        _files = _files.Where(f => f != path).ToList();
-        return Task.CompletedTask;
+
+        lock (_filesLock)
+        {
+            _files = _files.Where(f => f != path).ToList();
+            return Task.CompletedTask;
+        }
     }
 
     public Task ReadFilesAsync(CancellationToken ct)
     {
         if (!fileSystemAccess.DirectoryExists(options.Value.LocalFileServerFolder))
             fileSystemAccess.CreateDirectory(options.Value.LocalFileServerFolder);
-        _files = fileSystemAccess
-            .GetFiles(options.Value.LocalFileServerFolder, "*.*", SearchOption.AllDirectories)
-            .Select(f => Path.GetRelativePath(options.Value.LocalFileServerFolder, f))
-            .ToList();
+        lock (_filesLock)
+        {
+            _files = fileSystemAccess
+                .GetFiles(options.Value.LocalFileServerFolder, "*.*", SearchOption.AllDirectories)
+                .Select(f => Path.GetRelativePath(options.Value.LocalFileServerFolder, f))
+                .ToList();
+        }
         return Task.CompletedTask;
     }
 }

@@ -7,7 +7,10 @@ export const appconfigPlugin = (): Plugin => {
   return {
     name: 'Appconfig Check',
     buildStart: () => {
-      const source = path.resolve(__dirname, '../public/appconfig.json');
+      const source = path.resolve(
+        import.meta.dirname,
+        '../public/appconfig.json',
+      );
       if (!fs.existsSync(source)) throw new Error('Appconfig not found');
       try {
         verifyConfig(JSON.parse(fs.readFileSync(source, 'utf-8')));

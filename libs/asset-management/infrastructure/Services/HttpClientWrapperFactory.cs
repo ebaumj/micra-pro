@@ -3,7 +3,8 @@ using MicraPro.AssetManagement.Infrastructure.Interfaces;
 
 namespace MicraPro.AssetManagement.Infrastructure.Services;
 
-public class HttpClientWrapperFactory : IHttpClientWrapperFactory
+public class HttpClientWrapperFactory(IHttpClientFactory httpClientFactory)
+    : IHttpClientWrapperFactory
 {
     private class HttpClientWrapper(HttpClient client) : IHttpClientWrapper
     {
@@ -24,7 +25,7 @@ public class HttpClientWrapperFactory : IHttpClientWrapperFactory
 
     public IHttpClientWrapper CreateClient(string bearerToken)
     {
-        var client = new HttpClient();
+        var client = httpClientFactory.CreateClient();
         client.DefaultRequestHeaders.Authorization =
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", bearerToken);
         return new HttpClientWrapper(client);

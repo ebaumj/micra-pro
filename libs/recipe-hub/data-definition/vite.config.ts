@@ -1,21 +1,20 @@
 /// <reference types="vitest" />
 import { defineConfig } from 'vite';
-
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import dts from 'vite-plugin-dts';
 import path from 'path';
 
 export default defineConfig({
-  root: __dirname,
+  root: import.meta.dirname,
   cacheDir: '../../../node_modules/.vite/recipe-hub-data-definition',
   plugins: [
     dts({
       entryRoot: 'src',
-      tsconfigPath: path.posix.join(__dirname, 'tsconfig.lib.json'),
+      tsconfigPath: path.posix.join(import.meta.dirname, 'tsconfig.lib.json'),
     }),
-
-    nxViteTsPaths(),
   ],
+  resolve: {
+    tsconfigPaths: true,
+  },
   build: {
     outDir: '../../../dist/libs/recipe-hub/data-access',
     emptyOutDir: true,

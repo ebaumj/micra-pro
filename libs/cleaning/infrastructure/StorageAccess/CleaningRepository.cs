@@ -2,10 +2,14 @@ using System.Text.Json;
 using MicraPro.Cleaning.DataDefinition.ValueObjects;
 using MicraPro.Cleaning.Domain.StorageAccess;
 using MicraPro.Shared.Domain.KeyValueStore;
+using Microsoft.Extensions.Logging;
 
 namespace MicraPro.Cleaning.Infrastructure.StorageAccess;
 
-public class CleaningRepository(IKeyValueStoreProvider keyValueStoreProvider) : ICleaningRepository
+public class CleaningRepository(
+    IKeyValueStoreProvider keyValueStoreProvider,
+    ILogger<CleaningRepository> logger
+) : ICleaningRepository
 {
     private interface IWithDefault<out T>
     {
@@ -47,6 +51,7 @@ public class CleaningRepository(IKeyValueStoreProvider keyValueStoreProvider) : 
         }
         catch
         {
+            logger.LogWarning("Using default value of {key}", key);
             return T.Default;
         }
     }

@@ -60,29 +60,12 @@ public class PollAssetService(
         }
     }
 
-    private void RecursiveAssetPoll(Guid assetId, int size)
-    {
-        Observable
-            .Timer(PollPeriod)
-            .Select(_ => Observable.FromAsync(async (ct) => await PollAsset(assetId, size, ct)))
-            .Merge()
-            .Subscribe(
-                (state) =>
-                {
-                    if (DateTime.UtcNow < AssetPollEndTime(assetId) && !state.Success)
-                        RecursiveAssetPoll(assetId, state.Size);
-                    else
-                        RemoveAssetPollEndTime(assetId);
-                }
-            );
-    }
-
     public void StartPollAsset(Guid assetId, TimeSpan timeout)
     {
         var startPoll = _assetsEndTime.Value.FirstOrDefault(v => v.AssetId == assetId) == null;
         SetAssetPollEndTime(assetId, DateTime.UtcNow.Add(timeout));
         if (startPoll)
-            RecursiveAssetPoll(assetId, 0);
+            new TaskFactory(TaskScheduler.Default).StartNew(() => RunAssetPollAsync(assetId, 0));
     }
 
     public IObservable<bool> IsPollingAsset(Guid assetId) =>
@@ -101,4 +84,21 @@ public class PollAssetService(
 
     private void RemoveAssetPollEndTime(Guid assetId) =>
         _assetsEndTime.OnNext(_assetsEndTime.Value.Where(v => v.AssetId != assetId).ToArray());
+
+    private async Task RunAssetPollAsync(Guid assetId, int initialSize)
+    {
+        var currentSize = initialSize;
+        while (DateTime.UtcNow < AssetPollEndTime(assetId))
+        {
+            await Task.Delay(PollPeriod);
+            var state = await PollAsset(assetId, currentSize, CancellationToken.None);
+            if (state.Success)
+            {
+                RemoveAssetPollEndTime(assetId);
+                return;
+            }
+            currentSize = state.Size;
+        }
+        RemoveAssetPollEndTime(assetId);
+    }
 }

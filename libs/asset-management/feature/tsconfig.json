@@ -12,7 +12,8 @@
     "jsxImportSource": "solid-js",
     "types": ["vite/client", "vitest"],
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "ignoreDeprecations": "6.0"
   },
   "include": ["src"]
 }

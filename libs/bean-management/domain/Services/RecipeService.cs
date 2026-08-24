@@ -21,19 +21,13 @@ public class RecipeService(IRecipeRepository recipeRepository, IGrinderSettings 
         return entity.ToRecipe();
     }
 
-    public async Task<IEnumerable<IRecipe>> GetRecipesAsync(CancellationToken ct) =>
-        await Task.WhenAll(
-            (await recipeRepository.GetAllAsync(ct))
-                .Select(entity => entity.ToRecipe())
-                .Select(async r =>
-                    r with
-                    {
-                        Properties = r.Properties.WithGrinderOffset(
-                            await grinderSettings.GetGrinderOffset(ct)
-                        ),
-                    }
-                )
-        );
+    public async Task<IEnumerable<IRecipe>> GetRecipesAsync(CancellationToken ct)
+    {
+        var grinderOffset = await grinderSettings.GetGrinderOffset(ct);
+        return (await recipeRepository.GetAllAsync(ct))
+            .Select(entity => entity.ToRecipe())
+            .Select(r => r with { Properties = r.Properties.WithGrinderOffset(grinderOffset) });
+    }
 
     public async Task<IRecipe> UpdateRecipeAsync(
         Guid recipeId,

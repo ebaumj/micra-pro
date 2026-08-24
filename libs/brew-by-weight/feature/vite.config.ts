@@ -1,21 +1,22 @@
 /// <reference types="vitest" />
 import { defineConfig } from 'vite';
-
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
+import solidPlugin from 'vite-plugin-solid';
 import dts from 'vite-plugin-dts';
 import path from 'path';
 
 export default defineConfig({
-  root: __dirname,
+  root: import.meta.dirname,
   cacheDir: '../../../node_modules/.vite/brew-by-weight-feature',
   plugins: [
     dts({
       entryRoot: 'src',
-      tsconfigPath: path.posix.join(__dirname, 'tsconfig.lib.json'),
+      tsconfigPath: path.posix.join(import.meta.dirname, 'tsconfig.lib.json'),
     }),
-
-    nxViteTsPaths(),
+    solidPlugin(),
   ],
+  resolve: {
+    tsconfigPaths: true,
+  },
   build: {
     outDir: '../../../dist/libs/brew-by-weight/feature',
     emptyOutDir: true,

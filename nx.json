@@ -81,10 +81,19 @@
       "options": {
         "buildTargetName": "build",
         "previewTargetName": "serve",
-        "testTargetName": "test",
         "typecheckTargetName": "typecheck"
+      }
+    },
+    {
+      "plugin": "@nx/vitest",
+      "options": {
+        "testTargetName": "test"
       }
     }
   ],
-  "analytics": true
+  "tui": {
+    "enabled": false
+  },
+  "analytics": true,
+  "neverConnectToCloud": true
 }

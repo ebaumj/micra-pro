@@ -4,6 +4,7 @@ using MicraPro.Cleaning.Domain.Interfaces;
 using MicraPro.Cleaning.Domain.Services;
 using MicraPro.Cleaning.Domain.StorageAccess;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace MicraPro.Cleaning.Domain.Test.Services;
@@ -32,7 +33,8 @@ public class CleaningServiceTest
             Mock.Of<IBrewPaddle>(),
             Mock.Of<ICleaningStateService>(),
             Mock.Of<ICleaningDefaultsProvider>(),
-            Sf(repositoryMock.Object)
+            Sf(repositoryMock.Object),
+            Mock.Of<ILogger<CleaningService>>()
         );
         Assert.Equal(await service.GetCleaningSequenceAsync(CancellationToken.None), data);
         repositoryMock.Verify(m => m.GetCleaningSequenceAsync(AnyCt), Times.Once);
@@ -52,7 +54,8 @@ public class CleaningServiceTest
             Mock.Of<IBrewPaddle>(),
             Mock.Of<ICleaningStateService>(),
             Mock.Of<ICleaningDefaultsProvider>(),
-            Sf(repositoryMock.Object)
+            Sf(repositoryMock.Object),
+            Mock.Of<ILogger<CleaningService>>()
         );
         await service.SetCleaningSequenceAsync(data, CancellationToken.None);
         repositoryMock.Verify(m => m.SetCleaningSequenceAsync(data, AnyCt), Times.Once);
@@ -72,7 +75,8 @@ public class CleaningServiceTest
             Mock.Of<IBrewPaddle>(),
             Mock.Of<ICleaningStateService>(),
             Mock.Of<ICleaningDefaultsProvider>(m => m.DefaultSequence == data),
-            Sf(repositoryMock.Object)
+            Sf(repositoryMock.Object),
+            Mock.Of<ILogger<CleaningService>>()
         );
         await service.ResetCleaningSequenceAsync(CancellationToken.None);
         repositoryMock.Verify(m => m.SetCleaningSequenceAsync(data, AnyCt), Times.Once);
@@ -90,7 +94,8 @@ public class CleaningServiceTest
             Mock.Of<IBrewPaddle>(),
             Mock.Of<ICleaningStateService>(),
             Mock.Of<ICleaningDefaultsProvider>(),
-            Sf(repositoryMock.Object)
+            Sf(repositoryMock.Object),
+            Mock.Of<ILogger<CleaningService>>()
         );
         Assert.Equal(await service.GetCleaningIntervalAsync(CancellationToken.None), data);
         repositoryMock.Verify(m => m.GetCleaningIntervalAsync(AnyCt), Times.Once);
@@ -110,7 +115,8 @@ public class CleaningServiceTest
             Mock.Of<IBrewPaddle>(),
             Mock.Of<ICleaningStateService>(),
             Mock.Of<ICleaningDefaultsProvider>(),
-            Sf(repositoryMock.Object)
+            Sf(repositoryMock.Object),
+            Mock.Of<ILogger<CleaningService>>()
         );
         await service.SetCleaningIntervalAsync(data, CancellationToken.None);
         repositoryMock.Verify(m => m.SetCleaningIntervalAsync(data, AnyCt), Times.Once);
@@ -128,7 +134,8 @@ public class CleaningServiceTest
             Mock.Of<IBrewPaddle>(),
             Mock.Of<ICleaningStateService>(),
             Mock.Of<ICleaningDefaultsProvider>(),
-            Sf(repositoryMock.Object)
+            Sf(repositoryMock.Object),
+            Mock.Of<ILogger<CleaningService>>()
         );
         Assert.Equal(await service.GetLastCleaningTimeAsync(CancellationToken.None), data);
         repositoryMock.Verify(m => m.GetLastCleaningTimeAsync(AnyCt), Times.Once);
@@ -159,7 +166,8 @@ public class CleaningServiceTest
             brewPaddleMock.Object,
             new CleaningStateService(),
             Mock.Of<ICleaningDefaultsProvider>(),
-            Sf(repositoryMock.Object)
+            Sf(repositoryMock.Object),
+            Mock.Of<ILogger<CleaningService>>()
         );
         service.IsRunning.Subscribe(runningObserverMock.Object);
         runningObserverMock.Verify(m => m.OnNext(false), Times.Once);
@@ -234,7 +242,8 @@ public class CleaningServiceTest
             brewPaddleMock.Object,
             new CleaningStateService(),
             Mock.Of<ICleaningDefaultsProvider>(),
-            Sf(repositoryMock.Object)
+            Sf(repositoryMock.Object),
+            Mock.Of<ILogger<CleaningService>>()
         );
         service.IsRunning.Subscribe(runningObserverMock.Object);
         runningObserverMock.Verify(m => m.OnNext(false), Times.Once);
@@ -295,7 +304,8 @@ public class CleaningServiceTest
             brewPaddleMock.Object,
             new CleaningStateService(),
             Mock.Of<ICleaningDefaultsProvider>(),
-            Sf(repositoryMock.Object)
+            Sf(repositoryMock.Object),
+            Mock.Of<ILogger<CleaningService>>()
         );
         service.IsRunning.Subscribe(runningObserverMock.Object);
         runningObserverMock.Verify(m => m.OnNext(false), Times.Once);
@@ -330,7 +340,8 @@ public class CleaningServiceTest
             Mock.Of<IBrewPaddle>(),
             cleaningService,
             Mock.Of<ICleaningDefaultsProvider>(),
-            Sf(Mock.Of<ICleaningRepository>())
+            Sf(Mock.Of<ICleaningRepository>()),
+            Mock.Of<ILogger<CleaningService>>()
         );
         cleaningService.SetIsRunning(true);
         Assert.Throws<Exception>(() => service.StartCleaning(CancellationToken.None));

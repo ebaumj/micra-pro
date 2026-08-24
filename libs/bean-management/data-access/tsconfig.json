@@ -8,6 +8,8 @@
     "jsxImportSource": "solid-js",
     "types": ["vite/client"],
     "noEmit": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "moduleResolution": "bundler",
+    "ignoreDeprecations": "6.0"
   }
 }

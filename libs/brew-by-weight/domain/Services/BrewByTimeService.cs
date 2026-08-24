@@ -21,6 +21,7 @@ public class BrewByTimeService(IPaddleAccess paddleAccess, ILogger<BrewByTimeSer
 
     private readonly BehaviorSubject<BrewByTimeState> _state = new(new BrewByTimeState.Idle());
     private ProcessHandle[] _processHandles = [];
+    private readonly object _processHandlesLock = new();
 
     public IObservable<BrewByTimeState> State => _state.DistinctUntilChanged();
 
@@ -82,13 +83,19 @@ public class BrewByTimeService(IPaddleAccess paddleAccess, ILogger<BrewByTimeSer
             })
             .Subscribe(_ =>
             {
-                _processHandles = _processHandles
-                    .Where(h => h.Process.ProcessId != processId)
-                    .ToArray();
+                lock (_processHandlesLock)
+                {
+                    _processHandles = _processHandles
+                        .Where(h => h.Process.ProcessId != processId)
+                        .ToArray();
+                }
             });
-        _processHandles = _processHandles
-            .Append(new ProcessHandle(process, subscription))
-            .ToArray();
+        lock (_processHandlesLock)
+        {
+            _processHandles = _processHandles
+                .Append(new ProcessHandle(process, subscription))
+                .ToArray();
+        }
         _state.OnNext(new BrewByTimeState.Running(processId));
         return process;
     }

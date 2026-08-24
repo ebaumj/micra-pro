@@ -411,15 +411,6 @@ public class BrewByWeightHistoryServiceTest
         );
         processRepositoryMock.Verify(m => m.SaveAsync(It.IsAny<CancellationToken>()), Times.Once);
         processRepositoryMock.VerifyNoOtherCalls();
-        processRuntimeDataRepositoryMock.Verify(
-            m => m.GetAllAsync(It.IsAny<CancellationToken>()),
-            Times.Once
-        );
-        foreach (var r in entries[0].DbRuntime)
-            processRuntimeDataRepositoryMock.Verify(
-                m => m.DeleteAsync(r.Id, It.IsAny<CancellationToken>()),
-                Times.Once
-            );
         processRuntimeDataRepositoryMock.VerifyNoOtherCalls();
     }
 
