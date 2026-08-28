@@ -32,7 +32,7 @@
           class="flex rounded-t-lg border border-b-0 border-gray-700 bg-gray-900 p-3 text-blue-400"
         >
           <div class="flex h-8 w-full items-center font-mono text-sm">
-            <span class="text-purple-400">function&nbsp;</span>
+            <span class="text-purple-400">async function&nbsp;</span>
             <span class="text-yellow-200">{{ webhookName }}</span
             >(<span class="text-blue-200">machineEvent</span>,&nbsp;
             <span class="text-blue-200">timestamp</span>) {
@@ -180,11 +180,12 @@ const deleteContent = async () => {
   }
 };
 
-const runContent = () => {
+const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
+const runContent = async () => {
   try {
     const combinedCode = `${data.value?.eventFormat}\n${webhookContent.value}`;
-    const userFunction = new Function(combinedCode);
-    userFunction();
+    const userFunction = new AsyncFunction(combinedCode);
+    await userFunction();
   } catch (err) {
     console.error('Error executing snippet:', err);
     if (err instanceof Error) {
