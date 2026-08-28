@@ -4,13 +4,12 @@ import vm from 'node:vm';
 
 const tokeSubject = 'WebhookInvoke';
 
-const createScriptCode = (
-  payload: string,
-) => `function execute(machineEvent, timestamp) {
+const createScriptCode = (payload: string) => `(async () => {
+  async function execute(machineEvent, timestamp) {
     ${payload}
   }
-  execute(payloadData, timestampData);
-`;
+  await execute(payloadData, timestampData);
+})()`;
 
 export default defineEventHandler(async (event) => {
   authorize(event.headers.get('authorization'), tokeSubject);
@@ -23,18 +22,13 @@ export default defineEventHandler(async (event) => {
       content: await webhooks.readWebhookAsync(ev.webhookName),
     })),
   );
-  const backgroundTasks = events.map((ev) => {
-    return new Promise<void>((resolve) =>
-      setImmediate(() => {
-        invokeWebhook(ev.webhookName, ev.payload, ev.timestamp, ev.content);
-        resolve();
-      }),
-    );
-  });
+  const backgroundTasks = events.map((ev) =>
+    invokeWebhook(ev.webhookName, ev.payload, ev.timestamp, ev.content),
+  );
   event.waitUntil(Promise.all(backgroundTasks));
 });
 
-const invokeWebhook = (
+const invokeWebhook = async (
   name: string,
   payload: string,
   timestamp: string,
@@ -46,9 +40,17 @@ const invokeWebhook = (
       payloadData: payload,
       timestampData: new Date(timestamp),
       console: console,
+      fetch: fetch,
+      URL: URL,
     };
     vm.createContext(sandbox);
-    vm.runInContext(createScriptCode(content), sandbox, { timeout: 10000 });
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Async execution timed out')), 10000),
+    );
+    await Promise.race([
+      vm.runInContext(createScriptCode(content), sandbox),
+      timeoutPromise,
+    ]);
   } catch (error) {
     console.error(`Error executing webhook '${name}':`, error);
   }
