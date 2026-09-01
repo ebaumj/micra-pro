@@ -56,5 +56,5 @@ export const deleteWebhookAsync = async (
   name: string | undefined,
 ): Promise<void> => {
   if (!name) throw new Error();
-  await File.unlink(file(name));
+  await File.unlink(file(`${name}.js`));
 };
